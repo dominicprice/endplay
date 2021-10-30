@@ -1,0 +1,5 @@
+produce 100
+pts = (hcp(north) + hcp(south) > 32) // && (hcp(north) + hcp(south) < 30)
+bal = shape(north, any 4443 + any 4432 + any 5332) and shape(south, any 4443 + any 4432 + any 5332)
+condition pts && bal
+action average tricks(north, notrumps)

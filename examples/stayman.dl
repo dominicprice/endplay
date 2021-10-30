@@ -1,0 +1,11 @@
+produce 2 // Number of hands to generate, kept low just for this example
+west1n = 
+	hcp(west) >= 15 && 
+	hcp(west) <= 17 && 
+	shape(west, any 4333 + any 4432 + any 5332)
+eastStayman = 
+	hcp(east) >= 10 &&
+	(hearts(east) == 4 || spades(east) == 4) &&
+	hearts(east) < 5 && spades(east) < 5
+condition west1n && eastStayman
+action printew

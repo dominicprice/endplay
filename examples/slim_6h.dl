@@ -1,0 +1,4 @@
+produce 1
+slamhearts = tricks(north, hearts) >= 12
+slimhearts = hearts(north) + hearts(south) < 7
+condition slamhearts and slimhearts

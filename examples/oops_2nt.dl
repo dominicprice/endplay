@@ -1,0 +1,8 @@
+produce 30 // producing more will make the statistics more accurate
+north2n =
+    hcp(north) >= 20 &&
+    hcp(north) <= 21 &&
+    shape(north, any 4333 + any 4432 + any 5332)
+disappointingSouth = hcp(south) == 0
+condition north2n && disappointingSouth
+action average tricks(north, notrumps)
