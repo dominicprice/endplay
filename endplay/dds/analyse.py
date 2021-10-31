@@ -4,20 +4,30 @@ from typing import Iterable, Union, Optional
 import endplay._dds as _dds
 from endplay.types import Deal, Card, SolvedPlay, SolvedPlayList, Player
 
-def analyse(deal: Deal) -> int:
-	"Calculate the most tricks the player on lead can make"
-	# Creat empty play trace
+def analyse_start(deal: Deal, declarer_is_first: bool = False) -> int:
+	"""
+	Calculate the most tricks declarer can make.
+	:param deal: The deal to analyse
+	:param declarer_is_first: The algorithm assumes that the person who leads is to the left
+	                          of the declarer (as would be the case with the first card led
+							  to a hand), but to return the result as seen from the leader's
+							  perspective you can set this to True
+	"""
+	# Create empty play trace
 	playBin = _dds.playTraceBin()
 	playBin.number = 0
 	# Calculate and return 13-n, as it returns the tricks from the perspective of RHO
 	solvedp = _dds.solvedPlay()
 	_dds.AnalysePlayBin(deal._data, playBin, solvedp, 0)
-	return 13 - solvedp.tricks[0]
+	if declarer_is_first:
+		return len(deal[deal.first]) - solvedp.tricks[0]
+	else:
+		return solvedp.tricks[0]
 
 def analyse_play(
 	deal: Deal, 
 	play: Iterable[Union[Card, str]], 
-	perspective: Optional[Player] = None) -> SolvedPlay:
+	declarer_is_first: bool = False) -> SolvedPlay:
 	"""
 	Calculate a list of double dummy values after each card in `play`
 	is played to the hand. This returns `len(play)+1` results, as there
@@ -36,12 +46,14 @@ def analyse_play(
 	# Solve and correct trick count if perspective is wrong way round
 	solvedp = _dds.solvedPlay()
 	_dds.AnalysePlayBin(deal._data, playBin, solvedp, 0)
-	if perspective % 2 != deal.first.rho % 2:
+	if declarer_is_first:
+
+	if perspective is not None and (perspective % 2 != deal.first.rho % 2):
 		for i in range(solvedp.number):
 			solvedp.tricks[i] = 13 - i
 	return SolvedPlay(solvedp)
 
-def analyse_all(deal: Deal) -> int:
+def analyse_all_starts(deal: Deal, perspective: Optional[Player] = None) -> int:
 	"""
 	Optimized version of analyse for multiple deals which uses threading to
 	speed up the calculation
@@ -49,9 +61,16 @@ def analyse_all(deal: Deal) -> int:
 	# Convert deals into boards
 	bop = _dds.boards()
 	bop.noOfBoards = 0
+	if declarer_is_first:
+		# We need to keep track of how many cards the person on lead starts
+		# with, so that we can invert the result
+		starting_cards = []
 	for i, deal in enumerate(deals):
 		if i > _dds.MAXNOOFBOARDS:
 			raise RuntimeError(f"Too many boards, maximum is {_dds.MAXNOOFBOARDS}")
+		if declarer_is_first:
+			starting_cards.append(len(deal[deal.first]))
+		res += [len(deal[deal.first])]
 		bop.deals[i] = deal._data
 		bop.target[i] = -1
 		bop.solutions[i] = 3
@@ -66,7 +85,10 @@ def analyse_all(deal: Deal) -> int:
 	# Calculate and return 13-n, as it returns the tricks from the perspective of RHO
 	solvedp = _dds.solvedPlays()
 	_dds.AnalyseAllPlaysBin(bop, plp, solvedp, 0)
-	return [13 - solvedp.solved[i].tricks[i] for i in range(plp.noOfBoards)]
+	if declarer_is_first:
+		return [starting_cards[i] - solvedp.solved[i].tricks[] for i in range(plp.noOfBoards)]
+	else:
+		return [solvedp.solved[i].tricks[0] for i in range(plp.noOfBoards)]
 
 def analyse_all_plays(
 	deals: Iterable[Deal], 

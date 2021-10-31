@@ -15,11 +15,11 @@ from endplay.types.vul import Vul
 import endplay._dds as _dds
 
 class Deal:
-	def __init__(self, pbn: str = None):
+	def __init__(self, pbn: str = None, first: Player = Player.north, trump: Denom = Denom.nt):
 		self._data = _dds.deal()
 		self.clear()
-		self.first = Player.north
-		self.trump = Denom.nt
+		self.first = first
+		self.trump = trump
 		if pbn is not None:
 			self.from_pbn(pbn)
 		

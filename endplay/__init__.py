@@ -8,7 +8,5 @@ from endplay.dds import *
 from endplay.dealer import *
 from endplay.interact import *
 from endplay.parsers import *
-from endplay.scoring import *
 from endplay.evaluate import *
 from endplay.types import *
-from endplay.stats import *

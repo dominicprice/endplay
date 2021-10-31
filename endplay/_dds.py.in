@@ -65,8 +65,8 @@ else:
 	_dll = ctypes.CDLL(os.path.join(_dll_path, ".libs", "dds.so"))
 
 # Hard coded constants from the DDS library (used for the size of stack-allocated arrays and stuff)
-MAXNOOFBOARDS = 200
-MAXNOOFTABLES = 40
+MAXNOOFBOARDS = @DDS_MAXNOOFBOARDS@
+MAXNOOFTABLES = @DDS_MAXNOOFTABLES@
 
 def init(dds_libfile: Optional[str] = None, dds_header: Optional[str] = None, max_threads: int = 0):
 	"""
