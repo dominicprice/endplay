@@ -32,9 +32,10 @@ set(DDS_SOURCE
 	Scheduler.cpp       SolveBoard.cpp      SolverIF.cpp
 	System.cpp          ThreadMgr.cpp       Timer.cpp
 	TimerGroup.cpp      TimerList.cpp       TimeStat.cpp
-	TimeStatList.cpp    TransTableS.cpp     TransTableL.cpp
-	exports.def
-)
+	TimeStatList.cpp    TransTableS.cpp     TransTableL.cpp)
+if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+	set(DDS_SOURCE ${DDS_SOURCE} exports.def)
+endif()
 list(TRANSFORM DDS_SOURCE PREPEND "${DDS_ROOT_DIR}/src/")
 add_library(dds SHARED ${DDS_SOURCE})
 target_compile_definitions(dds PRIVATE 
