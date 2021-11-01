@@ -10,5 +10,4 @@ from endplay.interact import *
 from endplay.parsers import *
 from endplay.evaluate import *
 from endplay.types import *
-import endplay.config as config
-from endplay.version import *
+from endplay.config import __author__, __version__, __version_info__

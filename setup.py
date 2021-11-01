@@ -3,5 +3,8 @@
 from skbuild import setup
 
 setup(
-	
+	install_requires=[
+		"pyparsing",
+		"tqdm"
+	]
 )

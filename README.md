@@ -2,15 +2,7 @@
 
 *endplay* is a Python library providing a variety of different tools for generating, analysing, solving and scoring bridge deals. It is a collection of different tools based on Bo Haglund's famous [dds library](https://github.com/dds-bridge/dds), Hans van Staveren's [dealer program](https://www.bridgebase.com/tools/dealer/Manual/) and other personal projects which have been cobbled together into a compatible interface using a common type system based on the encodings defined in the dds library.
 
-
-
-## Status of this project
-
-I began writing some of the components of this library many years ago, and it was only recently (as of the writing of this in late 2021) that I started to combine it together into one cohesive blob. One of the main results of this is that the quality of the code is extremely variable, the testing is wildly incomplete and there are still bits which are stubbed out and are currently item 296 on my to-do list.
-
-With all that being said, I did think that the library was sufficiently complete, functional and useful that releasing it was worth the extra effort, but whether or not I will be actively maintaining it is an open question. If anyone finds the tools here useful, or has found them to be un-useful but wishes to try and fix them, then I would welcome any contributions no matter how small or total-rewritey they are. I have attempted to open bug reports for all the things which I wanted to get around to but haven't had time for yet, so if you are interested in contributing then do make yourself known by commenting on these, opening new bugs, sending me pull requests or by any other means (although joining my parish choir out of the blue might be a *tad* on the presumptuous side).
-
-
+If you find this useful and would like to contribute, or found it totally buggy and broken and want to fix it, then I am very open to contributions.
 
 ## Building and installing
 
@@ -20,7 +12,7 @@ With all that being said, I did think that the library was sufficiently complete
 
 ### From source
 
-The compiled components of the library are build using CMake. `cd` into the root directory and then build with
+The compiled components of the library are build using CMake. An in-source build can be done by `cd`ing into the root directory and then build with
 
 ```bash
 mkdir out && cd out # Create the build directory
@@ -28,6 +20,17 @@ cmake -DCMAKE_BUILD_TYPE=Release .. # Configure and generate makefiles
 cmake --build . # Compile the sources
 cmake --build --target install . # Install the compiled files to the package tree
 ```
+
+### Building the documentation
+
+The documentation is semi-auto generated with sphinx. To build it, `cd` into the root directory and then run
+
+```bash
+cd docs
+make html # or latex, or whatever output format you want
+```
+
+The documentation will be built in the `build` directory.
 
 ### Running the test suite
 

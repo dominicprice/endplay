@@ -2,6 +2,9 @@ import unittest
 from endplay.evaluate import *
 from endplay.types import *
 
+from endplay import config
+config.use_unicode = False
+
 pbn = "N:974.AJ3.63.AK963 K83.K9752.7.8752 AQJ5.T864.KJ94.4 T62.Q.AQT852.QJT"
 pbn2 = "N:4.KJ32.842.AQ743 JT987.Q876.AK5.2 AK532.T.JT6.T985 Q6.A954.Q973.KJ6"
 

@@ -1,10 +1,10 @@
 ﻿import argparse
+import traceback
 from endplay.dealer.runscript import run_script
-
-__version__ = "0.0.1"
+from endplay.config import __version__
 
 __description__ = r"""
-endplay-dealer is a reimplementation of Hans van Staveren's dealer program
+endplay.dealer is a reimplementation of Hans van Staveren's dealer program
 which can be used to generate hands for partnerships bidding training or for
 generating statistics that can be used to design conventions, or win postmortems.\\
 While compatibility with the original has been a design goal, the precise format of the
@@ -81,4 +81,6 @@ if __name__ == "__main__":
 			swapping, args.f, args.o, args.c, args.a)
 	except Exception as e:
 		print("dealer had to exit prematurely because of the following error:", e)
+		if args.v:
+			traceback.print_exc()
 		exit(1)

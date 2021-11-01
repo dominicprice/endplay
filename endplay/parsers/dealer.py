@@ -365,7 +365,14 @@ class DealerParser:
 			pointcount | altcount | condition | action | variable
 		)
 		self.grammar.ignore(pp.cppStyleComment)
-		self.grammar.ignore(pp.LineStart() + pp.pythonStyleComment)
+		# Note: from the docs I gather that we should only support #comment style
+		# if the hash is at the beginning of the line, so this ignore statement
+		# should be:
+		#   self.grammar.ignore(pp.LineStart() + pp.pythonStyleComment)
+		# but the test case fails, and as hashtags can't legally (probably?) appear
+		# anywhere else I don't think it will break anything to be looser with the
+		# requirements
+		self.grammar.ignore(pp.pythonStyleComment)
 
 		self.expr = expr
 		

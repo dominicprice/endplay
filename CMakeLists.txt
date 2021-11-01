@@ -7,8 +7,16 @@ if (NOT CMAKE_BUILD_TYPE)
 	set(CMAKE_BUILD_TYPE Release)
 endif()
 set(CMAKE_CXX_STANDARD 17)
-add_subdirectory(libs/pybind11)
+# Currently don't use pybind, but plan on using it soon so leaving it here
+# add_subdirectory(libs/pybind11)
 set(ENDPLAY_ROOT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/endplay/")
+if (SKBUILD)
+	# Why do I have to do this? Seems the wrong way to do it, but documentation is sparse
+	# and this seems to work
+	set(INSTALL_PATH "Lib/site-packages/endplay/")
+else()
+	set(INSTALL_PATH "${ENDPLAY_ROOT_DIR}")
+endif()
 
 # _dds library
 # ============
@@ -56,5 +64,5 @@ string(REGEX MATCH "[0-9]+" DDS_MAXNOOFTABLES "${DDS_MAXNOOFTABLES}")
 configure_file("${ENDPLAY_ROOT_DIR}/_dds/__init__.py.in" "_dds/__init__.py" @ONLY)
 
 # Install both bits into the right places in the package
-install(TARGETS dds RUNTIME DESTINATION "${ENDPLAY_ROOT_DIR}/.libs")
-install(FILES "${CMAKE_CURRENT_BINARY_DIR}/_dds/__init__.py" DESTINATION "${ENDPLAY_ROOT_DIR}/_dds")
+install(TARGETS dds RUNTIME DESTINATION "${INSTALL_PATH}/.libs")
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/_dds/__init__.py" DESTINATION "${INSTALL_PATH}/_dds")

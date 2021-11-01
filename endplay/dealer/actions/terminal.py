@@ -65,7 +65,11 @@ class TerminalActions(BaseActions):
 		print(total / len(self.deals), file=self.stream)
 
 	def frequency1d(self, expr, lower_bound, upper_bound, s = None):
-		import matplotlib.pyplot as plt
+		try:
+			import matplotlib.pyplot as plt
+		except ImportError:
+			print("frequency action on terminal requires matplotlib, try installing it with `python -m pip install matplotlib`")
+			return
 		data = [expr(deal) for deal in self.deals]
 		plt.hist(data, bins='auto', range=(lower_bound, upper_bound))
 		if s:
@@ -73,7 +77,11 @@ class TerminalActions(BaseActions):
 		plt.show()
 
 	def frequency2d(self, ex1, lb1, hb1, ex2, lb2, hb2, s = None):
-		import matplotlib.pyplot as plt
+		try:
+			import matplotlib.pyplot as plt
+		except ImportError:
+			print("frequency action on terminal requires matplotlib, try installing it with `python -m pip install matplotlib`")
+			return
 		x = [ex1(deal) for deal in self.deals]
 		y = [ex2(deal) for deal in self.deals]
 		h = plt.hist2d(x, y, range=[(lb1, hb1), (lb2, hb2)])

@@ -1,6 +1,9 @@
 ﻿import unittest
 from endplay.parsers import *
 
+from endplay import config
+config.use_unicode = False
+
 class TestPBN(unittest.TestCase):
 	pass
 

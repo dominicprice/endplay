@@ -167,7 +167,7 @@ def run_script(
 					s, expr = None, interp.lambdify(action.last_child)
 				actioner.average(expr, s)
 			elif action.value == "frequency":
-				if isinstance(action.first_child.value, str):
+				if action.first_child.dtype == Node.VALUE:
 					s, args = action.children[0].value, action.children[1:]
 				else:
 					s, args = None, action.children

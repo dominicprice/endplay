@@ -3,7 +3,7 @@ Configuration and versioning information
 """
 
 # Packages metadata, used by setuptools etc
-__version__ = "0.0.1"
+__version__ = "0.1.0"
 __version_info__ = tuple(int(i) for i in __version__.split("."))
 __author__ = "Dominic Price"
 

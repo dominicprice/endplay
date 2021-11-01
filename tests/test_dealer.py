@@ -4,6 +4,10 @@ from endplay.dealer import *
 from endplay.types import *
 from endplay.evaluate import *
 
+from endplay import config
+config.use_unicode = False
+
+
 pbn = "N:9642.95.AKQT4.K7 KJ3.K3.98.T98654 AQT85.Q862..AQJ2 7.AJT74.J76532.3"
 
 class TestConstraints(unittest.TestCase):

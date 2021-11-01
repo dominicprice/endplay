@@ -5,15 +5,19 @@ __pycache__/
 
 # Visual studio local config files
 .vs/
+CMakeSettings.json
 
 # Virtual environment
 venv/
 
 # Files produced by setup.py
 dist/
+*.egg-info/
 
 # Files generated during build
 docs/build/
 out/
 endplay/.libs/dds.dll
 endplay/_dds/__init__.py
+MANIFEST
+_skbuild/*
