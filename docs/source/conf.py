@@ -22,7 +22,8 @@ copyright = '2021, Dominic Price'
 author = 'Dominic Price'
 
 # The full version, including alpha/beta/rc tags
-release = '0.1-alpha'
+from endplay.config import __version__
+release = __version__
 
 # -- General configuration ---------------------------------------------------
 

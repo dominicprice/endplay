@@ -1,6 +1,7 @@
 import unittest
 from endplay.types import *
 from endplay.dds import *
+
 from endplay import config
 config.use_unicode = False
 

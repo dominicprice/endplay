@@ -12,8 +12,6 @@ Welcome to endplay's documentation!
 
    intro
    
-   status_of_this_project
-   
    building_and_installing
    
    overview_of_submodules

@@ -63,6 +63,6 @@ string(REGEX MATCH "#define MAXNOOFTABLES [0-9]+" DDS_MAXNOOFTABLES "${DDS_DLL_H
 string(REGEX MATCH "[0-9]+" DDS_MAXNOOFTABLES "${DDS_MAXNOOFTABLES}")
 configure_file("${ENDPLAY_ROOT_DIR}/_dds/__init__.py.in" "_dds/__init__.py" @ONLY)
 
-# Install both bits into the right places in the package
+# Install both bits into the right places in the package  
 install(TARGETS dds RUNTIME DESTINATION "${INSTALL_PATH}/.libs")
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/_dds/__init__.py" DESTINATION "${INSTALL_PATH}/_dds")

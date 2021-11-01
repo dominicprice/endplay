@@ -26,4 +26,3 @@ Submodules
    :maxdepth: 4
 
    endplay.config
-   endplay.version
