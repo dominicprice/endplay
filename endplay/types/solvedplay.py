@@ -1,5 +1,7 @@
 __all__ = ["SolvedPlay", "SolvedPlayList"]
 
+from typing import Iterator
+
 class SolvedPlay:
 	def __init__(self, data: '_dds.solvedPlay'):
 		self._data = data
@@ -13,6 +15,10 @@ class SolvedPlay:
 		if i >= len(self):
 			raise IndexError
 		return self._data.tricks[i]
+
+	def __iter__(self) -> Iterator[int]:
+		for i in range(len(self)):
+			yield self[i]
 
 	def __repr__(self) -> str:
 		return f'<SolvedPlay object; data={self!s}>'
@@ -33,6 +39,10 @@ class SolvedPlayList:
 		if i >= len(self):
 			raise IndexError
 		return SolvedPlay(self._data.solved[i])
+
+	def __iter__(self) -> Iterator[SolvedPlay]:
+		for i in range(len(self)):
+			yield self[i]
 
 	def __repr__(self) -> str:
 		return f'<SolvedPlayList; length={len(self)}'

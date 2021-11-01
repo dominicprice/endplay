@@ -106,9 +106,7 @@ def run_script(
 	deals = []
 	generator = generate_deals(
 		*compiled_constraints, predeal=predeal, produce=produce, 
-		swapping=swapping, max_attempts=generate)
-	if show_progress:
-		generator = tqdm(generator, desc="Generating deals", total=produce, unit="deals")
+		show_progress=show_progress, swapping=swapping, max_attempts=generate)
 	for deal in generator:
 		deals.append(deal)
 

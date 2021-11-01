@@ -53,8 +53,8 @@ string(REGEX MATCH "#define MAXNOOFBOARDS [0-9]+" DDS_MAXNOOFBOARDS "${DDS_DLL_H
 string(REGEX MATCH "[0-9]+" DDS_MAXNOOFBOARDS "${DDS_MAXNOOFBOARDS}")
 string(REGEX MATCH "#define MAXNOOFTABLES [0-9]+" DDS_MAXNOOFTABLES "${DDS_DLL_H}")
 string(REGEX MATCH "[0-9]+" DDS_MAXNOOFTABLES "${DDS_MAXNOOFTABLES}")
-configure_file("${ENDPLAY_ROOT_DIR}/_dds.py.in" "_dds.py" @ONLY)
+configure_file("${ENDPLAY_ROOT_DIR}/_dds/__init__.py.in" "_dds/__init__.py" @ONLY)
 
 # Install both bits into the right places in the package
 install(TARGETS dds RUNTIME DESTINATION "${ENDPLAY_ROOT_DIR}/.libs")
-install(FILES "${CMAKE_CURRENT_BINARY_DIR}/_dds.py" DESTINATION "${ENDPLAY_ROOT_DIR}")
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/_dds/__init__.py" DESTINATION "${ENDPLAY_ROOT_DIR}/_dds")

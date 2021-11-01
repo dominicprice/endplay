@@ -38,6 +38,8 @@ def calc_all_tables(deals: Iterable[Deal], exclude: Iterable[Denom] = []) -> DDT
 	for trump in exclude:
 		trumpFilter[trump] = True
 
-	resp = _dds.ddTableRes()
-	_dds.CalcAllTables(dealsp, -1, trumpFilter, resp, None)
+	resp = _dds.ddTablesRes()
+	presp = _dds.allParResults()
+	_dds.CalcAllTables(dealsp, -1, trumpFilter, resp, presp)
+	resp.noOfBoards = dealsp.noOfTables
 	return DDTableList(resp)

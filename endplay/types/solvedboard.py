@@ -40,6 +40,10 @@ class SolvedBoardList:
 			return IndexError
 		return SolvedBoard(self._data.solvedBoard[i])
 
+	def __iter__(self) -> Iterator[SolvedBoard]:
+		for i in range(len(self)):
+			yield self[i]
+
 	def __repr__(self) -> str:
 		return f'<SolvedBoardList; length={len(self)}>'
 

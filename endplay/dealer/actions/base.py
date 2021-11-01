@@ -42,8 +42,8 @@ class BaseActions(ABC):
 	def average(expr: Expr, s: Optional[str] = None):
 		raise NotImplementedError
 
-	def frequency(expr: Expr, lower_bound: float, upper_bound: float, s: Optional[str] = None):
+	def frequency1d(expr: Expr, lower_bound: float, upper_bound: float, s: Optional[str] = None):
 		raise NotImplementedError
 
-	def frequency(ex1: Expr, lb1: float, hb1: float, ex2: Expr, lb2: float, hb2: float, s: Optional[str] = None):
+	def frequency2d(ex1: Expr, lb1: float, hb1: float, ex2: Expr, lb2: float, hb2: float, s: Optional[str] = None):
 		raise NotImplementedError

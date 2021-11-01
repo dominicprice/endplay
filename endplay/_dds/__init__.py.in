@@ -58,62 +58,20 @@ from functools import wraps
 
 
 # Handle to the DDS shared library
-_dll_path = os.path.dirname(os.path.abspath(__file__))
-if os.name == "nt":
-	_dll = ctypes.WinDLL(os.path.join(_dll_path, ".libs", "dds.dll"))
-else:
-	_dll = ctypes.CDLL(os.path.join(_dll_path, ".libs", "dds.so"))
-
+_cur_path = os.path.abspath(os.path.dirname(__file__))
+_dll_ext = "dll" if os.name == "nt" else "so"
+_dll_path = os.path.join(_cur_path, "..", ".libs", "dds." + _dll_ext)
+try:
+	if os.name == "nt":
+		_dll = ctypes.WinDLL(_dll_path)
+	else:
+		_dll = ctypes.CDLL(_dll_path)
+except FileNotFoundError:
+	raise RuntimeError("Unable to load the dds library (should be located in " + 
+		_dll_path + "), you may need to reinstall the library.")
 # Hard coded constants from the DDS library (used for the size of stack-allocated arrays and stuff)
-MAXNOOFBOARDS = 200
-MAXNOOFTABLES = 40
-
-def init(dds_libfile: Optional[str] = None, dds_header: Optional[str] = None, max_threads: int = 0):
-	"""
-	Initialize the library by finding the dds shared library and
-	using this to set the `_dll` variable. If the `dds_header` is
-	provided, then this is used to try and set the values of
-	MAXNOOFBOARDS and MAXNOOFTABLES, although these shouldn't change
-	"""
-	global _dll, MAXNOOFBOARDS, MAXNOOFTABLES
-
-	if dds_libfile is None:
-		# Examine environment variables for DDS_LIBFILE
-		if "DDS_LIBFILE" in os.environ:
-			dds_libfile = os.environ["DDS_LIBFILE"]
-		# Search through PATH to see if we can find it
-		else:
-			name = "dds." + ("dll" if os.name == "nt" else "so")
-			path = os.environ["PATH"].split(os.pathsep)
-			for p in path:
-				libfile = os.path.join(p, name)
-				if os.path.isfile(libfile):
-					dds_libfile = libfile
-					break
-			else:
-				dds_libfile = name
-	try:
-		if os.name == "nt":
-			_dll = ctypes.WinDLL(dds_libfile)
-		else:
-			_dll = ctypes.CDLL(dds_libfile)
-	except OSError as e:
-		raise OSError(f"_dds: Loading shared library {dds_libfile} failed with the following error: {e}")
-		
-	SetMaxThreads(max_threads)
-
-	if dds_header is not None:
-		defines = {}
-		directive = re.compile(r"#define\s+(\w+)(?:\s+(.*))?")
-		with open(dds_header) as f:
-			for line in f:
-				m = directive.match(line)
-				if m:
-					defines[m.group(1)] = m.group(2)
-		if "MAXNOOFBOARDS" in defines:
-			MAXNOOFBOARDS = int(defines["MAXNOOFBOARDS"])
-		if "MAXNOOFTABLES" in defines:
-			MAXNOOFTABLES = int(defines["MAXNOOFTABLES"])
+MAXNOOFBOARDS = @DDS_MAXNOOFBOARDS@
+MAXNOOFTABLES = @DDS_MAXNOOFTABLES@
 
 
 #----------------------------------------------------

@@ -2,26 +2,9 @@ __all__ = ["DDTableDenom", "DDTable", "DDTableList"]
 
 import sys
 import json as _json
+from typing import Iterator
 from endplay.types.player import Player
 from endplay.types.denom import Denom
-
-class DDTableDenom:
-	def __init__(self, data: 'ctypes.c_int * 4'):
-		self._data = data
-		
-	def __getitem__(self, player: Player) -> int:
-		"Return the specified cell of the table"
-		return self._data[player]
-
-	def __setitem__(self, player: Player, val: int) -> None:
-		"Modify the specified cell of the table"
-		self._data[player] = val
-
-	def __repr__(self) -> str:
-		return '<DDTableDenom object; data={{{self!s}}}>'
-
-	def __str__(self) -> str:
-		return ",".join("{player.abbr}:{self[player]}" for player in Player)
 
 class DDTable:
 	def __init__(self, data: '_dds.ddTableResults'):
@@ -29,7 +12,7 @@ class DDTable:
 		
 	def pprint(self, stream=sys.stdout) -> None:
 		"Print the double dummy table in a grid format"
-		print("    ", " ".join(denom.abbr.rjust(2) for denom in Denom.bidorder()), file=stream)
+		print("   ", " ".join(denom.abbr.rjust(2) for denom in Denom.bidorder()), file=stream)
 		for player in Player.iterorder("NSWE"):
 			print(player.abbr.rjust(3), end='', file=stream)
 			for denom in Denom.bidorder():
@@ -47,15 +30,18 @@ class DDTable:
 	def to_json(self) -> str:
 		return _json.dumps({ { p.name: self[d][p] for p in Player } for d in Denom })
 
-	def __getitem__(self, denom: Denom) -> DDTableDenom:
+	def __getitem__(self, cell: tuple[Denom, Player]) -> int:
 		"Return the specified column of the table"
-		return DDTableDenom(self._data.resTable[denom.value])
+		if isinstance(cell[0], Denom):
+			return self._data.resTable[cell[0]][cell[1]]
+		else:
+			return self._data.resTable[cell[1]][cell[0]]
 
 	def __repr__(self) -> str:
 		return f'<DDTable object; data={self!s}>'
 
 	def __str__(self) -> str:
-		", ".join("{denom.abbr}:{{{self[denom]}}" for denom in Denom.bidorder())
+		return ", ".join(f"{denom.abbr}:{{{self[denom]}}}" for denom in Denom.bidorder())
 
 
 class DDTableList:
@@ -71,6 +57,10 @@ class DDTableList:
 		if i >= len(self):
 			raise IndexError
 		return DDTable(self._data.results[i])
+
+	def __iter__(self) -> Iterator[DDTable]:
+		for i in range(len(self)):
+			yield self[i]
 
 	def __repr__(self) -> str:
 		return f'<DDTableList object; length={len(self)}>'

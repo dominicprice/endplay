@@ -47,13 +47,14 @@ def analyse_play(
 	solvedp = _dds.solvedPlay()
 	_dds.AnalysePlayBin(deal._data, playBin, solvedp, 0)
 	if declarer_is_first:
-
-	if perspective is not None and (perspective % 2 != deal.first.rho % 2):
+		starting_cards = len(deal[deal.first])
 		for i in range(solvedp.number):
-			solvedp.tricks[i] = 13 - i
+			solvedp.tricks[i] = starting_cards - solvedp.tricks[i]
 	return SolvedPlay(solvedp)
 
-def analyse_all_starts(deal: Deal, perspective: Optional[Player] = None) -> int:
+def analyse_all_starts(
+	deals: Iterable[Deal], 
+	declarer_is_first: bool = False) -> list[int]:
 	"""
 	Optimized version of analyse for multiple deals which uses threading to
 	speed up the calculation
@@ -70,7 +71,6 @@ def analyse_all_starts(deal: Deal, perspective: Optional[Player] = None) -> int:
 			raise RuntimeError(f"Too many boards, maximum is {_dds.MAXNOOFBOARDS}")
 		if declarer_is_first:
 			starting_cards.append(len(deal[deal.first]))
-		res += [len(deal[deal.first])]
 		bop.deals[i] = deal._data
 		bop.target[i] = -1
 		bop.solutions[i] = 3
@@ -80,20 +80,20 @@ def analyse_all_starts(deal: Deal, perspective: Optional[Player] = None) -> int:
 	plp = _dds.playTracesBin()
 	plp.noOfBoards = bop.noOfBoards
 	for i in range(plp.noOfBoards):
-		plp[i].number = 0
+		plp.plays[i].number = 0
 
 	# Calculate and return 13-n, as it returns the tricks from the perspective of RHO
 	solvedp = _dds.solvedPlays()
 	_dds.AnalyseAllPlaysBin(bop, plp, solvedp, 0)
 	if declarer_is_first:
-		return [starting_cards[i] - solvedp.solved[i].tricks[] for i in range(plp.noOfBoards)]
+		return [starting_cards[i] - solvedp.solved[i].tricks[0] for i in range(plp.noOfBoards)]
 	else:
 		return [solvedp.solved[i].tricks[0] for i in range(plp.noOfBoards)]
 
 def analyse_all_plays(
 	deals: Iterable[Deal], 
 	plays: Iterable[Iterable[Card]], 
-	perspective: Optional[Player] = None) -> SolvedPlayList:
+	declarer_is_first: bool = False) -> SolvedPlayList:
 	"""
 	Optimized version of analyse_play for multiple deals which uses
 	threading to speed up the calculation
@@ -101,9 +101,13 @@ def analyse_all_plays(
 	# Convert deals into boards
 	bop = _dds.boards()
 	bop.noOfBoards = 0
+	if declarer_is_first:
+		starting_cards = []
 	for i, deal in enumerate(deals):
 		if i > _dds.MAXNOOFBOARDS:
 			raise RuntimeError(f"Too many boards, maximum is {_dds.MAXNOOFBOARDS}")
+		if declarer_is_first:
+			starting_cards.append(len(deal[deal.first]))
 		bop.deals[i] = deal._data
 		bop.target[i] = -1
 		bop.solutions[i] = 3
@@ -125,8 +129,8 @@ def analyse_all_plays(
 
 	solvedp = _dds.solvedPlays()
 	_dds.AnalyseAllPlaysBin(bop, plp, solvedp, 0)
-	for i in range(bop.noOfBoards):
-		if perspective % 2 != (bop.deals[i].first + 1) % 2:
+	if declarer_is_first:
+		for i in range(bop.noOfBoards):
 			for j in range(solvedp.solved[i].number):
-				solvedp.solved[i].tricks[j] = 13 - solvedp.solved[i].tricks[j]
+				solvedp.solved[i].tricks[j] = starting_cards[i] - solvedp.solved[i].tricks[j]
 	return SolvedPlayList(solvedp)

@@ -10,3 +10,5 @@ from endplay.interact import *
 from endplay.parsers import *
 from endplay.evaluate import *
 from endplay.types import *
+import endplay.config as config
+from endplay.version import *

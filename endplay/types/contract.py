@@ -89,22 +89,30 @@ class Contract:
 
 	def score(self, vul: Vul) -> int:
 		"The number of points the contract would score for the declarer"
+		if vul == Vul.none:
+			is_vul = False
+		elif vul == Vul.ns:
+			is_vul = (self.declarer in (Player.north, Player.south))
+		elif vul == Vul.ew:
+			is_vul = (self.declarer in (Player.east, Player.west))
+		else:
+			is_vul = True
 		res = self.result
 		if res < 0:
 			if self.penalty == Penalty.none:
-				if vul:
+				if is_vul:
 					return 100 * res
 				else:
 					return 50 * res
 			elif self.penalty == Penalty.doubled:
-				if vul:
+				if is_vul:
 					s = [-200] + [-300] * 12
 					return sum(s[:-res])
 				else:
 					s = [-100] + [-200] * 2 + [-300] * 10
 					return sum(s[:-res])
 			elif self.penalty == Penalty.redoubled:
-				if vul:
+				if is_vul:
 					s = [-400] + [-600] * 12
 					return sum(s[:-res])
 				else:
@@ -122,16 +130,16 @@ class Contract:
 			score *= self.penalty
 			# Game/part-score bonus
 			if score >= 100:
-				if vul: score += 500
+				if is_vul: score += 500
 				else: score += 300
 			else:
 				score += 50
 			# Slam bonuses
 			if l == 6:
-				if vul: score += 750
+				if is_vul: score += 750
 				else: score += 500
 			elif l == 7:
-				if vul: score += 1500
+				if is_vul: score += 1500
 				else: score += 750
 			# Insult bonus
 			if self.penalty == Penalty.doubled:
@@ -145,10 +153,10 @@ class Contract:
 				else:
 					score += 30 * res
 			elif self.penalty == Penalty.doubled:
-				if vul: score += 200 * res
+				if is_vul: score += 200 * res
 				else: score += 100 * res
 			else:
-				if vul: score += 400 * res
+				if is_vul: score += 400 * res
 				else: score += 200 * res
 			return score
 

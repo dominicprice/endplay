@@ -6,6 +6,7 @@ from endplay.dealer import generate_deal
 from endplay.types import Card, Deal, Vul, Player, Denom
 from endplay.dds import solve_board, calc_dd_table, analyse_play, par
 from endplay.evaluate import hcp
+import shlex
 
 class InteractiveDeal(cmd.Cmd):
 	def __init__(self, deal: Optional[Deal] = None):
@@ -119,10 +120,24 @@ class InteractiveDeal(cmd.Cmd):
 		
 	def undo_set(self, player, pbn):
 		self.deal[player].from_pbn(pbn)
+
+	def do_solve(self, arg):
+		"""
+		Display the double-dummy maximum number of tricks playing each card in the current
+		player's hand can yield.
+		"""
+		res = {}
+		for card, tricks in solve_board(self.deal):
+			if tricks in res:
+				res[tricks].append(card)
+			else:
+				res[tricks] = [card]
+		for tricks, cards in res.items():
+			print(f"{tricks}:", "  ".join(str(c) for c in cards))
 		
 	def do_redeal(self, arg):
 		"""
-		Redeal the hand to either a random deal or the given PBN string
+		Redeal the hand to the given PBN string (or an empty string for a blank deal)
 		Example 1: redeal
 		Example 2: redeal N:95..A. 8.5.Q. .QT5.. Q..T4.
 		"""
@@ -134,6 +149,25 @@ class InteractiveDeal(cmd.Cmd):
 				self.needs_printing = True
 			except RuntimeError:
 				print(f"Invalid PBN string: `{arg}`")
+		else:
+			self.deal = Deal()
+			self.undo_history.append(hist)
+			self.needs_printing = True
+
+	def do_shuffle(self, arg):
+		"""
+		Generate a random deal satisfying the given constraints.
+		Example 1: shuffle
+		Example 2: shuffle hcp(north) > hcp(south)
+		"""
+		hist = ("redeal", str(self.deal), self.deal.curtrick, self.deal.trump, self.deal.first)
+		if arg:
+			try:
+				self.deal = generate_deal(arg)
+				self.undo_history.append(hist)
+				self.needs_printing = True
+			except RuntimeError:
+				print(f"Could not generate deal satisfying this constraint")
 		else:
 			self.deal = generate_deal()
 			self.undo_history.append(hist)

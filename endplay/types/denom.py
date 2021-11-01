@@ -2,8 +2,7 @@ __all__ = ["Denom"]
 
 from enum import IntEnum
 from typing import Iterator
-
-use_symbols = False
+from endplay import config
 
 class Denom(IntEnum):
 	"Encoding for suits and contract denomination"
@@ -13,20 +12,11 @@ class Denom(IntEnum):
 	clubs		= 3
 	nt			= 4
 
-	@property
-	def use_symbols(self) -> bool:
-		global use_symbols
-		return use_symbols
-	@use_symbols.setter
-	def use_symbols(self, val: bool) -> None:
-		global use_symbols
-		use_symbols = val
-
 	@staticmethod
 	def find(name: str) -> 'Denom':
 		"Convert a string value into a Denom object"
 		try:
-			return Denom("SHDCN".index(name[0].upper()))
+			return Denom("SHDCN♠♥♦♣N♤♡♢♧".index(name[0].upper()) % 5)
 		except ValueError:
 			raise ValueError(f"Could not convert {name} into a Denom object")
 
@@ -62,7 +52,7 @@ class Denom(IntEnum):
 		":return: A short identifier for the denomination"
 		if self == Denom.nt:
 			return "NT"
-		elif self.use_symbols:
+		elif config.use_unicode:
 			return "♠♥♦♣"[self]
 		else:
 			return "SHDC"[self]
