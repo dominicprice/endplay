@@ -1,4 +1,6 @@
-﻿__all__ = [ "analyse_play", "analyse_all_plays" ]
+﻿from __future__ import annotations
+
+__all__ = [ "analyse_play", "analyse_all_plays" ]
 
 from typing import Iterable, Union, Optional
 import endplay._dds as _dds

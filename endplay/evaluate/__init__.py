@@ -2,6 +2,8 @@
 Functions for evaluating bridge hands using a variety of different metrics.
 """
 
+from __future__ import annotations
+
 __all__ = [
 	"hcp", "top_honours", "losers", "cccc", "quality", "controls", "rule_of_n",
 	"exact_shape", "shape", "major_shape", "minor_shape", "is_balanced",
