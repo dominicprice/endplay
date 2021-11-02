@@ -59,8 +59,8 @@ from functools import wraps
 
 # Handle to the DDS shared library
 _cur_path = os.path.abspath(os.path.dirname(__file__))
-_dll_ext = "dll" if os.name == "nt" else "so"
-_dll_path = os.path.join(_cur_path, "..", ".libs", "dds." + _dll_ext)
+_dll_name = "dds.dll" if os.name == "nt" else "libdds.so"
+_dll_path = os.path.join(_cur_path, _dll_name)
 try:
 	if os.name == "nt":
 		_dll = ctypes.WinDLL(_dll_path)
