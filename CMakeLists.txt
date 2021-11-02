@@ -65,5 +65,11 @@ string(REGEX MATCH "[0-9]+" DDS_MAXNOOFTABLES "${DDS_MAXNOOFTABLES}")
 configure_file("${ENDPLAY_ROOT_DIR}/_dds/__init__.py.in" "_dds/__init__.py" @ONLY)
 
 # Install both bits into the right places in the package  
-install(TARGETS dds RUNTIME DESTINATION "_dds")
+if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+	# .dll is a runtime component
+	install(TARGETS dds RUNTIME DESTINATION "_dds")
+else()
+	install(TARGETS dds DESTINATION "_dds")
+endif()
+
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/_dds/__init__.py" DESTINATION "_dds/")
