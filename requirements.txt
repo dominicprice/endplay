@@ -1,3 +1,4 @@
 cmake
 wheel
 setuptools>=42
+sphinxcontrib-apidoc
