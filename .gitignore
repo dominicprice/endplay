@@ -15,6 +15,7 @@ dist/
 *.egg-info/
 
 # Files generated during build
+build/
 docs/build/
 out/
 endplay/_dds/dds.dll
@@ -22,5 +23,6 @@ endplay/_dds/libdds.so
 endplay/_dds/__init__.py
 endplay/config.py
 
+# No longer generated after switching form scikit-build
 MANIFEST
 _skbuild/*
