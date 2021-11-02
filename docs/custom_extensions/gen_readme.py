@@ -12,7 +12,7 @@ def builder_inited(app):
 	root_dir = app.config.readme_root_dir
 	newsection = re.compile(r"^(#+)\s+(.*)$")
 	print("Writing file intro.md")
-	curfile = open(os.path.join(root_dir, "source", "intro.md"), 'w', encoding="utf-8")
+	curfile = open(os.path.join(root_dir, "intro.md"), 'w', encoding="utf-8")
 	with open(os.path.join(root_dir, "..", "..", "README.md"), encoding="utf-8") as f:
 		for line in f:
 			m = newsection.match(line)
@@ -24,7 +24,7 @@ def builder_inited(app):
 					curfile.close()
 					name = m[2].replace(" ", "_").lower()
 					print("Writing file", name + ".md")
-					curfile = open(os.path.join(root_dir, "source", name + ".md"), 'w', encoding="utf-8")
+					curfile = open(os.path.join(root_dir, name + ".md"), 'w', encoding="utf-8")
 					curfile.write("# " + m[2] + "\n")
 				else:
 					new_h = "#" * (hlevel - 1)
@@ -35,8 +35,8 @@ def builder_inited(app):
 	
 	# Change the first line of the 'modules.rst' to be API Reference
 	print("Modifying modules.rst")
-	modfile = os.path.join(root_dir, "source", "reference", "modules.rst")
-	bakfile = os.path.join(root_dir, "source", "reference", "modules.rst.backup")
+	modfile = os.path.join(root_dir, "reference", "modules.rst")
+	bakfile = os.path.join(root_dir, "reference", "modules.rst.backup")
 	shutil.copyfile(modfile, bakfile)
 	with open(bakfile, 'r') as fb:
 		with open(modfile, 'w') as fm:
