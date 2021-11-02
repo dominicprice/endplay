@@ -5,7 +5,9 @@
 # Required
 version: 2
 
-# Set the version of Python and other tools you might need
+submodules:
+  include: all
+
 build:
   os: ubuntu-20.04
   tools:
