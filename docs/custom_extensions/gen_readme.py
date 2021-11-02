@@ -4,6 +4,7 @@ import shutil
 
 def setup(app):
 	app.connect('builder-inited', builder_inited)
+	app.add_config_value('readme_root_dir', None, 'env', [str])
 	
 def builder_inited(app):
 	# Read the markdown file and create files based on the 
@@ -34,11 +35,14 @@ def builder_inited(app):
 	
 	# Change the first line of the 'modules.rst' to be API Reference
 	print("Modifying modules.rst")
-	modfile = "source/reference/modules.rst"
-	bakfile = "source/reference/modules.rst.backup"
+	modfile = os.path.join(root_dir, "source", "reference", "modules.rst")
+	bakfile = os.path.join(root_dir, "source", "reference", "modules.rst.backup")
 	shutil.copyfile(modfile, bakfile)
 	with open(bakfile, 'r') as fb:
 		with open(modfile, 'w') as fm:
-			fb.readline() # discarded
-			fm.write("API Reference\n")
+			for _ in range(2):
+				fb.readline() # discarded
+			title = "API Reference"
+			fm.write(title + "\n")
+			fm.write(("=" * len(title)) + "\n")
 			shutil.copyfileobj(fb, fm)
