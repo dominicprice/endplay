@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 __all__ = ["SolvedBoard", "SolvedBoardList"]
 
 from endplay.types.card import Card
