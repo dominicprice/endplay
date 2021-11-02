@@ -42,6 +42,8 @@ apidoc_excluded_paths = []
 apidoc_separate_modules = True
 apidoc_module_first = True
 
+readme_root_dir = os.path.dirname(os.path.abspath(__file__))
+
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
