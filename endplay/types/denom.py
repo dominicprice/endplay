@@ -2,7 +2,6 @@ __all__ = ["Denom"]
 
 from enum import IntEnum
 from typing import Iterator
-from endplay import config
 
 class Denom(IntEnum):
 	"Encoding for suits and contract denomination"
@@ -50,6 +49,7 @@ class Denom(IntEnum):
 	@property
 	def abbr(self) -> str:
 		":return: A short identifier for the denomination"
+		import endplay.config as config
 		if self == Denom.nt:
 			return "NT"
 		elif config.use_unicode:
