@@ -12,14 +12,31 @@ If you find this useful and would like to contribute, or found it totally buggy 
 
 ### From source
 
-The compiled components of the library are build using CMake. An in-source build can be done by `cd`ing into the root directory and then build with
+*endplay* uses `setuptools` to manage its build and can be built with the `build` package:
 
 ```bash
-mkdir out && cd out # Create the build directory
-cmake -DCMAKE_BUILD_TYPE=Release .. # Configure and generate makefiles
-cmake --build . # Compile the sources
-cmake --build --target install . # Install the compiled files to the package tree
+# Clone repo and submodules
+git clone --recursive https://gitlab.com/dominicprice/endplay.git
+cd endplay
+# Only build is required to start the build, other packages 
+# are automatically fetched
+python3 -m pip install build
+# This will generate the wheel in the dist directory
+python3 -m build
+python3 -m pip install dist/endplay-<VERSIONSUFFIX>.whl
 ```
+
+The compiled components of the library are built using CMake. An in-source build (for e.g. debugging) can be done by setting the install prefix to the current directory:
+
+```bash
+# Create the build directory
+mkdir out && cd out
+# Configure, generate makefiles and build
+cmake -DCMAKE_BUILD_TYPE=<Debug|Release> -DCMAKE_INSTALL_PREFIX=../endplay .. 
+cmake --build . --target install --config <Debug|Release>
+```
+
+where one of the configurations `Debug` or `Release` should be specified. The `--config` parameter only needs to be passed with a toolset such as MSVC where the build type is not set at configuration time.
 
 ### Building the documentation
 

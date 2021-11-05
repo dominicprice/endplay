@@ -3,17 +3,28 @@
 import os
 import pathlib
 from setuptools import setup, Extension
-from setuptools.command.build_ext import build_ext as build_ext_orig
+from setuptools.command.build_ext import build_ext
 
 class CMakeExtension(Extension):
+	"""
+	Stub class to distinguish between default extensions and CMake
+	extensions (which contain no sources as these are listed in the
+	CMakeLists.txt file)
+	"""
 	def __init__(self, name):
 		# don't invoke the original build_ext for this special extension
 		super().__init__(name, sources=[])
 
-class build_ext(build_ext_orig):
+class cmakeable_build_ext(build_ext):
+	"""
+	build_ext compatible class which detects if the extension it is to
+	build is a CMakeExtension in which case it delegates building to
+	the CMake executable.
+	"""
 	def run(self):
 		for ext in self.extensions:
-			self.build_cmake(ext)
+			if isinstance(ext, CMakeExtension):
+				self.build_cmake(ext)
 		super().run()
 
 	def build_cmake(self, ext):
@@ -29,7 +40,8 @@ class build_ext(build_ext_orig):
 		config = 'Debug' if self.debug else 'Release'
 		cmake_config_args = [
 			'-DCMAKE_INSTALL_PREFIX=' + str(extdir.parent.absolute()),
-			'-DCMAKE_BUILD_TYPE=' + config
+			'-DCMAKE_BUILD_TYPE=' + config,
+			'-DSETUPTOOLS_BUILD=1'
 		]
 		cmake_build_args = [
 			"--build", ".",
@@ -37,65 +49,19 @@ class build_ext(build_ext_orig):
 			"--config", config
 		]
 
+		# Disable warning MSB8029 (https://stackoverflow.com/a/60301902/5194459)
+		os.environ["IgnoreWarnIntDirInTempDetected"] = "true"
+
 		os.chdir(str(build_temp))
 		self.spawn(['cmake', str(cwd)] + cmake_config_args)
 		if not self.dry_run:
 			self.spawn(['cmake'] + cmake_build_args)
 		os.chdir(str(cwd))
 
-
-with open("README.md", encoding='utf-8') as f:
-	long_description = f.read()
-with open("VERSION", encoding="utf-8") as f:
-	version = f.read().strip()
-
-metadata = {
-	"name": "endplay",
-	"version": version,
-	"author": "Dominic Price",
-	"author_email": "dominicprice@outlook.com",
-	"description": "A suite of tools for generation and analysis of bridge deals",
-	"long_description": long_description,
-	"long_description_content_type": "text/markdown",
-	"url": "https://gitlab.com/dominicprice/endplay",
-	"classifiers": [
-		"Development Status :: 4 - Beta",
-		"Natural Language :: English",
-		"Topic :: Games/Entertainment",
-		"Programming Language :: Python :: 3",
-		"License :: OSI Approved :: MIT License",
-		"Operating System :: OS Independent"
-	],
-	"keywords": "bridge,cards,games,double dummy,dds,analysis,stats,deal,dealer",
-	"project_urls": {
-		"Documentation": "https://endplay.readthedocs.io",
-		"Bug Tracker": "https://gitlab.com/dominicprice/endplay/-/issues"
-	}
-}
-
-packages = [
-	"endplay",
-	"endplay._dds",
-	"endplay.dds",
-	"endplay.dealer",
-	"endplay.dealer.actions",
-	"endplay.evaluate",
-	"endplay.interact",
-	"endplay.parsers",
-	"endplay.types"
-]
-
 setup(
-	**metadata,
-	python_requires = ">=3.9",
-	install_requires = [
-		"pyparsing",
-		"tqdm"
-	],
-	packages = packages,
-	ext_modules=[CMakeExtension('endplay/_dds')],
-	cmdclass={
-		'build_ext': build_ext,
+	ext_modules = [CMakeExtension('endplay/_dds')],
+	cmdclass = {
+		'build_ext': cmakeable_build_ext,
 	},
 	test_suite = "tests"
 )

@@ -1,33 +1,27 @@
 ﻿from io import StringIO
 from endplay.dealer.actions.base import BaseActions
 from endplay.types import Player
+import endplay.stats as stats
 
 class TerminalActions(BaseActions):
-	def __init__(self, deals, stream):
-		super().__init__(deals, stream)
-
-	def printall(self):
-		for deal in self.deals:
-			deal.pprint(stream=self.stream)
-			print(file=self.stream)
+	def __init__(self, deals, stream, board_numbers):
+		super().__init__(deals, stream, board_numbers)
 
 	def print(self, *players):
 		exclude = [p for p in Player if p not in players]
-		for deal in self.deals:
-			deal.pprint(exclude=exclude, stream=self.stream)
-			print(file=self.stream)
-
-	def printew(self):
-		for deal in self.deals:
-			deal.pprint(exclude=[Player.north, Player.south], stream=self.stream)
+		for i, deal in enumerate(self.deals, 1):
+			deal.pprint(board_no=i if self.board_numbers else None, exclude=exclude, stream=self.stream)
+			self.write()
 
 	def printpbn(self):
-		for deal in self.deals:
-			print(deal, file=self.stream)
+		for i, deal in enumerate(self.deals, 1):
+			if self.board_numbers:
+				self.write(str(i).rjust(3), end=' ')
+			self.write(str(deal))
 
 	def printcompact(self, expr = None):
-		print(*[p.name.ljust(13) for p in Player], end="\n\n", file=self.stream)
-		for deal in self.deals:
+		self.write(*[p.name.ljust(13) for p in Player], end="\n\n")
+		for i, deal in enumerate(self.deals, 1):
 			hands = []
 			for player in Player:
 				buf = StringIO()
@@ -35,57 +29,45 @@ class TerminalActions(BaseActions):
 				hands.append(buf.getvalue().split("\n"))
 			if expr is not None:
 				hands.append([str(expr(deal)), "", "", ""])
+			if self.board_numbers:
+				self.write(str(i) + ")")
 			for line in zip(*hands):
-				print(*[s.ljust(13) for s in line], file=self.stream)
-			print(file=self.stream)
+				self.write(*[s.ljust(13) for s in line])
+			self.write()
 
 	def printoneline(self, expr = None):
-		for deal in self.deals:
-			print(deal.to_pbn()[2:], end=' ', file=self.stream)
+		for i, deal in enumerate(self.deals, 1):
+			if self.board_numbers:
+				self.write(str(i).rjust(3), end=' ')
+			self.write(deal.to_pbn()[2:], end=' ')
 			if expr is not None:
-				print(expr(deal), file=self.stream)
+				self.write(expr(deal))
 			else:
-				print(file=self.stream)
+				self.write()
 
 	def printes(self, *objs):
-		for deal in self.deals:
+		for i, deal in enumerate(self.deals, 1):
+			if self.board_numbers:
+				self.write(str(i).rjust(3), end=' ')
 			for obj in objs:
 				if callable(obj):
-					print(obj(deal), file=self.stream, end='')
+					self.write(obj(deal), end='')
 				else:
-					print(obj, file=self.stream, end='')
-
+					self.writ(obj, end='')
+			self.write()
 
 	def average(self, expr, s = None):
-		total = 0
-		for deal in self.deals:
-			total += expr(deal)
-		if s is not None:
-			print(s, end = '', file=self.stream)
-		print(total / len(self.deals), file=self.stream)
+		if s:
+			self.write(s, end="")
+		self.write(stats.average(self.deals, expr))
 
 	def frequency1d(self, expr, lower_bound, upper_bound, s = None):
-		try:
-			import matplotlib.pyplot as plt
-		except ImportError:
-			print("frequency action on terminal requires matplotlib, try installing it with `python -m pip install matplotlib`")
-			return
-		data = [expr(deal) for deal in self.deals]
-		plt.hist(data, bins='auto', range=(lower_bound, upper_bound))
-		if s:
-			plt.title(s)
-		plt.show()
+		counts, bins, fig = stats.histogram(self.deals, expr, lower_bound, upper_bound)
+		fig.get_axes()[0].set_title(s)
+		fig.show()
 
 	def frequency2d(self, ex1, lb1, hb1, ex2, lb2, hb2, s = None):
-		try:
-			import matplotlib.pyplot as plt
-		except ImportError:
-			print("frequency action on terminal requires matplotlib, try installing it with `python -m pip install matplotlib`")
-			return
-		x = [ex1(deal) for deal in self.deals]
-		y = [ex2(deal) for deal in self.deals]
-		h = plt.hist2d(x, y, range=[(lb1, hb1), (lb2, hb2)])
-		plt.colorbar(h[3])
-		if s:
-			plt.title(s)
+		import matplotlib.pyplot as plt
+		counts, bins, fig = stats.histogram2d(self.deals, (ex1, ex2), (lb1, lb2), (hb1, hb2))
+		fig.get_axes()[0].set_title(s)
 		plt.show()

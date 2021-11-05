@@ -9,3 +9,6 @@ include endplay/_dds/__init__.py.in
 # Files required for compiling the dds library
 include libs/dds/include/*
 include libs/dds/src/*
+
+# Templates for the dealer executable
+include endplay/dealer/actions/templates/*

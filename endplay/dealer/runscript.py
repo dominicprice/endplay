@@ -8,7 +8,7 @@ from tempfile import mkdtemp
 from subprocess import run
 from endplay.parsers.dealer import DealerParser, ParseException, Node
 from endplay.dealer.constraint import ConstraintInterpreter
-from endplay.dealer.actions import TerminalActions, LaTeXActions
+from endplay.dealer.actions import TerminalActions, LaTeXActions, HTMLActions
 from endplay.dealer.generate import generate_deals
 from endplay.types import Vul, Player, Deal
 
@@ -23,7 +23,8 @@ def run_script(
 	outformat: str = "plaintext",
 	outfile: Optional[str] = None,
 	constraints: list[str] = [],
-	actions: list[str] = []) -> None:
+	actions: list[str] = [],
+	board_numbers: bool = False) -> None:
 	"""
 	Execute a dealer script file
 	:param script: The name of the script file to run
@@ -114,20 +115,23 @@ def run_script(
 
 	# Set up the output engine
 	if isinstance(outfile, str):
+		outfile_name = outfile
 		outfile = open(outfile, "w")
 	if outformat == "term":
-		actioner = TerminalActions(deals, outfile)
+		actioner = TerminalActions(deals, outfile, board_numbers)
 	elif outformat == "latex":
-		actioner = LateXActions(deals, outfile)
+		actioner = LaTeXActions(deals, outfile, board_numbers)
 	elif outformat == "pdf":
 		if outfile is None:
 			raise RuntimeError("Output file must be specified with pdf file format")
 		tmpdir = mkdtemp()
 		tmpoutfile = open(tmpdir + "/main.tex", "w")
-		actioner = LaTeXActions(deals, tmpoutfile)
+		actioner = LaTeXActions(deals, tmpoutfile, board_numbers)
+	elif outformat == "html":
+		actioner = HTMLActions(deals, outfile, board_numbers)
 	else:
 		raise RuntimeError(f"Unknown file format {outformat} specified")
-	actioner.preamble()
+	actioner.write_preamble()
 
 	# Run actions
 	if not actions:
@@ -183,15 +187,20 @@ def run_script(
 				raise RuntimeError(f"Unknown action {action.value}")
 
 	# Close the output engine
-	actioner.postamble()
+	actioner.write_postamble()
 	if outfile:
 		outfile.close()
 
 	if outformat == "pdf":
+		tmpoutfile.close()
 		proc = run(["pdflatex", "main.tex"], cwd=tmpdir, input=b'', capture_output=True)
 		if proc.returncode != 0:
-			raise RuntimeError("LaTeX error:\n" + p.stdout.decode())
-		shutil.copy2(tmpoutfile, outfile)
+			with open(tmpdir + "/main.log") as f:
+				log = f.read()
+			with open(tmpdir + "/main.tex") as f:
+				tex = f.read()
+			raise RuntimeError("LaTeX error:main.log:\n" + log + "\ninput file:\n" + tex)
+		shutil.copy2(tmpdir + "/main.pdf", outfile_name)
 		try:
 			shutil.rmtree(tmpdir)
 		except Exception as e:

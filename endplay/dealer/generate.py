@@ -1,14 +1,14 @@
 ﻿__all__ = ['generate_deal', 'generate_deals']
 
-from endplay.dealer.constraint import ConstraintInterpreter
+from endplay.dealer.constraint import ConstraintInterpreter, Expr
 from endplay.types import *
 from random import shuffle
-from typing import Union, Callable, Iterator, Optional
+from typing import Iterator, Optional, Union
 import warnings
 from tqdm import trange
 
 def generate_deal(
-	*constraints: Union[Callable, str], 
+	*constraints: Union[Expr, str], 
 	predeal: Deal = Deal(), 
 	swapping: int = 0, 
 	show_progress: bool = False,
@@ -30,7 +30,7 @@ def generate_deal(
 	return next(deals)
 
 def generate_deals(
-	*constraints: Union[Callable, str], 
+	*constraints: Union[Expr, str], 
 	predeal: Deal = Deal(), 
 	swapping: int = 0, 
 	show_progress: bool = False,

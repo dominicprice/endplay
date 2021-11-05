@@ -14,7 +14,15 @@ denom_to_contract = [ 1, 2,3,4,0 ]
 class Contract:
 	"Class representing a specific contract"
 	_pat = re.compile(r"^([1-7])((?:NT)|S|H|D|C)([NSEW])(X{0,2})(=|(?:[+-]\d+))$")
-	def __init__(self, data: Union[_dds.contractType, str, None] = None, *, level: int = None, denom: Denom = None, declarer: Player = None, penalty: Penalty = None, result: int = None):
+	def __init__(
+		self, 
+		data: Union[_dds.contractType, str, None] = None, 
+		*, 
+		level: int = None, 
+		denom: Denom = None, 
+		declarer: Player = None, 
+		penalty: Penalty = None, 
+		result: int = None):
 		"""
 		Construct a new contract
 		:param data: Construct from a _dds.contractType object or contract string
@@ -55,9 +63,7 @@ class Contract:
 		"The denomination of the contract"
 		return contract_to_denom[self._data.denom]
 	@denom.setter
-	def denom(self, new_denom: Union[Denom, str]) -> None:
-		if isinstance(new_denom, str):
-			new_denom = Denom.find(denom)
+	def denom(self, new_denom: Denom) -> None:
 		self._data.denom = denom_to_contract[new_denom]
 
 	@property
@@ -65,9 +71,7 @@ class Contract:
 		"The declarer of the contract"
 		return Player(self._data.seats)
 	@declarer.setter
-	def declarer(self, player: Union[Player, str]):
-		if isinstance(player, str):
-			player = Player.find(player)
+	def declarer(self, player: Player):
 		self._data.seats = player
 
 	@property

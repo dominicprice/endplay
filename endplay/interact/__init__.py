@@ -69,20 +69,20 @@ class InteractiveDeal(cmd.Cmd):
 					toundo = ("trick", self.deal.first, self.deal.curtrick)
 				else:
 					toundo = ("play", )
-				self.deal.push_trick(card)
+				self.deal.play(card)
 				self.undo_history.append(toundo)
 				self.needs_printing = True
 			except RuntimeError:
 				print(f"Was unable to play the {card} at this time; is it in the player's hand?")
 		
 	def undo_play(self):
-		self.deal.pop_trick()
+		self.deal.unplay()
 		
 	def undo_trick(self, first, trick):
 		self.deal.first = first
 		for player, card in zip(Player.iter_from(first), trick):
 			self.deal[player].add(card)
-			self.deal.push_trick(card)
+			self.deal.play(card)
 		
 	def do_reset(self, arg):
 		"Reset the deal to its original state"
@@ -179,7 +179,7 @@ class InteractiveDeal(cmd.Cmd):
 		self.deal.trump = trump
 		for player, card in zip(Player.iter_from(first), curtrick):
 			self.deal[player].add(card)
-			self.deal.push_trick(card)
+			self.deal.play(card)
 		
 	def do_first(self, arg):
 		"""

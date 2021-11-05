@@ -1,11 +1,13 @@
 ﻿__all__ = [ "ConstraintInterpreter" ]
 
 import re
-from typing import Union, Callable, Any
+from typing import Callable, Any, Union
 from endplay.parsers.dealer import Node, DealerParser
 from endplay.types import Deal, Denom, Rank
 from endplay.evaluate import (hcp, standard_hcp_scale, losers, controls, cccc, quality, exact_shape)
 from endplay.dds import analyse_play
+
+Expr = Callable[[Deal], Union[float, int, bool]]
 
 class ConstraintInterpreter:
 	"""
@@ -60,7 +62,7 @@ class ConstraintInterpreter:
 		"Parse an expression string into a syntax tree"
 		return self.parser.parse_expr(s)
 
-	def evaluate(self, node: Union[Node, str], deal: Deal) -> Union[int, float, bool]:
+	def evaluate(self, node: Union[Node, str], deal: Deal) -> float:
 		"Evaluate an expression tree over a specific deal into a logical or arithmetic type"
 		if isinstance(node, str):
 			node = self.parse(node)
@@ -87,7 +89,7 @@ class ConstraintInterpreter:
 		else:
 			raise RuntimeError(f"Constraint contains unexpected node type {node.dtype}")
 
-	def lambdify(self, node: Union[Node, str]) -> Callable[[Deal], Union[int, float, bool]]:
+	def lambdify(self, node: Union[Node, str]) -> Expr:
 		"""
 		Convert an expression tree (or string) into an anonymous function accepting a single
 		`Deal` argument and returning the expression evaluated over this deal

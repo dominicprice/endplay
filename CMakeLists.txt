@@ -3,16 +3,35 @@ project(endplay)
 
 # Global settings
 # ===============
+
 if (NOT CMAKE_BUILD_TYPE)
+	message(WARNING "CMAKE_BUILD_TYPE not specified; defaulting to 'Release'")
 	set(CMAKE_BUILD_TYPE Release)
 endif()
 set(CMAKE_CXX_STANDARD 17)
+
 set(ENDPLAY_ROOT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/endplay")
 file(READ "${CMAKE_CURRENT_SOURCE_DIR}/VERSION" ENDPLAY_VERSION)
 
+# Detect compiler
+if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+	set(CC_CLANG 1)
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+	set(CC_GCC 1)
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+	set(CC_MSVC 1)
+else()
+	message(WARNING "The compiler you are using hasn't been tested for building this library.")
+endif()
+
+# Pretend to use SETUPTOOLS_BUILD variable to stop it complaining
+if (SETUPTOOLS_BUILD)
+	
+endif()
+
 
 # Configure config.py with version number
-# ==================
+# =======================================
 configure_file("${ENDPLAY_ROOT_DIR}/config.py.in" "config.py" @ONLY)
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/config.py" DESTINATION ".")
 
@@ -33,30 +52,23 @@ set(DDS_SOURCE
 	TimerGroup.cpp      TimerList.cpp       TimeStat.cpp
 	TimeStatList.cpp    TransTableS.cpp     TransTableL.cpp)
 if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-	set(DDS_SOURCE ${DDS_SOURCE} exports.def)
+	set(DDS_SOURCE ${DDS_SOURCE} exports.def dds.rc)
 endif()
 list(TRANSFORM DDS_SOURCE PREPEND "${DDS_ROOT_DIR}/src/")
+
 add_library(dds SHARED ${DDS_SOURCE})
-target_compile_definitions(dds PRIVATE 
-	"DDS_THREADS_STL"
-	"_CRT_SECURE_NO_WARNINGS"
-)
-target_include_directories(dds PRIVATE
-	"${DDS_ROOT_DIR}/src"
-)
+target_compile_definitions(dds PRIVATE "DDS_THREADS_STL")
+target_include_directories(dds PRIVATE "${DDS_ROOT_DIR}/src")
 # Compiler specific flags
-if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+if (CC_GCC)
 	target_compile_options(dds PRIVATE "-Wno-format-overflow")
-elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+elseif (CC_MSVC)
 	target_compile_definitions(dds PRIVATE "_CRT_SECURE_NO_WARNINGS")
 	target_compile_options(dds PRIVATE "/wd4267")
-else()
-	message(WARNING "The compiler you are using hasn't been tested for building this library.")
 endif()
 
-# Read some hard-coded constants from the DDS header file to make sure that the
-# ctypes bindings are compatible with the library we just compiled
+# Copy some macro definitions from the c header file into the
+# __init__.py for the package
 file(READ "${DDS_ROOT_DIR}/include/dll.h" DDS_DLL_H)
 string(REGEX MATCH "#define MAXNOOFBOARDS [0-9]+" DDS_MAXNOOFBOARDS "${DDS_DLL_H}")
 string(REGEX MATCH "[0-9]+" DDS_MAXNOOFBOARDS "${DDS_MAXNOOFBOARDS}")
@@ -65,7 +77,7 @@ string(REGEX MATCH "[0-9]+" DDS_MAXNOOFTABLES "${DDS_MAXNOOFTABLES}")
 configure_file("${ENDPLAY_ROOT_DIR}/_dds/__init__.py.in" "_dds/__init__.py" @ONLY)
 
 # Install both bits into the right places in the package  
-if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+if (CC_MSVC)
 	# .dll is a runtime component
 	install(TARGETS dds RUNTIME DESTINATION "_dds")
 else()

@@ -66,6 +66,7 @@ try:
 		_dll = ctypes.WinDLL(_dll_path)
 	else:
 		_dll = ctypes.CDLL(_dll_path)
+	_dll.SetMaxThreads(0)
 except FileNotFoundError:
 	raise RuntimeError("Unable to load the dds library (should be located in " + 
 		_dll_path + "), you may need to reinstall the library.")
