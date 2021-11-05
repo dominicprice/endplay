@@ -10,15 +10,15 @@ Welcome to endplay's documentation!
    :maxdepth: 3
    :caption: Contents:
 
-   intro
+   pages/readme/intro
    
-   building_and_installing
+   pages/readme/building_and_installing
    
-   overview_of_submodules
+   pages/readme/overview_of_submodules
    
-   tutorial
+   pages/readme/tutorial
 
-   reference/modules
+   pages/reference/modules
 
 Indices and tables
 ==================

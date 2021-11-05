@@ -12,7 +12,8 @@
 #
 import os
 import sys
-sys.path.insert(0, os.path.abspath('../custom_extensions'))
+dirname = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, dirname)
 
 # -- Project information -----------------------------------------------------
 
@@ -33,16 +34,19 @@ extensions = [
 	'sphinxcontrib.apidoc',
 	'sphinx.ext.autodoc',
 	'myst_parser',
-	'gen_readme'
+	'autodoc_rename',
+	'parse_readme'
 ]
 
-apidoc_module_dir = "../../endplay"
-apidoc_output_dir = 'reference'
+apidoc_module_dir = os.path.join(dirname, "..", "..", "endplay")
+apidoc_output_dir = os.path.join(dirname, "pages", "reference")
 apidoc_excluded_paths = []
 apidoc_separate_modules = True
 apidoc_module_first = True
+apidoc_extra_args = ["-P"]
 
-readme_root_dir = os.path.dirname(os.path.abspath(__file__))
+readme_module_dir = os.path.join(dirname, "..", "..")
+readme_output_dir = os.path.join(dirname, "pages", "readme")
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
