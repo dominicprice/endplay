@@ -13,6 +13,7 @@ class Hand:
 	def __init__(self, data: Union[str, ctypes.c_uint * 4] = "..."):
 		"""
 		Construct a hand object
+
 		:param data: Either a PBN string of the hand, or a reference to a _dds object
 		"""
 		if isinstance(data, str):
@@ -30,6 +31,7 @@ class Hand:
 	def add(self, card: Card) -> bool:
 		"""
 		Adds a card to the hand
+
 		:param card: The card to be added to the hand
 		:return: False if the card was already in the hand, True otherwise
 		"""
@@ -46,6 +48,7 @@ class Hand:
 	def extend(self, cards: Iterable[Card]) -> int:
 		"""
 		Add multiple cards to the hand
+
 		:param cards: An iterable of the cards to add
 		:return: The number of cards successfully added
 		"""
@@ -54,8 +57,9 @@ class Hand:
 	def remove(self, card: Card) -> bool:
 		"""
 		Remove a card from the hand
+
 		:param card: The card to be added to the hand, can be a string
-		             representation e.g. "CQ"
+			representation e.g. "CQ"
 		:return: False if the card wasn't in the hand, True otherwise
 		"""
 		if isinstance(card, str):
@@ -70,6 +74,7 @@ class Hand:
 	def from_pbn(self, pbn: str) -> None:
 		"""
 		Sets the cards in the hand to the given PBN string
+
 		:param pbn: A PBN string for a hand, e.g. "QT62..AQT852.QJT"
 		"""
 		self.clear()
@@ -84,8 +89,9 @@ class Hand:
 
 	def to_LaTeX(self, vertical: bool = True, ten_as_letter: bool = False) -> str:
 		"""
-		Create a grbbridge.sty LaTeX representation of the hand.
-		:param vertical: If True uses \vhand, else \hhand layout
+		Create a LaTeX representation of the hand.
+
+		:param vertical: If True uses \\vhand, else \\hhand layout
 		:param title: The hand title. If vertical is False this is ignored
 		"""		
 		if vertical:

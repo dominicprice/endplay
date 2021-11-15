@@ -6,12 +6,17 @@ raise a `DDSError`.
 """
 
 __all__ = [
-	"init", "MAXNOOFBOARDS", "MAXNOOFTABLES", "SolveBoard", "SolveBoardPBN", "CalcDDtable",
-	"CalcDDtablePBN", "CalcAllTables", "CalcAllTablesPBN", "SolveAllBoards", "SolveAllBoardsBin",
-	"SolveAllChunksBin", "SolveAllChunks", "SolveAllChunksPBN", "Par", "DealerPar", "DealerParBin",
-	"ConvertToDealerTextFormat", "SidesPar", "SidesParBin", "ConvertToSidesTextFormat", "CalcPar",
-	"CalcParPBN", "AnalysePlayBin", "AnalysePlayPBN", "AnalyseAllPlaysBin", "AnalyseAllPlaysPBN",
-	"SetMaxThreads", "FreeMemory", "DDSError"
+	"deal", "dealPBN", "ddTableDeal", "ddTableDealPBN", "ddTableDeals",
+	"ddTableDealsPBN", "boards", "boardsPBN", "futureTricks", "solvedBoards",
+	"ddTableResults", "ddTablesRes", "parResults", "allParResults", "parResultsDealer",
+	"contractType", "parResultsMaster", "parTextResults", "DDSInfo", "playTraceBin",
+	"playTracePBN", "playTracesBin", "playTracesPBN", "solvedPlay", "solvedPlays",
+	"SetMaxThreads", "FreeMemory", "ErrorMessage", "DDSError",  "SolveBoard", 
+	"SolveBoardPBN", "CalcDDtable", "CalcDDtablePBN", "CalcAllTables", "CalcAllTablesPBN",
+	"SolveAllBoards", "SolveAllBoardsBin", "SolveAllChunksBin", "SolveAllChunks", 
+	"SolveAllChunksPBN", "Par", "DealerPar", "DealerParBin", "ConvertToDealerTextFormat", 
+	"SidesPar", "SidesParBin", "ConvertToSidesTextFormat", "CalcPar", "CalcParPBN", 
+	"AnalysePlayBin", "AnalysePlayPBN", "AnalyseAllPlaysBin", "AnalyseAllPlaysPBN"
 ]
 
 import ctypes

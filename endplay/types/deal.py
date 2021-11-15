@@ -114,9 +114,10 @@ class Deal:
 		Play a card to the current trick. If the played card completes the trick then the entire
 		trick is cleared and `first` is set to the played who won the trick using `trump` as the
 		trumps suit
+
 		:param card: The cad to be played
 		:param fromHand: If true then the card will be removed from the hand of the player who is to
-		                 play to the trick next and throw a RuntimeError if they do not hold this card.
+			play to the trick next and throw a RuntimeError if they do not hold this card.
 		"""
 		if isinstance(card, str):
 			card = Card(card)
@@ -146,8 +147,9 @@ class Deal:
 		"""
 		Unplay the last card played to the current trick. Throws a RuntimeError if the current
 		trick is empty
+
 		:param toHand: If true then the card is returned to the hand of the player who played
-		               it to the trick
+			it to the trick
 		"""
 		for i in reversed(range(3)):
 			suit, rank = self._data.currentTrickSuit[i], self._data.currentTrickRank[i]
@@ -163,6 +165,7 @@ class Deal:
 	def from_pbn(self, pbn: str) -> None:
 		"""
 		Clear all hands and the current trick, and replace with the cards in a PBN string
+
 		:param pbn: A PBN string, e.g. "N:974.AJ3.63.AK963 K83.K9752.7.8752 AQJ5.T864.KJ94.4 T62.Q.AQT852.QJT"
 		"""
 		if len(pbn) > 2 and pbn[1] != ":":
@@ -190,6 +193,7 @@ class Deal:
 			self.play(card, False)
 
 	def to_json(self, indent: Optional[int] = None) -> str:
+		"Encode the data as a JSON string"
 		d = {
 			"north": self.north.to_pbn(),
 			"east": self.east.to_pbn(),
@@ -202,6 +206,7 @@ class Deal:
 		return _json.dumps(d, indent=indent)
 
 	def to_LaTeX(self, board_no: Optional[int] = None, exclude: Iterable[Player] = [], ddtable: bool = False) -> str:
+		"Return a LaTeX representation of the hand"
 		mkhand = lambda p: self[p].to_LaTeX() if p not in exclude else ""
 		res = r"\begin{tabular}{c c c}"
 		if board_no is not None:
@@ -274,8 +279,9 @@ class Deal:
 	def pprint(self, board_no: int = None, exclude: list[Player] = [], stream=sys.stdout) -> None:
 		"""
 		Print the deal in a hand diagram format. 
+
 		:param board_no: If provided, the hand diagram will display the board
-		                 number, vulnerability and dealer in the top-left corner
+			number, vulnerability and dealer in the top-left corner
 		"""
 		spacing = " " * 13
 		played_cards = ["  "] * 4

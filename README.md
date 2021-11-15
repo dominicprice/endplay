@@ -8,7 +8,9 @@ If you find this useful and would like to contribute, or found it totally buggy 
 
 ### Using `pip`
 
-*endplay* can be installed using pip with `python3 -m pip install endplay`. 
+*endplay* can be installed on some systems from PyPI using pip with `python3 -m pip install endplay`. 
+
+If it isn't built for your operating system, or version of Python (both at the moment very likely, as I have only built binaries for the two operating systems I use), then you can also ask pip to build it from this repo by running `python3 -m pip install git+https://gitlab.com/dominicprice/endplay.git`. Note that this will require you to have a C++ compiler on your system.
 
 ### From source
 
@@ -40,7 +42,7 @@ where one of the configurations `Debug` or `Release` should be specified. The `-
 
 ### Building the documentation
 
-The documentation is semi-auto generated with sphinx. To build it, `cd` into the root directory and then run
+The documentation is semi-auto generated with sphinx. To build it, ensure that *endplay* is installed and then `cd` into the root directory and then run
 
 ```bash
 cd docs

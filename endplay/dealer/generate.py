@@ -19,9 +19,10 @@ def generate_deal(
 	The constraints should be supplied as functions taking a whole deal and returning
 	a boolean, for example `lambda d: hcp(d.north) > 10`, or as expressions compatible 
 	with the dealer expression syntax (see https://www.bridgebase.com/tools/dealer/Manual/input.html#expr)
+
 	:param constraints: Constraints, as callables or strings
 	:param max_attempts: Maximum number of shuffles to perform when finding a deal which
-	                     matches the constraints. Set to -1 for infinite
+		matches the constraints. Set to -1 for infinite
 	:param env: A dictionary of the environment used when evaluating constraints
 	"""
 	deals = generate_deals(
@@ -41,6 +42,7 @@ def generate_deals(
 	Generates `produce` random deals satisfying the constraints which should
 	be given as for `generate_deal`. `produce` and `max_attemps` are upper limits,
 	the first to be reached terminates the program
+
 	:param constraints: Constraints, either as callables or strings (see `generate_deal`)
 	:param produce: Number of deals to produce
 	:param max_attempts: Maximum number of shuffles to perform. Set to -1 for infinite

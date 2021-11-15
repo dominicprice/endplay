@@ -35,7 +35,8 @@ extensions = [
 	'sphinx.ext.autodoc',
 	'myst_parser',
 	'autodoc_rename',
-	'parse_readme'
+	'parse_readme',
+	'autodocsumm'
 ]
 
 apidoc_module_dir = os.path.join(dirname, "..", "..", "endplay")
@@ -44,6 +45,8 @@ apidoc_excluded_paths = []
 apidoc_separate_modules = True
 apidoc_module_first = True
 apidoc_extra_args = ["-P"]
+
+autodoc_default_options = { 'autosummary': True }
 
 readme_module_dir = os.path.join(dirname, "..", "..")
 readme_output_dir = os.path.join(dirname, "pages", "readme")

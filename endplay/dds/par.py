@@ -11,10 +11,11 @@ def par(
 	dealer: Player) -> ParList:
 	"""
 	Calculate the par contract result for the given deal. 
+
 	:param deal: The deal to calculate the par result of. If you have already precomputed a DDTable for
-	             a deal then you speed up the par calculation by passing that instead of the Deal object
+		a deal then you speed up the par calculation by passing that instead of the Deal object
 	:param vul: The vulnerability of the deal. If you pass an `int` then this is converted from a board
-	            number into the vulnerability of that board
+		number into the vulnerability of that board
 	:param dealer: The dealer of the board.
 	"""
 	if isinstance(deal, Deal):

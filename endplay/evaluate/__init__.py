@@ -29,9 +29,10 @@ def hcp(obj: Union[Hand, SuitHolding, Card, Rank], scale: dict[Rank, int] = stan
 def top_honours(hand: Union[Hand, SuitHolding], lowest_honour: Union[Rank, int] = Rank.RJ) -> int:
 	"""
 	Return the number of top honors in a suit
+
 	:param suit: The suit holding to evaluate
 	:param lowest_honour: The lowest rank to be treated as an honour, or an
-	                      integer for how many top cards are honours
+		integer for how many top cards are honours
 	"""
 	if not isinstance(lowest_honour, Rank):
 		lowest_honour = AlternateRank(15 - lowest_honour).to_standard()
@@ -43,11 +44,8 @@ def top_honours(hand: Union[Hand, SuitHolding], lowest_honour: Union[Rank, int] 
 def losers(hand: Union[Hand, SuitHolding]) -> int:
 	"""
 	Returns the number of losers in a hand. The number of losers in each
-	suit is calculated as:
-	  * 3 or more cards in a suit: 3 - 1 per AKQ
-	  * Doubleton: AK=0, Ax/Kx=1, else 2
-	  * Singleton: A=0, else 1
-	  * Void: 0
+	suit is calculated as: (a) 3 or more cards in a suit: 3 - 1 per AKQ
+	(b) Doubleton: AK=0, Ax/Kx=1, else 2 (c) Singleton: A=0, else 1 (d) Void: 0
 	"""
 	if isinstance(hand, SuitHolding):
 		a, k, q = Rank.RA in hand, Rank.RK in hand, Rank.RQ in hand
@@ -204,6 +202,7 @@ def is_minor_semibalanced(hand: Hand) -> bool:
 def is_single_suited(hand: Hand, min_length: int = 6, no_side_suit: bool = False) -> bool:
 	"""
 	Returns True if the hand is singled suited
+
 	:param min_length: The minimum number of cards to hold in the suit
 	:param no_side_suit: If True, the hand cannot contain another 4 card suit
 	"""
@@ -216,6 +215,7 @@ def is_single_suited(hand: Hand, min_length: int = 6, no_side_suit: bool = False
 def is_two_suited(hand: Hand, strict: bool = False) -> bool:
 	"""
 	Returns True if the hand contains at least 10 cards in two suits.
+
 	:param strict: Hand must be at least 5-5
 	"""
 	s = shape(hand)
@@ -227,6 +227,7 @@ def is_two_suited(hand: Hand, strict: bool = False) -> bool:
 def is_three_suited(hand: Hand, strict: bool = False) -> bool:
 	"""
 	Returns True if the hand has three suits with at least four cards in them.
+
 	:param strict: Only return true if the hand is 4441
 	"""
 	s = shape(hand)
