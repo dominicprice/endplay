@@ -10,7 +10,7 @@ If you find this useful and would like to contribute, or found it totally buggy 
 
 *endplay* can be installed on some systems from PyPI using pip with `python3 -m pip install endplay`. 
 
-If it isn't built for your operating system, or version of Python (both at the moment very likely, as I have only built binaries for the two operating systems I use), then you can also ask pip to build it from this repo by running `python3 -m pip install git+https://gitlab.com/dominicprice/endplay.git`. Note that this will require you to have a C++ compiler on your system.
+If it isn't built for your operating system, or version of Python (both at the moment very likely, as I have only built binaries for the two operating systems I use), then you can also ask pip to build it from this repo by running `python3 -m pip install git+https://github.com/dominicprice/endplay.git`. Note that this will require you to have a C++ compiler on your system.
 
 ### From source
 
