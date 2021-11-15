@@ -1,21 +1,22 @@
-﻿import argparse
-import traceback
-from endplay.dealer.runscript import run_script
-from endplay.config import __version__
-
-__description__ = r"""
-endplay.dealer is a reimplementation of Hans van Staveren's dealer program
+﻿"""
+The endplay.dealer program is a reimplementation of Hans van Staveren's dealer program
 which can be used to generate hands for partnerships bidding training or for
-generating statistics that can be used to design conventions, or win postmortems.\\
+generating statistics that can be used to design conventions, or win postmortems.
+
 While compatibility with the original has been a design goal, the precise format of the
 output is not expected to correspond 1:1 with the original program. Furthermore, several
 extra options including the ability to specify actions and constraints at the command line
 and some extra flags for specifying output formats are included. 
-""".replace("\n", " ").replace("\\\\", "\n").strip()
+"""
+
+import argparse
+import traceback
+from endplay.dealer.runscript import run_script
+from endplay.config import __version__
 
 def main():
 	# Parse command line
-	parser = argparse.ArgumentParser(description=__description__)
+	parser = argparse.ArgumentParser(description=__doc__)
 	deprecated = parser.add_argument_group(title="Deprecated options", description=
 		"The following flags are listed as they were flags for the original dealer program"+\
 		", but are now either ignored or cause the program to exit with an error")

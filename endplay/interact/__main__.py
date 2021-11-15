@@ -1,9 +1,14 @@
+"""
+A shell-like CLI interface to many of the features of endplay including 
+dealing hands and performing double-dummy analysis.
+"""
+
 from endplay.interact import interact
 from endplay.types import Deal, Player, Denom
 import argparse
 
 def main():
-	parser = argparse.ArgumentParser(description="Interactive console for analysing bridge deals")
+	parser = argparse.ArgumentParser(description=__doc__)
 	parser.add_argument("-a", "--ascii", action='store_true', help="Turn off unicode output")
 	parser.add_argument("-n", "--north", help="The cards in the north hand as a PBN string")
 	parser.add_argument("-e", "--east", help="The cards in the east hand as a PBN string")

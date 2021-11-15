@@ -9,11 +9,12 @@ from endplay.types import Deal, Card, SolvedPlay, SolvedPlayList, Player
 def analyse_start(deal: Deal, declarer_is_first: bool = False) -> int:
 	"""
 	Calculate the most tricks declarer can make.
+
 	:param deal: The deal to analyse
 	:param declarer_is_first: The algorithm assumes that the person who leads is to the left
-	                          of the declarer (as would be the case with the first card led
-							  to a hand), but to return the result as seen from the leader's
-							  perspective you can set this to True
+		of the declarer (as would be the case with the first card led
+		to a hand), but to return the result as seen from the leader's
+		perspective you can set this to True
 	"""
 	# Create empty play trace
 	playBin = _dds.playTraceBin()

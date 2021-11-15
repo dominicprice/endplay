@@ -24,7 +24,7 @@ def run_script(
 	outfile: Optional[str] = None,
 	constraints: list[str] = [],
 	actions: list[str] = [],
-	board_numbers: bool = False) -> None:
+	board_numbers: bool = False) -> list[Deal]:
 	"""
 	Execute a dealer script file
 	:param script: The name of the script file to run
@@ -38,6 +38,7 @@ def run_script(
 	:param outfile: A filename to write the output to, if None then printed to stdout
 	:param constraints: A list of extra constraints to apply
 	:param actions: A list of extra actions to apply
+	:return: The generated deals in a list
 	"""
 
 	# Set the seed. If seed is None, Python uses some random source on the user's
@@ -205,3 +206,5 @@ def run_script(
 			shutil.rmtree(tmpdir)
 		except Exception as e:
 			pass
+
+	return deals

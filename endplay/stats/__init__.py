@@ -1,3 +1,7 @@
+"""
+Functions for statistical analysis of deals.
+"""
+
 from __future__ import annotations
 
 __all__ = ["average", "frequency", "cofrequency"]
