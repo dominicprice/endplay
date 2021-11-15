@@ -18,7 +18,7 @@ If it isn't built for your operating system, or version of Python (both at the m
 
 ```bash
 # Clone repo and submodules
-git clone --recursive https://gitlab.com/dominicprice/endplay.git
+git clone --recursive https://github.com/dominicprice/endplay.git
 cd endplay
 # Only build is required to start the build, other packages 
 # are automatically fetched
