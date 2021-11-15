@@ -1,6 +1,7 @@
 ﻿import unittest
 from endplay.parsers.dealer import DealerParser
 from endplay.dealer import *
+from endplay.dealer.constraint import ConstraintInterpreter
 from endplay.types import *
 from endplay.evaluate import *
 
