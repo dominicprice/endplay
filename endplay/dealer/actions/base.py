@@ -2,7 +2,7 @@ __all__ = ["BaseActions"]
 
 import sys
 import os
-from importlib.resources import open_text
+from importlib.resources import read_text
 from typing import Optional, Union
 from abc import ABC, abstractmethod
 from endplay.types import Deal, Player
