@@ -17,6 +17,7 @@ class LaTeXActions(BaseActions):
 
 	def print(self, *players):
 		exclude = [p for p in Player if p not in players]
+		self.write(r"\noindent ")
 		for deal in self.deals:
 			self.write(r"\resizebox{0.33\textwidth}{!}{" + deal.to_LaTeX(exclude=exclude) + "}")
 
@@ -43,7 +44,7 @@ class LaTeXActions(BaseActions):
 				for denom in Denom.suits():
 					self.write("$\\" + denom.name + "uit$" + str(deal[player][denom]), end=' ')
 			if expr is not None:
-				self.write(" [" + expr(deal + "]", end=' '))
+				self.write(f" [{expr(deal)}]", end=' ')
 			self.write(r"\\ ")
 
 	def printes(self, *objs):

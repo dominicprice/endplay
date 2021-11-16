@@ -53,7 +53,7 @@ class TerminalActions(BaseActions):
 				if callable(obj):
 					self.write(obj(deal), end='')
 				else:
-					self.writ(obj, end='')
+					self.write(obj, end='')
 			self.write()
 
 	def average(self, expr, s = None):

@@ -20,13 +20,14 @@ def run_script(
 	seed: int = None,
 	verbose: bool = False,
 	swapping: int = 0,
-	outformat: str = "plaintext",
+	outformat: str = "plain",
 	outfile: Optional[str] = None,
 	constraints: list[str] = [],
 	actions: list[str] = [],
 	board_numbers: bool = False) -> list[Deal]:
 	"""
 	Execute a dealer script file
+
 	:param script: The name of the script file to run
 	:param show_progress: Display a progress meter while hands are generated
 	:param produce: The number of hands to produce
@@ -34,7 +35,7 @@ def run_script(
 	:param seed: The seed for the random number generator
 	:param verbose: Print extra debugging info and statistics at completion
 	:param swapping: The swapping algorithm to use (0=no swapping, 2=swap EW, 3=all permutations of SEW)
-	:param outformat: The format to print output in: 'plaintext', 'latex' or 'pdf'
+	:param outformat: The format to print output in: 'plain', 'latex' or 'pdf'
 	:param outfile: A filename to write the output to, if None then printed to stdout
 	:param constraints: A list of extra constraints to apply
 	:param actions: A list of extra actions to apply
@@ -45,6 +46,11 @@ def run_script(
 	# computer to seed the generator which is desirable behaviour, as it means that
 	# previous calls to this function cannot cause accidentally predictable behaviour
 	random.seed(seed, version=2)
+
+	# If we are asked to produce more hands than we generate, we will always fail so let's not
+	# waste any time trying
+	if produce > generate:
+		raise ValueError(f"Asked to produce {produce} hands by generating {generate} hands")
 
 	# Interpret constraints and actions
 	parser = DealerParser()
@@ -117,8 +123,8 @@ def run_script(
 	# Set up the output engine
 	if isinstance(outfile, str):
 		outfile_name = outfile
-		outfile = open(outfile, "w")
-	if outformat == "term":
+		outfile = open(outfile, "w", encoding="utf-8")
+	if outformat == "plain":
 		actioner = TerminalActions(deals, outfile, board_numbers)
 	elif outformat == "latex":
 		actioner = LaTeXActions(deals, outfile, board_numbers)
@@ -126,7 +132,7 @@ def run_script(
 		if outfile is None:
 			raise RuntimeError("Output file must be specified with pdf file format")
 		tmpdir = mkdtemp()
-		tmpoutfile = open(tmpdir + "/main.tex", "w")
+		tmpoutfile = open(tmpdir + "/main.tex", "w", encoding="utf-8")
 		actioner = LaTeXActions(deals, tmpoutfile, board_numbers)
 	elif outformat == "html":
 		actioner = HTMLActions(deals, outfile, board_numbers)
