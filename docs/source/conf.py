@@ -15,6 +15,21 @@ import sys
 dirname = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, dirname)
 
+try:
+	from endplay.config import __version__
+	print(f"Using system version of endplay (version {__version__})")
+except ImportError:
+	root_dir = os.path.join(dirname, "..", "..")
+	sys.path.insert(0, root_dir)
+	try:
+		from endplay.config import __version__
+		print(f"No system installation of endplay found, using in-source build of endplay (version {__version__})")
+	except ImportError:
+		print("Could not import endplay from system or from the root directory; you need to either install " + 
+			"a version to your site-packages directory or perform an in-source build by setting " + 
+			"CMAKE_INSTALL_PREFIX to <root_directory>/endplay")
+
+
 # -- Project information -----------------------------------------------------
 
 project = 'endplay'
@@ -40,7 +55,7 @@ extensions = [
 ]
 
 apidoc_module_dir = os.path.join(dirname, "..", "..", "endplay")
-apidoc_output_dir = os.path.join(dirname, "pages", "reference")
+apidoc_output_dir = os.path.join(dirname, "build", "reference")
 apidoc_excluded_paths = []
 apidoc_separate_modules = True
 apidoc_module_first = True
@@ -49,7 +64,7 @@ apidoc_extra_args = ["-P"]
 autodoc_default_options = { 'autosummary': True }
 
 readme_module_dir = os.path.join(dirname, "..", "..")
-readme_output_dir = os.path.join(dirname, "pages", "readme")
+readme_output_dir = os.path.join(dirname, "build", "readme")
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
