@@ -15,8 +15,8 @@ class BaseActions(ABC):
 		self.stream = sys.stdout if stream is None else stream
 		self.write = lambda *objs, **kwargs: print(*objs, **kwargs, file=self.stream)
 		if template_ext is not None:
-			self.preamble = open_text("endplay.dealer.actions.templates", "preamble." + template_ext)
-			self.postamble = open_text("endplay.dealer.actions.templates", "postamble." + template_ext)
+			self.preamble = read_text("endplay.dealer.actions.templates", "preamble." + template_ext)
+			self.postamble = read_text("endplay.dealer.actions.templates", "postamble." + template_ext)
 		else:
 			self.preamble = self.postamble = ""
 
