@@ -1,0 +1,10 @@
+produce 20
+
+action 
+  printall, 
+  print(north, south), 
+  printew, 
+  printpbn, 
+  printcompact hcp(north), 
+  printoneline spades(west), 
+  printes "Number of hearts: ", hearts(north), \n

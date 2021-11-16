@@ -1,4 +1,8 @@
-﻿import unittest
+﻿import io
+import unittest
+import os
+import re
+from unittest.mock import patch
 from endplay.parsers.dealer import DealerParser
 from endplay.dealer import *
 from endplay.dealer.constraint import ConstraintInterpreter
@@ -47,8 +51,6 @@ class TestConstraints(unittest.TestCase):
 		west_balanced = "shape(west, any 4333 + any 4432 + any 5332 - 5xxx - x5xx)"
 		for deal in generate_deals(west_balanced, produce=20):
 			return self.assertEqual(self.interp.evaluate(west_balanced, deal), is_balanced(deal.west))
-			
-
 
 	def test_functions(self):
 		self.assertEvalsTo("spade(north)", 4)
@@ -90,6 +92,51 @@ class TestConstraints(unittest.TestCase):
 
 	def test_expressions(self):
 		self.assertEvalsFalse("(1 + 7 == 9) || controls(west, hearts) == 1")
+
+class TestDealerMain(unittest.TestCase):
+	"""
+	These are 'delicate tests', in that they test the functions against output which was
+	generated at a time when they were 'known to work'. This means that if at any stage
+	the output format changes, the tests will fail which means that they will need to be
+	regenerated.
+	"""
+	def __init__(self, *args, **kwargs):
+		super().__init__(*args, **kwargs)
+		self.this_dir = os.path.dirname(os.path.abspath(__file__))
+		self.dealer_dir = os.path.join(self.this_dir, "dealer")
+		self.seed = 1234
+
+	def script_output(self, script_name, outformat):
+		with patch('sys.stdout', new=io.StringIO()) as output:
+			run_script(os.path.join(self.dealer_dir, script_name), seed=self.seed, outformat = outformat)
+			return output.getvalue()
+
+	def read_file(self, fname):
+		with open(os.path.join(self.dealer_dir, fname), encoding="utf-8") as f:
+			return f.read()
+
+	def test_print_actions(self):
+		self.assertEqual(self.script_output("test_print_actions.dl", "plain"), self.read_file("test_print_actions.plain"))
+		self.assertEqual(self.script_output("test_print_actions.dl", "latex"), self.read_file("test_print_actions.latex"))
+		self.assertEqual(self.script_output("test_print_actions.dl", "html"), self.read_file("test_print_actions.html"))
+
+	def test_stat_actions(self):
+		# Terminal output attempts to open a plot which we suppress for testing
+		with patch('matplotlib.pyplot.figure'):
+			self.assertEqual(self.script_output("test_stat_actions.dl", "plain"), self.read_file("test_stat_actions.plain"))
+
+		# HTML output includes a timestamp and various ids which needs to be normalised
+		randomparts = re.compile(r"(<dc:date>(.*?)</dc:date>)|(#\w+)|(id=\"\w+\")")
+		html_lhs = self.script_output("test_stat_actions.dl", "html")
+		html_lhs = re.sub(randomparts, "", html_lhs)
+		html_rhs = self.read_file("test_stat_actions.html")
+		html_rhs = re.sub(randomparts, "", html_rhs)
+		self.assertEqual(html_lhs, html_rhs)
+
+		# LaTeX output is consistent?!?!
+		self.assertEqual(self.script_output("test_stat_actions.dl", "latex"), self.read_file("test_stat_actions.latex"))
+
+
 
 class TestGenerator(unittest.TestCase):
 	def test_01(self):

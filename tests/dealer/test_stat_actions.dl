@@ -1,0 +1,6 @@
+produce 20
+
+action 
+  average "points " hcp(north),
+  frequency "hcp(north)" (hcp(north), 3, 26),
+  frequency "hcp(north) vs hcp(south) in the range 5-15" (hcp(north), 5, 15, hcp(south), 5, 15)

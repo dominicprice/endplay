@@ -1,0 +1,1617 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dealer output</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Overpass+Mono:wght@400&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            padding: 0;
+            margin: 0;
+        }
+
+        body {
+            background-color: slategray;
+        }
+
+        .content {
+            background-color: white;
+            min-width: 600px;
+            margin: 50px;
+            padding: 20px;
+            border: 5px solid #aaa;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .deal {
+            font-size: 16px;
+            border: 1px solid #ddd;
+            display: inline-flex;
+            flex-flow: row wrap;
+            width: 360px;
+            justify-content: space-between;
+            font-family: sans-serif;
+            background-color: #fafafa;
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+            .deal > div {
+                padding: 10px;
+                flex-basis: 100px;
+                height: 100px;
+            }
+
+        .board-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            gap: 5px;
+        }
+
+        .hand {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 3px;
+            font-family: "Overpass Mono", sans-serif;
+            background-color: #f2efd0;
+            overflow-wrap: anywhere;
+            word-break: break-all;
+            letter-spacing: 2px;
+        }
+
+        .hand-inline {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            gap: 3px;
+            font-family: "Overpass Mono", sans-serif;
+            background-color: #edfaa5;
+            letter-spacing: 2px;
+            padding: 5px;
+        }
+
+        .deal > .hand.north {
+            border-radius: 5px 5px 0px 0px;
+        }
+
+        .deal > .hand.east {
+            border-radius: 0px 5px 5px 0px;
+        }
+
+        .deal > .hand.south {
+            border-radius: 0px 0px 5px 5px;
+        }
+
+        .deal > .hand.west {
+            border-radius: 5px 0px 0px 5px;
+        }
+
+        .spades, .hearts, .diamonds, .clubs {
+            text-indent: -16px;
+            margin-left: 16px;
+        }
+
+            .spades:before, .hearts:before, .diamonds:before, .clubs:before {
+                display: inline-block;
+                width: 16px;
+                text-indent: 0px;
+            }
+
+            .spades:before {
+                content: "♠ ";
+                color: #01039e;
+            }
+
+            .hearts:before {
+                content: "♥ ";
+                color: #a00203;
+            }
+
+            .diamonds:before {
+                content: "♦ ";
+                color: #c05e0a;
+            }
+
+            .clubs:before {
+                content: "♣ ";
+                color: #036a03;
+            }
+
+        .compass {
+            display: flex;
+            flex-flow: row wrap;
+            color: white;
+            background-color: #106610;
+            align-items: center;
+            font-weight: bold;
+            user-select: none;
+        }
+
+            .compass .north {
+                flex-basis: 100%;
+                text-align: center;
+            }
+
+            .compass .west {
+                flex-basis: 50%;
+                text-align: left;
+            }
+
+            .compass .east {
+                flex-basis: 50%;
+                text-align: right;
+            }
+
+            .compass .south {
+                flex-basis: 100%;
+                text-align: center;
+            }
+
+        .dealer {
+            text-decoration: underline;
+        }
+
+        .vul {
+            color: #ff7777;
+        }
+
+        .nonvul {
+            color: #77ff77;
+        }
+
+        .deal-compact {
+            border-collapse: collapse;
+        }
+
+            .deal-compact .hand {
+                padding: 10px;
+            }
+
+            .deal-compact th {
+                color: white;
+                font-weight: bold;
+                background-color: #106610;
+                font-family: sans-serif;
+                padding: 5px;
+            }
+
+            .deal-compact td > div {
+                width: 175px;
+                height: 80px;
+            }
+
+            .deal-compact .value {
+                background-color: #eee;
+                height: 102px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-family: sans-serif;
+            }
+
+        .deal-oneline {
+            border-collapse: collapse;
+        }
+
+            .deal-oneline .hand {
+                padding: 10px;
+            }
+
+            .deal-oneline th {
+                color: white;
+                font-weight: bold;
+                background-color: #106610;
+                font-family: sans-serif;
+                padding: 5px;
+            }
+
+            .deal-oneline .value {
+                background-color: #eee;
+                height: 32px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-family: sans-serif;
+            }
+
+        .valuebox {
+            background-color: #eee;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 10px 50px;
+            font-family: sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+<div>
+<div class="deal" style="margin: 20px">
+<div></div> <div class="hand north"><div class="spades">T74</div><div class="hearts">AKJ</div><div class="diamonds">J7</div><div class="clubs">KJ743</div></div> <div></div> <div class="hand west"><div class="spades">QJ92</div><div class="hearts">T3</div><div class="diamonds">KQ542</div><div class="clubs">62</div></div> <div class="compass"><div class="north">N</div><div class="west">W</div><div class="east">E</div><div class="south">S</div></div> <div class="hand east"><div class="spades">K83</div><div class="hearts">Q9654</div><div class="diamonds">96</div><div class="clubs">T85</div></div> <div></div> <div class="hand south"><div class="spades">A65</div><div class="hearts">872</div><div class="diamonds">AT83</div><div class="clubs">AQ9</div></div> <div></div>
+</div>
+<div class="deal" style="margin: 20px">
+<div></div> <div class="hand north"><div class="spades">43</div><div class="hearts">AQ84</div><div class="diamonds">KQ3</div><div class="clubs">JT63</div></div> <div></div> <div class="hand west"><div class="spades">6</div><div class="hearts">KT6</div><div class="diamonds">J8765</div><div class="clubs">KQ72</div></div> <div class="compass"><div class="north">N</div><div class="west">W</div><div class="east">E</div><div class="south">S</div></div> <div class="hand east"><div class="spades">KT7</div><div class="hearts">97</div><div class="diamonds">AT94</div><div class="clubs">A954</div></div> <div></div> <div class="hand south"><div class="spades">AQJ9852</div><div class="hearts">J532</div><div class="diamonds">2</div><div class="clubs">8</div></div> <div></div>
+</div>
+<div class="deal" style="margin: 20px">
+<div></div> <div class="hand north"><div class="spades">AT</div><div class="hearts">Q6</div><div class="diamonds">T9752</div><div class="clubs">Q842</div></div> <div></div> <div class="hand west"><div class="spades">952</div><div class="hearts">T752</div><div class="diamonds">AKJ63</div><div class="clubs">6</div></div> <div class="compass"><div class="north">N</div><div class="west">W</div><div class="east">E</div><div class="south">S</div></div> <div class="hand east"><div class="spades">J7</div><div class="hearts">A984</div><div class="diamonds">Q84</div><div class="clubs">KT73</div></div> <div></div> <div class="hand south"><div class="spades">KQ8643</div><div class="hearts">KJ3</div><div class="diamonds">&mdash;</div><div class="clubs">AJ95</div></div> <div></div>
+</div>
+<div class="deal" style="margin: 20px">
+<div></div> <div class="hand north"><div class="spades">A74</div><div class="hearts">KT4</div><div class="diamonds">86</div><div class="clubs">Q7653</div></div> <div></div> <div class="hand west"><div class="spades">965</div><div class="hearts">AQ763</div><div class="diamonds">QT4</div><div class="clubs">AT</div></div> <div class="compass"><div class="north">N</div><div class="west">W</div><div class="east">E</div><div class="south">S</div></div> <div class="hand east"><div class="spades">KJ32</div><div class="hearts">852</div><div class="diamonds">A973</div><div class="clubs">94</div></div> <div></div> <div class="hand south"><div class="spades">QT8</div><div class="hearts">J9</div><div class="diamonds">KJ52</div><div class="clubs">KJ82</div></div> <div></div>
+</div>
+<div class="deal" style="margin: 20px">
+<div></div> <div class="hand north"><div class="spades">Q93</div><div class="hearts">QT3</div><div class="diamonds">62</div><div class="clubs">Q7632</div></div> <div></div> <div class="hand west"><div class="spades">K875</div><div class="hearts">9874</div><div class="diamonds">754</div><div class="clubs">K9</div></div> <div class="compass"><div class="north">N</div><div class="west">W</div><div class="east">E</div><div class="south">S</div></div> <div class="hand east"><div class="spades">JT62</div><div class="hearts">A65</div><div class="diamonds">KQ3</div><div class="clubs">JT8</div></div> <div></div> <div class="hand south"><div class="spades">A4</div><div class="hearts">KJ2</div><div class="diamonds">AJT98</div><div class="clubs">A54</div></div> <div></div>
+</div>
+<div class="deal" style="margin: 20px">
+<div></div> <div class="hand north"><div class="spades">AJT7543</div><div class="hearts">A8</div><div class="diamonds">A8</div><div class="clubs">92</div></div> <div></div> <div class="hand west"><div class="spades">62</div><div class="hearts">93</div><div class="diamonds">QT65</div><div class="clubs">QJ874</div></div> <div class="compass"><div class="north">N</div><div class="west">W</div><div class="east">E</div><div class="south">S</div></div> <div class="hand east"><div class="spades">Q9</div><div class="hearts">KJT</div><div class="diamonds">J97432</div><div class="clubs">K6</div></div> <div></div> <div class="hand south"><div class="spades">K8</div><div class="hearts">Q76542</div><div class="diamonds">K</div><div class="clubs">AT53</div></div> <div></div>
+</div>
+<div class="deal" style="margin: 20px">
+<div></div> <div class="hand north"><div class="spades">532</div><div class="hearts">AK87</div><div class="diamonds">AJ8</div><div class="clubs">Q65</div></div> <div></div> <div class="hand west"><div class="spades">QJ86</div><div class="hearts">J</div><div class="diamonds">Q642</div><div class="clubs">AT42</div></div> <div class="compass"><div class="north">N</div><div class="west">W</div><div class="east">E</div><div class="south">S</div></div> <div class="hand east"><div class="spades">K97</div><div class="hearts">T92</div><div class="diamonds">K97</div><div class="clubs">J873</div></div> <div></div> <div class="hand south"><div class="spades">AT4</div><div class="hearts">Q6543</div><div class="diamonds">T53</div><div class="clubs">K9</div></div> <div></div>
+</div>
+<div class="deal" style="margin: 20px">
+<div></div> <div class="hand north"><div class="spades">Q86</div><div class="hearts">AK87</div><div class="diamonds">A</div><div class="clubs">AKT32</div></div> <div></div> <div class="hand west"><div class="spades">T7543</div><div class="hearts">64</div><div class="diamonds">K2</div><div class="clubs">Q854</div></div> <div class="compass"><div class="north">N</div><div class="west">W</div><div class="east">E</div><div class="south">S</div></div> <div class="hand east"><div class="spades">J9</div><div class="hearts">QJ953</div><div class="diamonds">T73</div><div class="clubs">J96</div></div> <div></div> <div class="hand south"><div class="spades">AK2</div><div class="hearts">T2</div><div class="diamonds">QJ98654</div><div class="clubs">7</div></div> <div></div>
+</div>
+<div class="deal" style="margin: 20px">
+<div></div> <div class="hand north"><div class="spades">73</div><div class="hearts">A8</div><div class="diamonds">A98</div><div class="clubs">KT8432</div></div> <div></div> <div class="hand west"><div class="spades">QT42</div><div class="hearts">Q7</div><div class="diamonds">KJT72</div><div class="clubs">A6</div></div> <div class="compass"><div class="north">N</div><div class="west">W</div><div class="east">E</div><div class="south">S</div></div> <div class="hand east"><div class="spades">K986</div><div class="hearts">T532</div><div class="diamonds">653</div><div class="clubs">J9</div></div> <div></div> <div class="hand south"><div class="spades">AJ5</div><div class="hearts">KJ964</div><div class="diamonds">Q4</div><div class="clubs">Q75</div></div> <div></div>
+</div>
+<div class="deal" style="margin: 20px">
+<div></div> <div class="hand north"><div class="spades">J6532</div><div class="hearts">JT</div><div class="diamonds">Q654</div><div class="clubs">83</div></div> <div></div> <div class="hand west"><div class="spades">K</div><div class="hearts">K654</div><div class="diamonds">AK3</div><div class="clubs">QJ765</div></div> <div class="compass"><div class="north">N</div><div class="west">W</div><div class="east">E</div><div class="south">S</div></div> <div class="hand east"><div class="spades">Q987</div><div class="hearts">A92</div><div class="diamonds">JT2</div><div class="clubs">K94</div></div> <div></div> <div class="hand south"><div class="spades">AT4</div><div class="hearts">Q873</div><div class="diamonds">987</div><div class="clubs">AT2</div></div> <div></div>
+</div>
+<div class="deal" style="margin: 20px">
+<div></div> <div class="hand north"><div class="spades">AJ7643</div><div class="hearts">95</div><div class="diamonds">A9</div><div class="clubs">Q43</div></div> <div></div> <div class="hand west"><div class="spades">T85</div><div class="hearts">K</div><div class="diamonds">J843</div><div class="clubs">AKT62</div></div> <div class="compass"><div class="north">N</div><div class="west">W</div><div class="east">E</div><div class="south">S</div></div> <div class="hand east"><div class="spades">K2</div><div class="hearts">876</div><div class="diamonds">Q52</div><div class="clubs">J9875</div></div> <div></div> <div class="hand south"><div class="spades">Q9</div><div class="hearts">AQJT432</div><div class="diamonds">KT76</div><div class="clubs">&mdash;</div></div> <div></div>
+</div>
+<div class="deal" style="margin: 20px">
+<div></div> <div class="hand north"><div class="spades">84</div><div class="hearts">J873</div><div class="diamonds">87653</div><div class="clubs">J8</div></div> <div></div> <div class="hand west"><div class="spades">AT652</div><div class="hearts">A52</div><div class="diamonds">K92</div><div class="clubs">T6</div></div> <div class="compass"><div class="north">N</div><div class="west">W</div><div class="east">E</div><div class="south">S</div></div> <div class="hand east"><div class="spades">Q93</div><div class="hearts">KT94</div><div class="diamonds">T</div><div class="clubs">Q7543</div></div> <div></div> <div class="hand south"><div class="spades">KJ7</div><div class="hearts">Q6</div><div class="diamonds">AQJ4</div><div class="clubs">AK92</div></div> <div></div>
+</div>
+<div class="deal" style="margin: 20px">
+<div></div> <div class="hand north"><div class="spades">KT64</div><div class="hearts">K32</div><div class="diamonds">J76</div><div class="clubs">J98</div></div> <div></div> <div class="hand west"><div class="spades">J2</div><div class="hearts">JT</div><div class="diamonds">9852</div><div class="clubs">AKQT6</div></div> <div class="compass"><div class="north">N</div><div class="west">W</div><div class="east">E</div><div class="south">S</div></div> <div class="hand east"><div class="spades">AQ98</div><div class="hearts">Q865</div><div class="diamonds">43</div><div class="clubs">532</div></div> <div></div> <div class="hand south"><div class="spades">753</div><div class="hearts">A974</div><div class="diamonds">AKQT</div><div class="clubs">74</div></div> <div></div>
+</div>
+<div class="deal" style="margin: 20px">
+<div></div> <div class="hand north"><div class="spades">J852</div><div class="hearts">A2</div><div class="diamonds">JT98</div><div class="clubs">A54</div></div> <div></div> <div class="hand west"><div class="spades">K97</div><div class="hearts">KJ</div><div class="diamonds">53</div><div class="clubs">KJT982</div></div> <div class="compass"><div class="north">N</div><div class="west">W</div><div class="east">E</div><div class="south">S</div></div> <div class="hand east"><div class="spades">AT3</div><div class="hearts">QT98543</div><div class="diamonds">72</div><div class="clubs">Q</div></div> <div></div> <div class="hand south"><div class="spades">Q64</div><div class="hearts">76</div><div class="diamonds">AKQ64</div><div class="clubs">763</div></div> <div></div>
+</div>
+<div class="deal" style="margin: 20px">
+<div></div> <div class="hand north"><div class="spades">AT752</div><div class="hearts">T2</div><div class="diamonds">AK8</div><div class="clubs">542</div></div> <div></div> <div class="hand west"><div class="spades">93</div><div class="hearts">K3</div><div class="diamonds">QJ9543</div><div class="clubs">J83</div></div> <div class="compass"><div class="north">N</div><div class="west">W</div><div class="east">E</div><div class="south">S</div></div> <div class="hand east"><div class="spades">KQ</div><div class="hearts">A984</div><div class="diamonds">7</div><div class="clubs">KQT976</div></div> <div></div> <div class="hand south"><div class="spades">J864</div><div class="hearts">QJ765</div><div class="diamonds">T62</div><div class="clubs">A</div></div> <div></div>
+</div>
+<div class="deal" style="margin: 20px">
+<div></div> <div class="hand north"><div class="spades">A97</div><div class="hearts">JT9543</div><div class="diamonds">A6</div><div class="clubs">75</div></div> <div></div> <div class="hand west"><div class="spades">KJT543</div><div class="hearts">Q</div><div class="diamonds">52</div><div class="clubs">KJ84</div></div> <div class="compass"><div class="north">N</div><div class="west">W</div><div class="east">E</div><div class="south">S</div></div> <div class="hand east"><div class="spades">Q6</div><div class="hearts">K762</div><div class="diamonds">KQ43</div><div class="clubs">AT2</div></div> <div></div> <div class="hand south"><div class="spades">82</div><div class="hearts">A8</div><div class="diamonds">JT987</div><div class="clubs">Q963</div></div> <div></div>
+</div>
+<div class="deal" style="margin: 20px">
+<div></div> <div class="hand north"><div class="spades">A84</div><div class="hearts">Q873</div><div class="diamonds">T</div><div class="clubs">AKQ52</div></div> <div></div> <div class="hand west"><div class="spades">KQJT</div><div class="hearts">J96</div><div class="diamonds">65</div><div class="clubs">JT94</div></div> <div class="compass"><div class="north">N</div><div class="west">W</div><div class="east">E</div><div class="south">S</div></div> <div class="hand east"><div class="spades">32</div><div class="hearts">KT42</div><div class="diamonds">KJ987</div><div class="clubs">76</div></div> <div></div> <div class="hand south"><div class="spades">9765</div><div class="hearts">A5</div><div class="diamonds">AQ432</div><div class="clubs">83</div></div> <div></div>
+</div>
+<div class="deal" style="margin: 20px">
+<div></div> <div class="hand north"><div class="spades">AT9843</div><div class="hearts">&mdash;</div><div class="diamonds">QJ32</div><div class="clubs">973</div></div> <div></div> <div class="hand west"><div class="spades">K</div><div class="hearts">K82</div><div class="diamonds">KT765</div><div class="clubs">AT64</div></div> <div class="compass"><div class="north">N</div><div class="west">W</div><div class="east">E</div><div class="south">S</div></div> <div class="hand east"><div class="spades">QJ7</div><div class="hearts">Q9763</div><div class="diamonds">8</div><div class="clubs">KQJ8</div></div> <div></div> <div class="hand south"><div class="spades">652</div><div class="hearts">AJT54</div><div class="diamonds">A94</div><div class="clubs">52</div></div> <div></div>
+</div>
+<div class="deal" style="margin: 20px">
+<div></div> <div class="hand north"><div class="spades">KJ9</div><div class="hearts">875</div><div class="diamonds">K63</div><div class="clubs">J765</div></div> <div></div> <div class="hand west"><div class="spades">T7</div><div class="hearts">QT964</div><div class="diamonds">T875</div><div class="clubs">QT</div></div> <div class="compass"><div class="north">N</div><div class="west">W</div><div class="east">E</div><div class="south">S</div></div> <div class="hand east"><div class="spades">AQ3</div><div class="hearts">A2</div><div class="diamonds">AQJ942</div><div class="clubs">84</div></div> <div></div> <div class="hand south"><div class="spades">86542</div><div class="hearts">KJ3</div><div class="diamonds">&mdash;</div><div class="clubs">AK932</div></div> <div></div>
+</div>
+<div class="deal" style="margin: 20px">
+<div></div> <div class="hand north"><div class="spades">965</div><div class="hearts">A943</div><div class="diamonds">K</div><div class="clubs">98732</div></div> <div></div> <div class="hand west"><div class="spades">Q432</div><div class="hearts">QT75</div><div class="diamonds">Q75</div><div class="clubs">A5</div></div> <div class="compass"><div class="north">N</div><div class="west">W</div><div class="east">E</div><div class="south">S</div></div> <div class="hand east"><div class="spades">AJ8</div><div class="hearts">J862</div><div class="diamonds">A984</div><div class="clubs">K6</div></div> <div></div> <div class="hand south"><div class="spades">KT7</div><div class="hearts">K</div><div class="diamonds">JT632</div><div class="clubs">QJT4</div></div> <div></div>
+</div>
+</div>
+<div>
+<div class="deal" style="margin: 20px">
+<div></div> <div class="hand north"><div class="spades">T74</div><div class="hearts">AKJ</div><div class="diamonds">J7</div><div class="clubs">KJ743</div></div> <div></div> <div class="hand {player.name}"></div> <div class="compass"><div class="north">N</div><div class="west">W</div><div class="east">E</div><div class="south">S</div></div> <div class="hand {player.name}"></div> <div></div> <div class="hand south"><div class="spades">A65</div><div class="hearts">872</div><div class="diamonds">AT83</div><div class="clubs">AQ9</div></div> <div></div>
+</div>
+<div class="deal" style="margin: 20px">
+<div></div> <div class="hand north"><div class="spades">43</div><div class="hearts">AQ84</div><div class="diamonds">KQ3</div><div class="clubs">JT63</div></div> <div></div> <div class="hand {player.name}"></div> <div class="compass"><div class="north">N</div><div class="west">W</div><div class="east">E</div><div class="south">S</div></div> <div class="hand {player.name}"></div> <div></div> <div class="hand south"><div class="spades">AQJ9852</div><div class="hearts">J532</div><div class="diamonds">2</div><div class="clubs">8</div></div> <div></div>
+</div>
+<div class="deal" style="margin: 20px">
+<div></div> <div class="hand north"><div class="spades">AT</div><div class="hearts">Q6</div><div class="diamonds">T9752</div><div class="clubs">Q842</div></div> <div></div> <div class="hand {player.name}"></div> <div class="compass"><div class="north">N</div><div class="west">W</div><div class="east">E</div><div class="south">S</div></div> <div class="hand {player.name}"></div> <div></div> <div class="hand south"><div class="spades">KQ8643</div><div class="hearts">KJ3</div><div class="diamonds">&mdash;</div><div class="clubs">AJ95</div></div> <div></div>
+</div>
+<div class="deal" style="margin: 20px">
+<div></div> <div class="hand north"><div class="spades">A74</div><div class="hearts">KT4</div><div class="diamonds">86</div><div class="clubs">Q7653</div></div> <div></div> <div class="hand {player.name}"></div> <div class="compass"><div class="north">N</div><div class="west">W</div><div class="east">E</div><div class="south">S</div></div> <div class="hand {player.name}"></div> <div></div> <div class="hand south"><div class="spades">QT8</div><div class="hearts">J9</div><div class="diamonds">KJ52</div><div class="clubs">KJ82</div></div> <div></div>
+</div>
+<div class="deal" style="margin: 20px">
+<div></div> <div class="hand north"><div class="spades">Q93</div><div class="hearts">QT3</div><div class="diamonds">62</div><div class="clubs">Q7632</div></div> <div></div> <div class="hand {player.name}"></div> <div class="compass"><div class="north">N</div><div class="west">W</div><div class="east">E</div><div class="south">S</div></div> <div class="hand {player.name}"></div> <div></div> <div class="hand south"><div class="spades">A4</div><div class="hearts">KJ2</div><div class="diamonds">AJT98</div><div class="clubs">A54</div></div> <div></div>
+</div>
+<div class="deal" style="margin: 20px">
+<div></div> <div class="hand north"><div class="spades">AJT7543</div><div class="hearts">A8</div><div class="diamonds">A8</div><div class="clubs">92</div></div> <div></div> <div class="hand {player.name}"></div> <div class="compass"><div class="north">N</div><div class="west">W</div><div class="east">E</div><div class="south">S</div></div> <div class="hand {player.name}"></div> <div></div> <div class="hand south"><div class="spades">K8</div><div class="hearts">Q76542</div><div class="diamonds">K</div><div class="clubs">AT53</div></div> <div></div>
+</div>
+<div class="deal" style="margin: 20px">
+<div></div> <div class="hand north"><div class="spades">532</div><div class="hearts">AK87</div><div class="diamonds">AJ8</div><div class="clubs">Q65</div></div> <div></div> <div class="hand {player.name}"></div> <div class="compass"><div class="north">N</div><div class="west">W</div><div class="east">E</div><div class="south">S</div></div> <div class="hand {player.name}"></div> <div></div> <div class="hand south"><div class="spades">AT4</div><div class="hearts">Q6543</div><div class="diamonds">T53</div><div class="clubs">K9</div></div> <div></div>
+</div>
+<div class="deal" style="margin: 20px">
+<div></div> <div class="hand north"><div class="spades">Q86</div><div class="hearts">AK87</div><div class="diamonds">A</div><div class="clubs">AKT32</div></div> <div></div> <div class="hand {player.name}"></div> <div class="compass"><div class="north">N</div><div class="west">W</div><div class="east">E</div><div class="south">S</div></div> <div class="hand {player.name}"></div> <div></div> <div class="hand south"><div class="spades">AK2</div><div class="hearts">T2</div><div class="diamonds">QJ98654</div><div class="clubs">7</div></div> <div></div>
+</div>
+<div class="deal" style="margin: 20px">
+<div></div> <div class="hand north"><div class="spades">73</div><div class="hearts">A8</div><div class="diamonds">A98</div><div class="clubs">KT8432</div></div> <div></div> <div class="hand {player.name}"></div> <div class="compass"><div class="north">N</div><div class="west">W</div><div class="east">E</div><div class="south">S</div></div> <div class="hand {player.name}"></div> <div></div> <div class="hand south"><div class="spades">AJ5</div><div class="hearts">KJ964</div><div class="diamonds">Q4</div><div class="clubs">Q75</div></div> <div></div>
+</div>
+<div class="deal" style="margin: 20px">
+<div></div> <div class="hand north"><div class="spades">J6532</div><div class="hearts">JT</div><div class="diamonds">Q654</div><div class="clubs">83</div></div> <div></div> <div class="hand {player.name}"></div> <div class="compass"><div class="north">N</div><div class="west">W</div><div class="east">E</div><div class="south">S</div></div> <div class="hand {player.name}"></div> <div></div> <div class="hand south"><div class="spades">AT4</div><div class="hearts">Q873</div><div class="diamonds">987</div><div class="clubs">AT2</div></div> <div></div>
+</div>
+<div class="deal" style="margin: 20px">
+<div></div> <div class="hand north"><div class="spades">AJ7643</div><div class="hearts">95</div><div class="diamonds">A9</div><div class="clubs">Q43</div></div> <div></div> <div class="hand {player.name}"></div> <div class="compass"><div class="north">N</div><div class="west">W</div><div class="east">E</div><div class="south">S</div></div> <div class="hand {player.name}"></div> <div></div> <div class="hand south"><div class="spades">Q9</div><div class="hearts">AQJT432</div><div class="diamonds">KT76</div><div class="clubs">&mdash;</div></div> <div></div>
+</div>
+<div class="deal" style="margin: 20px">
+<div></div> <div class="hand north"><div class="spades">84</div><div class="hearts">J873</div><div class="diamonds">87653</div><div class="clubs">J8</div></div> <div></div> <div class="hand {player.name}"></div> <div class="compass"><div class="north">N</div><div class="west">W</div><div class="east">E</div><div class="south">S</div></div> <div class="hand {player.name}"></div> <div></div> <div class="hand south"><div class="spades">KJ7</div><div class="hearts">Q6</div><div class="diamonds">AQJ4</div><div class="clubs">AK92</div></div> <div></div>
+</div>
+<div class="deal" style="margin: 20px">
+<div></div> <div class="hand north"><div class="spades">KT64</div><div class="hearts">K32</div><div class="diamonds">J76</div><div class="clubs">J98</div></div> <div></div> <div class="hand {player.name}"></div> <div class="compass"><div class="north">N</div><div class="west">W</div><div class="east">E</div><div class="south">S</div></div> <div class="hand {player.name}"></div> <div></div> <div class="hand south"><div class="spades">753</div><div class="hearts">A974</div><div class="diamonds">AKQT</div><div class="clubs">74</div></div> <div></div>
+</div>
+<div class="deal" style="margin: 20px">
+<div></div> <div class="hand north"><div class="spades">J852</div><div class="hearts">A2</div><div class="diamonds">JT98</div><div class="clubs">A54</div></div> <div></div> <div class="hand {player.name}"></div> <div class="compass"><div class="north">N</div><div class="west">W</div><div class="east">E</div><div class="south">S</div></div> <div class="hand {player.name}"></div> <div></div> <div class="hand south"><div class="spades">Q64</div><div class="hearts">76</div><div class="diamonds">AKQ64</div><div class="clubs">763</div></div> <div></div>
+</div>
+<div class="deal" style="margin: 20px">
+<div></div> <div class="hand north"><div class="spades">AT752</div><div class="hearts">T2</div><div class="diamonds">AK8</div><div class="clubs">542</div></div> <div></div> <div class="hand {player.name}"></div> <div class="compass"><div class="north">N</div><div class="west">W</div><div class="east">E</div><div class="south">S</div></div> <div class="hand {player.name}"></div> <div></div> <div class="hand south"><div class="spades">J864</div><div class="hearts">QJ765</div><div class="diamonds">T62</div><div class="clubs">A</div></div> <div></div>
+</div>
+<div class="deal" style="margin: 20px">
+<div></div> <div class="hand north"><div class="spades">A97</div><div class="hearts">JT9543</div><div class="diamonds">A6</div><div class="clubs">75</div></div> <div></div> <div class="hand {player.name}"></div> <div class="compass"><div class="north">N</div><div class="west">W</div><div class="east">E</div><div class="south">S</div></div> <div class="hand {player.name}"></div> <div></div> <div class="hand south"><div class="spades">82</div><div class="hearts">A8</div><div class="diamonds">JT987</div><div class="clubs">Q963</div></div> <div></div>
+</div>
+<div class="deal" style="margin: 20px">
+<div></div> <div class="hand north"><div class="spades">A84</div><div class="hearts">Q873</div><div class="diamonds">T</div><div class="clubs">AKQ52</div></div> <div></div> <div class="hand {player.name}"></div> <div class="compass"><div class="north">N</div><div class="west">W</div><div class="east">E</div><div class="south">S</div></div> <div class="hand {player.name}"></div> <div></div> <div class="hand south"><div class="spades">9765</div><div class="hearts">A5</div><div class="diamonds">AQ432</div><div class="clubs">83</div></div> <div></div>
+</div>
+<div class="deal" style="margin: 20px">
+<div></div> <div class="hand north"><div class="spades">AT9843</div><div class="hearts">&mdash;</div><div class="diamonds">QJ32</div><div class="clubs">973</div></div> <div></div> <div class="hand {player.name}"></div> <div class="compass"><div class="north">N</div><div class="west">W</div><div class="east">E</div><div class="south">S</div></div> <div class="hand {player.name}"></div> <div></div> <div class="hand south"><div class="spades">652</div><div class="hearts">AJT54</div><div class="diamonds">A94</div><div class="clubs">52</div></div> <div></div>
+</div>
+<div class="deal" style="margin: 20px">
+<div></div> <div class="hand north"><div class="spades">KJ9</div><div class="hearts">875</div><div class="diamonds">K63</div><div class="clubs">J765</div></div> <div></div> <div class="hand {player.name}"></div> <div class="compass"><div class="north">N</div><div class="west">W</div><div class="east">E</div><div class="south">S</div></div> <div class="hand {player.name}"></div> <div></div> <div class="hand south"><div class="spades">86542</div><div class="hearts">KJ3</div><div class="diamonds">&mdash;</div><div class="clubs">AK932</div></div> <div></div>
+</div>
+<div class="deal" style="margin: 20px">
+<div></div> <div class="hand north"><div class="spades">965</div><div class="hearts">A943</div><div class="diamonds">K</div><div class="clubs">98732</div></div> <div></div> <div class="hand {player.name}"></div> <div class="compass"><div class="north">N</div><div class="west">W</div><div class="east">E</div><div class="south">S</div></div> <div class="hand {player.name}"></div> <div></div> <div class="hand south"><div class="spades">KT7</div><div class="hearts">K</div><div class="diamonds">JT632</div><div class="clubs">QJT4</div></div> <div></div>
+</div>
+</div>
+<div>
+<div class="deal" style="margin: 20px">
+<div></div> <div class="hand {player.name}"></div> <div></div> <div class="hand west"><div class="spades">QJ92</div><div class="hearts">T3</div><div class="diamonds">KQ542</div><div class="clubs">62</div></div> <div class="compass"><div class="north">N</div><div class="west">W</div><div class="east">E</div><div class="south">S</div></div> <div class="hand east"><div class="spades">K83</div><div class="hearts">Q9654</div><div class="diamonds">96</div><div class="clubs">T85</div></div> <div></div> <div class="hand {player.name}"></div> <div></div>
+</div>
+<div class="deal" style="margin: 20px">
+<div></div> <div class="hand {player.name}"></div> <div></div> <div class="hand west"><div class="spades">6</div><div class="hearts">KT6</div><div class="diamonds">J8765</div><div class="clubs">KQ72</div></div> <div class="compass"><div class="north">N</div><div class="west">W</div><div class="east">E</div><div class="south">S</div></div> <div class="hand east"><div class="spades">KT7</div><div class="hearts">97</div><div class="diamonds">AT94</div><div class="clubs">A954</div></div> <div></div> <div class="hand {player.name}"></div> <div></div>
+</div>
+<div class="deal" style="margin: 20px">
+<div></div> <div class="hand {player.name}"></div> <div></div> <div class="hand west"><div class="spades">952</div><div class="hearts">T752</div><div class="diamonds">AKJ63</div><div class="clubs">6</div></div> <div class="compass"><div class="north">N</div><div class="west">W</div><div class="east">E</div><div class="south">S</div></div> <div class="hand east"><div class="spades">J7</div><div class="hearts">A984</div><div class="diamonds">Q84</div><div class="clubs">KT73</div></div> <div></div> <div class="hand {player.name}"></div> <div></div>
+</div>
+<div class="deal" style="margin: 20px">
+<div></div> <div class="hand {player.name}"></div> <div></div> <div class="hand west"><div class="spades">965</div><div class="hearts">AQ763</div><div class="diamonds">QT4</div><div class="clubs">AT</div></div> <div class="compass"><div class="north">N</div><div class="west">W</div><div class="east">E</div><div class="south">S</div></div> <div class="hand east"><div class="spades">KJ32</div><div class="hearts">852</div><div class="diamonds">A973</div><div class="clubs">94</div></div> <div></div> <div class="hand {player.name}"></div> <div></div>
+</div>
+<div class="deal" style="margin: 20px">
+<div></div> <div class="hand {player.name}"></div> <div></div> <div class="hand west"><div class="spades">K875</div><div class="hearts">9874</div><div class="diamonds">754</div><div class="clubs">K9</div></div> <div class="compass"><div class="north">N</div><div class="west">W</div><div class="east">E</div><div class="south">S</div></div> <div class="hand east"><div class="spades">JT62</div><div class="hearts">A65</div><div class="diamonds">KQ3</div><div class="clubs">JT8</div></div> <div></div> <div class="hand {player.name}"></div> <div></div>
+</div>
+<div class="deal" style="margin: 20px">
+<div></div> <div class="hand {player.name}"></div> <div></div> <div class="hand west"><div class="spades">62</div><div class="hearts">93</div><div class="diamonds">QT65</div><div class="clubs">QJ874</div></div> <div class="compass"><div class="north">N</div><div class="west">W</div><div class="east">E</div><div class="south">S</div></div> <div class="hand east"><div class="spades">Q9</div><div class="hearts">KJT</div><div class="diamonds">J97432</div><div class="clubs">K6</div></div> <div></div> <div class="hand {player.name}"></div> <div></div>
+</div>
+<div class="deal" style="margin: 20px">
+<div></div> <div class="hand {player.name}"></div> <div></div> <div class="hand west"><div class="spades">QJ86</div><div class="hearts">J</div><div class="diamonds">Q642</div><div class="clubs">AT42</div></div> <div class="compass"><div class="north">N</div><div class="west">W</div><div class="east">E</div><div class="south">S</div></div> <div class="hand east"><div class="spades">K97</div><div class="hearts">T92</div><div class="diamonds">K97</div><div class="clubs">J873</div></div> <div></div> <div class="hand {player.name}"></div> <div></div>
+</div>
+<div class="deal" style="margin: 20px">
+<div></div> <div class="hand {player.name}"></div> <div></div> <div class="hand west"><div class="spades">T7543</div><div class="hearts">64</div><div class="diamonds">K2</div><div class="clubs">Q854</div></div> <div class="compass"><div class="north">N</div><div class="west">W</div><div class="east">E</div><div class="south">S</div></div> <div class="hand east"><div class="spades">J9</div><div class="hearts">QJ953</div><div class="diamonds">T73</div><div class="clubs">J96</div></div> <div></div> <div class="hand {player.name}"></div> <div></div>
+</div>
+<div class="deal" style="margin: 20px">
+<div></div> <div class="hand {player.name}"></div> <div></div> <div class="hand west"><div class="spades">QT42</div><div class="hearts">Q7</div><div class="diamonds">KJT72</div><div class="clubs">A6</div></div> <div class="compass"><div class="north">N</div><div class="west">W</div><div class="east">E</div><div class="south">S</div></div> <div class="hand east"><div class="spades">K986</div><div class="hearts">T532</div><div class="diamonds">653</div><div class="clubs">J9</div></div> <div></div> <div class="hand {player.name}"></div> <div></div>
+</div>
+<div class="deal" style="margin: 20px">
+<div></div> <div class="hand {player.name}"></div> <div></div> <div class="hand west"><div class="spades">K</div><div class="hearts">K654</div><div class="diamonds">AK3</div><div class="clubs">QJ765</div></div> <div class="compass"><div class="north">N</div><div class="west">W</div><div class="east">E</div><div class="south">S</div></div> <div class="hand east"><div class="spades">Q987</div><div class="hearts">A92</div><div class="diamonds">JT2</div><div class="clubs">K94</div></div> <div></div> <div class="hand {player.name}"></div> <div></div>
+</div>
+<div class="deal" style="margin: 20px">
+<div></div> <div class="hand {player.name}"></div> <div></div> <div class="hand west"><div class="spades">T85</div><div class="hearts">K</div><div class="diamonds">J843</div><div class="clubs">AKT62</div></div> <div class="compass"><div class="north">N</div><div class="west">W</div><div class="east">E</div><div class="south">S</div></div> <div class="hand east"><div class="spades">K2</div><div class="hearts">876</div><div class="diamonds">Q52</div><div class="clubs">J9875</div></div> <div></div> <div class="hand {player.name}"></div> <div></div>
+</div>
+<div class="deal" style="margin: 20px">
+<div></div> <div class="hand {player.name}"></div> <div></div> <div class="hand west"><div class="spades">AT652</div><div class="hearts">A52</div><div class="diamonds">K92</div><div class="clubs">T6</div></div> <div class="compass"><div class="north">N</div><div class="west">W</div><div class="east">E</div><div class="south">S</div></div> <div class="hand east"><div class="spades">Q93</div><div class="hearts">KT94</div><div class="diamonds">T</div><div class="clubs">Q7543</div></div> <div></div> <div class="hand {player.name}"></div> <div></div>
+</div>
+<div class="deal" style="margin: 20px">
+<div></div> <div class="hand {player.name}"></div> <div></div> <div class="hand west"><div class="spades">J2</div><div class="hearts">JT</div><div class="diamonds">9852</div><div class="clubs">AKQT6</div></div> <div class="compass"><div class="north">N</div><div class="west">W</div><div class="east">E</div><div class="south">S</div></div> <div class="hand east"><div class="spades">AQ98</div><div class="hearts">Q865</div><div class="diamonds">43</div><div class="clubs">532</div></div> <div></div> <div class="hand {player.name}"></div> <div></div>
+</div>
+<div class="deal" style="margin: 20px">
+<div></div> <div class="hand {player.name}"></div> <div></div> <div class="hand west"><div class="spades">K97</div><div class="hearts">KJ</div><div class="diamonds">53</div><div class="clubs">KJT982</div></div> <div class="compass"><div class="north">N</div><div class="west">W</div><div class="east">E</div><div class="south">S</div></div> <div class="hand east"><div class="spades">AT3</div><div class="hearts">QT98543</div><div class="diamonds">72</div><div class="clubs">Q</div></div> <div></div> <div class="hand {player.name}"></div> <div></div>
+</div>
+<div class="deal" style="margin: 20px">
+<div></div> <div class="hand {player.name}"></div> <div></div> <div class="hand west"><div class="spades">93</div><div class="hearts">K3</div><div class="diamonds">QJ9543</div><div class="clubs">J83</div></div> <div class="compass"><div class="north">N</div><div class="west">W</div><div class="east">E</div><div class="south">S</div></div> <div class="hand east"><div class="spades">KQ</div><div class="hearts">A984</div><div class="diamonds">7</div><div class="clubs">KQT976</div></div> <div></div> <div class="hand {player.name}"></div> <div></div>
+</div>
+<div class="deal" style="margin: 20px">
+<div></div> <div class="hand {player.name}"></div> <div></div> <div class="hand west"><div class="spades">KJT543</div><div class="hearts">Q</div><div class="diamonds">52</div><div class="clubs">KJ84</div></div> <div class="compass"><div class="north">N</div><div class="west">W</div><div class="east">E</div><div class="south">S</div></div> <div class="hand east"><div class="spades">Q6</div><div class="hearts">K762</div><div class="diamonds">KQ43</div><div class="clubs">AT2</div></div> <div></div> <div class="hand {player.name}"></div> <div></div>
+</div>
+<div class="deal" style="margin: 20px">
+<div></div> <div class="hand {player.name}"></div> <div></div> <div class="hand west"><div class="spades">KQJT</div><div class="hearts">J96</div><div class="diamonds">65</div><div class="clubs">JT94</div></div> <div class="compass"><div class="north">N</div><div class="west">W</div><div class="east">E</div><div class="south">S</div></div> <div class="hand east"><div class="spades">32</div><div class="hearts">KT42</div><div class="diamonds">KJ987</div><div class="clubs">76</div></div> <div></div> <div class="hand {player.name}"></div> <div></div>
+</div>
+<div class="deal" style="margin: 20px">
+<div></div> <div class="hand {player.name}"></div> <div></div> <div class="hand west"><div class="spades">K</div><div class="hearts">K82</div><div class="diamonds">KT765</div><div class="clubs">AT64</div></div> <div class="compass"><div class="north">N</div><div class="west">W</div><div class="east">E</div><div class="south">S</div></div> <div class="hand east"><div class="spades">QJ7</div><div class="hearts">Q9763</div><div class="diamonds">8</div><div class="clubs">KQJ8</div></div> <div></div> <div class="hand {player.name}"></div> <div></div>
+</div>
+<div class="deal" style="margin: 20px">
+<div></div> <div class="hand {player.name}"></div> <div></div> <div class="hand west"><div class="spades">T7</div><div class="hearts">QT964</div><div class="diamonds">T875</div><div class="clubs">QT</div></div> <div class="compass"><div class="north">N</div><div class="west">W</div><div class="east">E</div><div class="south">S</div></div> <div class="hand east"><div class="spades">AQ3</div><div class="hearts">A2</div><div class="diamonds">AQJ942</div><div class="clubs">84</div></div> <div></div> <div class="hand {player.name}"></div> <div></div>
+</div>
+<div class="deal" style="margin: 20px">
+<div></div> <div class="hand {player.name}"></div> <div></div> <div class="hand west"><div class="spades">Q432</div><div class="hearts">QT75</div><div class="diamonds">Q75</div><div class="clubs">A5</div></div> <div class="compass"><div class="north">N</div><div class="west">W</div><div class="east">E</div><div class="south">S</div></div> <div class="hand east"><div class="spades">AJ8</div><div class="hearts">J862</div><div class="diamonds">A984</div><div class="clubs">K6</div></div> <div></div> <div class="hand {player.name}"></div> <div></div>
+</div>
+</div>
+<table class="deal-oneline">
+<tr><th>PBN</th></tr>
+<tr><td><div class="hand-inline">N:T74.AKJ.J7.KJ743 K83.Q9654.96.T85 A65.872.AT83.AQ9 QJ92.T3.KQ542.62</div></td>
+</tr>
+<tr><td><div class="hand-inline">N:43.AQ84.KQ3.JT63 KT7.97.AT94.A954 AQJ9852.J532.2.8 6.KT6.J8765.KQ72</div></td>
+</tr>
+<tr><td><div class="hand-inline">N:AT.Q6.T9752.Q842 J7.A984.Q84.KT73 KQ8643.KJ3..AJ95 952.T752.AKJ63.6</div></td>
+</tr>
+<tr><td><div class="hand-inline">N:A74.KT4.86.Q7653 KJ32.852.A973.94 QT8.J9.KJ52.KJ82 965.AQ763.QT4.AT</div></td>
+</tr>
+<tr><td><div class="hand-inline">N:Q93.QT3.62.Q7632 JT62.A65.KQ3.JT8 A4.KJ2.AJT98.A54 K875.9874.754.K9</div></td>
+</tr>
+<tr><td><div class="hand-inline">N:AJT7543.A8.A8.92 Q9.KJT.J97432.K6 K8.Q76542.K.AT53 62.93.QT65.QJ874</div></td>
+</tr>
+<tr><td><div class="hand-inline">N:532.AK87.AJ8.Q65 K97.T92.K97.J873 AT4.Q6543.T53.K9 QJ86.J.Q642.AT42</div></td>
+</tr>
+<tr><td><div class="hand-inline">N:Q86.AK87.A.AKT32 J9.QJ953.T73.J96 AK2.T2.QJ98654.7 T7543.64.K2.Q854</div></td>
+</tr>
+<tr><td><div class="hand-inline">N:73.A8.A98.KT8432 K986.T532.653.J9 AJ5.KJ964.Q4.Q75 QT42.Q7.KJT72.A6</div></td>
+</tr>
+<tr><td><div class="hand-inline">N:J6532.JT.Q654.83 Q987.A92.JT2.K94 AT4.Q873.987.AT2 K.K654.AK3.QJ765</div></td>
+</tr>
+<tr><td><div class="hand-inline">N:AJ7643.95.A9.Q43 K2.876.Q52.J9875 Q9.AQJT432.KT76. T85.K.J843.AKT62</div></td>
+</tr>
+<tr><td><div class="hand-inline">N:84.J873.87653.J8 Q93.KT94.T.Q7543 KJ7.Q6.AQJ4.AK92 AT652.A52.K92.T6</div></td>
+</tr>
+<tr><td><div class="hand-inline">N:KT64.K32.J76.J98 AQ98.Q865.43.532 753.A974.AKQT.74 J2.JT.9852.AKQT6</div></td>
+</tr>
+<tr><td><div class="hand-inline">N:J852.A2.JT98.A54 AT3.QT98543.72.Q Q64.76.AKQ64.763 K97.KJ.53.KJT982</div></td>
+</tr>
+<tr><td><div class="hand-inline">N:AT752.T2.AK8.542 KQ.A984.7.KQT976 J864.QJ765.T62.A 93.K3.QJ9543.J83</div></td>
+</tr>
+<tr><td><div class="hand-inline">N:A97.JT9543.A6.75 Q6.K762.KQ43.AT2 82.A8.JT987.Q963 KJT543.Q.52.KJ84</div></td>
+</tr>
+<tr><td><div class="hand-inline">N:A84.Q873.T.AKQ52 32.KT42.KJ987.76 9765.A5.AQ432.83 KQJT.J96.65.JT94</div></td>
+</tr>
+<tr><td><div class="hand-inline">N:AT9843..QJ32.973 QJ7.Q9763.8.KQJ8 652.AJT54.A94.52 K.K82.KT765.AT64</div></td>
+</tr>
+<tr><td><div class="hand-inline">N:KJ9.875.K63.J765 AQ3.A2.AQJ942.84 86542.KJ3..AK932 T7.QT964.T875.QT</div></td>
+</tr>
+<tr><td><div class="hand-inline">N:965.A943.K.98732 AJ8.J862.A984.K6 KT7.K.JT632.QJT4 Q432.QT75.Q75.A5</div></td>
+</tr>
+</table>
+<table class="deal-compact">
+<tr>
+<th>North</th><th>East</th><th>South</th><th>West</th><th>Value</th></tr>
+<tr>
+<td><div class="hand">
+<div class="spades">T74</div>
+<div class="hearts">AKJ</div>
+<div class="diamonds">J7</div>
+<div class="clubs">KJ743</div>
+</div></td>
+<td><div class="hand">
+<div class="spades">K83</div>
+<div class="hearts">Q9654</div>
+<div class="diamonds">96</div>
+<div class="clubs">T85</div>
+</div></td>
+<td><div class="hand">
+<div class="spades">A65</div>
+<div class="hearts">872</div>
+<div class="diamonds">AT83</div>
+<div class="clubs">AQ9</div>
+</div></td>
+<td><div class="hand">
+<div class="spades">QJ92</div>
+<div class="hearts">T3</div>
+<div class="diamonds">KQ542</div>
+<div class="clubs">62</div>
+</div></td>
+<td><div class="value">13</div></td>
+</tr>
+<tr>
+<td><div class="hand">
+<div class="spades">43</div>
+<div class="hearts">AQ84</div>
+<div class="diamonds">KQ3</div>
+<div class="clubs">JT63</div>
+</div></td>
+<td><div class="hand">
+<div class="spades">KT7</div>
+<div class="hearts">97</div>
+<div class="diamonds">AT94</div>
+<div class="clubs">A954</div>
+</div></td>
+<td><div class="hand">
+<div class="spades">AQJ9852</div>
+<div class="hearts">J532</div>
+<div class="diamonds">2</div>
+<div class="clubs">8</div>
+</div></td>
+<td><div class="hand">
+<div class="spades">6</div>
+<div class="hearts">KT6</div>
+<div class="diamonds">J8765</div>
+<div class="clubs">KQ72</div>
+</div></td>
+<td><div class="value">12</div></td>
+</tr>
+<tr>
+<td><div class="hand">
+<div class="spades">AT</div>
+<div class="hearts">Q6</div>
+<div class="diamonds">T9752</div>
+<div class="clubs">Q842</div>
+</div></td>
+<td><div class="hand">
+<div class="spades">J7</div>
+<div class="hearts">A984</div>
+<div class="diamonds">Q84</div>
+<div class="clubs">KT73</div>
+</div></td>
+<td><div class="hand">
+<div class="spades">KQ8643</div>
+<div class="hearts">KJ3</div>
+<div class="diamonds">&mdash;</div>
+<div class="clubs">AJ95</div>
+</div></td>
+<td><div class="hand">
+<div class="spades">952</div>
+<div class="hearts">T752</div>
+<div class="diamonds">AKJ63</div>
+<div class="clubs">6</div>
+</div></td>
+<td><div class="value">8</div></td>
+</tr>
+<tr>
+<td><div class="hand">
+<div class="spades">A74</div>
+<div class="hearts">KT4</div>
+<div class="diamonds">86</div>
+<div class="clubs">Q7653</div>
+</div></td>
+<td><div class="hand">
+<div class="spades">KJ32</div>
+<div class="hearts">852</div>
+<div class="diamonds">A973</div>
+<div class="clubs">94</div>
+</div></td>
+<td><div class="hand">
+<div class="spades">QT8</div>
+<div class="hearts">J9</div>
+<div class="diamonds">KJ52</div>
+<div class="clubs">KJ82</div>
+</div></td>
+<td><div class="hand">
+<div class="spades">965</div>
+<div class="hearts">AQ763</div>
+<div class="diamonds">QT4</div>
+<div class="clubs">AT</div>
+</div></td>
+<td><div class="value">9</div></td>
+</tr>
+<tr>
+<td><div class="hand">
+<div class="spades">Q93</div>
+<div class="hearts">QT3</div>
+<div class="diamonds">62</div>
+<div class="clubs">Q7632</div>
+</div></td>
+<td><div class="hand">
+<div class="spades">JT62</div>
+<div class="hearts">A65</div>
+<div class="diamonds">KQ3</div>
+<div class="clubs">JT8</div>
+</div></td>
+<td><div class="hand">
+<div class="spades">A4</div>
+<div class="hearts">KJ2</div>
+<div class="diamonds">AJT98</div>
+<div class="clubs">A54</div>
+</div></td>
+<td><div class="hand">
+<div class="spades">K875</div>
+<div class="hearts">9874</div>
+<div class="diamonds">754</div>
+<div class="clubs">K9</div>
+</div></td>
+<td><div class="value">6</div></td>
+</tr>
+<tr>
+<td><div class="hand">
+<div class="spades">AJT7543</div>
+<div class="hearts">A8</div>
+<div class="diamonds">A8</div>
+<div class="clubs">92</div>
+</div></td>
+<td><div class="hand">
+<div class="spades">Q9</div>
+<div class="hearts">KJT</div>
+<div class="diamonds">J97432</div>
+<div class="clubs">K6</div>
+</div></td>
+<td><div class="hand">
+<div class="spades">K8</div>
+<div class="hearts">Q76542</div>
+<div class="diamonds">K</div>
+<div class="clubs">AT53</div>
+</div></td>
+<td><div class="hand">
+<div class="spades">62</div>
+<div class="hearts">93</div>
+<div class="diamonds">QT65</div>
+<div class="clubs">QJ874</div>
+</div></td>
+<td><div class="value">13</div></td>
+</tr>
+<tr>
+<td><div class="hand">
+<div class="spades">532</div>
+<div class="hearts">AK87</div>
+<div class="diamonds">AJ8</div>
+<div class="clubs">Q65</div>
+</div></td>
+<td><div class="hand">
+<div class="spades">K97</div>
+<div class="hearts">T92</div>
+<div class="diamonds">K97</div>
+<div class="clubs">J873</div>
+</div></td>
+<td><div class="hand">
+<div class="spades">AT4</div>
+<div class="hearts">Q6543</div>
+<div class="diamonds">T53</div>
+<div class="clubs">K9</div>
+</div></td>
+<td><div class="hand">
+<div class="spades">QJ86</div>
+<div class="hearts">J</div>
+<div class="diamonds">Q642</div>
+<div class="clubs">AT42</div>
+</div></td>
+<td><div class="value">14</div></td>
+</tr>
+<tr>
+<td><div class="hand">
+<div class="spades">Q86</div>
+<div class="hearts">AK87</div>
+<div class="diamonds">A</div>
+<div class="clubs">AKT32</div>
+</div></td>
+<td><div class="hand">
+<div class="spades">J9</div>
+<div class="hearts">QJ953</div>
+<div class="diamonds">T73</div>
+<div class="clubs">J96</div>
+</div></td>
+<td><div class="hand">
+<div class="spades">AK2</div>
+<div class="hearts">T2</div>
+<div class="diamonds">QJ98654</div>
+<div class="clubs">7</div>
+</div></td>
+<td><div class="hand">
+<div class="spades">T7543</div>
+<div class="hearts">64</div>
+<div class="diamonds">K2</div>
+<div class="clubs">Q854</div>
+</div></td>
+<td><div class="value">20</div></td>
+</tr>
+<tr>
+<td><div class="hand">
+<div class="spades">73</div>
+<div class="hearts">A8</div>
+<div class="diamonds">A98</div>
+<div class="clubs">KT8432</div>
+</div></td>
+<td><div class="hand">
+<div class="spades">K986</div>
+<div class="hearts">T532</div>
+<div class="diamonds">653</div>
+<div class="clubs">J9</div>
+</div></td>
+<td><div class="hand">
+<div class="spades">AJ5</div>
+<div class="hearts">KJ964</div>
+<div class="diamonds">Q4</div>
+<div class="clubs">Q75</div>
+</div></td>
+<td><div class="hand">
+<div class="spades">QT42</div>
+<div class="hearts">Q7</div>
+<div class="diamonds">KJT72</div>
+<div class="clubs">A6</div>
+</div></td>
+<td><div class="value">11</div></td>
+</tr>
+<tr>
+<td><div class="hand">
+<div class="spades">J6532</div>
+<div class="hearts">JT</div>
+<div class="diamonds">Q654</div>
+<div class="clubs">83</div>
+</div></td>
+<td><div class="hand">
+<div class="spades">Q987</div>
+<div class="hearts">A92</div>
+<div class="diamonds">JT2</div>
+<div class="clubs">K94</div>
+</div></td>
+<td><div class="hand">
+<div class="spades">AT4</div>
+<div class="hearts">Q873</div>
+<div class="diamonds">987</div>
+<div class="clubs">AT2</div>
+</div></td>
+<td><div class="hand">
+<div class="spades">K</div>
+<div class="hearts">K654</div>
+<div class="diamonds">AK3</div>
+<div class="clubs">QJ765</div>
+</div></td>
+<td><div class="value">4</div></td>
+</tr>
+<tr>
+<td><div class="hand">
+<div class="spades">AJ7643</div>
+<div class="hearts">95</div>
+<div class="diamonds">A9</div>
+<div class="clubs">Q43</div>
+</div></td>
+<td><div class="hand">
+<div class="spades">K2</div>
+<div class="hearts">876</div>
+<div class="diamonds">Q52</div>
+<div class="clubs">J9875</div>
+</div></td>
+<td><div class="hand">
+<div class="spades">Q9</div>
+<div class="hearts">AQJT432</div>
+<div class="diamonds">KT76</div>
+<div class="clubs">&mdash;</div>
+</div></td>
+<td><div class="hand">
+<div class="spades">T85</div>
+<div class="hearts">K</div>
+<div class="diamonds">J843</div>
+<div class="clubs">AKT62</div>
+</div></td>
+<td><div class="value">11</div></td>
+</tr>
+<tr>
+<td><div class="hand">
+<div class="spades">84</div>
+<div class="hearts">J873</div>
+<div class="diamonds">87653</div>
+<div class="clubs">J8</div>
+</div></td>
+<td><div class="hand">
+<div class="spades">Q93</div>
+<div class="hearts">KT94</div>
+<div class="diamonds">T</div>
+<div class="clubs">Q7543</div>
+</div></td>
+<td><div class="hand">
+<div class="spades">KJ7</div>
+<div class="hearts">Q6</div>
+<div class="diamonds">AQJ4</div>
+<div class="clubs">AK92</div>
+</div></td>
+<td><div class="hand">
+<div class="spades">AT652</div>
+<div class="hearts">A52</div>
+<div class="diamonds">K92</div>
+<div class="clubs">T6</div>
+</div></td>
+<td><div class="value">2</div></td>
+</tr>
+<tr>
+<td><div class="hand">
+<div class="spades">KT64</div>
+<div class="hearts">K32</div>
+<div class="diamonds">J76</div>
+<div class="clubs">J98</div>
+</div></td>
+<td><div class="hand">
+<div class="spades">AQ98</div>
+<div class="hearts">Q865</div>
+<div class="diamonds">43</div>
+<div class="clubs">532</div>
+</div></td>
+<td><div class="hand">
+<div class="spades">753</div>
+<div class="hearts">A974</div>
+<div class="diamonds">AKQT</div>
+<div class="clubs">74</div>
+</div></td>
+<td><div class="hand">
+<div class="spades">J2</div>
+<div class="hearts">JT</div>
+<div class="diamonds">9852</div>
+<div class="clubs">AKQT6</div>
+</div></td>
+<td><div class="value">8</div></td>
+</tr>
+<tr>
+<td><div class="hand">
+<div class="spades">J852</div>
+<div class="hearts">A2</div>
+<div class="diamonds">JT98</div>
+<div class="clubs">A54</div>
+</div></td>
+<td><div class="hand">
+<div class="spades">AT3</div>
+<div class="hearts">QT98543</div>
+<div class="diamonds">72</div>
+<div class="clubs">Q</div>
+</div></td>
+<td><div class="hand">
+<div class="spades">Q64</div>
+<div class="hearts">76</div>
+<div class="diamonds">AKQ64</div>
+<div class="clubs">763</div>
+</div></td>
+<td><div class="hand">
+<div class="spades">K97</div>
+<div class="hearts">KJ</div>
+<div class="diamonds">53</div>
+<div class="clubs">KJT982</div>
+</div></td>
+<td><div class="value">10</div></td>
+</tr>
+<tr>
+<td><div class="hand">
+<div class="spades">AT752</div>
+<div class="hearts">T2</div>
+<div class="diamonds">AK8</div>
+<div class="clubs">542</div>
+</div></td>
+<td><div class="hand">
+<div class="spades">KQ</div>
+<div class="hearts">A984</div>
+<div class="diamonds">7</div>
+<div class="clubs">KQT976</div>
+</div></td>
+<td><div class="hand">
+<div class="spades">J864</div>
+<div class="hearts">QJ765</div>
+<div class="diamonds">T62</div>
+<div class="clubs">A</div>
+</div></td>
+<td><div class="hand">
+<div class="spades">93</div>
+<div class="hearts">K3</div>
+<div class="diamonds">QJ9543</div>
+<div class="clubs">J83</div>
+</div></td>
+<td><div class="value">11</div></td>
+</tr>
+<tr>
+<td><div class="hand">
+<div class="spades">A97</div>
+<div class="hearts">JT9543</div>
+<div class="diamonds">A6</div>
+<div class="clubs">75</div>
+</div></td>
+<td><div class="hand">
+<div class="spades">Q6</div>
+<div class="hearts">K762</div>
+<div class="diamonds">KQ43</div>
+<div class="clubs">AT2</div>
+</div></td>
+<td><div class="hand">
+<div class="spades">82</div>
+<div class="hearts">A8</div>
+<div class="diamonds">JT987</div>
+<div class="clubs">Q963</div>
+</div></td>
+<td><div class="hand">
+<div class="spades">KJT543</div>
+<div class="hearts">Q</div>
+<div class="diamonds">52</div>
+<div class="clubs">KJ84</div>
+</div></td>
+<td><div class="value">9</div></td>
+</tr>
+<tr>
+<td><div class="hand">
+<div class="spades">A84</div>
+<div class="hearts">Q873</div>
+<div class="diamonds">T</div>
+<div class="clubs">AKQ52</div>
+</div></td>
+<td><div class="hand">
+<div class="spades">32</div>
+<div class="hearts">KT42</div>
+<div class="diamonds">KJ987</div>
+<div class="clubs">76</div>
+</div></td>
+<td><div class="hand">
+<div class="spades">9765</div>
+<div class="hearts">A5</div>
+<div class="diamonds">AQ432</div>
+<div class="clubs">83</div>
+</div></td>
+<td><div class="hand">
+<div class="spades">KQJT</div>
+<div class="hearts">J96</div>
+<div class="diamonds">65</div>
+<div class="clubs">JT94</div>
+</div></td>
+<td><div class="value">15</div></td>
+</tr>
+<tr>
+<td><div class="hand">
+<div class="spades">AT9843</div>
+<div class="hearts">&mdash;</div>
+<div class="diamonds">QJ32</div>
+<div class="clubs">973</div>
+</div></td>
+<td><div class="hand">
+<div class="spades">QJ7</div>
+<div class="hearts">Q9763</div>
+<div class="diamonds">8</div>
+<div class="clubs">KQJ8</div>
+</div></td>
+<td><div class="hand">
+<div class="spades">652</div>
+<div class="hearts">AJT54</div>
+<div class="diamonds">A94</div>
+<div class="clubs">52</div>
+</div></td>
+<td><div class="hand">
+<div class="spades">K</div>
+<div class="hearts">K82</div>
+<div class="diamonds">KT765</div>
+<div class="clubs">AT64</div>
+</div></td>
+<td><div class="value">7</div></td>
+</tr>
+<tr>
+<td><div class="hand">
+<div class="spades">KJ9</div>
+<div class="hearts">875</div>
+<div class="diamonds">K63</div>
+<div class="clubs">J765</div>
+</div></td>
+<td><div class="hand">
+<div class="spades">AQ3</div>
+<div class="hearts">A2</div>
+<div class="diamonds">AQJ942</div>
+<div class="clubs">84</div>
+</div></td>
+<td><div class="hand">
+<div class="spades">86542</div>
+<div class="hearts">KJ3</div>
+<div class="diamonds">&mdash;</div>
+<div class="clubs">AK932</div>
+</div></td>
+<td><div class="hand">
+<div class="spades">T7</div>
+<div class="hearts">QT964</div>
+<div class="diamonds">T875</div>
+<div class="clubs">QT</div>
+</div></td>
+<td><div class="value">8</div></td>
+</tr>
+<tr>
+<td><div class="hand">
+<div class="spades">965</div>
+<div class="hearts">A943</div>
+<div class="diamonds">K</div>
+<div class="clubs">98732</div>
+</div></td>
+<td><div class="hand">
+<div class="spades">AJ8</div>
+<div class="hearts">J862</div>
+<div class="diamonds">A984</div>
+<div class="clubs">K6</div>
+</div></td>
+<td><div class="hand">
+<div class="spades">KT7</div>
+<div class="hearts">K</div>
+<div class="diamonds">JT632</div>
+<div class="clubs">QJT4</div>
+</div></td>
+<td><div class="hand">
+<div class="spades">Q432</div>
+<div class="hearts">QT75</div>
+<div class="diamonds">Q75</div>
+<div class="clubs">A5</div>
+</div></td>
+<td><div class="value">7</div></td>
+</tr>
+</table>
+<table class="deal-oneline">
+<tr><th>North</th><th>East</th><th>South</th><th>West</th><th>Value</th></tr>
+<tr>
+<td><div class="hand-inline">
+<div class="spades inline">T74</div>
+<div class="hearts inline">AKJ</div>
+<div class="diamonds inline">J7</div>
+<div class="clubs inline">KJ743</div>
+</div></td>
+<td><div class="hand-inline">
+<div class="spades inline">K83</div>
+<div class="hearts inline">Q9654</div>
+<div class="diamonds inline">96</div>
+<div class="clubs inline">T85</div>
+</div></td>
+<td><div class="hand-inline">
+<div class="spades inline">A65</div>
+<div class="hearts inline">872</div>
+<div class="diamonds inline">AT83</div>
+<div class="clubs inline">AQ9</div>
+</div></td>
+<td><div class="hand-inline">
+<div class="spades inline">QJ92</div>
+<div class="hearts inline">T3</div>
+<div class="diamonds inline">KQ542</div>
+<div class="clubs inline">62</div>
+</div></td>
+<td><div class="value">4</div></td>
+</tr>
+<tr>
+<td><div class="hand-inline">
+<div class="spades inline">43</div>
+<div class="hearts inline">AQ84</div>
+<div class="diamonds inline">KQ3</div>
+<div class="clubs inline">JT63</div>
+</div></td>
+<td><div class="hand-inline">
+<div class="spades inline">KT7</div>
+<div class="hearts inline">97</div>
+<div class="diamonds inline">AT94</div>
+<div class="clubs inline">A954</div>
+</div></td>
+<td><div class="hand-inline">
+<div class="spades inline">AQJ9852</div>
+<div class="hearts inline">J532</div>
+<div class="diamonds inline">2</div>
+<div class="clubs inline">8</div>
+</div></td>
+<td><div class="hand-inline">
+<div class="spades inline">6</div>
+<div class="hearts inline">KT6</div>
+<div class="diamonds inline">J8765</div>
+<div class="clubs inline">KQ72</div>
+</div></td>
+<td><div class="value">1</div></td>
+</tr>
+<tr>
+<td><div class="hand-inline">
+<div class="spades inline">AT</div>
+<div class="hearts inline">Q6</div>
+<div class="diamonds inline">T9752</div>
+<div class="clubs inline">Q842</div>
+</div></td>
+<td><div class="hand-inline">
+<div class="spades inline">J7</div>
+<div class="hearts inline">A984</div>
+<div class="diamonds inline">Q84</div>
+<div class="clubs inline">KT73</div>
+</div></td>
+<td><div class="hand-inline">
+<div class="spades inline">KQ8643</div>
+<div class="hearts inline">KJ3</div>
+<div class="diamonds inline">&mdash;</div>
+<div class="clubs inline">AJ95</div>
+</div></td>
+<td><div class="hand-inline">
+<div class="spades inline">952</div>
+<div class="hearts inline">T752</div>
+<div class="diamonds inline">AKJ63</div>
+<div class="clubs inline">6</div>
+</div></td>
+<td><div class="value">3</div></td>
+</tr>
+<tr>
+<td><div class="hand-inline">
+<div class="spades inline">A74</div>
+<div class="hearts inline">KT4</div>
+<div class="diamonds inline">86</div>
+<div class="clubs inline">Q7653</div>
+</div></td>
+<td><div class="hand-inline">
+<div class="spades inline">KJ32</div>
+<div class="hearts inline">852</div>
+<div class="diamonds inline">A973</div>
+<div class="clubs inline">94</div>
+</div></td>
+<td><div class="hand-inline">
+<div class="spades inline">QT8</div>
+<div class="hearts inline">J9</div>
+<div class="diamonds inline">KJ52</div>
+<div class="clubs inline">KJ82</div>
+</div></td>
+<td><div class="hand-inline">
+<div class="spades inline">965</div>
+<div class="hearts inline">AQ763</div>
+<div class="diamonds inline">QT4</div>
+<div class="clubs inline">AT</div>
+</div></td>
+<td><div class="value">3</div></td>
+</tr>
+<tr>
+<td><div class="hand-inline">
+<div class="spades inline">Q93</div>
+<div class="hearts inline">QT3</div>
+<div class="diamonds inline">62</div>
+<div class="clubs inline">Q7632</div>
+</div></td>
+<td><div class="hand-inline">
+<div class="spades inline">JT62</div>
+<div class="hearts inline">A65</div>
+<div class="diamonds inline">KQ3</div>
+<div class="clubs inline">JT8</div>
+</div></td>
+<td><div class="hand-inline">
+<div class="spades inline">A4</div>
+<div class="hearts inline">KJ2</div>
+<div class="diamonds inline">AJT98</div>
+<div class="clubs inline">A54</div>
+</div></td>
+<td><div class="hand-inline">
+<div class="spades inline">K875</div>
+<div class="hearts inline">9874</div>
+<div class="diamonds inline">754</div>
+<div class="clubs inline">K9</div>
+</div></td>
+<td><div class="value">4</div></td>
+</tr>
+<tr>
+<td><div class="hand-inline">
+<div class="spades inline">AJT7543</div>
+<div class="hearts inline">A8</div>
+<div class="diamonds inline">A8</div>
+<div class="clubs inline">92</div>
+</div></td>
+<td><div class="hand-inline">
+<div class="spades inline">Q9</div>
+<div class="hearts inline">KJT</div>
+<div class="diamonds inline">J97432</div>
+<div class="clubs inline">K6</div>
+</div></td>
+<td><div class="hand-inline">
+<div class="spades inline">K8</div>
+<div class="hearts inline">Q76542</div>
+<div class="diamonds inline">K</div>
+<div class="clubs inline">AT53</div>
+</div></td>
+<td><div class="hand-inline">
+<div class="spades inline">62</div>
+<div class="hearts inline">93</div>
+<div class="diamonds inline">QT65</div>
+<div class="clubs inline">QJ874</div>
+</div></td>
+<td><div class="value">2</div></td>
+</tr>
+<tr>
+<td><div class="hand-inline">
+<div class="spades inline">532</div>
+<div class="hearts inline">AK87</div>
+<div class="diamonds inline">AJ8</div>
+<div class="clubs inline">Q65</div>
+</div></td>
+<td><div class="hand-inline">
+<div class="spades inline">K97</div>
+<div class="hearts inline">T92</div>
+<div class="diamonds inline">K97</div>
+<div class="clubs inline">J873</div>
+</div></td>
+<td><div class="hand-inline">
+<div class="spades inline">AT4</div>
+<div class="hearts inline">Q6543</div>
+<div class="diamonds inline">T53</div>
+<div class="clubs inline">K9</div>
+</div></td>
+<td><div class="hand-inline">
+<div class="spades inline">QJ86</div>
+<div class="hearts inline">J</div>
+<div class="diamonds inline">Q642</div>
+<div class="clubs inline">AT42</div>
+</div></td>
+<td><div class="value">4</div></td>
+</tr>
+<tr>
+<td><div class="hand-inline">
+<div class="spades inline">Q86</div>
+<div class="hearts inline">AK87</div>
+<div class="diamonds inline">A</div>
+<div class="clubs inline">AKT32</div>
+</div></td>
+<td><div class="hand-inline">
+<div class="spades inline">J9</div>
+<div class="hearts inline">QJ953</div>
+<div class="diamonds inline">T73</div>
+<div class="clubs inline">J96</div>
+</div></td>
+<td><div class="hand-inline">
+<div class="spades inline">AK2</div>
+<div class="hearts inline">T2</div>
+<div class="diamonds inline">QJ98654</div>
+<div class="clubs inline">7</div>
+</div></td>
+<td><div class="hand-inline">
+<div class="spades inline">T7543</div>
+<div class="hearts inline">64</div>
+<div class="diamonds inline">K2</div>
+<div class="clubs inline">Q854</div>
+</div></td>
+<td><div class="value">5</div></td>
+</tr>
+<tr>
+<td><div class="hand-inline">
+<div class="spades inline">73</div>
+<div class="hearts inline">A8</div>
+<div class="diamonds inline">A98</div>
+<div class="clubs inline">KT8432</div>
+</div></td>
+<td><div class="hand-inline">
+<div class="spades inline">K986</div>
+<div class="hearts inline">T532</div>
+<div class="diamonds inline">653</div>
+<div class="clubs inline">J9</div>
+</div></td>
+<td><div class="hand-inline">
+<div class="spades inline">AJ5</div>
+<div class="hearts inline">KJ964</div>
+<div class="diamonds inline">Q4</div>
+<div class="clubs inline">Q75</div>
+</div></td>
+<td><div class="hand-inline">
+<div class="spades inline">QT42</div>
+<div class="hearts inline">Q7</div>
+<div class="diamonds inline">KJT72</div>
+<div class="clubs inline">A6</div>
+</div></td>
+<td><div class="value">4</div></td>
+</tr>
+<tr>
+<td><div class="hand-inline">
+<div class="spades inline">J6532</div>
+<div class="hearts inline">JT</div>
+<div class="diamonds inline">Q654</div>
+<div class="clubs inline">83</div>
+</div></td>
+<td><div class="hand-inline">
+<div class="spades inline">Q987</div>
+<div class="hearts inline">A92</div>
+<div class="diamonds inline">JT2</div>
+<div class="clubs inline">K94</div>
+</div></td>
+<td><div class="hand-inline">
+<div class="spades inline">AT4</div>
+<div class="hearts inline">Q873</div>
+<div class="diamonds inline">987</div>
+<div class="clubs inline">AT2</div>
+</div></td>
+<td><div class="hand-inline">
+<div class="spades inline">K</div>
+<div class="hearts inline">K654</div>
+<div class="diamonds inline">AK3</div>
+<div class="clubs inline">QJ765</div>
+</div></td>
+<td><div class="value">1</div></td>
+</tr>
+<tr>
+<td><div class="hand-inline">
+<div class="spades inline">AJ7643</div>
+<div class="hearts inline">95</div>
+<div class="diamonds inline">A9</div>
+<div class="clubs inline">Q43</div>
+</div></td>
+<td><div class="hand-inline">
+<div class="spades inline">K2</div>
+<div class="hearts inline">876</div>
+<div class="diamonds inline">Q52</div>
+<div class="clubs inline">J9875</div>
+</div></td>
+<td><div class="hand-inline">
+<div class="spades inline">Q9</div>
+<div class="hearts inline">AQJT432</div>
+<div class="diamonds inline">KT76</div>
+<div class="clubs inline">&mdash;</div>
+</div></td>
+<td><div class="hand-inline">
+<div class="spades inline">T85</div>
+<div class="hearts inline">K</div>
+<div class="diamonds inline">J843</div>
+<div class="clubs inline">AKT62</div>
+</div></td>
+<td><div class="value">3</div></td>
+</tr>
+<tr>
+<td><div class="hand-inline">
+<div class="spades inline">84</div>
+<div class="hearts inline">J873</div>
+<div class="diamonds inline">87653</div>
+<div class="clubs inline">J8</div>
+</div></td>
+<td><div class="hand-inline">
+<div class="spades inline">Q93</div>
+<div class="hearts inline">KT94</div>
+<div class="diamonds inline">T</div>
+<div class="clubs inline">Q7543</div>
+</div></td>
+<td><div class="hand-inline">
+<div class="spades inline">KJ7</div>
+<div class="hearts inline">Q6</div>
+<div class="diamonds inline">AQJ4</div>
+<div class="clubs inline">AK92</div>
+</div></td>
+<td><div class="hand-inline">
+<div class="spades inline">AT652</div>
+<div class="hearts inline">A52</div>
+<div class="diamonds inline">K92</div>
+<div class="clubs inline">T6</div>
+</div></td>
+<td><div class="value">5</div></td>
+</tr>
+<tr>
+<td><div class="hand-inline">
+<div class="spades inline">KT64</div>
+<div class="hearts inline">K32</div>
+<div class="diamonds inline">J76</div>
+<div class="clubs inline">J98</div>
+</div></td>
+<td><div class="hand-inline">
+<div class="spades inline">AQ98</div>
+<div class="hearts inline">Q865</div>
+<div class="diamonds inline">43</div>
+<div class="clubs inline">532</div>
+</div></td>
+<td><div class="hand-inline">
+<div class="spades inline">753</div>
+<div class="hearts inline">A974</div>
+<div class="diamonds inline">AKQT</div>
+<div class="clubs inline">74</div>
+</div></td>
+<td><div class="hand-inline">
+<div class="spades inline">J2</div>
+<div class="hearts inline">JT</div>
+<div class="diamonds inline">9852</div>
+<div class="clubs inline">AKQT6</div>
+</div></td>
+<td><div class="value">2</div></td>
+</tr>
+<tr>
+<td><div class="hand-inline">
+<div class="spades inline">J852</div>
+<div class="hearts inline">A2</div>
+<div class="diamonds inline">JT98</div>
+<div class="clubs inline">A54</div>
+</div></td>
+<td><div class="hand-inline">
+<div class="spades inline">AT3</div>
+<div class="hearts inline">QT98543</div>
+<div class="diamonds inline">72</div>
+<div class="clubs inline">Q</div>
+</div></td>
+<td><div class="hand-inline">
+<div class="spades inline">Q64</div>
+<div class="hearts inline">76</div>
+<div class="diamonds inline">AKQ64</div>
+<div class="clubs inline">763</div>
+</div></td>
+<td><div class="hand-inline">
+<div class="spades inline">K97</div>
+<div class="hearts inline">KJ</div>
+<div class="diamonds inline">53</div>
+<div class="clubs inline">KJT982</div>
+</div></td>
+<td><div class="value">3</div></td>
+</tr>
+<tr>
+<td><div class="hand-inline">
+<div class="spades inline">AT752</div>
+<div class="hearts inline">T2</div>
+<div class="diamonds inline">AK8</div>
+<div class="clubs inline">542</div>
+</div></td>
+<td><div class="hand-inline">
+<div class="spades inline">KQ</div>
+<div class="hearts inline">A984</div>
+<div class="diamonds inline">7</div>
+<div class="clubs inline">KQT976</div>
+</div></td>
+<td><div class="hand-inline">
+<div class="spades inline">J864</div>
+<div class="hearts inline">QJ765</div>
+<div class="diamonds inline">T62</div>
+<div class="clubs inline">A</div>
+</div></td>
+<td><div class="hand-inline">
+<div class="spades inline">93</div>
+<div class="hearts inline">K3</div>
+<div class="diamonds inline">QJ9543</div>
+<div class="clubs inline">J83</div>
+</div></td>
+<td><div class="value">2</div></td>
+</tr>
+<tr>
+<td><div class="hand-inline">
+<div class="spades inline">A97</div>
+<div class="hearts inline">JT9543</div>
+<div class="diamonds inline">A6</div>
+<div class="clubs inline">75</div>
+</div></td>
+<td><div class="hand-inline">
+<div class="spades inline">Q6</div>
+<div class="hearts inline">K762</div>
+<div class="diamonds inline">KQ43</div>
+<div class="clubs inline">AT2</div>
+</div></td>
+<td><div class="hand-inline">
+<div class="spades inline">82</div>
+<div class="hearts inline">A8</div>
+<div class="diamonds inline">JT987</div>
+<div class="clubs inline">Q963</div>
+</div></td>
+<td><div class="hand-inline">
+<div class="spades inline">KJT543</div>
+<div class="hearts inline">Q</div>
+<div class="diamonds inline">52</div>
+<div class="clubs inline">KJ84</div>
+</div></td>
+<td><div class="value">6</div></td>
+</tr>
+<tr>
+<td><div class="hand-inline">
+<div class="spades inline">A84</div>
+<div class="hearts inline">Q873</div>
+<div class="diamonds inline">T</div>
+<div class="clubs inline">AKQ52</div>
+</div></td>
+<td><div class="hand-inline">
+<div class="spades inline">32</div>
+<div class="hearts inline">KT42</div>
+<div class="diamonds inline">KJ987</div>
+<div class="clubs inline">76</div>
+</div></td>
+<td><div class="hand-inline">
+<div class="spades inline">9765</div>
+<div class="hearts inline">A5</div>
+<div class="diamonds inline">AQ432</div>
+<div class="clubs inline">83</div>
+</div></td>
+<td><div class="hand-inline">
+<div class="spades inline">KQJT</div>
+<div class="hearts inline">J96</div>
+<div class="diamonds inline">65</div>
+<div class="clubs inline">JT94</div>
+</div></td>
+<td><div class="value">4</div></td>
+</tr>
+<tr>
+<td><div class="hand-inline">
+<div class="spades inline">AT9843</div>
+<div class="hearts inline">&mdash;</div>
+<div class="diamonds inline">QJ32</div>
+<div class="clubs inline">973</div>
+</div></td>
+<td><div class="hand-inline">
+<div class="spades inline">QJ7</div>
+<div class="hearts inline">Q9763</div>
+<div class="diamonds inline">8</div>
+<div class="clubs inline">KQJ8</div>
+</div></td>
+<td><div class="hand-inline">
+<div class="spades inline">652</div>
+<div class="hearts inline">AJT54</div>
+<div class="diamonds inline">A94</div>
+<div class="clubs inline">52</div>
+</div></td>
+<td><div class="hand-inline">
+<div class="spades inline">K</div>
+<div class="hearts inline">K82</div>
+<div class="diamonds inline">KT765</div>
+<div class="clubs inline">AT64</div>
+</div></td>
+<td><div class="value">1</div></td>
+</tr>
+<tr>
+<td><div class="hand-inline">
+<div class="spades inline">KJ9</div>
+<div class="hearts inline">875</div>
+<div class="diamonds inline">K63</div>
+<div class="clubs inline">J765</div>
+</div></td>
+<td><div class="hand-inline">
+<div class="spades inline">AQ3</div>
+<div class="hearts inline">A2</div>
+<div class="diamonds inline">AQJ942</div>
+<div class="clubs inline">84</div>
+</div></td>
+<td><div class="hand-inline">
+<div class="spades inline">86542</div>
+<div class="hearts inline">KJ3</div>
+<div class="diamonds inline">&mdash;</div>
+<div class="clubs inline">AK932</div>
+</div></td>
+<td><div class="hand-inline">
+<div class="spades inline">T7</div>
+<div class="hearts inline">QT964</div>
+<div class="diamonds inline">T875</div>
+<div class="clubs inline">QT</div>
+</div></td>
+<td><div class="value">2</div></td>
+</tr>
+<tr>
+<td><div class="hand-inline">
+<div class="spades inline">965</div>
+<div class="hearts inline">A943</div>
+<div class="diamonds inline">K</div>
+<div class="clubs inline">98732</div>
+</div></td>
+<td><div class="hand-inline">
+<div class="spades inline">AJ8</div>
+<div class="hearts inline">J862</div>
+<div class="diamonds inline">A984</div>
+<div class="clubs inline">K6</div>
+</div></td>
+<td><div class="hand-inline">
+<div class="spades inline">KT7</div>
+<div class="hearts inline">K</div>
+<div class="diamonds inline">JT632</div>
+<div class="clubs inline">QJT4</div>
+</div></td>
+<td><div class="hand-inline">
+<div class="spades inline">Q432</div>
+<div class="hearts inline">QT75</div>
+<div class="diamonds inline">Q75</div>
+<div class="clubs inline">A5</div>
+</div></td>
+<td><div class="value">4</div></td>
+</tr>
+</table>
+<table class="deal-oneline">
+<tr><th>Output</th></tr>
+<tr><td><div class="value">
+Number of hearts: 3<br></div></td>
+</tr>
+<tr><td><div class="value">
+Number of hearts: 4<br></div></td>
+</tr>
+<tr><td><div class="value">
+Number of hearts: 2<br></div></td>
+</tr>
+<tr><td><div class="value">
+Number of hearts: 3<br></div></td>
+</tr>
+<tr><td><div class="value">
+Number of hearts: 3<br></div></td>
+</tr>
+<tr><td><div class="value">
+Number of hearts: 2<br></div></td>
+</tr>
+<tr><td><div class="value">
+Number of hearts: 4<br></div></td>
+</tr>
+<tr><td><div class="value">
+Number of hearts: 4<br></div></td>
+</tr>
+<tr><td><div class="value">
+Number of hearts: 2<br></div></td>
+</tr>
+<tr><td><div class="value">
+Number of hearts: 2<br></div></td>
+</tr>
+<tr><td><div class="value">
+Number of hearts: 2<br></div></td>
+</tr>
+<tr><td><div class="value">
+Number of hearts: 4<br></div></td>
+</tr>
+<tr><td><div class="value">
+Number of hearts: 3<br></div></td>
+</tr>
+<tr><td><div class="value">
+Number of hearts: 2<br></div></td>
+</tr>
+<tr><td><div class="value">
+Number of hearts: 2<br></div></td>
+</tr>
+<tr><td><div class="value">
+Number of hearts: 6<br></div></td>
+</tr>
+<tr><td><div class="value">
+Number of hearts: 4<br></div></td>
+</tr>
+<tr><td><div class="value">
+Number of hearts: 0<br></div></td>
+</tr>
+<tr><td><div class="value">
+Number of hearts: 3<br></div></td>
+</tr>
+<tr><td><div class="value">
+Number of hearts: 4<br></div></td>
+</tr>
+</table>
+</div>
+</body>
+</html>
