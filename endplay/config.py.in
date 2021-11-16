@@ -3,7 +3,7 @@ Configuration and versioning information
 """
 
 # Packages metadata, used by setuptools etc
-__version__ = "@ENDPLAY_VERSION@"
+__version__ = """@ENDPLAY_VERSION@""".strip()
 __version_info__ = tuple(int(i) if i.isdigit() else i for i in __version__.replace("-", ".").split("."))
 __author__ = "Dominic Price"
 
