@@ -38,7 +38,7 @@ endif()
 # Configure config.py with version number
 # =======================================
 configure_file("${ENDPLAY_ROOT_DIR}/config.py.in" "config.py" @ONLY)
-install(FILES "${CMAKE_CURRENT_BINARY_DIR}/config.py" DESTINATION ".")
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/config.py" DESTINATION "endplay")
 
 
 # _dds library
