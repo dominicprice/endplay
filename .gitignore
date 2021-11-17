@@ -19,10 +19,10 @@ build/
 docs/build/
 docs/source/pages/
 out/
-endplay/_dds/dds.dll
-endplay/_dds/libdds.so
-endplay/_dds/__init__.py
-endplay/config.py
+src/endplay/_dds/dds.dll
+src/endplay/_dds/libdds.so
+src/endplay/_dds/__init__.py
+src/endplay/config.py
 
 # No longer generated after switching form scikit-build
 MANIFEST

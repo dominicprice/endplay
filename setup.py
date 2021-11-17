@@ -59,7 +59,7 @@ class cmakeable_build_ext(build_ext):
 		os.chdir(str(cwd))
 
 setup(
-	ext_modules = [CMakeExtension('endplay/_dds')],
+	ext_modules = [CMakeExtension('endplay')],
 	cmdclass = {
 		'build_ext': cmakeable_build_ext,
 	},

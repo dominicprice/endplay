@@ -10,7 +10,7 @@ if (NOT CMAKE_BUILD_TYPE)
 endif()
 set(CMAKE_CXX_STANDARD 17)
 
-set(ENDPLAY_ROOT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/endplay")
+set(ENDPLAY_ROOT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src/endplay")
 file(READ "${CMAKE_CURRENT_SOURCE_DIR}/VERSION" ENDPLAY_VERSION)
 string(REGEX REPLACE "\n$" "" ENDPLAY_VERSION "${ENDPLAY_VERSION}")
 
@@ -80,9 +80,9 @@ configure_file("${ENDPLAY_ROOT_DIR}/_dds/__init__.py.in" "_dds/__init__.py" @ONL
 # Install both bits into the right places in the package  
 if (CC_MSVC)
 	# .dll is a runtime component
-	install(TARGETS dds RUNTIME DESTINATION "_dds")
+	install(TARGETS dds RUNTIME DESTINATION "endplay/_dds")
 else()
-	install(TARGETS dds DESTINATION "_dds")
+	install(TARGETS dds DESTINATION "endplay/_dds")
 endif()
 
-install(FILES "${CMAKE_CURRENT_BINARY_DIR}/_dds/__init__.py" DESTINATION "_dds/")
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/_dds/__init__.py" DESTINATION "endplay/_dds/")
