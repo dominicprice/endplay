@@ -106,37 +106,26 @@ class TestDealerMain(unittest.TestCase):
 		self.dealer_dir = os.path.join(self.this_dir, "dealer")
 		self.seed = 1234
 
-	def script_output(self, script_name, outformat):
+	def assertScriptOutputs(self, script_name, output_format):
 		with patch('sys.stdout', new=io.StringIO()) as output:
-			run_script(os.path.join(self.dealer_dir, script_name), seed=self.seed, outformat = outformat)
-			return output.getvalue()
-
-	def read_file(self, fname):
-		with open(os.path.join(self.dealer_dir, fname), encoding="utf-8") as f:
-			return f.read()
+			run_script(os.path.join(self.dealer_dir, script_name + ".dl"), seed=self.seed, outformat = output_format)
+			script_output = output.getvalue()
+		with open(os.path.join(self.dealer_dir, script_name + "." + output_format + ".out"), encoding="utf-8") as f:
+			expected_output = f.read()
+		self.assertEqual(script_output, expected_output)
 
 	def test_print_actions(self):
-		self.assertEqual(self.script_output("test_print_actions.dl", "plain"), self.read_file("test_print_actions.plain"))
-		self.assertEqual(self.script_output("test_print_actions.dl", "latex"), self.read_file("test_print_actions.latex"))
-		self.assertEqual(self.script_output("test_print_actions.dl", "html"), self.read_file("test_print_actions.html"))
+		self.assertScriptOutputs("test_print_actions", "plain")
+		self.assertScriptOutputs("test_print_actions", "latex")
+		self.assertScriptOutputs("test_print_actions", "html")
 
 	def test_stat_actions(self):
-		# Terminal output attempts to open a plot which we suppress for testing
+		# Checking the actual output of the plots is very unstable, and as we are not actually testing whether
+		# matplotlib produces consistently produces the same output we mock the Figure class
 		with patch('matplotlib.pyplot.figure'):
-			self.assertEqual(self.script_output("test_stat_actions.dl", "plain"), self.read_file("test_stat_actions.plain"))
-
-		# HTML output includes a timestamp and various ids which needs to be normalised
-		randomparts = re.compile(r"(<dc:date>(.*?)</dc:date>)|(#\w+)|(id=\"\w+\")")
-		html_lhs = self.script_output("test_stat_actions.dl", "html")
-		html_lhs = re.sub(randomparts, "", html_lhs)
-		html_rhs = self.read_file("test_stat_actions.html")
-		html_rhs = re.sub(randomparts, "", html_rhs)
-		self.assertEqual(html_lhs, html_rhs)
-
-		# LaTeX output is consistent?!?!
-		self.assertEqual(self.script_output("test_stat_actions.dl", "latex"), self.read_file("test_stat_actions.latex"))
-
-
+			self.assertScriptOutputs("test_stat_actions", "plain")
+			self.assertScriptOutputs("test_stat_actions", "latex")
+			self.assertScriptOutputs("test_stat_actions", "html")
 
 class TestGenerator(unittest.TestCase):
 	def test_01(self):
