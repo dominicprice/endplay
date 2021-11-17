@@ -25,6 +25,8 @@ else()
 	message(WARNING "The compiler you are using hasn't been tested for building this library.")
 endif()
 
+add_subdirectory(libs/pybind11)
+
 # Pretend to use SETUPTOOLS_BUILD variable to stop it complaining
 if (SETUPTOOLS_BUILD)
 	
@@ -86,3 +88,17 @@ else()
 endif()
 
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/_dds/__init__.py" DESTINATION "_dds/")
+
+function(endplay_add_module TARGETNAME PACKAGE MODULE)
+	pybind11_add_module(${TARGETNAME} "endplay/${PACKAGE}/${MODULE}.cpp")
+	target_include_directories(${TARGETNAME} PRIVATE 
+		"${CMAKE_CURRENT_SOURCE_DIR}/endplay"
+		"${CMAKE_CURRENT_SOURCE_DIR}/libs/dds/include"
+	)
+	set_target_properties(${TARGETNAME} PROPERTIES OUTPUT_NAME "${MODULE}")
+	install(TARGETS ${TARGETNAME} DESTINATION "${PACKAGE}")
+endfunction()
+
+# C++ Extension modules
+# =====================
+endplay_add_module(dealer_node "parsers/dealer" "node")

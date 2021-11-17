@@ -59,7 +59,7 @@ def run_script(
 
 	# Parse script into document tree
 	if script is None:
-		doctree = Node("root", Node.ROOT)
+		doctree = Node("root", Node.Type.ROOT)
 	else:
 		try:
 			with open(script) as f:
@@ -168,7 +168,7 @@ def run_script(
 			elif action.value == "printes":
 				objs = []
 				for child in action.children:
-					if child.dtype == Node.VALUE:
+					if child.dtype == Node.Type.VALUE:
 						objs.append(child.value)
 					else:
 						objs.append(interp.lambdify(child))
@@ -180,7 +180,7 @@ def run_script(
 					s, expr = None, interp.lambdify(action.last_child)
 				actioner.average(expr, s)
 			elif action.value == "frequency":
-				if action.first_child.dtype == Node.VALUE:
+				if action.first_child.dtype == Node.Type.VALUE:
 					s, args = action.children[0].value, action.children[1:]
 				else:
 					s, args = None, action.children

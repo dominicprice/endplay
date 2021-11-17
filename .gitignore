@@ -19,8 +19,10 @@ build/
 docs/build/
 docs/source/pages/
 out/
-endplay/_dds/dds.dll
-endplay/_dds/libdds.so
+*.dll
+*.so
+*.pyd
+*.PDB
 endplay/_dds/__init__.py
 endplay/config.py
 

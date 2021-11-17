@@ -10,5 +10,9 @@ include endplay/_dds/__init__.py.in
 include libs/dds/include/*
 include libs/dds/src/*
 
+# C++/Python modules
+endplay/parsers/dealer/node.cpp
+endplay/parsers/dealer/node.h
+
 # Templates for the dealer executable
 include endplay/dealer/actions/templates/*

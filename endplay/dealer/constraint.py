@@ -66,10 +66,10 @@ class ConstraintInterpreter:
 		"Evaluate an expression tree over a specific deal into a logical or arithmetic type"
 		if isinstance(node, str):
 			node = self.parse(node)
-		if node.dtype == Node.ROOT:
+		if node.dtype == Node.Type.ROOT:
 			# root node is just dummy, keep going down the tree
 			return self.evaluate(node.last_child)
-		elif node.dtype == Node.SYMBOL:
+		elif node.dtype == Node.Type.SYMBOL:
 			# symbols evaluate to their value in the environment and
 			# are evaluated if they are Node instances
 			val = self._env[node.value]
@@ -77,13 +77,13 @@ class ConstraintInterpreter:
 				return self.evaluate(val, deal)
 			else:
 				return val
-		elif node.dtype == Node.VALUE:
+		elif node.dtype == Node.Type.VALUE:
 			# values evaluate to themselves
 			return node.value
-		elif node.dtype == Node.FUNCTION:
+		elif node.dtype == Node.Type.FUNCTION:
 			# functions get dispatched
 			return self._dispatch_function(node, deal)
-		elif node.dtype == Node.OPERATOR:
+		elif node.dtype == Node.Type.OPERATOR:
 			# operators get dispatched
 			return self._dispatch_operator(node, deal)
 		else:
@@ -100,7 +100,7 @@ class ConstraintInterpreter:
 		return lambda deal: self.evaluate(node, deal)
 
 	def _evaluate_shape(self, node, shape):
-		if node.dtype == Node.OPERATOR:
+		if node.dtype == Node.Type.OPERATOR:
 			if node.value == "any":
 				tshape = shape.copy()
 				pred = [x for x in node.first_child.value if x != None]
@@ -119,7 +119,7 @@ class ConstraintInterpreter:
 				else:
 					return lhs and (not rhs)
 				return rhs if node.value == "+" else (not rhs)
-		elif node.dtype == Node.VALUE:
+		elif node.dtype == Node.Type.VALUE:
 			for a, b in zip(shape, node.value):
 				if b is not None and a != b:
 					return False
