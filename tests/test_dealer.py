@@ -1,4 +1,5 @@
 ﻿import io
+import warnings
 import unittest
 import os
 import re
@@ -98,19 +99,25 @@ class TestDealerMain(unittest.TestCase):
 	These are 'delicate tests', in that they test the functions against output which was
 	generated at a time when they were 'known to work'. This means that if at any stage
 	the output format changes, the tests will fail which means that they will need to be
-	regenerated.
+	regenerated. To do this, run the test suite with `self.generate` set to `True`; then
+	change it back to False and repeat the test suite.
 	"""
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
 		self.this_dir = os.path.dirname(os.path.abspath(__file__))
 		self.dealer_dir = os.path.join(self.this_dir, "dealer")
 		self.seed = 1234
+		self.generate = False
 
 	def assertScriptOutputs(self, script_name, output_format):
 		with patch('sys.stdout', new=io.StringIO()) as output:
 			run_script(os.path.join(self.dealer_dir, script_name + ".dl"), seed=self.seed, outformat = output_format)
 			script_output = output.getvalue()
-		with open(os.path.join(self.dealer_dir, script_name + "." + output_format + ".out"), encoding="utf-8") as f:
+		out_fname = os.path.join(self.dealer_dir, script_name + "." + output_format + ".out")
+		if self.generate:
+			with open(out_fname, 'w', encoding='utf-8') as f:
+				f.write(script_output)
+		with open(out_fname, encoding="utf-8") as f:
 			expected_output = f.read()
 		self.assertEqual(script_output, expected_output)
 

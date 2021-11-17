@@ -1,7 +1,6 @@
 ﻿from __future__ import annotations
 
 from typing import Optional
-import random
 from tqdm import tqdm
 import shutil
 from tempfile import mkdtemp
@@ -41,11 +40,6 @@ def run_script(
 	:param actions: A list of extra actions to apply
 	:return: The generated deals in a list
 	"""
-
-	# Set the seed. If seed is None, Python uses some random source on the user's
-	# computer to seed the generator which is desirable behaviour, as it means that
-	# previous calls to this function cannot cause accidentally predictable behaviour
-	random.seed(seed, version=2)
 
 	# If we are asked to produce more hands than we generate, we will always fail so let's not
 	# waste any time trying
@@ -116,7 +110,8 @@ def run_script(
 	deals = []
 	generator = generate_deals(
 		*compiled_constraints, predeal=predeal, produce=produce, 
-		show_progress=show_progress, swapping=swapping, max_attempts=generate)
+		show_progress=show_progress, swapping=swapping, 
+		seed=seed, max_attempts=generate)
 	for deal in generator:
 		deals.append(deal)
 

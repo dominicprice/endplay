@@ -3,7 +3,7 @@
 \usepackage{graphicx}
 \usepackage{pgfplots}
 \begin{document}
-points 9.9
+points 8.85
 
 
 \end{document}
