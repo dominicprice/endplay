@@ -36,6 +36,10 @@ class cmakeable_build_ext(build_ext):
 		extdir = pathlib.Path(self.get_ext_fullpath(ext.name))
 		extdir.mkdir(parents=True, exist_ok=True)
 
+		# Check which architecture we should be building for
+		import struct
+		bits = struct.calcsize('P') * 8
+
 		# Setup args passed to cmake
 		config = 'Debug' if self.debug else 'Release'
 		cmake_config_args = [
@@ -43,6 +47,13 @@ class cmakeable_build_ext(build_ext):
 			'-DCMAKE_BUILD_TYPE=' + config,
 			'-DSETUPTOOLS_BUILD=1'
 		]
+		if os.name == 'nt':
+			if bits == 64: cmake_config_args.append('-A x64')
+			elif bits == 32: cmake_config_args.append('-A Win32')
+			else: raise RuntimeError(f"Unknown computer architecture with {bits} bits")
+		else:
+			if bits == 32: cmake_config_args.append('-DCOMPILE_32_BITS=1')
+
 		cmake_build_args = [
 			"--build", ".",
 			"--target", "install",

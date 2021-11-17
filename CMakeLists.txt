@@ -27,9 +27,13 @@ endif()
 
 # Pretend to use SETUPTOOLS_BUILD variable to stop it complaining
 if (SETUPTOOLS_BUILD)
-	
+	message(STATUS "Call to CMake was invocated by setuptools")
 endif()
 
+if (COMPILE_32_BITS)
+	add_compile_options("-m32")
+	add_link_options("-m32")
+endif()
 
 # Configure config.py with version number
 # =======================================
@@ -75,6 +79,7 @@ string(REGEX MATCH "#define MAXNOOFBOARDS [0-9]+" DDS_MAXNOOFBOARDS "${DDS_DLL_H
 string(REGEX MATCH "[0-9]+" DDS_MAXNOOFBOARDS "${DDS_MAXNOOFBOARDS}")
 string(REGEX MATCH "#define MAXNOOFTABLES [0-9]+" DDS_MAXNOOFTABLES "${DDS_DLL_H}")
 string(REGEX MATCH "[0-9]+" DDS_MAXNOOFTABLES "${DDS_MAXNOOFTABLES}")
+set(DDS_LIBRARY_NAME "${CMAKE_SHARED_LIBRARY_PREFIX}dds${CMAKE_SHARED_LIBRARY_SUFFIX}")
 configure_file("${ENDPLAY_ROOT_DIR}/_dds/__init__.py.in" "_dds/__init__.py" @ONLY)
 
 # Install both bits into the right places in the package  

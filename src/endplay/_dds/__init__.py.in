@@ -3,6 +3,38 @@ Python bindings for Bo Haglund's DDS library. This provides a very low-level
 ctypes wrapper around the C++ library. The only extra convenience provided is
 to wrap all of the dds functions so that instead of returning error codes they
 raise a `DDSError`.
+
+The encodings used by the dds library are provided here for convenience:
+
+Denom
+  Spades     0
+  Hearts     1
+  Diamonds   2
+  Clubs      3
+  NT         4
+
+Player
+  North      0
+  East       1
+  South      2
+  West       3
+
+Vulnerable
+  None       0
+  Both       1
+  NS Only    2
+  EW Only    3
+
+Side
+  NS         0
+  EW         1
+
+Rank
+  2          0x4
+  3          0x8
+  ...
+  K          0x2000
+  A          0x4000
 """
 
 __all__ = [
@@ -26,36 +58,6 @@ from typing import Iterable, Optional
 from warnings import warn
 from functools import wraps
 
-#----------------------------------------------------
-# Key for the various encodings used by the DDS
-# library
-#
-# Suits
-#   Spades     0
-#   Hearts     1
-#   Diamonds   2
-#   Clubs      3
-#   NT         4
-# Hand
-#   North      0
-#   East       1
-#   South      2
-#   West       3
-# Vulnerable
-#   None       0
-#   Both       1
-#   NS Only    2
-#   EW Only    3
-# Side
-#   NS         0
-#   EW         1
-# Card
-#   2          0x4
-#   3          0x8
-#   ...
-#   K          0x2000
-#   A          0x4000
-
 
 #----------------------------------------------------
 # Meta functionality required accessing the
@@ -64,7 +66,7 @@ from functools import wraps
 
 # Handle to the DDS shared library
 _cur_path = os.path.abspath(os.path.dirname(__file__))
-_dll_name = "dds.dll" if os.name == "nt" else "libdds.so"
+_dll_name = "@DDS_LIBRARY_NAME@"
 _dll_path = os.path.join(_cur_path, _dll_name)
 try:
 	if os.name == "nt":
@@ -72,9 +74,32 @@ try:
 	else:
 		_dll = ctypes.CDLL(_dll_path)
 	_dll.SetMaxThreads(0)
-except FileNotFoundError:
-	raise RuntimeError("Unable to load the dds library (should be located in " + 
-		_dll_path + "), you may need to reinstall the library.")
+except FileNotFoundError as e:
+	err = "Unable to load the dds library: shared library object not found. You may be "
+	err += "using an unsupported OS, or the endplay package has been modified by an "
+	err += "external program and needs to be reinstalled.\n"
+	err += "Note: Should be located in " + _dll_path + ".\n"
+	try:
+		ls = os.listdir(_cur_path)
+		err += "Note: Contents of directory is " + ", ".join(ls)
+	except FileNotFoundError:
+		err += "Note: Containing directory does not exist"
+	err += "Note: The error raised by ctypes states the following reason:\n"
+	err += f"Note: {e}"
+	raise RuntimeError(err)
+except OSError as e:
+	err = "Unable to load the dds library: shared library object could not be loaded by ctypes.\n"
+	err += "Note: This probably means that the library was compiled for a different "
+	err += "architecture to your current machine.\n"
+	err += "Note: If you have a C++ compiler on your computer, you can try to install the library "
+	err += "from source with the command `pip install endplay --no-binary`\n"
+	err += "Note: Otherwise, please raise this as a bug on the github issue tracker ( "
+	err += "https://github.com/dominicprice/endplay/issues ). You should include information "
+	err += "about what platform you are on in the issue by including the result of running "
+	err += 'python -c "import platform; print(platform.architecture(), platform.machine())"\n'
+	err += "Note: The error raised by ctypes states the following reason:\n"
+	err += f"Note: {e}"
+	raise RuntimeError(err)
 # Hard coded constants from the DDS library (used for the size of stack-allocated arrays and stuff)
 MAXNOOFBOARDS = @DDS_MAXNOOFBOARDS@
 MAXNOOFTABLES = @DDS_MAXNOOFTABLES@
