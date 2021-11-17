@@ -9,7 +9,10 @@ __all__ = ["average", "frequency", "cofrequency"]
 from typing import Iterable, Optional, Union
 from endplay.types import Deal
 from endplay.dealer.constraint import Expr
-from statistics import fmean
+try:
+	from statistics import fmean
+except ImportError:
+	from statistics import mean as fmean
 import numpy as np
 from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
