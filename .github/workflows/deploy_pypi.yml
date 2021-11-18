@@ -1,17 +1,30 @@
-name: Build and upload to PyPI
-
-# Build manually:
+# Build, test and deploy package across all platforms
+# and supported Python versions
+name: Build, test and upload to PyPI
 on: [workflow_dispatch]
-# Alternatively, to publish when a (published) GitHub Release is created, use the following:
-# on:
-#   push:
-#   pull_request:
-#   release:
-#     types:
-#       - published
 
 env:
-  CIBW_BEFORE_TEST_LINUX: yum install libjpeg-devel
+  # Python on Linux requires libjpeg to install the Pillow library, but the container switches
+  # between RHM and DEB so first try yum, then try apt-get.
+  CIBW_BEFORE_ALL_LINUX: >
+    if command -v yum; then 
+      yum install -y libjpeg-devel; 
+    elif command -v apt-get; then 
+      apt-get install -y libjpeg-dev; 
+    elif command -v apk; then
+      apk add jpeg-dev;
+    else
+      echo "No package manager found for system $(uname -a)";
+      exit 1;
+    fi
+  # Do not build 32-bit wheels for Linux (yet?), as this requires setting up cross-compilation
+  CIBW_SKIP: "*_i686"
+  # Ensure that installing numpy on mac uses the openblas library, see
+  # the issue in https://github.com/numpy/numpy/issues/15947
+  CIBW_BEFORE_ALL_MACOS: brew install openblas
+  CIBW_BEFORE_TEST_MACOS: OPENBLAS="$(brew --prefix openblas)" pip install numpy
+  # cibw automatically sets up the testing environment in a venv so just need to tell it
+  # to call pytest in the right directory
   CIBW_TEST_REQUIRES: pytest
   CIBW_TEST_COMMAND: "pytest {project}/tests"
 
@@ -52,10 +65,6 @@ jobs:
   upload_pypi:
     needs: [build_wheels, build_sdist]
     runs-on: ubuntu-latest
-    # upload to PyPI on every tag starting with 'v'
-    if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/v')
-    # alternatively, to publish when a GitHub Release is created, use the following rule:
-    # if: github.event_name == 'release' && github.event.action == 'published'
     steps:
       - uses: actions/download-artifact@v2
         with:
@@ -66,4 +75,3 @@ jobs:
         with:
           user: __token__
           password: ${{ secrets.pypi_password }}
-          repository_url: https://test.pypi.org/legacy/

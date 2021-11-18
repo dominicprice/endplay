@@ -1,0 +1,80 @@
+# Build, test and deploy package across all platforms
+# and supported Python versions
+name: Build, test and upload to TestPyPI
+on: [workflow_dispatch]
+
+env:
+  # Python on Linux requires libjpeg to install the Pillow library, but the container switches
+  # between RHM and DEB so first try yum, then try apt-get.
+  CIBW_BEFORE_ALL_LINUX: >
+    if command -v yum; then 
+      yum install -y libjpeg-devel; 
+    elif command -v apt-get; then 
+      apt-get install -y libjpeg-dev; 
+    elif command -v apk; then
+      apk add jpeg-dev;
+    else
+      echo "No package manager found for system $(uname -a)";
+      exit 1;
+    fi
+  # Do not build 32-bit wheels for Linux (yet?), as this requires setting up cross-compilation
+  CIBW_SKIP: "*_i686"
+  # Ensure that installing numpy on mac uses the openblas library, see
+  # the issue in https://github.com/numpy/numpy/issues/15947
+  CIBW_BEFORE_ALL_MACOS: brew install openblas
+  CIBW_BEFORE_TEST_MACOS: OPENBLAS="$(brew --prefix openblas)" pip install numpy
+  # cibw automatically sets up the testing environment in a venv so just need to tell it
+  # to call pytest in the right directory
+  CIBW_TEST_REQUIRES: pytest
+  CIBW_TEST_COMMAND: "pytest {project}/tests"
+
+jobs:
+  build_wheels:
+    name: Build wheels on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-20.04, windows-2019, macos-10.15]
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+          
+      - name: Build wheels
+        uses: pypa/cibuildwheel@v2.2.2
+
+      - uses: actions/upload-artifact@v2
+        with:
+          path: ./wheelhouse/*.whl        
+
+  build_sdist:
+    name: Build source distribution
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+          
+      - name: Build sdist
+        run: pipx run build --sdist
+
+      - uses: actions/upload-artifact@v2
+        with:
+          path: dist/*.tar.gz
+
+  upload_pypi:
+    needs: [build_wheels, build_sdist]
+    runs-on: ubuntu-latest
+    # Upload to PyPI when a release is published
+    if: github.event_name == 'release' && github.event.action == 'published'
+    steps:
+      - uses: actions/download-artifact@v2
+        with:
+          name: artifact
+          path: dist
+
+      - uses: pypa/gh-action-pypi-publish@v1.4.2
+        with:
+          user: __token__
+          password: ${{ secrets.testpypi_password }}
+          repository_url: https://test.pypi.org/legacy/
