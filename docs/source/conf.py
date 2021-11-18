@@ -63,7 +63,7 @@ apidoc_extra_args = ["-P"]
 
 autodoc_default_options = { 'autosummary': True }
 
-readme_module_dir = os.path.join(dirname, "..", "..", "src")
+readme_module_dir = os.path.join(dirname, "..", "..")
 readme_output_dir = os.path.join(dirname, "build", "readme")
 
 # Add any paths that contain templates here, relative to this directory.
