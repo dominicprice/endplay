@@ -10,6 +10,7 @@ class SuitHolding:
 	def __init__(self, data: Union[ctypes.c_uint * 4, str] = "", idx: Optional[int] = None):
 		"""
 		Construct a suit holding
+
 		:param data: A PBN string representation of the holding or a reference to a _dds object
 		"""
 		if isinstance(data, str):
@@ -31,6 +32,7 @@ class SuitHolding:
 	def add(self, rank: Rank) -> bool:
 		"""
 		Add a rank to the suit holding
+
 		:param rank: The rank to add
 		:return: False if the rank was already in the holding, True otherwise
 		"""
@@ -46,6 +48,7 @@ class SuitHolding:
 	def extend(self, ranks: Iterable[Rank]) -> int:
 		"""
 		Add multiple ranks to the suit holding
+
 		:parm ranks: An iterable of the ranks to add
 		:return: The number of ranks successfully added
 		"""
@@ -54,6 +57,7 @@ class SuitHolding:
 	def remove(self, rank: Rank) -> bool:
 		"""
 		Remove a rank from the suit holding
+
 		:param rank: The rank to remove
 		:return: False if the rank wasn't in the holding, True otherwise
 		"""
@@ -73,9 +77,14 @@ class SuitHolding:
 		self._data[self._idx] = 0
 
 	def to_pbn(self) -> str:
+		"Create a PBN representation of the suit holding"
 		return "".join(rank.abbr for rank in self)
 
 	def from_pbn(self, pbn: str) -> None:
+		"""
+		Parse a PBN representation of the suit into the current object,
+		clearing any data currently present
+		"""
 		self.clear()
 		for rank in pbn:
 			self.add(rank)

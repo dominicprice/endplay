@@ -8,6 +8,7 @@ class Card:
 	def __init__(self, name: str = None, *, suit: Denom = None, rank: Rank = None):
 		"""
 		Construct a card either from a string name or from Denom and Rank objects
+
 		:param name: The name of the card, e.g. "S9" or "HT"
 		:param suit: The suit of the card
 		:param rank: The rank of the card

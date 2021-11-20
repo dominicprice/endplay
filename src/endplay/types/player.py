@@ -18,6 +18,8 @@ class Player(IntEnum):
 	@staticmethod
 	def iter_from(player: 'Player') -> Iterator['Player']:
 		"""
+		Iterate over all four players, clockwise, starting with the given player
+
 		:param player: The first player in the returned iterator
 		:return: An iterator over all four players in play order
 		"""
@@ -26,7 +28,9 @@ class Player(IntEnum):
 	@staticmethod
 	def iterorder(order: str) -> Iterator['Player']:
 		"""
-		:order: The specified order as a four-character string or list of strings
+		Iterate over a sequence of players in a given order
+
+		:param order: The specified order as a four-character string or list of strings
 		:return: An iterator over the players in the specified order
 		"""
 		yield from (Player.find(c) for c in order)

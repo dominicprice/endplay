@@ -25,6 +25,7 @@ class Contract:
 		result: int = None):
 		"""
 		Construct a new contract
+
 		:param data: Construct from a _dds.contractType object or contract string
 		:param level: The level of the contract
 		:param denom: The denomination of the contract

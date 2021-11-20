@@ -28,6 +28,7 @@ class ConstraintInterpreter:
 		"""
 		Insert a new variable into the interpreter's environment or change the value 
 		of an existing variable
+
 		:param name: The name of the environment variable
 		:param value: The new value of the variable
 		"""
@@ -37,6 +38,7 @@ class ConstraintInterpreter:
 		"""
 		Remove an variable from the interpreter's environment. Attempting to remove an
 		essential variable (one of the ptN scale definitions) throws an error
+
 		:param name: The name of the variable to remove
 		"""
 		if _re_pt.match(name):
@@ -93,6 +95,7 @@ class ConstraintInterpreter:
 		"""
 		Convert an expression tree (or string) into an anonymous function accepting a single
 		`Deal` argument and returning the expression evaluated over this deal
+
 		:param node: The root of the expression tree, or a string containing an expression
 		"""
 		if isinstance(node, str):

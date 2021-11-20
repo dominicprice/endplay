@@ -27,6 +27,8 @@ class Denom(IntEnum):
 	@staticmethod 
 	def suits(reverse: bool = False) -> Iterator['Denom']:
 		"""
+		Iterate over the suits, excluding notrumps
+
 		:param reverse: If true, return suits in the order clubs -> spades
 		:return: An iterator over the four suits
 		"""
