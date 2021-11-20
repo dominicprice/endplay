@@ -160,10 +160,17 @@ class ConstraintInterpreter:
 			return self._fn_trick(node, deal)
 		elif node.value == "score":
 			return self._fn_score(node, deal)
+		elif node.value == "hascard":
+			return self._fn_hascard(node, deal)
 		elif node.value == "imp" or node.value == "imps":
 			return self._fn_imp(node, deal)
 		else:
 			raise ValueError(f"Unknown function {node.value}")
+
+	def _fn_hascard(self, node, deal):
+		player = node.first_child.value
+		card = node.last_child.value
+		return card in deal[player]
 
 	def _fn_hcp(self, node, deal, scale):
 		if node.n_children == 1:

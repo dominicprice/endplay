@@ -1,6 +1,6 @@
 ﻿__all__ = [ "DealerParser", "ParseException" ]
 
-from endplay.types import Player, Vul, Hand, Contract, Denom
+from endplay.types import Player, Vul, Hand, Contract, Denom, Card, Deal
 import pyparsing as pp
 pp.ParserElement.enablePackrat()
 ParseException = pp.ParseException
@@ -184,6 +184,15 @@ class Node:
 		return Node(hand, Node.VALUE)
 
 	@constructor
+	def from_predeal(string, location, tokens):
+		deal = Deal()
+		for i in range(1, len(tokens), 2):
+			deal[tokens[i].value] = tokens[i+1].value
+		action = Node("predeal", Node.ACTION)
+		action.append_child(Node(deal, Node.VALUE))
+		return action
+
+	@constructor
 	def from_pattern(string, location, tokens):
 		shape = []
 		for char in tokens[0]:
@@ -223,6 +232,10 @@ class Node:
 	def from_nl(string, location, tokens):
 		return Node("\n", Node.VALUE)
 
+	@constructor
+	def from_card(string, location, tokens):
+		return Node(f"{tokens[1]}{tokens[0]}", Node.VALUE)
+
 
 def new_func(name, *args):
 	if isinstance(name, str):
@@ -256,6 +269,8 @@ class DealerParser:
 		vul.setParseAction(Node.from_vul)
 		card_suit = pp.oneOf("s h d c", caseless=True)
 		card_rank = pp.Word("AKQJTakqjt98765432")
+		card = pp.Word("AKQJTakqjt98765432") + pp.Word("SHDCshdc")
+		card.setParseAction(Node.from_card)
 		suitholding = pp.Group(card_suit + pp.OneOrMore(card_rank))
 		hand = pp.delimitedList(suitholding)
 		hand.setParseAction(Node.from_hand)
@@ -272,6 +287,7 @@ class DealerParser:
 		# first attempt at implementing this was the only way to make the grammar unambiguous. 
 		# This should probably be replaced with something simpler.
 		shape = new_func("shape", compass, shapelist)
+		hascard = new_func("hascard", compass, card)
 		suitlength = new_func(pp.Regex(r"spades?") | pp.Regex(r"hearts?") | pp.Regex(r"diamonds?") | pp.Regex(r"clubs?"), compass)
 		hcp = new_func(pp.Regex("hcps?"), compass, suit) | new_func(pp.Regex("hcps?"), compass)
 		ptN = new_func(pp.Regex("pt[0-9]"), compass) | new_func(pp.Regex("pt[0-9]"), compass, suit)
@@ -283,7 +299,7 @@ class DealerParser:
 		trick = new_func(pp.Regex("tricks?"), compass, strain)
 		score = new_func("score", vul, contract, ppc.integer)
 		imp = new_func(pp.Regex("imps?"), ppc.integer)
-		func = shape | suitlength | hcp | ptN | control | loser | quality | trick | score | imp
+		func = shape | hascard | suitlength | hcp | ptN | control | loser | quality | trick | score | imp
 
 		# Expressions (for conditions and variable definitions)
 		expr = pp.Forward()
@@ -343,8 +359,8 @@ class DealerParser:
 		vulnerable.setParseAction(Node.from_input)
 		dealer = pp.CaselessKeyword("dealer") + compass
 		dealer.setParseAction(Node.from_input)
-		predeal = pp.CaselessKeyword("predeal") + compass + hand
-		predeal.setParseAction(Node.from_input)
+		predeal = pp.CaselessKeyword("predeal") + pp.OneOrMore(compass + hand)
+		predeal.setParseAction(Node.from_predeal)
 		pointcount = pp.CaselessKeyword("pointcount") + pp.delimitedList(ppc.number)
 		pointcount.setParseAction(Node.from_input)
 		altcount = pp.CaselessKeyword("altcount") + ppc.number + pp.delimitedList(ppc.number)
@@ -386,6 +402,7 @@ class DealerParser:
 		"""
 		Parse an expression string into a syntax tree, for instance to compute
 		the tree of a particular condition
+
 		:param s: The condition string, e.g. "hcp(n) == 10 && shape(s) == 4432"
 		:return: The root node of the syntax tree
 		"""
@@ -395,6 +412,7 @@ class DealerParser:
 	def parse_file(self, f: 'io.TextIOBase') -> Node:
 		"""
 		Parse a file into a syntax tree
+
 		:param f: A handle to a file or TextIO stream to be parsed
 		:return: The root node of the syntax tree
 		"""
@@ -404,6 +422,7 @@ class DealerParser:
 	def parse_string(self, s: str) -> Node:
 		"""
 		Parse a strimg into a syntax tree
+
 		:param s: The string to parse
 		:return: The root node of the syntax tree
 		"""

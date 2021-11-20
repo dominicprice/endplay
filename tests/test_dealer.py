@@ -65,6 +65,8 @@ class TestConstraints(unittest.TestCase):
 		self.assertEvalsTo("controls(east, hearts)", 1)
 		self.assertEvalsTo("loser(east)", 8)
 		self.assertEvalsTo("losers(east, hearts)", 1)
+		self.assertEvalsTrue("hascard(north, AD)")
+		self.assertEvalsFalse("hascard(south, AD)")
 
 	def test_operators(self):
 		self.assertEvalsTrue("x && y")
