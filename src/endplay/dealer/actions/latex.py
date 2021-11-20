@@ -66,7 +66,7 @@ class LaTeXActions(BaseActions):
 			'pgf.rcfonts': False,
 		})
 
-	def frequency1d(self, expr, lower_bound, upper_bound, s = None):
+	def frequency1d(self, expr, lb, ub, s = None):
 		LaTeXActions.mpl_init_pgf()
 		hist = stats.frequency(self.deals, expr, lb, ub)
 		fig, ax = plt.subplots()
@@ -76,7 +76,7 @@ class LaTeXActions(BaseActions):
 		fig.savefig(f, format="pgf")
 		self.write(f.getvalue())
 
-	def frequency2d(self, ex1, lb1, hb1, ex2, lb2, hb2, s = None):
+	def frequency2d(self, ex1, lb1, ub1, ex2, lb2, ub2, s = None):
 		LaTeXActions.mpl_init_pgf()
 		hist = stats.cofrequency(self.deals, ex1, ex2, lb1, ub1, lb2, ub2)
 		fig, ax = plt.subplots()
