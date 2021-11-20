@@ -1,4 +1,4 @@
-﻿__all__ = ["BaseActions", "TerminalActions", "LaTeXActions"]
+﻿__all__ = ["BaseActions", "TerminalActions", "LaTeXActions", "HTMLActions"]
 
 from endplay.dealer.actions.base import BaseActions
 from endplay.dealer.actions.terminal import TerminalActions

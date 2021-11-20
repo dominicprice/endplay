@@ -7,82 +7,76 @@ from __future__ import annotations
 __all__ = ["average", "frequency", "cofrequency"]
 
 from typing import Iterable, Optional, Union
+from collections import defaultdict, namedtuple
 from endplay.types import Deal
 from endplay.dealer.constraint import Expr
+from math import floor, ceil
 try:
 	from statistics import fmean
 except ImportError:
 	from statistics import mean as fmean
 import numpy as np
-from matplotlib.figure import Figure
-import matplotlib.pyplot as plt
+
 
 def average(deals: Iterable[Deal], func: Expr):
 	"Return the average of a function over a sequence of deals"
 	return fmean(func(deal) for deal in deals)
 
-def histogram(
-	deals: Iterable[Deal], 
-	func: Expr,
-	lower_bound: Optional[float] = None,
-	upper_bound: Optional[float] = None,
-	n_bins: Optional[int] = None) -> tuple[list[float], list[float], Figure]:
+def frequency(deals: Iterable[Deal], func: Expr, lb: int, ub: int) -> list[int]:
 	"""
-	Create a histogram from the frequency of a function over a sequence of deals
+	Calculate the value of a function over a range of deals, and bin the results into
+	unit-sized bins around integer values from `lb` to `ub`
+	
 	:param deals: The input sequence of deals
-	:param func: The function to apply over the deals
-	:param lower_bound: The lower bound of the data to bin. Any value below this
-		threshold will be placed into a single bin at the start of the histogram.
-	:param upper_bound: The upper bound of the data to bin. Any value above this
-		threshold will be placed in a single bin at the end of the histogram.
-	:param n_bins: The number of bins to sort the data into. If not provided,
-		a binning algorithm is used to estimate this value.
+	:param func: The function to evaluate over `deals`
+	:param lb: Value below which values are ignored
+	:param ub: Value above which values are ignored
+	:return: An array of bins, and a tuple containing the left and right boundaries
 	"""
-	# Create histogram and bins using numpy
-	data = np.fromiter((func(deal) for deal in deals), float)
-	if lower_bound is None:
-		lower_bound = data.min()
-	if upper_bound is None:
-		upper_bound = data.max()
-	fig, ax = plt.subplots()
-	h = ax.hist(
-		data, 
-		bins='auto' if n_bins is None else n_bins, 
-		range=(lower_bound, upper_bound),
-		density=True)
-	return h[0], h[1], fig
+	data = [round(func(deal)) for deal in deals]
+	lb, ub = floor(lb), ceil(ub)
+	bins = list(range(lb, ub+1))
+	hist = [0] * len(bins)
+	for deal in deals:
+		val = round(func(deal))
+		if bins[0] <= val <= bins[-1]:
+			hist[val - bins[0]] += 1
+	return hist
 
-def histogram2d(
+def cofrequency(
 	deals: Iterable[Deal],
-	funcs: tuple[Expr],
-	lower_bounds: tuple[Optional[float]] = (None, None),
-	upper_bounds: tuple[Optional[float]]= (None, None),
-	n_bins: Union[None, int, tuple[int, int]] = None
-	) -> tuple[list[list[float]], list[float], Figure]:
+	func1: Expr,
+	func2: Expr,
+	lb1: Optional[float] = None,
+	ub1: Optional[float] = None,
+	lb2: Optional[float] = None,
+	ub2: Optional[float] = None) -> list[list[int]]:
 	"""
-	Create a 2D histogram of the frequencies of two functions over a sequence
-	of deals.
+	Calculate the value of two functions over a range of deals, and bin the results into
+	unit-sized bins around integer values from `lb` to `ub` to form a matrix
+
 	:param deals: The input sequence of deals
-	:param funcs: 2-element tuple containing the functions to evaluate over the deals
-	:param lower_bounds: 2-element tuple containing the lower bounds of the data. Values
-		which evaluate to lower than this are ignored.
-	:param upper_bounds: 2-element tuple containing the upper bounds of the data. Values
-		which evaluate to higher than this are ignored.
-	:param n_bins: Number of bins to place the data into. If not provided, an algorithm
-		guesses the optimum number of bins. Can either be a single int (same value used
-		for both axes) or a 2-element tuple
+	:param func1: The first function to evaluate over `deals`
+	:param func2: The second function to evaluate over `deals`
+	:param lower_bound1: Value below which values returned from func1 are ignored
+	:param upper_bound1: Value above which values returned from func1 are ignored
+	:param lower_bound2: Value below which values returned from func2 are ignored
+	:param upper_bound2: Value above which values returned from func2 are ignored
 	"""
-	data1 = np.fromiter((funcs[0](deal) for deal in deals), float)
-	data2 = np.fromiter((funcs[1](deal) for deal in deals), float)
-	range1 = (
-		data1.min() if lower_bounds[0] is None else lower_bounds[0],
-		data1.max() if upper_bounds[0] is None else upper_bounds[0])
-	range2 = (
-		data2.min() if lower_bounds[1] is None else lower_bounds[1],
-		data2.max() if upper_bounds[1] is None else upper_bounds[1])
-	if n_bins is None:
-		n_bins = 'auto'
-	fig, ax = plt.subplots()
-	h = ax.hist2d(data1, data2, range=(range1, range2), density=True)
-	fig.colorbar(h[3])
-	return h[0], h[1], fig
+	lb1, ub1 = floor(lb1), ceil(ub1)
+	lb2, ub2 = floor(lb2), ceil(ub2)
+	data1, data2 = [], []
+	for deal in deals:
+		data1.append(round(func1(deal)))
+		data2.append(round(func2(deal)))
+	bins1 = list(range(lb1, ub1+1))
+	bins2 = list(range(lb2, ub2+1))
+	hist = [[0 for _ in bins2] for _ in bins1]
+	for val1 in data1:
+		if not (lb1 <= val1 <= ub1):
+			continue
+		for val2 in data2:
+			if not (lb2 <= val2 <= ub2):
+				continue
+			hist[val1 - bins1[0]][val2 - bins2[0]] += 1
+	return hist

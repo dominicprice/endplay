@@ -1,4 +1,6 @@
-﻿from io import StringIO
+﻿__all__ = ["TerminalActions"]
+
+from io import StringIO
 from endplay.dealer.actions.base import BaseActions
 from endplay.types import Player
 import endplay.stats as stats
@@ -61,13 +63,27 @@ class TerminalActions(BaseActions):
 			self.write(s, end="")
 		self.write(stats.average(self.deals, expr))
 
-	def frequency1d(self, expr, lower_bound, upper_bound, s = None):
-		counts, bins, fig = stats.histogram(self.deals, expr, lower_bound, upper_bound)
-		fig.get_axes()[0].set_title(s)
-		fig.show()
+	def frequency1d(self, expr, lb, ub, s = None):
+		hist = stats.frequency(self.deals, expr, lb, ub)
+		if s:
+			self.write(s)
+			self.write("=" * len(s))
+		rows = [(str(start), str(val)) for start, val in enumerate(hist, lb)]
+		lhs_size = max(len(row[0]) for row in rows)
+		for row in rows:
+			print(row[0].rjust(lhs_size), row[1])
 
-	def frequency2d(self, ex1, lb1, hb1, ex2, lb2, hb2, s = None):
-		import matplotlib.pyplot as plt
-		counts, bins, fig = stats.histogram2d(self.deals, (ex1, ex2), (lb1, lb2), (hb1, hb2))
-		fig.get_axes()[0].set_title(s)
-		plt.show()
+	def frequency2d(self, ex1, lb1, ub1, ex2, lb2, ub2, s = None):
+		hist = stats.cofrequency(self.deals, ex1, ex2, lb1, ub1, lb2, ub2)
+		if s:
+			self.write(s)
+			self.write("=" * len(s))
+		rows = [[""] + [str(i) for i in range(lb2, ub2+1)]]
+		for j, row in enumerate(hist, lb1):
+			rows += [[str(j) + " |"] + [str(r) for r in row]]
+		width = max(max(len(cell) for cell in row) for row in rows)
+		print(" ".join(c.rjust(width) for c in rows[0]))
+		print("+".rjust(width) + "-" + "-".join("-"*width for _ in rows[0][1:]))
+		for row in rows[1:]:
+			print(" ".join(c.rjust(width) for c in row))
+

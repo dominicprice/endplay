@@ -1,15 +1,10 @@
-﻿from endplay.dealer.actions.base import BaseActions
+﻿__all__ = ["LateXActions"]
+
+from endplay.dealer.actions.base import BaseActions
 from endplay.types import Denom, Player
 from io import StringIO
 import endplay.stats as stats
-
-preamble=r"""
-
-"""
-
-postamble=r"""
-\end{document}
-"""
+import matplotlib.pyplot as plt
 
 class LaTeXActions(BaseActions):
 	def __init__(self, deals, stream, board_numbers):
@@ -73,16 +68,25 @@ class LaTeXActions(BaseActions):
 
 	def frequency1d(self, expr, lower_bound, upper_bound, s = None):
 		LaTeXActions.mpl_init_pgf()
-		counts, bins, fig = stats.histogram(self.deals, expr, lower_bound, upper_bound)
-		if s: fig.get_axes()[0].set_title(s)
+		hist = stats.frequency(self.deals, expr, lb, ub)
+		fig, ax = plt.subplots()
+		ax.bar(list(range(lb, ub+1)), hist)
+		if s: ax.set_title(s)
 		f = StringIO()
 		fig.savefig(f, format="pgf")
 		self.write(f.getvalue())
 
 	def frequency2d(self, ex1, lb1, hb1, ex2, lb2, hb2, s = None):
 		LaTeXActions.mpl_init_pgf()
-		counts, bins, fig = stats.histogram2d(self.deals, (ex1, ex2), (lb1, lb2), (hb1, hb2))
-		if s: fig.get_axes()[0].set_title(s)
+		hist = stats.cofrequency(self.deals, ex1, ex2, lb1, ub1, lb2, ub2)
+		fig, ax = plt.subplots()
+		m = ax.matshow(hist)
+		fig.colorbar(m)
+		ax.set_xticks(list(range(1 + ub2 - lb2)))
+		ax.set_xticklabels([str(i) for i in range(lb2, ub2+1)])
+		ax.set_yticks(list(range(1 + ub1 - lb1)))
+		ax.set_yticklabels([str(i) for i in range(lb1, ub1+1)])
+		if s: ax.set_title(s)
 		f = StringIO()
 		fig.delaxes(fig.get_axes()[1]) # fixme: currently don't support colorbar in latex
 		fig.savefig(f, format="pgf")
