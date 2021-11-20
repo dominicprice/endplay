@@ -1,15 +1,22 @@
 ﻿from __future__ import annotations
 
+import sys
 from typing import Optional
 from tqdm import tqdm
 import shutil
 from tempfile import mkdtemp
+import time
 from subprocess import run
 from endplay.parsers.dealer import DealerParser, ParseException, Node
 from endplay.dealer.constraint import ConstraintInterpreter
 from endplay.dealer.actions import TerminalActions, LaTeXActions, HTMLActions
 from endplay.dealer.generate import generate_deals
 from endplay.types import Vul, Player, Deal
+import random
+
+class LaTeXError(RuntimeError):
+	"Raised when there was an error running pdflatex"
+	pass
 
 def run_script(
 	script: Optional[str], 
@@ -23,6 +30,7 @@ def run_script(
 	outfile: Optional[str] = None,
 	constraints: list[str] = [],
 	actions: list[str] = [],
+	predeal: str = "",
 	board_numbers: bool = False) -> list[Deal]:
 	"""
 	Execute a dealer script file
@@ -38,18 +46,33 @@ def run_script(
 	:param outfile: A filename to write the output to, if None then printed to stdout
 	:param constraints: A list of extra constraints to apply
 	:param actions: A list of extra actions to apply
+	:param predeal: A list of players and the suit holdings to deal to them
+	:param board_numbers: If True, print board numbers along with the generated deals
 	:return: The generated deals in a list
 	"""
+
+	start_time = time.time()
 
 	# If we are asked to produce more hands than we generate, we will always fail so let's not
 	# waste any time trying
 	if produce > generate:
 		raise ValueError(f"Asked to produce {produce} hands by generating {generate} hands")
 
+	if seed is None:
+		# Generate a seed between 0 and 2**32-1 (required by numpy.random.RandomState)
+		# so that if the verbose option is passed we can print out the value of the initial
+		# seed at the end of the run
+		seed = random.randrange((1 << 32) - 1)
+
 	# Interpret constraints and actions
 	parser = DealerParser()
 	constraints = [parser.parse_expr(c) for c in constraints]
 	actions = [child for a in actions for child in parser.parse_string("action " + a).first_child.children]
+	if predeal:
+		predeal_node = parser.parse_string("predeal " + predeal)
+		deal = predeal_node.first_child.first_child.value
+	else:
+		deal = Deal()
 
 	# Parse script into document tree
 	if script is None:
@@ -58,8 +81,6 @@ def run_script(
 		try:
 			with open(script) as f:
 				doctree = parser.parse_file(f)
-				if verbose:
-					doctree.pprint()
 		except FileNotFoundError as e:
 			raise RuntimeError(f"{script}: no such file")
 		except OSError as e:
@@ -73,7 +94,6 @@ def run_script(
 	interp = ConstraintInterpreter()
 	vulnerable = None
 	player = None
-	predeal = Deal()
 	try:
 		for node in doctree.children:
 			if node.value == "generate":
@@ -85,7 +105,7 @@ def run_script(
 			elif node.value == "dealer":
 				player = node.first_child.value
 			elif node.value == "predeal":
-				predeal[node.first_child.value] = node.last_child.value
+				deal = node.first_child.value
 			elif node.value == "pointcount":
 				pointcount = [child.value for child in node.children]
 				interp.set_env("hcpscale", pointcount)
@@ -101,19 +121,39 @@ def run_script(
 			else:
 				raise RuntimeError("Unknown dealer input:", node.value)
 	except NotImplementedError as e:
-		exit("One of the features you are trying to use is unimplemented:", e)
+		exit(f"One of the features you are trying to use is unimplemented: {e}")
 	except Exception as e:
-		exit("Unknown exception occurred:", e)
+		exit(f"Unknown exception occurred: {e}",)
 
 	# Produce hands
 	compiled_constraints = [interp.lambdify(c) for c in constraints]
 	deals = []
 	generator = generate_deals(
-		*compiled_constraints, predeal=predeal, produce=produce, 
-		show_progress=show_progress, swapping=swapping, 
-		seed=seed, max_attempts=generate)
-	for deal in generator:
-		deals.append(deal)
+		*compiled_constraints, 
+		predeal = deal, 
+		swapping = swapping, 
+		show_progress = show_progress, 
+		produce = produce, 
+		seed = seed, 
+		max_attempts = generate)
+	try:
+		while True: deals.append(next(generator))
+	except StopIteration as e:
+		actual_generated = e.value
+
+	# Try and guess the output format
+	if outformat is None:
+		if isinstance(outfile, str):
+			if outfile.endswith(".html") or outfile.endswith(".htm"):
+				outformat = "html"
+			elif outfile.endswith(".tex"):
+				outformat = "latex"
+			elif outfile.endswith(".pdf"):
+				outformat = "pdf"
+			else:
+				outformat = "plain"
+		else:
+			outformat = "plain"
 
 	# Set up the output engine
 	if isinstance(outfile, str):
@@ -186,7 +226,7 @@ def run_script(
 				else:
 					actioner.frequency1d(*hargs, s)
 			else:
-				raise RuntimeError(f"Unknown action {action.value}")
+				raise ValueError(f"Unknown action {action.value}")
 
 	# Close the output engine
 	actioner.write_postamble()
@@ -201,11 +241,17 @@ def run_script(
 				log = f.read()
 			with open(tmpdir + "/main.tex") as f:
 				tex = f.read()
-			raise RuntimeError("LaTeX error:main.log:\n" + log + "\ninput file:\n" + tex)
+			raise LaTeXError("LaTeX error:main.log:\n" + log + "\ninput file:\n" + tex)
 		shutil.copy2(tmpdir + "/main.pdf", outfile_name)
 		try:
 			shutil.rmtree(tmpdir)
 		except Exception as e:
-			pass
+			warnings.warn(f"Unable to remove temporary directory tree {tmpdir}", ResourceWarning)
+
+	if verbose:
+		print("Generated", actual_generated, "hands")
+		print("Produced", len(deals), "hands")
+		print("Initial random seed", seed)
+		print(f"Time needed {time.time()-start_time:.3f}s")
 
 	return deals
