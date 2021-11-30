@@ -8,9 +8,14 @@ If you find this useful and would like to contribute, or found it totally buggy 
 
 ### Using `pip`
 
-*endplay* can be installed on some systems from PyPI using pip with `python3 -m pip install endplay`. 
+Binary Python wheels are built and distributed on [PyPi](https://pypi.org/project/endplay/) for the following Python versions:
 
-If it isn't built for your operating system, or version of Python (both at the moment very likely, as I have only built binaries for the two operating systems I use), then you can also ask pip to build it from this repo by running `python3 -m pip install git+https://github.com/dominicprice/endplay.git`. Note that this will require you to have a C++ compiler on your system.
+| Architecture | Windows  | Linux    | MacOS    |
+| ------------ | -------- | -------- | :------- |
+| x86          | 3.7-3.10 | N/A      | 3.7-3.10 |
+| x64          | 3.7-3.10 | 3.7-3.10 | 3.7-3.10 |
+
+On these systems `python3 -m pip install endplay` will install these pre-built wheels, otherwise it will attempt to install from the source distribution which requires a C++ compiler on your system. Note that *endplay* requires Python 3.7+.
 
 ### From source
 
@@ -56,7 +61,7 @@ The documentation will be built in the `build` directory.
 The test suite is implemented with the `unittest` library and can be run from the root directory with
 
 ```bash
-python3 -m unittest
+python3 -m pytest
 ```
 
 
