@@ -1,8 +1,6 @@
 ﻿from __future__ import annotations
 
-import sys
 from typing import Optional
-from tqdm import tqdm
 import shutil
 from tempfile import mkdtemp
 import time
@@ -11,7 +9,7 @@ from endplay.parsers.dealer import DealerParser, ParseException, Node
 from endplay.dealer.constraint import ConstraintInterpreter
 from endplay.dealer.actions import TerminalActions, LaTeXActions, HTMLActions
 from endplay.dealer.generate import generate_deals
-from endplay.types import Vul, Player, Deal
+from endplay.types import Deal
 import random
 
 class LaTeXError(RuntimeError):
