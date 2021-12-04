@@ -71,7 +71,7 @@ class TerminalActions(BaseActions):
 		rows = [(str(start), str(val)) for start, val in enumerate(hist, lb)]
 		lhs_size = max(len(row[0]) for row in rows)
 		for row in rows:
-			print(row[0].rjust(lhs_size), row[1])
+			self.write(row[0].rjust(lhs_size), row[1])
 
 	def frequency2d(self, ex1, lb1, ub1, ex2, lb2, ub2, s = None):
 		hist = stats.cofrequency(self.deals, ex1, ex2, lb1, ub1, lb2, ub2)
@@ -82,8 +82,8 @@ class TerminalActions(BaseActions):
 		for j, row in enumerate(hist, lb1):
 			rows += [[str(j) + " |"] + [str(r) for r in row]]
 		width = max(max(len(cell) for cell in row) for row in rows)
-		print(" ".join(c.rjust(width) for c in rows[0]))
-		print("+".rjust(width) + "-" + "-".join("-"*width for _ in rows[0][1:]))
+		self.write(" ".join(c.rjust(width) for c in rows[0]))
+		self.write("+".rjust(width) + "-" + "-".join("-"*width for _ in rows[0][1:]))
 		for row in rows[1:]:
-			print(" ".join(c.rjust(width) for c in row))
+			self.write(" ".join(c.rjust(width) for c in row))
 
