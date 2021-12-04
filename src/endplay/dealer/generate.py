@@ -16,6 +16,60 @@ class DealNotGeneratedWarning(Warning):
 class InconsistentSwappingAlgorithmWarning(Warning):
 	pass
 
+# This module could be better implemented as a C extension, with
+# a function like the following assigning bits directly to the 
+# underlying datatype instead of constructing a list of Python
+# objects, shuffling it and then slicing the list
+#
+#void complete_deal(uint16_t** deal)
+#{
+#	// Initialize probabilities and flatten dealt cards
+#	uint16_t predeal[4] = { 0, 0, 0, 0 };
+#	int probs[4] = { 13, 26, 39, 52 };
+#	for (int hand = 0; hand < 4; ++hand) {
+#		for (int suit = 0; suit < 4; ++suit) {
+#			int count = popcount(deal[hand][suit]);
+#			predeal[suit] |= deal[hand][suit];
+#			for (int i = hand; i < 4; ++i)
+#				probs[i] -= count;
+#		}
+#	}
+#
+#	// Deal remaining cards
+#	for (int rank = 0; rank < 13; ++rank) {
+#		uint16_t rank_bit = 1u << rank;
+#		for (int suit = 0; suit < 4; ++suit) {
+#			// Skip if card already dealt
+#			if (predeal[suit] & rank_bit)
+#				continue;
+#			// Pick a random number, and whichever range in probs
+#			// the number falls into we add the card to the corresponding
+#			// hand. We then decrement all elements in probs starting with
+#			// this hand. This reduces the probablility of a card being
+#			// dealt to the hand we just added a card too, and then adjusts
+#			// the other ranges to account for the fact that there is one
+#			// fewer card to deal.
+#			int k = rand() % probs[3];
+#			if (k < probs[0]) {
+#				deal[0][suit] |= rank_bit;
+#				--probs[0], --probs[1], --probs[2], --probs[3];
+#			}
+#			else if (k < probs[1]) {
+#				deal[1][suit] |= rank_bit;
+#				--probs[1], --probs[2], --probs[3];
+#			}
+#			else if (k < probs[2]) {
+#				deal[2][suit] |= rank_bit;
+#				--probs[2], --probs[3];
+#			}
+#			else {
+#				deal[3][suit] |= rank_bit;
+#				--probs[3];
+#			}
+#		}
+#	}
+#}
+
 def generate_deal(
 	*constraints: Union[Expr, str], 
 	predeal: Deal = Deal(), 
