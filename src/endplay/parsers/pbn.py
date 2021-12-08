@@ -5,15 +5,15 @@ import re
 
 class PBNParser:
 	# Precompile some regular expressions
-	re_lcomment = re.compile(r"\s*;\s*(.*)")
-	re_bcomment_line = re.compile(r"\s*{\s*(.*)}")
+	re_lcomment = re.compile(r"\s*;\s*(.*?)")
+	re_bcomment_line = re.compile(r"\s*{\s*(.*?)}")
 	re_bcomment_begin = re.compile(r"\s*{\s*(.*)")
 	re_bcomment_end = re.compile(r"(.*)}")
 	re_ignore = re.compile(r"%.*")
 	re_fileformat = re.compile(r"%\s*(EXPORT|IMPORT)", re.IGNORECASE)
 	re_pbnversion = re.compile(r"%\s*PBN (\d+)\.(\d+)", re.IGNORECASE)
-	re_metatag = re.compile(r"%\s*([\w-]+):\s*(.*)")
-	re_tagpair = re.compile(r"\[(\w+)\s+\"(.*)\"\]")
+	re_metatag = re.compile(r"%\s*([\w-]+):\s*(.*?)")
+	re_tagpair = re.compile(r"\[(\w+)\s+\"(.*?)\"\](\s*[;{]?.*)")
 	re_note = re.compile(r"(\d+):(.*)")
 	re_colname = re.compile(r"([+-]?)(\w+)(?:\\(\d+)([LR]?))?", re.IGNORECASE)
 	re_colname = re.compile(r"([+-]?)(\w+)(?:\\(\d+)([LR]?))?", re.IGNORECASE)
@@ -31,23 +31,23 @@ class PBNParser:
 		False otherwise
 		"""
 		if iscont:
-			m = PBNFile.re_bcomment_end.match(text)
+			m = PBNParser.re_bcomment_end.match(text)
 			if m:
 				return (m.group(1), False)
 			return (text, True)
 		else:
 			# Match a single line comment (begins with a semicolon)
-			m = PBNFile.re_lcomment.match(text) 
+			m = PBNParser.re_lcomment.match(text) 
 			if m:
 				return (m.group(1), False)
 				
 			# Match a block comment that ends on the same line (e.g. { xyz })
-			m = PBNFile.re_bcomment_line.match(text)
+			m = PBNParser.re_bcomment_line.match(text)
 			if m:
 				return (m.group(1), False)
 				
 			# Match a block comment that begins on the line but is continued (e.g. { xy)
-			m = PBNFile.re_bcomment_begin.match(text)
+			m = PBNParser.re_bcomment_begin.match(text)
 			if m:
 				return (m.group(1), True)
 		
@@ -71,29 +71,29 @@ class PBNParser:
 				
 			if state == STATE_META:	
 				# Match against PBN version (e.g. % PBN 2.1)
-				m = PBNFile.re_pbnversion.match(curline)
+				m = PBNParser.re_pbnversion.match(curline)
 				if m:
 					self.metadata["version"] = { "major": int(m.group(1)), "minor": int(m.group(2)) }
 					continue
 				# Match against IMPORT/EXPORT (e.g. % EXPORT)
-				m = PBNFile.re_fileformat.match(curline)
+				m = PBNParser.re_fileformat.match(curline)
 				if m:
 					self.metadata["format"] = m.group(1).upper()
 					continue
 				# Match against some other metadata (e.g. % Creator: Joe Bloggs)
-				m = PBNFile.re_metatag.match(curline)
+				m = PBNParser.re_metatag.match(curline)
 				if m:
 					self.metadata[m.group(1)] = m.group(2)
 					continue
 				# Some other comment line we can ignore
-				if PBNFile.re_ignore.match(curline):
+				if PBNParser.re_ignore.match(curline):
 					continue
 				# No match found, metadata section complete
-				state == STATE_NONE
+				state = STATE_NONE
 					
 			if state == STATE_CONT_LIST:
 				# Revert to STATE_NONE if a tag or empty line is encountered
-				if PBNFile.re_tagpair.match(curline) or curline == "":
+				if PBNParser.re_tagpair.match(curline) or curline == "":
 					state = STATE_NONE
 				# Split the line by whitespace and add the elements to the tag data
 				else:
@@ -101,7 +101,7 @@ class PBNParser:
 						
 			if state == STATE_CONT_TABLE:
 				# Revert to STATE_NONE if a tag or empty line is encountered
-				if PBNFile.re_tagpair.match(curline) or curline == "":
+				if PBNParser.re_tagpair.match(curline) or curline == "":
 					state = STATE_NONE
 				# Split the line by whitespace add add the elements to the tag value
 				else:
@@ -115,14 +115,14 @@ class PBNParser:
 						curgame = {}
 					continue
 				# Comment line, ignore
-				if PBNFile.re_ignore.match(curline):
+				if PBNParser.re_ignore.match(curline):
 					continue
 				# Tag pair
-				m = PBNFile.re_tagpair.match(curline)
+				m = PBNParser.re_tagpair.match(curline)
 				if m:
 					# Notes needs to be attached to previous tag
 					if m.group(1).lower() == "note":
-						cm = PBNFile.re_note.match(m.group(2))
+						cm = PBNParser.re_note.match(m.group(2))
 						if cm:
 							curgame[curtag]["notes"][int(cm.group(1))] = cm.group(2)
 						else:
@@ -137,7 +137,7 @@ class PBNParser:
 						# Get the comment attached to the line (if any)
 						comment = None
 						if m.group(3):
-							comment, needcont = _get_comment(m.group(3), False)
+							comment, needcont = PBNParser._get_comment(m.group(3), False)
 							if needcont:
 								state = STATE_COMMENTBLOCK
 						# Add the tag to the current game, entering a STATE_CONT_* if necessary
@@ -147,7 +147,7 @@ class PBNParser:
 						elif curtag.lower().endswith("table"):
 							colnames = []
 							for colname in m.group(2).split(";"):
-								cm = PBNFile.re_colname.match(colname)
+								cm = PBNParser.re_colname.match(colname)
 								if cm:
 									colnames += [{
 										"ordering": cm.group(1),
@@ -172,7 +172,7 @@ class PBNParser:
 				self.errorlines.append((lineno, curline, "The line couldn't be interpreted"))
 					
 			if state == STATE_COMMENTBLOCK:
-				comment, needcont = _get_comment(curline, True)
+				comment, needcont = PBNParser._get_comment(curline, True)
 				curgame[curtag]["comment"] += "\n{}".format(comment)
 				if not needcont:
 					state == STATE_NONE
@@ -185,3 +185,8 @@ class PBNParser:
 	def export_file(self, f: 'TextIOWrapper') -> None:
 		"Export current data into a file object"
 		raise NotImplementedError
+
+if __name__ == "__main__":
+	pp = PBNParser()
+	with open("/home/dominic/Desktop/AlsReg6-Final.pbn") as f:
+		data = pp.parse_file(f)
