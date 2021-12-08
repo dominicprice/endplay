@@ -5,6 +5,7 @@ __pycache__/
 
 # Visual studio local config files
 .vs/
+.vscode/
 CMakeSettings.json
 *.pyproj
 *.pyproj.user
