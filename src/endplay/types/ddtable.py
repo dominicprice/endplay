@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-__all__ = ["DDTableDenom", "DDTable", "DDTableList"]
+__all__ = ["DDTable", "DDTableList"]
 
 import sys
 import json as _json
