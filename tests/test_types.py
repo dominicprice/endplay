@@ -78,6 +78,20 @@ class TestDeal(unittest.TestCase):
 			deal.unplay()
 		deal.play("DA", fromHand = False)
 
+	def test_curtrick2(self):
+		deal = Deal(
+			"N:J84.JT94.KQT.T97 T93.K5.J9653.J82 K65.A73.72.AKQ53 AQ72.Q862.A84.64", 
+			Player.west, Denom.clubs)
+		for card in "\
+			C4 CT C2 C3 HJ HK HA H2 \
+			CA C6 C7 C8 CK S7 C9 CJ \
+			H3 H6 HT H5 DK D3 D2 DA \
+			D8 DQ D5 D7 DT DJ C5 D4 \
+			H7 HQ H4 D6 SA S4 S3 S5 \
+			S2 SJ S9 S6".split():
+			deal.play(card)
+		self.assertEqual(len(deal.north), 2)
+
 	def test_pbn(self):
 		deal = Deal(pbn)
 		self.assertEqual(deal.to_pbn(), pbn)
