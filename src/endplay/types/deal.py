@@ -135,8 +135,9 @@ class Deal:
 			trick = self.curtrick + [card]
 			winner, topcard = self.first, trick[0]
 			for i in range(1, 4):
-				if trick[i].suit == topcard.suit and trick[i].rank > topcard.rank:
-					winner, topcard = self.first.next(i), trick[i]
+				if trick[i].suit == topcard.suit:
+					if trick[i].rank > topcard.rank:
+						winner, topcard = self.first.next(i), trick[i]
 				elif trick[i].suit == self.trump:
 					winner, topcard = self.first.next(i), trick[i]
 			self.first = winner
