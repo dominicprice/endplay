@@ -1,11 +1,7 @@
 # Build, test and deploy package across all platforms
 # and supported Python versions
 name: Build wheels and test
-on: 
-  workflow_dispatch:
-  release:
-    types:
-      - published
+on:  [push]
 
 env:
   # Python on Linux requires libjpeg to install the Pillow library, but the container switches

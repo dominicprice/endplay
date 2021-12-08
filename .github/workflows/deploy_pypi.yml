@@ -1,7 +1,10 @@
 # Build, test and deploy package across all platforms
 # and supported Python versions
 name: Build, test and upload to PyPI
-on: [workflow_dispatch]
+on:
+  release:
+    types:
+      - published
 
 env:
   # Python on Linux requires libjpeg to install the Pillow library, but the container switches
