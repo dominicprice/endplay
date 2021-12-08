@@ -66,7 +66,7 @@ class InteractiveDeal(cmd.Cmd):
 				return
 			try:
 				if len(self.deal.curtrick) == 3:
-					toundo = ("trick", self.deal.first, self.deal.curtrick)
+					toundo = ("trick", self.deal.first, self.deal.curtrick, card)
 				else:
 					toundo = ("play", )
 				self.deal.play(card)
@@ -78,11 +78,12 @@ class InteractiveDeal(cmd.Cmd):
 	def undo_play(self):
 		self.deal.unplay()
 		
-	def undo_trick(self, first, trick):
+	def undo_trick(self, first, trick, last_card):
 		self.deal.first = first
 		for player, card in zip(Player.iter_from(first), trick):
 			self.deal[player].add(card)
 			self.deal.play(card)
+		self.deal[first.prev()].add(last_card)
 		
 	def do_reset(self, arg):
 		"Reset the deal to its original state"
