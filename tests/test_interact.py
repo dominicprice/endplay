@@ -1,4 +1,3 @@
-from os import WEXITSTATUS
 import unittest
 from endplay.interact import InteractiveDeal
 from endplay.types import Player, Denom, Card
