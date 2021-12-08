@@ -20,8 +20,8 @@ class Deal:
 	def __init__(self, pbn: str = None, first: Player = Player.north, trump: Denom = Denom.nt):
 		self._data = _dds.deal()
 		self.clear()
-		self.first = first
-		self.trump = trump
+		self._data.first = first
+		self._data.trump = trump
 		if pbn is not None:
 			self.from_pbn(pbn)
 		
@@ -144,22 +144,23 @@ class Deal:
 			for i in range(3):
 				self._data.currentTrickRank[i] = 0
 				
-	def unplay(self, toHand: bool = True) -> None:
+	def unplay(self, toHand: bool = True) -> Card:
 		"""
 		Unplay the last card played to the current trick. Throws a RuntimeError if the current
 		trick is empty
 
 		:param toHand: If true then the card is returned to the hand of the player who played
 			it to the trick
+		:return: The card that was picked up
 		"""
 		for i in reversed(range(3)):
 			suit, rank = self._data.currentTrickSuit[i], self._data.currentTrickRank[i]
 			if rank != 0:
 				self._data.currentTrickRank[i] = 0
+				card = Card(suit=Denom(suit), rank=AlternateRank(rank).to_standard())
 				if toHand:
-					card = Card(suit=Denom(suit), rank=AlternateRank(rank).to_standard())
 					self[self.first.next(i)].add(card)
-				break
+				return card
 		else:
 			raise RuntimeError("No cards to unplay")
 
