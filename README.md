@@ -6,9 +6,9 @@ If you find this useful and would like to contribute, or found it totally buggy 
 
 ## Building and installing
 
-### Using `pip`
+### From PyPI
 
-Binary Python wheels are built and distributed on [PyPi](https://pypi.org/project/endplay/) for the following Python versions:
+Binary Python wheels are built and distributed on [PyPI](https://pypi.org/project/endplay/) for the following Python versions:
 
 | Architecture | Windows  | Linux    | MacOS    |
 | ------------ | -------- | -------- | :------- |
@@ -17,33 +17,38 @@ Binary Python wheels are built and distributed on [PyPi](https://pypi.org/projec
 
 On these systems `python3 -m pip install endplay` will install these pre-built wheels, otherwise it will attempt to install from the source distribution which requires a C++ compiler on your system. Note that *endplay* requires Python 3.7+.
 
+The version of the library available on PyPI may be older than the current status of the repo, this is to ensure stability of these builds. For access to the latest bug fixes and preview features, you can install directly from the GitHub repo with `python3 -m pip install +git:https://github.com/dominicprice/endplay`
+
 ### From source
 
-*endplay* uses `setuptools` to manage its build and can be built with the `build` package:
+*endplay* uses `setuptools` to manage its build and can be installed with `pip`. 
 
 ```bash
 # Clone repo and submodules
 git clone --recursive https://github.com/dominicprice/endplay.git
 cd endplay
+python3 -m pip install .
+```
+
+If you are trying to develop for the library, then it is recommended to do all your testing in a virtual environment:
+
+```bash
+python3 -m pip install virtualenv
+virtualenv venv
+source venv/bin/activate # on windows, `cmd venv\scripts\activate`
+python -m pip install . # installs into the created venv
+```
+
+You can then modify some files, and when you want to debug simply rerun `python -m pip install .` and the old build will be overwritten. This also has the advantage of being able to reuse the cache from the previous install (including the CMake cache) which speeds up build time.
+
+If you want to build the binary wheels for you system, you can use the `build` package. This will create an isolated environment when collecting packages so you do not need to perform this in a virtual environment.
+
+```bash
 # Only build is required to start the build, other packages 
 # are automatically fetched
 python3 -m pip install build
-# This will generate the wheel in the dist directory
-python3 -m build
-python3 -m pip install dist/endplay-<VERSIONSUFFIX>.whl
+python3 -m build # generates dist/endplay-<VERSIONSUFFIX>.whl
 ```
-
-The compiled components of the library are built using CMake. An in-source build (for e.g. debugging) can be done by setting the install prefix to the current directory:
-
-```bash
-# Create the build directory
-mkdir out && cd out
-# Configure, generate makefiles and build
-cmake -DCMAKE_BUILD_TYPE=<Debug|Release> -DCMAKE_INSTALL_PREFIX=../endplay .. 
-cmake --build . --target install --config <Debug|Release>
-```
-
-where one of the configurations `Debug` or `Release` should be specified. The `--config` parameter only needs to be passed with a toolset such as MSVC where the build type is not set at configuration time.
 
 ### Building the documentation
 
@@ -72,7 +77,7 @@ python3 -m pytest
 
 - `endplay.types` is the basis for the whole library, providing the classes which are used by all the other modules for encapsulating the key objects in bridge. The 'master' class is `Deal`, whose state consists of the four hands in the deal, the cards played to the current trick,  a trump suit and the player to lead to the current trick. All the methods one would expect to  be defined on this are provided - accessing the hands, playing/unplaying cards from the current trick, importing and exporting from PBN format etc. From this class there is a hierarchy of types `Deal -> Hand -> SuitHolding -> Rank` which allows introspection of the deal at any level wanted. Many other types, such as containers for holding results from double dummy analysis and storing contracts, are also provided here.
 
-- `endplay.dealer` provides functions for generating bridge hands. The main function is `generate_deals`  which can accept a list of constraints (either  functions which accept a `Deal` object and return `True`/`False`, or strings written in [dealer syntax](https://www.bridgebase.com/tools/dealer/Manual/input.html)) and generates a specified number of deals which satisfy the constraints. The `dealer` module can also be run as a main module with `python3 -m endplay.dealer` which works very similarly to the  Hans van Staveren [dealer program](https://www.bridgebase.com/tools/dealer/Manual/), but with some different output options and extra functionality.
+- `endplay.dealer` provides functions for generating bridge hands. The main function is `generate_deals`  which can accept a list of constraints (either  functions which accept a `Deal` object and return `True`/`False`, or strings written in [dealer syntax](https://www.bridgebase.com/tools/dealer/Manual/input.html)) and generates a specified number of deals which satisfy the constraints. The `dealer` module can also be run as a main module with `python3 -m endplay.dealer` (or simply `endplay-dealer`) which works very similarly to the  Hans van Staveren [dealer program](https://www.bridgebase.com/tools/dealer/Manual/), but with some different output options and extra functionality.
 
 - `endplay.evaluate` is the simplest component, consisting of a variety of functions which evaluate various properties of bridge hands, such as calculating high  card points, shape, losers, controls and other algorithms for estimating the quality of a hand.
 
@@ -80,7 +85,7 @@ python3 -m pytest
 
 - `endplay.parsers` provides tools for parsing common file types which are used as inputs and outputs for bridge software, this includes PBN and Dealer. These produce document tree representation of the input files and are used internally for many things, but can also be traversed manually to create programs which interact with other bridge software easily
 
-- `endplay.interact` is a CLI tool which provides a simple REPL for analysing bridge deals. It can either be used via the `interact` function in the API, or as a main module with `python3 -m endplay.interact`
+- `endplay.interact` provides the `InteractiveDeal` class which keeps an undo stack whenever its state is modified, making it easier to interact with the deal. The main purpose of the module is a CLI tool which provides a simple REPL for analysing bridge deals which is available as a main module with `python3 -m endplay.interact` (or simply `endplay-interact`)
 
   
 
@@ -157,7 +162,7 @@ The `Hand` object which is returned is bound to the data inside the deal, so any
 >>> d.west = "AQ..T964.QJ975" # equivalent
 ```
 
-Modifying the contents of the hand can be done using the `add`, `extend` and `remove` methods. `add` and `remove` return `True` if the the operation was successful: attempting to remove a card which isn't in a hand, or adding a card which is already there causes it to return `False`. 
+Modifying the contents of the hand can be done using the `add`, `extend` and `remove` methods. `add` and `remove` return `True` if the operation was successful: attempting to remove a card which isn't in a hand, or adding a card which is already there causes it to return `False`. 
 
 ```python
 >>> h = Hand()
@@ -194,8 +199,8 @@ True
 Q2.A..T
 >>> Rank.RQ in s
 True
->>> for card in s:
-...   print(card)
+>>> for rank in s:
+...   print(rank)
 Rank.RQ
 Rank.R2
 ```
@@ -206,7 +211,7 @@ Holdings in a hand can be specified using the `__setitem__` operator too:
 >>> h.diamonds = "9752"
 ```
 
-Moving back to the `Deal` object itself, as well as the four hands it also contains some other information such as the trump suit, player on lead and cards played to the current trick. Many functions in the *endplay* library will ignore these values, but the double dummy solving algorithms in particular may rely on these to provide accurate results. The trump suit and player on lead can be set by setting the `tump` and `first` properties respectively:
+Moving back to the `Deal` object itself, as well as the four hands it also contains some other information such as the trump suit, player on lead and cards played to the current trick. Many functions in the *endplay* library will ignore these values, but the double dummy solving algorithms in particular may rely on these to provide accurate results. The trump suit and player on lead can be set by setting the `trump` and `first` properties respectively:
 
 ```python
 >>> d = Deal("65..2. .A.AK. .J.97. 8..83.")
@@ -266,7 +271,7 @@ RuntimeError: Trying to play card not in hand
 >>> d.play("HA", fromHand=False) # let's hope N isn't paying too much attention
 ```
 
-Similarly `unplay` can be passed `toHand=False` to not move the picked-up card back into somebody's hand. The contents of the current trick can be examined by looking at the `curtrick` property which returns a list of cards played to the current trick, however this is a read-only object and attempting to modify it will not alter the `Deal` object.
+Similarly, `unplay` can be passed `toHand=False` to not move the picked-up card back into somebody's hand. The contents of the current trick can be examined by looking at the `curtrick` property which returns a list of cards played to the current trick, however this is a read-only object and attempting to modify it will not alter the `Deal` object.
 
 #### Enumerated types
 
@@ -275,7 +280,14 @@ Similarly `unplay` can be passed `toHand=False` to not move the picked-up card b
 - They have a static `find` method which allows them to be constructed from a string, e.g. `Denom.find("hearts")`, `Penalty.find("x")` or `Vul.find("ew")`. There are often multiple ways of expressing these objects as strings (suit-symbols vs letters, *luv* vs *none* for vulnerability etc.) and the `find` method does its best to convert whatever string you give it into a value. This raises a `ValueError` if the conversion fails
 - As well as the `name` property inherited from `Enum` which returns a lowercase string, they also have an `abbr` property which return a one or two character abbreviation for the object. This is used by e.g. the `Card` class to construct a string representation of the card (the `__str__` method consists of the single line `return f"{self.suit.abbr}{self.rank.abbr}"`)
 
-All enumerations can have their members iterated over using e.g. `for x in Player` , however many also provide functions which allow iterating over the elements in a different order or over a subset of the elements (e.g. `Denom.suits()`, `Denom.bidorder()`). A full list of the methods can be found in the API reference of the documentation.
+All enumerations can have their members iterated over using e.g. `for x in Player` , however many also provide functions which allow iterating over the elements in a different order or over a subset of the elements (e.g. `Denom.suits()`, `Denom.bidorder()`). A few other unique methods for the enumerated types include
+
+- `Denom.is_major()`/`Denom.is_minor()`/`Denom.is_suit()`
+- `Player.lho`/`Player.partner`/`Player.rho`. Rotating a player `n` positions left or right can be done with `Player.next(n)` and `Player.prev(n)`
+- `Vul.from_board(n)` for determining vulnerability from board number. 
+- `Rank` has a sister-class `AlternateRank` which is used internally by some double dummy routines, but should not be used outside of this context.
+
+A full list of the methods can be found in the API reference of the documentation.
 
 #### The `interact` module
 
@@ -487,7 +499,7 @@ As everyone has played optimally (not that EW get much of a chance to make a mis
 Despite being on the surface being nothing more than a computationally expensive way of printing a load of zeroes, it is worth noting two interesting things here:
 
 1. The number of tricks is displayed from the perspective of the player to the right of player on lead. This is because it attempts to show declarers trick count, and in a full deal the declarer is to the right of the person on lead. In this case, as we have a four card ending with declarer on lead we can pass `declarer_is_first=True` to perform the swap and print `4, 4, 4, ...`
-2. There are 16 cards in the play history, but only 13 cards in the output. Two things are going on here: a) the number of tricks before any card is played is appended to the front and b) as the last four cards are all forced and noone can alter the outcome of the contract at this stage these are not calculated by the algorithm. Therefore the number of cards returned in this instance is 16 (cards in play history) + 1 (starting tricks) - 4 (remove final trick) = 13.
+2. There are 16 cards in the play history, but only 13 cards in the output. Two things are going on here: a) the number of tricks before any card is played is appended to the front and b) as the last four cards are all forced and no-one can alter the outcome of the contract at this stage these are not calculated by the algorithm. Therefore the number of cards returned in this instance is 16 (cards in play history) + 1 (starting tricks) - 4 (remove final trick) = 13.
 
 We all know that partner will never find this line though, so lets see what the function does when we play bridge ping-pong:
 

@@ -20,7 +20,7 @@ Welcome to endplay's documentation!
 
    inputformat
 
-   build/reference/modules
+   build/reference/endplay
 
 Indices and tables
 ==================

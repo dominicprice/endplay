@@ -15,21 +15,6 @@ import sys
 dirname = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, dirname)
 
-try:
-	from endplay.config import __version__
-	print(f"Using system version of endplay (version {__version__})")
-except ImportError:
-	root_dir = os.path.join(dirname, "..", "..", "src")
-	sys.path.insert(0, root_dir)
-	try:
-		from endplay.config import __version__
-		print(f"No system installation of endplay found, using in-source build of endplay (version {__version__})")
-	except ImportError:
-		print("Could not import endplay from system or from the root directory; you need to either install " + 
-			"a version to your site-packages directory or perform an in-source build by setting " + 
-			"CMAKE_INSTALL_PREFIX to <root_directory>/src/endplay")
-
-
 # -- Project information -----------------------------------------------------
 
 project = 'endplay'
@@ -37,6 +22,7 @@ copyright = '2021, Dominic Price'
 author = 'Dominic Price'
 
 # The full version, including alpha/beta/rc tags
+import endplay
 from endplay.config import __version__
 release = __version__
 
@@ -54,12 +40,13 @@ extensions = [
 	'autodocsumm'
 ]
 
-apidoc_module_dir = os.path.join(dirname, "..", "..", "src", "endplay")
+apidoc_module_dir = endplay.__path__[0]
 apidoc_output_dir = os.path.join(dirname, "build", "reference")
 apidoc_excluded_paths = []
 apidoc_separate_modules = True
 apidoc_module_first = True
-apidoc_extra_args = ["-P"]
+apidoc_toc_file = False
+apidoc_extra_args = ["-P", "--templatedir=templates"]
 
 autodoc_default_options = { 'autosummary': True }
 
