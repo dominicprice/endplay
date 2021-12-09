@@ -46,7 +46,8 @@ apidoc_excluded_paths = []
 apidoc_separate_modules = True
 apidoc_module_first = True
 apidoc_toc_file = False
-apidoc_extra_args = ["-P", "--templatedir=templates"]
+apidoc_extra_args = ["-P", f'--templatedir="templates"']
+print(os.getcwd())
 
 autodoc_default_options = { 'autosummary': True }
 
