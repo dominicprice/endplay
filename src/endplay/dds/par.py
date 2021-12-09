@@ -1,4 +1,8 @@
-﻿__all__ = ["par"]
+﻿"""
+Par contract and scoring function
+"""
+
+__all__ = ["par"]
 
 from typing import Union, Optional
 import endplay._dds as _dds

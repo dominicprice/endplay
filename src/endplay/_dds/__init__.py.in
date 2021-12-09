@@ -4,37 +4,37 @@ ctypes wrapper around the C++ library. The only extra convenience provided is
 to wrap all of the dds functions so that instead of returning error codes they
 raise a `DDSError`.
 
-The encodings used by the dds library are provided here for convenience:
+The encodings used by the dds library are provided here for convenience::
 
-Denom
-  Spades     0
-  Hearts     1
-  Diamonds   2
-  Clubs      3
-  NT         4
+	Denom
+		Spades     0
+		Hearts     1
+		Diamonds   2
+		Clubs      3
+		NT         4
 
-Player
-  North      0
-  East       1
-  South      2
-  West       3
+	Player
+		North      0
+		East       1
+		South      2
+		West       3
 
-Vulnerable
-  None       0
-  Both       1
-  NS Only    2
-  EW Only    3
+	Vulnerable
+		None       0
+		Both       1
+		NS Only    2
+		EW Only    3
 
-Side
-  NS         0
-  EW         1
+	Side
+		NS         0
+		EW         1
 
-Rank
-  2          0x4
-  3          0x8
-  ...
-  K          0x2000
-  A          0x4000
+	Rank
+		2          0x4
+		3          0x8
+		...
+		K          0x2000
+		A          0x4000
 """
 
 __all__ = [

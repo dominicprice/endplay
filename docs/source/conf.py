@@ -14,7 +14,6 @@ import os
 import sys
 dirname = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, dirname)
-print("cwd is", os.getcwd())
 
 # -- Project information -----------------------------------------------------
 
@@ -47,10 +46,8 @@ apidoc_excluded_paths = []
 apidoc_separate_modules = True
 apidoc_module_first = True
 apidoc_toc_file = False
-apidoc_template_dir = os.path.join(dirname, "..", "templates")
-apidoc_template_reldir = os.path.relpath(apidoc_template_dir, os.getcwd())
+apidoc_template_dir = os.path.join(dirname, "_templates")
 apidoc_extra_args = ["-P", f'--templatedir={apidoc_template_dir}']
-print("Getting templates from", apidoc_template_dir)
 
 autodoc_default_options = { 'autosummary': True }
 
@@ -79,5 +76,6 @@ html_theme = 'sphinx_rtd_theme'
 html_static_path = ['_static']
 
 html_css_files = [
-	'css/split_params.css'
+	'css/split_params.css',
+	'css/pretty_toc.css'
 ]

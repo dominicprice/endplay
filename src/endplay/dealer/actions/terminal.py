@@ -1,4 +1,8 @@
-﻿__all__ = ["TerminalActions"]
+﻿"""
+Actions class for producing plaintext output.
+"""
+
+__all__ = ["TerminalActions"]
 
 from io import StringIO
 from endplay.dealer.actions.base import BaseActions

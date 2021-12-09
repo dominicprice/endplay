@@ -1,4 +1,8 @@
-﻿__all__ = ['generate_deal', 'generate_deals']
+﻿"""
+Generic routines for generating deals based on a set of constraints
+"""
+
+__all__ = ['generate_deal', 'generate_deals']
 
 from endplay.dealer.constraint import ConstraintInterpreter, Expr
 from endplay.types import *

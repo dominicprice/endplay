@@ -1,3 +1,7 @@
+"""
+Actions class for producing HTML output
+"""
+
 __all__ = ["HTMLActions"]
 
 from endplay.dealer.actions.base import BaseActions
@@ -128,7 +132,7 @@ class HTMLActions(BaseActions):
 
 	def average(self, expr, s = None):
 		if s is None:
-		  s = ""
+			s = ""
 		self.write('<div class="valuebox">', s, stats.average(self.deals, expr), "</div>")
 
 	def frequency1d(self, expr, lb, ub, s = None):

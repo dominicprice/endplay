@@ -1,3 +1,7 @@
+"""
+Base actions class to provide the interface.
+"""
+
 __all__ = ["BaseActions"]
 
 import sys

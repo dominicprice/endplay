@@ -1,4 +1,11 @@
-﻿from __future__ import annotations
+﻿"""
+All-purpose routine for executing a dealer script file. This can be
+called directly from within Python to convert a dealer file into a 
+list of deals, but its main purpose is as the entry point for the
+main module.
+"""
+
+from __future__ import annotations
 
 from typing import Optional
 import shutil

@@ -1,4 +1,8 @@
-﻿__all__ = ["LateXActions"]
+﻿"""
+Actions class for producing LaTeX output.
+"""
+
+__all__ = ["LateXActions"]
 
 from endplay.dealer.actions.base import BaseActions
 from endplay.types import Denom, Player

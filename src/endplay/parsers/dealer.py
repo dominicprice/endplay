@@ -1,4 +1,8 @@
-﻿__all__ = [ "DealerParser", "ParseException" ]
+﻿"""
+Parser for Dealer scripts
+"""
+
+__all__ = [ "DealerParser", "ParseException" ]
 
 from endplay.types import Player, Vul, Hand, Contract, Denom, Card, Deal
 import pyparsing as pp

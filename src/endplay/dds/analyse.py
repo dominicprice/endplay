@@ -1,6 +1,11 @@
-﻿from __future__ import annotations
+﻿"""
+Analysis functions from the DDS library, which calculate the double dummy
+number of tricks available given a play history.
+"""
 
-__all__ = [ "analyse_play", "analyse_all_plays" ]
+from __future__ import annotations
+
+__all__ = [ "analyse_start", "analyse_play", "analyse_all_plays", "analyse_all_starts" ]
 
 from typing import Iterable, Union, Optional
 import endplay._dds as _dds

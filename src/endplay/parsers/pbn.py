@@ -1,3 +1,7 @@
+"""
+Parser for PBN files
+"""
+
 __all__ = ["PBNParser"]
 
 import warnings

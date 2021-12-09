@@ -1,0 +1,49 @@
+.rst-content .toctree-wrapper li {
+	list-style: none !important;
+}
+
+.rst-content .toctree-wrapper ul li>ul {
+	margin-bottom: 6px;
+	margin-top: 0;
+}
+
+.rst-content .toctree-wrapper {margin: 0; padding: 0; list-style: none;}
+
+.rst-content .toctree-wrapper ul li {
+  margin-left: 15px;
+  position: relative;
+  padding-left: 5px;
+}
+
+.rst-content .toctree-wrapper ul li::before {
+  content: " ";
+  position: absolute;
+  width: 1px;
+  background-color: #000;
+  top: 5px;
+  bottom: -12px;
+  left: -10px;
+}
+.rst-content .toctree-wrapper > ul > li:first-child::before {top: 12px;}
+.rst-content .toctree-wrapper ul li:not(:first-child):last-child::before {display: none;}
+.rst-content .toctree-wrapper ul li:only-child::before {
+  display: list-item;
+  content: " ";
+  position: absolute;
+  width: 1px;
+  background-color: #000;
+  top: 5px;
+  bottom: 7px;
+  height: 7px;
+  left: -10px;
+}
+
+.rst-content .toctree-wrapper ul li::after {
+  content: " ";
+  position: absolute;
+  left: -10px;
+  width: 10px;
+  height: 1px;
+  background-color: #000;
+  top: 12px;
+}

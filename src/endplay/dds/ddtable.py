@@ -1,3 +1,7 @@
+"""
+Double dummy table calculation functions
+"""
+
 __all__ = ["calc_dd_table", "calc_all_tables"]
 
 from typing import Iterable

@@ -1,3 +1,8 @@
+"""
+Main class of the interact module, which derives from `Deal` but keeps track
+of changes to its state.
+"""
+
 __all__ = ["InteractiveDeal"]
 
 from endplay.types import Card, Deal, Player, Denom

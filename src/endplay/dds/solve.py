@@ -1,4 +1,9 @@
-﻿__all__ = ["solve_board", "solve_all_boards"]
+﻿"""
+Solving functions from the DDS library, which calculate the double dummy
+results for playing each card in a player's hand.
+"""
+
+__all__ = ["solve_board", "solve_all_boards"]
 
 from typing import Iterable, Optional
 import endplay._dds as _dds

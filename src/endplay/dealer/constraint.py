@@ -1,4 +1,12 @@
-﻿__all__ = [ "ConstraintInterpreter" ]
+﻿"""
+Engine for converting dealer-syntax expressions into evaluatable
+Python functions. You should not need to use this directly unless
+you are developing your own functions, as most functions accept
+strings as well as functions and automatically compile them using
+the machinery in this module.
+"""
+
+__all__ = [ "ConstraintInterpreter" ]
 
 import re
 from typing import Callable, Any, Union
