@@ -33,3 +33,5 @@ class TestInteractiveDeal(unittest.TestCase):
 		self.assertEqual(d.east.to_pbn(), "4...")
 		self.assertSequenceEqual(d.curtrick, [Card("S3"), Card("S2"), Card("S5")])
 
+if __name__ == "__main__":
+	unittest.main()

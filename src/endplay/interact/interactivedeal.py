@@ -59,26 +59,13 @@ class InteractiveDeal(Deal):
 	def _undo_unplay(self, player, card, toHand):
 		super().play(card, toHand)
 
-	def from_pbn(self, pbn: str) -> None:
-		hist = ("from_pbn", str(self), self.curtrick, self.trump, self.first)
-		super().from_pbn(pbn)
-		self._history.append(hist)
-
-	def _undo_from_pbn(self, pbn, curtrick, trump, first):
-		super().from_pbn(pbn)
-		self.first = first
-		self.trump = trump
-		for player, card in zip(Player.iter_from(first), curtrick):
-			super().__getitem__(player).add(card)
-			super().play(card)
-
 	def __setitem__(self, player, hand):
 		hist = ("set", player, self[player])
 		super().__setitem__(player, hand)
 		self._history.append(hist)
 
 	def _undo_set(self, player, pbn):
-		super().__getitem__(player).from_pbn(pbn)
+		super().__setitem__(player, pbn)
 
 	def reset(self):
 		"Undo all actions in the undo history"

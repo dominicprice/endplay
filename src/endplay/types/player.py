@@ -1,7 +1,9 @@
+from __future__ import annotations
+
 __all__ = ["Player"]
 
 from enum import IntEnum
-from typing import Iterator
+from collections.abc import Iterator, Iterable
 
 class Player(IntEnum):
 	"Encoding for player seat"
@@ -16,17 +18,44 @@ class Player(IntEnum):
 		return Player("NESW".index(name[0].upper()))
 	
 	@staticmethod
-	def iter_from(player: 'Player') -> Iterator['Player']:
+	def from_lin(n: int) -> 'Player':
 		"""
-		Iterate over all four players, clockwise, starting with the given player
+		Convert a BBO LIN representation of a player into a Player object.
+		The conversion is determined by 1=S, 2=W, 3=N, 4=E
+		"""
+		return [Player.south, Player.west, Player.north, Player.east][n - 1]
 
-		:param player: The first player in the returned iterator
+	@staticmethod
+	def from_board(n: int) -> 'Player':
+		"""
+		Return the player who is the dealer of the corresponding board
+		"""
+		return Player.west.next(n)
+
+	def enumerate(self, iterable: Iterable, step: int = 1) -> Iterator:
+		"""
+		Return an iterator whose `next` method returns a tuple
+		containing a Player (starting from this player) and the
+		values obtained from iterating over iterable, where the
+		player increments each time by `step` rotations clockwise
+		"""
+		player = self
+		for item in iterable:
+			yield player, item
+			player = player.next(step)
+
+	def iter_from(self) -> Iterator['Player']:
+		"""
+		Iterate over all four players, clockwise, starting from
+		this player
+
 		:return: An iterator over all four players in play order
 		"""
-		yield from (Player(i % 4) for i in range(player, player + 4))
+		for i in range(4):
+			yield self.next(i)
 		
 	@staticmethod
-	def iterorder(order: str) -> Iterator['Player']:
+	def iter_order(order: str) -> Iterator['Player']:
 		"""
 		Iterate over a sequence of players in a given order
 
@@ -34,6 +63,13 @@ class Player(IntEnum):
 		:return: An iterator over the players in the specified order
 		"""
 		yield from (Player.find(c) for c in order)
+
+	def turns_to(self, other: 'Player') -> int:
+		"Return the number of positions clockwise `other` is from `self`"
+		distance = int(other) - int(self)
+		if distance < 0:
+			distance += 4
+		return distance
 		
 	def prev(self, n: int = 1) -> 'Player':
 		":return: The player who is n places right of the current player"

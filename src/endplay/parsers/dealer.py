@@ -4,6 +4,7 @@ Parser for Dealer scripts
 
 __all__ = [ "DealerParser", "ParseException" ]
 
+from typing import TextIO
 from endplay.types import Player, Vul, Hand, Contract, Denom, Card, Deal
 import pyparsing as pp
 pp.ParserElement.enablePackrat()
@@ -413,7 +414,7 @@ class DealerParser:
 		parseResults = self.expr.parseString(s, parseAll=True)
 		return parseResults[0]
 
-	def parse_file(self, f: 'io.TextIOBase') -> Node:
+	def parse_file(self, f: TextIO) -> Node:
 		"""
 		Parse a file into a syntax tree
 

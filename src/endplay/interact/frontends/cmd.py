@@ -8,7 +8,7 @@ __all__ = ["CmdFrontend"]
 import cmd
 from endplay.interact import InteractiveDeal
 from endplay.dealer import generate_deal
-from endplay.types import Card, Deal, Vul, Player, Denom
+from endplay.types import Card, Deal, Vul, Player, Denom, Hand
 from endplay.dds import solve_board, calc_dd_table, analyse_play, par
 from endplay.evaluate import hcp
 import traceback
@@ -101,7 +101,7 @@ class CmdFrontend(cmd.Cmd):
 			return
 		try:
 			cur_pbn = str(self.deal[player])
-			self.deal[player].from_pbn(args[1])
+			self.deal[player] = Hand(args[1])
 		except RuntimeError:
 			print(f"Invalid PBN string: `{args[0]}`")
 		self.needs_printing = True
@@ -128,7 +128,7 @@ class CmdFrontend(cmd.Cmd):
 		"""
 		if arg:
 			try:
-				self.deal.from_pbn(arg)
+				self.deal.reset(arg)
 			except RuntimeError:
 				print(f"Invalid PBN string: `{arg}`")
 		else:
@@ -148,7 +148,7 @@ class CmdFrontend(cmd.Cmd):
 				print(f"Could not generate deal satisfying this constraint")
 		else:
 			new_deal = generate_deal()
-		self.deal.from_pbn(str(new_deal))
+		self.deal.reset(str(new_deal))
 		self.needs_printing = True
 
 	def do_first(self, arg):

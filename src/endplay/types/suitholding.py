@@ -1,10 +1,11 @@
+from __future__ import annotations
+
 __all__ = ["SuitHolding"]
 
 import ctypes
-from endplay.types.denom import Denom
 from endplay.types.rank import Rank, AlternateRank
-from endplay.types.card import Card
-from typing import Iterable, Iterator, Optional, Union
+from typing import Optional, Union
+from collections.abc import Iterable, Iterator
 
 class SuitHolding:
 	def __init__(self, data: Union[ctypes.c_uint * 4, str] = "", idx: Optional[int] = None):
@@ -16,7 +17,8 @@ class SuitHolding:
 		if isinstance(data, str):
 			self._data = (ctypes.c_uint * 4)(0,0,0,0)
 			self._idx = 0
-			self.from_pbn(data)
+			for rank in data:
+				self.add(rank)
 		else:
 			if idx is None:
 				raise ValueError("No index given to SuitHolding")
@@ -76,18 +78,16 @@ class SuitHolding:
 		"""
 		self._data[self._idx] = 0
 
+	@staticmethod
+	def from_pbn(pbn: str) -> 'SuitHolding':
+		"""
+		Construct a SuitHolding object from a PBN string
+		"""
+		return SuitHolding(pbn)
+
 	def to_pbn(self) -> str:
 		"Create a PBN representation of the suit holding"
 		return "".join(rank.abbr for rank in self)
-
-	def from_pbn(self, pbn: str) -> None:
-		"""
-		Parse a PBN representation of the suit into the current object,
-		clearing any data currently present
-		"""
-		self.clear()
-		for rank in pbn:
-			self.add(rank)
 
 	def __eq__(self, other: 'SuitHolding') -> bool:
 		if len(self) != len(other):

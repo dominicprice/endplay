@@ -37,6 +37,8 @@ The encodings used by the dds library are provided here for convenience::
 		A          0x4000
 """
 
+from __future__ import annotations
+
 __all__ = [
 	"deal", "dealPBN", "ddTableDeal", "ddTableDealPBN", "ddTableDeals",
 	"ddTableDealsPBN", "boards", "boardsPBN", "futureTricks", "solvedBoards",
@@ -54,7 +56,8 @@ __all__ = [
 import ctypes
 import os
 import re
-from typing import Iterable, Optional
+from collections.abc import Iterable
+from typing import Optional
 from warnings import warn
 from functools import wraps
 

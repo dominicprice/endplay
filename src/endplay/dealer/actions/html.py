@@ -16,7 +16,7 @@ class HTMLActions(BaseActions):
 #
 	def print(self, *players):
 		compass = '<div class="compass">'
-		for player in Player.iterorder("NWES"):
+		for player in Player.iter_order("NWES"):
 			compass += f'<div class="{player.name}">{player.abbr}</div>'
 		compass += "</div>"
 		box = "<div></div>"

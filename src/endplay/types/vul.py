@@ -24,6 +24,14 @@ class Vul(IntEnum):
 			raise ValueError
 
 	@staticmethod
+	def from_lin(s: str) -> 'Vul':
+		"""
+		Convert a BBO LIN string of vulnerability into a Vul object.
+		The conversion is determined by 0=none, e=ew, n=ns, b=both
+		"""
+		return Vul("obne".index(s.lower()))
+
+	@staticmethod
 	def from_board(board_no: int) -> 'Vul':
 		":return: The vulnerability of the specified board"
 		i = board_no - 1

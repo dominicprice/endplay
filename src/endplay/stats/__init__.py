@@ -6,8 +6,8 @@ from __future__ import annotations
 
 __all__ = ["average", "frequency", "cofrequency"]
 
-from typing import Iterable, Optional, Union
-from collections import defaultdict, namedtuple
+from typing import Optional
+from collections.abc import Iterable
 from endplay.types import Deal
 from endplay.dealer.constraint import Expr
 from math import floor, ceil
@@ -15,7 +15,6 @@ try:
 	from statistics import fmean
 except ImportError:
 	from statistics import mean as fmean
-import numpy as np
 
 
 def average(deals: Iterable[Deal], func: Expr):
@@ -33,7 +32,6 @@ def frequency(deals: Iterable[Deal], func: Expr, lb: int, ub: int) -> list[int]:
 	:param ub: Value above which values are ignored
 	:return: An array of bins, and a tuple containing the left and right boundaries
 	"""
-	data = [round(func(deal)) for deal in deals]
 	lb, ub = floor(lb), ceil(ub)
 	bins = list(range(lb, ub+1))
 	hist = [0] * len(bins)

@@ -10,7 +10,8 @@ __all__ = [
 	"is_semibalanced", "is_minor_semibalanced", "is_single_suited", "is_two_suited",
 	"is_three_suited"]
 
-from typing import Union, Iterable
+from typing import Union
+from collections.abc import Iterable
 from endplay.types import *
 
 standard_hcp_scale = { Rank.RA: 4, Rank.RK: 3, Rank.RQ: 2, Rank.RJ: 1}
@@ -197,7 +198,7 @@ def is_minor_semibalanced(hand: Hand) -> bool:
 	Returns True if the hand shape is balanced or contains 
 	doubletons in both minors
 	"""
-	return is_balanced(s) or minor_shape(s) == [2, 2]
+	return is_balanced(hand) or minor_shape(hand) == [2, 2]
 
 def is_single_suited(hand: Hand, min_length: int = 6, no_side_suit: bool = False) -> bool:
 	"""

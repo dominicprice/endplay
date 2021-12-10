@@ -5,7 +5,8 @@ __all__ = ["Deal"]
 import sys
 import re
 import json as _json
-from typing import Iterable, Iterator, Union, Optional
+from typing import Union, Optional
+from collections.abc import Iterable, Iterator
 import ctypes
 from endplay.types.denom import Denom
 from endplay.types.rank import Rank, AlternateRank
@@ -17,13 +18,23 @@ from endplay.types.vul import Vul
 import endplay._dds as _dds
 
 class Deal:
-	def __init__(self, pbn: str = None, first: Player = Player.north, trump: Denom = Denom.nt):
+	def __init__(self, 
+		pbn: str = None, 
+		first: Player = Player.north, 
+		trump: Denom = Denom.nt, 
+		*, 
+		complete_deal: bool = False):
 		self._data = _dds.deal()
 		self.clear()
 		self._data.first = first
 		self._data.trump = trump
 		if pbn is not None:
-			self.from_pbn(pbn)
+			if len(pbn) > 2 and pbn[1] == ":":
+				start, hands = Player.find(pbn[0]), pbn[2:].split()
+			for player, hand in zip(Player.iter_from(start), hands):
+				self[player] = hand
+			if complete_deal:
+				self.complete_deal()
 		
 	def __copy__(self) -> 'Deal':
 		other = Deal()
@@ -130,17 +141,11 @@ class Deal:
 				break
 		else:
 			# Playing final card to a trick: Calculate winner, update first and clear current trick
+			# Lazy import to avoid circular import
+			from endplay.utils import trick_winner
 			if fromHand and not self[self.first.rho].remove(card):
 				raise RuntimeError("Trying to play card not in hand")
-			trick = self.curtrick + [card]
-			winner, topcard = self.first, trick[0]
-			for i in range(1, 4):
-				if trick[i].suit == topcard.suit:
-					if trick[i].rank > topcard.rank:
-						winner, topcard = self.first.next(i), trick[i]
-				elif trick[i].suit == self.trump:
-					winner, topcard = self.first.next(i), trick[i]
-			self.first = winner
+			self.first = trick_winner(self.curtrick + [card])
 			for i in range(3):
 				self._data.currentTrickRank[i] = 0
 				
@@ -164,35 +169,53 @@ class Deal:
 		else:
 			raise RuntimeError("No cards to unplay")
 
-	def from_pbn(self, pbn: str) -> None:
+	def complete_deal(self) -> None:
+		"""
+		If there is a player with no cards, deal any cards which do not appear in anyone else's
+		hand to that player
+		"""
+		remaining = Hand("AKQJT98765432.AKQJT98765432.AKQJT98765432.AKQJT98765432")
+		missing_hand = None
+		for player, hand in self:
+			if len(hand) == 0:
+				if missing_hand:
+					raise ValueError("Cannot complete a deal with more than one missing hand")
+				missing_hand = player
+			else:
+				for card in hand:
+					remaining.remove(card)
+		if missing_hand is not None:
+			if len(remaining) != 13:
+				raise ValueError("Cannot complete a deal with more than 13 undealt cards")
+			self[missing_hand] = remaining
+
+	@staticmethod
+	def from_pbn(pbn: str) -> 'Deal':
 		"""
 		Clear all hands and the current trick, and replace with the cards in a PBN string
 
 		:param pbn: A PBN string, e.g. "N:974.AJ3.63.AK963 K83.K9752.7.8752 AQJ5.T864.KJ94.4 T62.Q.AQT852.QJT"
 		"""
-		if len(pbn) > 2 and pbn[1] != ":":
-			pbn = "N:" + pbn
-		hands = re.match(r"([NESW]):(\S+)\s(\S+)\s(\S+)\s(\S+)", pbn)
-		if not hands:
-			raise ValueError(f"Could not parse pbn string '{pbn}'")
-		for i, player in enumerate(Player.iter_from("NESW".index(hands.group(1))), 2):
-			self[player].from_pbn(hands.group(i))
+		return Deal(pbn)
 			
 	def to_pbn(self) -> str:
 		"Return a PBN string representation of the deal"
 		return 'N:' + ' '.join(str(self[player]) for player in Player)
 
-	def from_json(self, json: Union[str, dict]):
+	@staticmethod
+	def from_json(json: Union[str, dict]):
 		if isinstance(json, str):
 			json = _json.loads(json)
-		self.north = json["north"]
-		self.east = json["east"]
-		self.south = json["south"]
-		self.west = json["west"]
-		self.first = Player.find(json["first"])
-		self.trump = Denom.find(json["trump"])
+		deal = Deal()
+		deal.north = json["north"]
+		deal.east = json["east"]
+		deal.south = json["south"]
+		deal.west = json["west"]
+		deal.first = Player.find(json["first"])
+		deal.trump = Denom.find(json["trump"])
 		for card in json["curtrick"]:
-			self.play(card, False)
+			deal.play(card, False)
+		return deal
 
 	def to_json(self, indent: Optional[int] = None) -> str:
 		"Encode the data as a JSON string"
@@ -206,6 +229,20 @@ class Deal:
 			"trump": self.trump.name
 		}
 		return _json.dumps(d, indent=indent)
+
+	@staticmethod
+	def from_lin(lin: str, complete_deal: bool = False):
+		if lin[0] in "1234":
+			dealer, hands = int(lin[0]), lin[1:].split(",")
+		else:
+			dealer, hands = 3, lin.split(",")
+		deal = Deal()
+		start = Player.from_lin(dealer)
+		for player, hand in zip(Player.iter_from(start), hands):
+			deal[player] = Hand.from_lin(hand)
+		if complete_deal:
+			deal.complete_deal()
+		return deal
 
 	def to_LaTeX(self, board_no: Optional[int] = None, exclude: Iterable[Player] = [], ddtable: bool = False) -> str:
 		"Return a LaTeX representation of the hand"
@@ -233,7 +270,7 @@ class Deal:
 	def to_hand(self) -> Hand:
 		"Return a new hand containing the contents of all four hands in the deal"
 		res = Hand()
-		for hand in self:
+		for _, hand in self:
 			res.extend(hand)
 		return res
 
@@ -273,12 +310,18 @@ class Deal:
 
 	def clear(self) -> None:
 		"Clear all hands and the cards in the current trick"
-		for player in self:
-			player.clear()
+		for _, hand in self:
+			hand.clear()
 		while self.curtrick:
 			self.unplay(False)
 
-	def pprint(self, board_no: int = None, exclude: list[Player] = [], stream=sys.stdout) -> None:
+	def pprint(self, 
+		board_no: int = None, 
+		exclude: list[Player] = [], 
+		stream=sys.stdout,
+		*,
+		vul: Optional[Vul] = None,
+		dealer: Optional[Player] = None) -> None:
 		"""
 		Print the deal in a hand diagram format. 
 
@@ -288,14 +331,15 @@ class Deal:
 		spacing = " " * 13
 		played_cards = ["  "] * 4
 		prefixes = ["    ^", "       >", "    v", "  <"]
-		if board_no:
-			titles = [ 
-				f"Board {board_no}".center(13), 
-				f"Vul {Vul.from_board(board_no).abbr}".center(13), 
-				f"{Player.west.next(board_no).abbr} deals".center(13),
-				spacing]
-		else:
-			titles = [ spacing ] * 4
+		titles = [ spacing ] * 4
+		if board_no is not None:
+			titles[0] = f"Board {board_no}".center(13)
+			if vul is None: vul = Vul.from_board(board_no)
+			if dealer is None: dealer = Player.west.next(board_no)
+		if vul is not None:
+			titles[1] = f"Vul {vul.abbr}".center(13)
+		if dealer is not None:
+			titles[2] = f"{dealer.abbr} deals".center(13)
 		for player, card in zip(Player.iter_from(self.first), self.curtrick):
 			played_cards[player] = prefixes[player] + str(card)
 		for title, suit in zip(titles, Denom.suits()):
@@ -311,11 +355,11 @@ class Deal:
 			
 	def __contains__(self, card: Card) -> bool:
 		":return: True if card is in the current deal"
-		return any(card in hand for hand in self)
+		return any(card in hand for _, hand in self)
 	
-	def __iter__(self) -> Iterator[Hand]:
+	def __iter__(self) -> Iterator[Player, Hand]:
 		":return: An iterator over the north, east, south and west hands respectively"
-		yield from (self[player] for player in Player)
+		yield from ((player, self[player]) for player in Player)
 
 	def __getitem__(self, player: Player) -> Hand:
 		":return: The specified hand"

@@ -2,12 +2,15 @@
 Generic routines for generating deals based on a set of constraints
 """
 
+from __future__ import annotations
+
 __all__ = ['generate_deal', 'generate_deals']
 
 from endplay.dealer.constraint import ConstraintInterpreter, Expr
 from endplay.types import *
 from numpy.random import RandomState # guaranteed to be stable for numpy>=1.16
-from typing import Iterator, Optional, Union
+from typing import Optional, Union
+from collections.abc import Iterator
 import warnings
 from tqdm import trange
 
@@ -159,7 +162,7 @@ def generate_deals(
 	constraints = [ci.lambdify(c) if not callable(c) else c for c in constraints]
 	cards = set(Card(suit=denom, rank=rank) for denom in Denom.suits() for rank in Rank)
 	cards = list(cards.difference(predeal.to_hand()))
-	split = [sum([13 - len(hand) for hand in predeal][:i]) for i in range(5)]
+	split = [sum([13 - len(hand) for _, hand in predeal][:i]) for i in range(5)]
 	res = []
 	generated = 0
 	if show_progress:

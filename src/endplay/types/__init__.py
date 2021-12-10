@@ -6,9 +6,8 @@ are used by all the submodules in the endplay library.
 
 __all__ = [ 
 	"Vul", "Rank", "AlternateRank", "Player", "Denom", "Card", 
-	"Hand", "Deal", "DDTable", "Contract", "SolvedBoard",
-	"SolvedBoardList", "SolvedPlay", "SolvedPlayList", "Penalty",
-	"ParList", "SuitHolding" ]
+	"Hand", "Deal", "Contract", "Penalty", "SuitHolding", "Bid",
+	"Board"]
 
 from endplay.types.vul import Vul
 from endplay.types.rank import Rank, AlternateRank
@@ -18,9 +17,7 @@ from endplay.types.card import Card
 from endplay.types.suitholding import SuitHolding
 from endplay.types.hand import Hand
 from endplay.types.deal import Deal
-from endplay.types.ddtable import DDTable, DDTableList
 from endplay.types.contract import Contract
-from endplay.types.solvedboard import SolvedBoard, SolvedBoardList
-from endplay.types.solvedplay import SolvedPlay, SolvedPlayList
 from endplay.types.penalty import Penalty
-from endplay.types.parlist import ParList
+from endplay.types.bid import Bid
+from endplay.types.board import Board

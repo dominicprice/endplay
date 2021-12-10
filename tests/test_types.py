@@ -30,8 +30,8 @@ class TestDeal(unittest.TestCase):
 	def test_hands(self):
 		deal = Deal(pbn)
 		
-		for i, hand in enumerate(deal):
-			self.assertEqual(pbn_hands[i], str(hand))
+		for player, hand in enumerate(deal):
+			self.assertEqual(pbn_hands[player], str(hand))
 
 		self.assertEqual(str(deal.north), "974.AJ3.63.AK963")
 		deal.north = "K83.K9752.7.8752"
@@ -95,7 +95,7 @@ class TestDeal(unittest.TestCase):
 	def test_pbn(self):
 		deal = Deal(pbn)
 		self.assertEqual(deal.to_pbn(), pbn)
-		deal.from_pbn(pbn2)
+		deal = Deal.from_pbn(pbn2)
 		self.assertEqual(deal.to_pbn(), pbn2)
 
 	def test_json(self):
@@ -127,7 +127,7 @@ class TestHand(unittest.TestCase):
 		self.assertTrue(hand.remove("S9"))
 		self.assertFalse(Card("S9") in hand)
 		self.assertFalse(hand.remove("S9"))
-		hand.from_pbn(pbn_hands[0])
+		hand = Hand.from_pbn(pbn_hands[0])
 		self.assertEqual(hand.to_pbn(), pbn_hands[0])
 		hand.clear()
 		self.assertEqual(len(hand), 0)
@@ -201,7 +201,7 @@ class TestContract(unittest.TestCase):
 		self.assertEqual(d.level, 7)
 		self.assertEqual(d.denom, Denom.hearts)
 		self.assertEqual(d.declarer, Player.west)
-		self.assertEqual(d.penalty, Penalty.none)
+		self.assertEqual(d.penalty, Penalty.passed)
 		self.assertEqual(d.result, 0)
 		d.declarer = Player.north
 		self.assertEqual(d.declarer, Player.north)

@@ -1,10 +1,14 @@
+from __future__ import annotations
+
 __all__ = ["Contract"]
 
-from typing import Iterable, Union
+from typing import Union
+from collections.abc import Reversible
 from endplay.types.player import Player
 from endplay.types.denom import Denom
 from endplay.types.penalty import Penalty
 from endplay.types.vul import Vul
+from endplay.types.bid import Bid
 import endplay._dds as _dds
 import re
 
@@ -13,7 +17,7 @@ denom_to_contract = [ 1, 2,3,4,0 ]
 
 class Contract:
 	"Class representing a specific contract"
-	_pat = re.compile(r"^([1-7])((?:NT)|S|H|D|C)([NSEW])(X{0,2})(=|(?:[+-]\d+))$")
+	_pat = re.compile(r"^([1-7])((?:NT)|S|H|D|C)([NSEW]?)(X{0,2})((?:=|(?:[+-]\d+))?)$")
 	def __init__(
 		self, 
 		data: Union[_dds.contractType, str, None] = None, 
@@ -24,7 +28,7 @@ class Contract:
 		penalty: Penalty = None, 
 		result: int = None):
 		"""
-		Construct a new contract
+		Construct a new contract. If no parameters are passed, a passout is constructed.
 
 		:param data: Construct from a _dds.contractType object or contract string
 		:param level: The level of the contract
@@ -35,17 +39,21 @@ class Contract:
 		"""
 		if isinstance(data, str):
 			m = Contract._pat.match(data.upper())
-			if not m:
+			if m:
+				level = int(m[1])
+				denom = Denom.find(m[2])
+				declarer = Player.find(m[3] or "north")
+				penalty = Penalty.find(m[4])
+				result = 0 if m[5] == "=" else int(m[5] or "0")
+			elif data.lower().startswith("pass"):
+				level = 0
+			else:
 				raise ValueError(f"Invalid contract string: {data}")
-			level = int(m[1])
-			denom = Denom.find(m[2])
-			declarer = Player.find(m[3])
-			penalty = Penalty.find(m[4])
-			result = 0 if m[5] == "=" else int(m[5])
+
 			data = None
 
 		self._data = data or _dds.contractType()
-		self.penalty = Penalty.none if self._data.underTricks == 0 else Penalty.doubled
+		self.penalty = Penalty.passed if self._data.underTricks == 0 else Penalty.doubled
 		if level is not None: self.level = level
 		if denom is not None: self.denom = denom
 		if declarer is not None: self.declarer = declarer
@@ -92,8 +100,40 @@ class Contract:
 			self._data.underTricks = -tricks
 			self._data.overTricks = 0
 
+	@staticmethod
+	def from_auction(dealer: Player, auction: Reversible[Bid]):
+		"""
+		Construct a contract from a bidding sequence
+		"""
+		# Iterate backwards through the sequence. The penalty is the
+		# first x/xx bid we find, and the contract is the first
+		# contract bid we find
+		c = Contract()
+		last = dealer.next(len(auction)-1)
+		for player, bid in last.enumerate(reversed(auction), step=-1):
+			if bid.is_contract():
+				c.denom = bid.denom
+				c.level = bid.level
+				c.declarer = player
+				break
+			elif c.penalty == Penalty.passed:
+				c.penalty = bid.penalty
+		# Iterate forwards through the sequence. If the denom is the same
+		# as the contract and the bidder is the (current) declarer or their
+		# partner, set the declarer to that player
+		for player, bid in dealer.enumerate(auction):
+			if bid.is_contract() and bid.denom == c.denom and player in [c.declarer, c.declarer.partner]:
+				c.declarer = player
+				break
+		return c
+			
+	def is_passout(self) -> bool:
+		return self.level == 0
+
 	def score(self, vul: Vul) -> int:
 		"The number of points the contract would score for the declarer"
+		if self.is_passout():
+			return 0
 		if vul == Vul.none:
 			is_vul = False
 		elif vul == Vul.ns:
@@ -104,7 +144,7 @@ class Contract:
 			is_vul = True
 		res = self.result
 		if res < 0:
-			if self.penalty == Penalty.none:
+			if self.penalty == Penalty.passed:
 				if is_vul:
 					return 100 * res
 				else:
@@ -152,7 +192,7 @@ class Contract:
 			elif self.penalty == Penalty.redoubled:
 				score += 100
 			# Overtrick bonus
-			if self.penalty == Penalty.none:
+			if self.penalty == Penalty.passed:
 				if self.denom == Denom.clubs or self.denom == Denom.diamonds:
 					score += 20 * res
 				else:
@@ -170,5 +210,7 @@ class Contract:
 
 	def __str__(self) -> str:
 		"A string representation of the contract e.g. 3NTW="
+		if self.is_passout():
+			return "Pass"
 		s = f"{self.level}{self.denom.abbr}{self.declarer.abbr}{self.penalty.abbr}"
 		return s + ("=" if self.result == 0 else f"{self.result:+d}")

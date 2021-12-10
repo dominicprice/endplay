@@ -89,3 +89,6 @@ class TestEvaluate(unittest.TestCase):
 		#is_three_suited
 		self.assertTrue(is_three_suited(deal.south))
 		self.assertFalse(is_three_suited(deal.north))
+
+if __name__ == "__main__":
+	unittest.main()

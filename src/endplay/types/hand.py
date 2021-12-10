@@ -1,12 +1,16 @@
+from __future__ import annotations
+
 __all__ = ["Hand"]
 
 import sys
+import re
 from endplay.types.denom import Denom
 from endplay.types.rank import Rank
 from endplay.types.card import Card
 from endplay.types.suitholding import SuitHolding
 import ctypes
-from typing import Iterable, Iterator, Union, Optional
+from typing import Union
+from collections.abc import Iterator, Iterable
 
 class Hand:
 	"Class allowing manipulations of cards in the hand of a single player"
@@ -18,7 +22,10 @@ class Hand:
 		"""
 		if isinstance(data, str):
 			self._data = (ctypes.c_uint * 4)(0, 0, 0, 0)
-			self.from_pbn(data)
+			suits = data.split(".")
+			for i, suit in enumerate(suits):
+				for rank in suit:
+					self._data[i] |= Rank.find(rank).value
 		else:
 			self._data = data
 
@@ -68,24 +75,31 @@ class Hand:
 			raise ValueError("card must be of type Card or str")
 		if card in self:
 			self._data[card.suit.value] &= ~card.rank.value
-			return True;
+			return True
 		return False
 
-	def from_pbn(self, pbn: str) -> None:
+	@staticmethod
+	def from_pbn(pbn: str) -> 'Hand':
 		"""
-		Sets the cards in the hand to the given PBN string
+		Construct a Hand from a PBN string
 
 		:param pbn: A PBN string for a hand, e.g. "QT62..AQT852.QJT"
 		"""
-		self.clear()
-		suits = pbn.split(".")
-		for i, suit in enumerate(suits):
-			for rank in suit:
-				self._data[i] |= Rank.find(rank).value
+		return Hand(pbn)
 				
 	def to_pbn(self) -> str:
 		":return: A PBN representation of the hand"
 		return '.'.join(str(self[suit]) for suit in Denom.suits())
+
+	@staticmethod
+	def from_lin(lin: str) -> 'Hand':
+		"""
+		Construct a Hand from a LIN string
+
+		:param lin: A LIN string for a hand, e.g. "SQT62HDAQT852CQJT"
+		"""
+		pbn = lin[1:].replace("H", ".").replace("D", ".").replace("C", ".")
+		return Hand.from_pbn(pbn)
 
 	def to_LaTeX(self, vertical: bool = True, ten_as_letter: bool = False) -> str:
 		"""

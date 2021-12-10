@@ -1,7 +1,9 @@
+from __future__ import annotations	
+
 __all__ = ["Denom"]
 
 from enum import IntEnum
-from typing import Iterator
+from collections.abc import Iterator
 
 class Denom(IntEnum):
 	"Encoding for suits and contract denomination"

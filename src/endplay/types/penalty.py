@@ -4,14 +4,14 @@ from enum import IntEnum
 
 class Penalty(IntEnum):
 	"Encodes a penalty"
-	none = 1
+	passed = 1
 	doubled = 2
 	redoubled = 4
 
 	@staticmethod
 	def find(name: str):
 		if not name or name[0].lower() in "np":
-			return Penalty.none
+			return Penalty.passed
 		if name.lower() == 'x' or name[0].lower() == 'd':
 			return Penalty.doubled
 		if name.lower() == 'xx' or name[0].lower() == 'r':
@@ -20,4 +20,4 @@ class Penalty(IntEnum):
 
 	@property
 	def abbr(self) -> str:
-		return 'x' * (self >> 1)
+		return ["", "x", "xx"][self - 1]

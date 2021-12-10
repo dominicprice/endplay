@@ -132,7 +132,7 @@ Hand("974.AJ3.63.AK963")
 ♥ Q
 ♦ AQT852
 ♣ QJT
->>> for h in d:
+>>> for p, h in d:
 ...   print(h)
 974.AJ3.63.AK963
 K83.K9752.7.8752
@@ -140,7 +140,7 @@ AQJ5.T864.KJ94.4
 T62.Q.AQT852.QJT
 ```
 
-If your terminal doesn't handle the Unicode suit symbols, then you can tell *endplay* to use the letters SHDC instead:
+Note that iterating over the deal returns `(Player, Hand)` tuples. If your terminal doesn't handle the Unicode suit symbols, then you can tell *endplay* to use the letters SHDC instead:
 
 ```python
 >>> from endplay import config
