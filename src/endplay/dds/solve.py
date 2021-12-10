@@ -3,11 +3,57 @@ Solving functions from the DDS library, which calculate the double dummy
 results for playing each card in a player's hand.
 """
 
-__all__ = ["solve_board", "solve_all_boards"]
+from __future__ import annotations
 
-from typing import Iterable, Optional
+__all__ = ["SolvedBoard", "SolvedBoardList", "solve_board", "solve_all_boards"]
+
+from typing import Optional
 import endplay._dds as _dds
-from endplay.types import Deal, SolvedBoard, SolvedBoardList
+from endplay.types import Deal, Card, Denom, Rank
+from collections.abc import Iterable, Iterator, Sequence
+
+class SolvedBoard(Iterable):
+	def __init__(self, data: _dds.solvedBoard):
+		self._data = data
+
+	def __iter__(self) -> Iterator[tuple[Card, int]]:
+		":return: An iterator of (card, maxTrick) pairs"
+		for i in range(self._data.cards):
+			if self._data.score[i] == -1:
+				continue
+			holding = (1 << self._data.rank[i]) | self._data.equals[i]
+			for rank in Rank:
+				if holding & rank.value:
+					card = Card(suit=Denom(self._data.suit[i]), rank=rank)
+					yield (card, self._data.score[i])
+
+	def __repr__(self) -> str:
+		return f'<SolvedBoard object>'
+
+	def __str__(self) -> str:
+		return '{' + ", ".join("b[0]:b[1]" for b in self) + '}'
+
+class SolvedBoardList(Sequence):
+	def __init__(self, data: _dds.solvedBoards):
+			self._data = data
+
+	def __len__(self) -> int:
+		":return: The number of boards in the list"
+		return self._data.noOfBoards
+
+	def __getitem__(self, i: int) -> SolvedBoard:
+		":return: The solved board at index `i`"
+		if i >= len(self):
+			return IndexError
+		return SolvedBoard(self._data.solvedBoard[i])
+
+	def __repr__(self) -> str:
+		return f'<SolvedBoardList; length={len(self)}>'
+
+	def __str__(self) -> str:
+		if len(self) == 0:
+			return "[]"
+		return "[(" + ", ".join(str(b) for b in self) + ")]"
 
 def solve_board(deal: Deal, target: Optional[int] = None) -> SolvedBoard:
 	"""
