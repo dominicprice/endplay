@@ -1,0 +1,1467 @@
+% PBN 1.0
+% EXPORT
+%
+[Event "16th European Youth Team Championships"]
+[Site "Vienna, Austria AUT"]
+[Date "1998.07.16"]
+[Board "1"]
+[West "Gloyer A"]
+[North "Linde J"]
+[East "Saurer B"]
+[South "Balschun R"]
+[Dealer "N"]
+[Vulnerable "None"]
+[Deal "N:T32.AKQ7.T3.AQJT A9864.83.AK4.987 J.JT9542.72.K653 KQ75.6.QJ9865.42"]
+[Declarer "S"]
+[Contract "5H"]
+[Result "10"]
+[HomeTeam "J-germany"]
+[Room "Open"]
+[Round "1"]
+[Score "NS -50"]
+[Section "Junior Teams"]
+[Table "7"]
+[VisitTeam "J-austria"]
+[Auction "N"]
+1C 1S 2H 4S
+5H Pass Pass Pass
+[Play "W"]
+DQ D3 D4 D2
+SK S2 S4 SJ
+DJ DT DK D7
+*
+
+[Event "#"]
+[Site "#"]
+[Date "#"]
+[Board "1"]
+[West "Kornek A"]
+[North "Lindermann A"]
+[East "Huesken F"]
+[South "Purstl C"]
+[Dealer "N"]
+[Vulnerable "None"]
+[Deal "N:T32.AKQ7.T3.AQJT A9864.83.AK4.987 J.JT9542.72.K653 KQ75.6.QJ9865.42"]
+[Declarer "N"]
+[Contract "4H"]
+[Result "10"]
+[HomeTeam "#"]
+[Room "Closed"]
+[Round "#"]
+[Score "NS 420"]
+[Section "#"]
+[Table "#"]
+[VisitTeam "#"]
+[Auction "N"]
+1NT Pass 4C Pass
+4H Pass Pass Pass
+[Play "E"]
+DA D2 D5 D3
+C9 C3 C2 CA
+H3 H2 H6 HA
+H8 H4 D9 HK
+*
+
+[Event "#"]
+[Site "#"]
+[Date "1998.07.16"]
+[Board "2"]
+[West "Gloyer A"]
+[North "Linde J"]
+[East "Saurer B"]
+[South "Balschun R"]
+[Dealer "E"]
+[Vulnerable "NS"]
+[Deal "E:J85.QJT.T94.K763 KQT9.A975.KQ.QT9 A762.K8.7632.J82 43.6432.AJ85.A54"]
+[Declarer "S"]
+[Contract "4H"]
+[Result "9"]
+[HomeTeam "J-germany"]
+[Room "Open"]
+[Round "1"]
+[Score "NS -100"]
+[Section "Junior Teams"]
+[Table "7"]
+[VisitTeam "J-austria"]
+[Auction "E"]
+Pass 1NT Pass 2C
+Pass 3C Pass 4D
+Pass 4H Pass Pass
+Pass
+[Play "W"]
+C2 C4 CK C9
+SA S3 SJ SK
+C8 C5 C3 CT
+H8 H2 HT HA
+HK H3 HJ H5
+*
+
+[Event "#"]
+[Site "#"]
+[Date "#"]
+[Board "2"]
+[West "Kornek A"]
+[North "Lindermann A"]
+[East "Huesken F"]
+[South "Purstl C"]
+[Dealer "E"]
+[Vulnerable "NS"]
+[Deal "E:J85.QJT.T94.K763 KQT9.A975.KQ.QT9 A762.K8.7632.J82 43.6432.AJ85.A54"]
+[Declarer "S"]
+[Contract "4H"]
+[Result "10"]
+[HomeTeam "#"]
+[Room "Closed"]
+[Round "#"]
+[Score "NS 620"]
+[Section "#"]
+[Table "#"]
+[VisitTeam "#"]
+[Auction "E"]
+Pass 1NT Pass 2C
+Pass 2H Pass 4H
+Pass Pass Pass
+[Play "W"]
+D3 D5 D9 DQ
+H8 H2 HT H7
+SA S3 S5 SK
+D2 D8 DT DK
+HK H3 HJ HA
+S2 S4 S8 SQ
+S6 H4 SJ ST
+D6 DA D4 C9
+D7 DJ C3 CT
+*
+
+[Event "#"]
+[Site "#"]
+[Date "1998.07.16"]
+[Board "3"]
+[West "Gloyer A"]
+[North "Linde J"]
+[East "Saurer B"]
+[South "Balschun R"]
+[Dealer "S"]
+[Vulnerable "EW"]
+[Deal "S:J5.2.AKJ92.JT965 AT9.AJ963.Q6.Q72 K87632.K875.T8.K Q4.QT4.7543.A843"]
+[Declarer "N"]
+[Contract "2S"]
+[Result "7"]
+[HomeTeam "J-germany"]
+[Room "Open"]
+[Round "1"]
+[Score "NS -50"]
+[Section "Junior Teams"]
+[Table "7"]
+[VisitTeam "J-austria"]
+[Auction "S"]
+1D 1H 1S 2H
+Pass Pass 2S Pass
+Pass Pass
+[Play "E"]
+H4 H2 HA H7
+SQ S5 S9 S2
+S4 SJ SA S3
+HT C5 H3 HK
+C3 C6 ST SK
+D3 D2 DQ DT
+HQ C9 HJ H5
+CA CT C2 CK
+*
+
+[Event "#"]
+[Site "#"]
+[Date "#"]
+[Board "3"]
+[West "Kornek A"]
+[North "Lindermann A"]
+[East "Huesken F"]
+[South "Purstl C"]
+[Dealer "S"]
+[Vulnerable "EW"]
+[Deal "S:J5.2.AKJ92.JT965 AT9.AJ963.Q6.Q72 K87632.K875.T8.K Q4.QT4.7543.A843"]
+[Declarer "N"]
+[Contract "3D"]
+[Result "8"]
+[HomeTeam "#"]
+[Room "Closed"]
+[Round "#"]
+[Score "NS -50"]
+[Section "#"]
+[Table "#"]
+[VisitTeam "#"]
+[Auction "S"]
+2NT Pass 3D Pass
+Pass Pass
+[Play "E"]
+D4 DA D6 D8
+CA C5 C7 CK
+D3 D2 DQ DT
+S4 S5 SA S2
+SQ SJ ST SK
+C4 D9 S9 S8
+D5 DJ H3 S3
+- CJ CQ -
+*
+
+[Event "#"]
+[Site "#"]
+[Date "1998.07.16"]
+[Board "4"]
+[West "Gloyer A"]
+[North "Linde J"]
+[East "Saurer B"]
+[South "Balschun R"]
+[Dealer "W"]
+[Vulnerable "All"]
+[Deal "W:87542.KT53.AQ9.Q A9.6.KT8.AKJ9854 KQJ3.QJ74.72.T32 T6.A982.J6543.76"]
+[Declarer "N"]
+[Contract "4C"]
+[Result "10"]
+[HomeTeam "J-germany"]
+[Room "Open"]
+[Round "1"]
+[Score "NS 130"]
+[Section "Junior Teams"]
+[Table "7"]
+[VisitTeam "J-austria"]
+[Auction "W"]
+1S 2C 3C Pass
+3S 4C Pass Pass
+Pass
+[Play "E"]
+SK S6 S2 SA
+C2 C6 CQ CK
+C3 C7 S8 CA
+CT ST S4 CJ
+D7 DJ DQ D8
+*
+
+[Event "#"]
+[Site "#"]
+[Date "#"]
+[Board "4"]
+[West "Kornek A"]
+[North "Lindermann A"]
+[East "Huesken F"]
+[South "Purstl C"]
+[Dealer "W"]
+[Vulnerable "All"]
+[Deal "W:87542.KT53.AQ9.Q A9.6.KT8.AKJ9854 KQJ3.QJ74.72.T32 T6.A982.J6543.76"]
+[Declarer "W"]
+[Contract "5SX"]
+[Result "8"]
+[HomeTeam "#"]
+[Room "Closed"]
+[Round "#"]
+[Score "NS 800"]
+[Section "#"]
+[Table "#"]
+[VisitTeam "#"]
+[Auction "W"]
+Pass 1C 2C Pass
+4S 5C Pass Pass
+5S Pass Pass X
+Pass Pass Pass
+[Play "N"]
+CA C2 C7 CQ
+CK C3 C6 S2
+SA S3 S6 S4
+CJ CT ST H3
+DK D2 D3 DQ
+H6 H4 HA H5
+D8 D7 D4 DA
+S9 SJ - S5
+*
+
+[Event "#"]
+[Site "#"]
+[Date "1998.07.16"]
+[Board "5"]
+[West "Gloyer A"]
+[North "Linde J"]
+[East "Saurer B"]
+[South "Balschun R"]
+[Dealer "N"]
+[Vulnerable "NS"]
+[Deal "N:AK53.AQ.K73.AT53 J72.K5.AJ9862.94 94.J8632.T.KJ762 QT86.T974.Q54.Q8"]
+[Declarer "N"]
+[Contract "6H"]
+[Result "10"]
+[HomeTeam "J-germany"]
+[Room "Open"]
+[Round "1"]
+[Score "NS -200"]
+[Section "Junior Teams"]
+[Table "7"]
+[VisitTeam "J-austria"]
+[Auction "N"]
+2NT Pass 3D Pass
+3H Pass 4H Pass
+6H Pass Pass Pass
+[Play "E"]
+DA DT D4 D3
+D2 H2 D5 D7
+HK H3 H4 HQ
+*
+
+[Event "#"]
+[Site "#"]
+[Date "#"]
+[Board "5"]
+[West "Kornek A"]
+[North "Lindermann A"]
+[East "Huesken F"]
+[South "Purstl C"]
+[Dealer "N"]
+[Vulnerable "NS"]
+[Deal "N:AK53.AQ.K73.AT53 J72.K5.AJ9862.94 94.J8632.T.KJ762 QT86.T974.Q54.Q8"]
+[Declarer "S"]
+[Contract "4H"]
+[Result "10"]
+[HomeTeam "#"]
+[Room "Closed"]
+[Round "#"]
+[Score "NS 620"]
+[Section "#"]
+[Table "#"]
+[VisitTeam "#"]
+[Auction "N"]
+1C 1D X 2D
+Pass 3D 3H Pass
+3S Pass 4C Pass
+4H Pass Pass Pass
+[Play "W"]
+D4 D3 DJ DT
+S6 SA S2 S4
+H4 HA H5 H2
+H7 HQ HK H3
+ST SK S7 S9
+D5 D7 D8 H6
+H9 S3 D9 HJ
+C8 CA C4 C2
+CQ C3 C9 CK
+*
+
+[Event "#"]
+[Site "#"]
+[Date "1998.07.16"]
+[Board "6"]
+[West "Gloyer A"]
+[North "Linde J"]
+[East "Saurer B"]
+[South "Balschun R"]
+[Dealer "E"]
+[Vulnerable "EW"]
+[Deal "E:KQ3..K753.KQ8743 A8764.Q532.62.J2 T2.KT9874.JT.A96 J95.AJ6.AQ984.T5"]
+[Declarer "E"]
+[Contract "3C"]
+[Result "11"]
+[HomeTeam "J-germany"]
+[Room "Open"]
+[Round "1"]
+[Score "NS -150"]
+[Section "Junior Teams"]
+[Table "7"]
+[VisitTeam "J-austria"]
+[Auction "E"]
+2C Pass 2H Pass
+3C Pass Pass Pass
+[Play "S"]
+D2 DT DA D5
+D6 DJ DQ DK
+CJ CA D4 D3
+SA S2 S5 SK
+S8 ST SJ SQ
+H2 C6 D8 D7
+H3 H4 HJ C3
+S4 C9 S9 S3
+H5 H7 H6 C4
+C2 H8 C5 CK
+S6 H9 CT CQ
+*
+
+[Event "#"]
+[Site "#"]
+[Date "#"]
+[Board "6"]
+[West "Kornek A"]
+[North "Lindermann A"]
+[East "Huesken F"]
+[South "Purstl C"]
+[Dealer "E"]
+[Vulnerable "EW"]
+[Deal "E:KQ3..K753.KQ8743 A8764.Q532.62.J2 T2.KT9874.JT.A96 J95.AJ6.AQ984.T5"]
+[Declarer "E"]
+[Contract "4CX"]
+[Result "11"]
+[HomeTeam "#"]
+[Room "Closed"]
+[Round "#"]
+[Score "NS -910"]
+[Section "#"]
+[Table "#"]
+[VisitTeam "#"]
+[Auction "E"]
+2C Pass 3C 3D
+X Pass 3H Pass
+3NT X Pass Pass
+4C X Pass Pass
+Pass
+[Play "S"]
+D6 DT DA D3
+SA S2 S5 SQ
+S7 ST SJ SK
+S4 C6 S9 S3
+D2 DJ DQ DK
+S6 C9 D4 D5
+H2 H4 H6 C3
+H3 CA D8 D7
+H5 H7 HJ C4
+C2 H8 C5 CK
+*
+
+[Event "#"]
+[Site "#"]
+[Date "1998.07.16"]
+[Board "7"]
+[West "Gloyer A"]
+[North "Linde J"]
+[East "Saurer B"]
+[South "Balschun R"]
+[Dealer "S"]
+[Vulnerable "All"]
+[Deal "S:A42.QJ.A9753.AT9 T865.AT7432.T8.3 QJ9.9.KQ2.KJ7542 K73.K865.J64.Q86"]
+[Declarer "S"]
+[Contract "6C"]
+[Result "12"]
+[HomeTeam "J-germany"]
+[Room "Open"]
+[Round "1"]
+[Score "NS 1370"]
+[Section "Junior Teams"]
+[Table "7"]
+[VisitTeam "J-austria"]
+[Auction "S"]
+1NT Pass 2S Pass
+3C Pass 3H Pass
+3S Pass 4S Pass
+4NT Pass 5C Pass
+6C Pass Pass Pass
+[Play "W"]
+S6 SQ S3 S2
+C3 C2 C6 CA
+H3 CK C8 C9
+D8 DK D4 D3
+DT DQ D6 D5
+H2 D2 DJ DA
+H4 H9 CQ D7
+*
+
+[Event "#"]
+[Site "#"]
+[Date "#"]
+[Board "7"]
+[West "Kornek A"]
+[North "Lindermann A"]
+[East "Huesken F"]
+[South "Purstl C"]
+[Dealer "S"]
+[Vulnerable "All"]
+[Deal "S:A42.QJ.A9753.AT9 T865.AT7432.T8.3 QJ9.9.KQ2.KJ7542 K73.K865.J64.Q86"]
+[Declarer "N"]
+[Contract "5C"]
+[Result "11"]
+[HomeTeam "#"]
+[Room "Closed"]
+[Round "#"]
+[Score "NS 600"]
+[Section "#"]
+[Table "#"]
+[VisitTeam "#"]
+[Auction "S"]
+1NT Pass 2C Pass
+2D Pass 3H Pass
+3S Pass 5C Pass
+Pass Pass
+[Play "E"]
+H6 HJ HA H9
+H5 HQ H2 C4
+C6 CA C3 C2
+C8 C9 H3 CK
+D6 D3 D8 DK
+D4 D5 DT DQ
+DJ DA H4 D2
+SK D7 H7 S9
+*
+
+[Event "#"]
+[Site "#"]
+[Date "1998.07.16"]
+[Board "8"]
+[West "Gloyer A"]
+[North "Linde J"]
+[East "Saurer B"]
+[South "Balschun R"]
+[Dealer "W"]
+[Vulnerable "None"]
+[Deal "W:AQ72.Q862.A84.64 J84.JT94.KQT.T97 T93.K5.J9653.J82 K65.A73.72.AKQ53"]
+[Declarer "S"]
+[Contract "3C"]
+[Result "10"]
+[HomeTeam "J-germany"]
+[Room "Open"]
+[Round "1"]
+[Score "NS 130"]
+[Section "Junior Teams"]
+[Table "7"]
+[VisitTeam "J-austria"]
+[Auction "W"]
+1D Pass 1S 2C
+2S 3C Pass Pass
+Pass
+[Play "W"]
+C4 CT C2 C3
+H2 HJ HK HA
+C6 C7 C8 CA
+S7 C9 CJ CK
+H6 HT H5 H3
+DA DK D3 D2
+D8 DQ D5 D7
+D4 DT DJ C5
+HQ H4 D6 H7
+SA S4 S3 S5
+S2 SJ S9 S6
+*
+
+[Event "#"]
+[Site "#"]
+[Date "#"]
+[Board "8"]
+[West "Kornek A"]
+[North "Lindermann A"]
+[East "Huesken F"]
+[South "Purstl C"]
+[Dealer "W"]
+[Vulnerable "None"]
+[Deal "W:AQ72.Q862.A84.64 J84.JT94.KQT.T97 T93.K5.J9653.J82 K65.A73.72.AKQ53"]
+[Declarer "N"]
+[Contract "3C"]
+[Result "9"]
+[HomeTeam "#"]
+[Room "Closed"]
+[Round "#"]
+[Score "NS 110"]
+[Section "#"]
+[Table "#"]
+[VisitTeam "#"]
+[Auction "W"]
+1C Pass 1D Pass
+1H Pass 1NT X
+Pass 2C Pass 3C
+Pass Pass Pass
+[Play "E"]
+HK HA H2 H4
+C8 CA C6 C7
+C2 CK C4 C9
+CJ CQ H8 CT
+H5 H3 HQ H9
+D6 H7 H6 HT
+D3 S5 S2 HJ
+D5 D2 DA DQ
+D9 D7 D8 DK
+S3 SK SA S4
+- - SQ S8
+*
+
+[Event "#"]
+[Site "#"]
+[Date "1998.07.16"]
+[Board "9"]
+[West "Gloyer A"]
+[North "Linde J"]
+[East "Saurer B"]
+[South "Balschun R"]
+[Dealer "N"]
+[Vulnerable "EW"]
+[Deal "N:JT72.AJ42.3.JT73 Q9.KQ.KJ986.AQ52 K84.765.T74.K984 A653.T983.AQ52.6"]
+[Declarer "E"]
+[Contract "3NT"]
+[Result "9"]
+[HomeTeam "J-germany"]
+[Room "Open"]
+[Round "1"]
+[Score "NS -600"]
+[Section "Junior Teams"]
+[Table "7"]
+[VisitTeam "J-austria"]
+[Auction "N"]
+2D 2NT Pass 3NT
+Pass Pass Pass
+[Play "S"]
+S4 S3 ST SQ
+H7 H3 HA HK
+SK S5 S2 S9
+S8 SA S7 C2
+H5 H8 H2 HQ
+D7 DA D3 D6
+D4 DQ H4 D8
+DT D2 C3 DK
+C4 D5 C7 DJ
+*
+
+[Event "#"]
+[Site "#"]
+[Date "#"]
+[Board "9"]
+[West "Kornek A"]
+[North "Lindermann A"]
+[East "Huesken F"]
+[South "Purstl C"]
+[Dealer "N"]
+[Vulnerable "EW"]
+[Deal "N:JT72.AJ42.3.JT73 Q9.KQ.KJ986.AQ52 K84.765.T74.K984 A653.T983.AQ52.6"]
+[Declarer "E"]
+[Contract "5D"]
+[Result "10"]
+[HomeTeam "#"]
+[Room "Closed"]
+[Round "#"]
+[Score "NS 100"]
+[Section "#"]
+[Table "#"]
+[VisitTeam "#"]
+[Auction "N"]
+Pass 1NT Pass 2C
+Pass 2D Pass 2S
+Pass 2NT Pass 5D
+Pass Pass Pass
+[Play "S"]
+D4 DA D3 D6
+SK S3 S2 SQ
+D7 D2 C7 D8
+H5 H3 HA HK
+C8 C6 C3 CA
+H6 H8 H2 HQ
+C4 D5 CT C2
+H7 HT H4 DJ
+C9 DQ CJ C5
+DT H9 HJ CQ
+*
+
+[Event "#"]
+[Site "#"]
+[Date "1998.07.16"]
+[Board "10"]
+[West "Gloyer A"]
+[North "Linde J"]
+[East "Saurer B"]
+[South "Balschun R"]
+[Dealer "E"]
+[Vulnerable "All"]
+[Deal "E:52.K872.86.J7532 KJ9.QT3.A752.864 8643.J965.JT9.Q9 AQT7.A4.KQ43.AKT"]
+[Declarer "N"]
+[Contract "6NT"]
+[Result "11"]
+[HomeTeam "J-germany"]
+[Room "Open"]
+[Round "1"]
+[Score "NS -100"]
+[Section "Junior Teams"]
+[Table "7"]
+[VisitTeam "J-austria"]
+[Auction "E"]
+Pass Pass Pass 2C
+Pass 2D Pass 2NT
+Pass 4NT Pass 6NT
+Pass Pass Pass
+[Play "E"]
+C3 C4 CQ CA
+H2 HT HJ H4
+C2 C6 C9 CK
+S5 SK S3 S7
+S2 SJ S4 ST
+C5 S9 S6 SA
+H7 D2 S8 SQ
+D6 D5 DT DK
+H8 H3 H5 HA
+D8 DA D9 D3
+C7 D7 DJ DQ
+HK C8 H6 D4
+*
+
+[Event "#"]
+[Site "#"]
+[Date "#"]
+[Board "10"]
+[West "Kornek A"]
+[North "Lindermann A"]
+[East "Huesken F"]
+[South "Purstl C"]
+[Dealer "E"]
+[Vulnerable "All"]
+[Deal "E:52.K872.86.J7532 KJ9.QT3.A752.864 8643.J965.JT9.Q9 AQT7.A4.KQ43.AKT"]
+[Declarer "N"]
+[Contract "6D"]
+[Result "12"]
+[HomeTeam "#"]
+[Room "Closed"]
+[Round "#"]
+[Score "NS 1370"]
+[Section "#"]
+[Table "#"]
+[VisitTeam "#"]
+[Auction "E"]
+Pass Pass Pass 1C
+Pass 1S Pass 1NT
+Pass 2NT Pass 3D
+Pass 3S Pass 4C
+Pass 4D Pass 6D
+Pass Pass Pass
+[Play "E"]
+D8 D2 D9 DQ
+D6 DA DT D3
+H7 D5 DJ DK
+HK H3 H5 H4
+*
+
+[Event "#"]
+[Site "#"]
+[Date "1998.07.16"]
+[Board "11"]
+[West "Gloyer A"]
+[North "Linde J"]
+[East "Saurer B"]
+[South "Balschun R"]
+[Dealer "S"]
+[Vulnerable "None"]
+[Deal "S:T96.AJT85.Q754.2 AKJ.K2.A2.QT9865 82.974.T63.KJ743 Q7543.Q63.KJ98.A"]
+[Declarer "E"]
+[Contract "5S"]
+[Result "11"]
+[HomeTeam "J-germany"]
+[Room "Open"]
+[Round "1"]
+[Score "NS -450"]
+[Section "Junior Teams"]
+[Table "7"]
+[VisitTeam "J-austria"]
+[Auction "S"]
+Pass 1C X 1S
+Pass 2C Pass 2S
+Pass 3S Pass 4C
+Pass 4D Pass 5D
+Pass 5S Pass Pass
+Pass
+[Play "S"]
+C2 C5 C7 CA
+S6 SA S2 S3
+S9 CQ C3 H3
+HA H2 H4 H6
+H5 HK H7 HQ
+ST SJ S8 S4
+D4 C6 CJ S5
+*
+
+[Event "#"]
+[Site "#"]
+[Date "#"]
+[Board "11"]
+[West "Kornek A"]
+[North "Lindermann A"]
+[East "Huesken F"]
+[South "Purstl C"]
+[Dealer "S"]
+[Vulnerable "None"]
+[Deal "S:T96.AJT85.Q754.2 AKJ.K2.A2.QT9865 82.974.T63.KJ743 Q7543.Q63.KJ98.A"]
+[Declarer "E"]
+[Contract "6S"]
+[Result "11"]
+[HomeTeam "#"]
+[Room "Closed"]
+[Round "#"]
+[Score "NS 50"]
+[Section "#"]
+[Table "#"]
+[VisitTeam "#"]
+[Auction "S"]
+2D 2NT Pass 3S
+Pass 4S Pass 4NT
+Pass 5C X 6S
+Pass Pass Pass
+[Play "S"]
+C2 C8 C3 CA
+S6 SJ S2 S3
+S9 SK S8 S4
+DQ D2 D3 DJ
+HA H2 H4 H3
+H8 HK H9 H6
+D4 DA D6 D8
+D5 CQ C4 SQ
+ST SA - S5
+*
+
+[Event "#"]
+[Site "#"]
+[Date "1998.07.16"]
+[Board "12"]
+[West "Gloyer A"]
+[North "Linde J"]
+[East "Saurer B"]
+[South "Balschun R"]
+[Dealer "W"]
+[Vulnerable "NS"]
+[Deal "W:J4.K73.AQ642.Q94 98.AQ2.KT.KJT762 KQT762.T954.85.A A53.J86.J973.853"]
+[Declarer "E"]
+[Contract "3S"]
+[Result "8"]
+[HomeTeam "J-germany"]
+[Room "Open"]
+[Round "1"]
+[Score "NS 50"]
+[Section "Junior Teams"]
+[Table "7"]
+[VisitTeam "J-austria"]
+[Auction "W"]
+1D 2C 2S Pass
+2NT Pass 3H Pass
+3S Pass Pass Pass
+[Play "S"]
+C5 C4 CT CA
+S5 SJ S8 S2
+SA S4 S9 SK
+C3 C9 CJ S6
+S3 D2 C2 SQ
+H6 H3 HQ H9
+C8 CQ CK S7
+H8 H7 H2 H4
+D3 DA DT D5
+HJ HK HA H5
+D7 D4 C6 ST
+D9 D6 C7 HT
+*
+
+[Event "#"]
+[Site "#"]
+[Date "#"]
+[Board "12"]
+[West "Kornek A"]
+[North "Lindermann A"]
+[East "Huesken F"]
+[South "Purstl C"]
+[Dealer "W"]
+[Vulnerable "NS"]
+[Deal "W:J4.K73.AQ642.Q94 98.AQ2.KT.KJT762 KQT762.T954.85.A A53.J86.J973.853"]
+[Declarer "W"]
+[Contract "3NT"]
+[Result "4"]
+[HomeTeam "#"]
+[Room "Closed"]
+[Round "#"]
+[Score "NS 250"]
+[Section "#"]
+[Table "#"]
+[VisitTeam "#"]
+[Auction "W"]
+1D 2C X Pass
+2D Pass 3S Pass
+3NT Pass Pass Pass
+[Play "N"]
+HA H4 H6 H7
+C6 CA C3 C4
+DK D5 D3 DQ
+HQ H5 H8 HK
+S9 S2 S3 SJ
+S8 ST SA S4
+CK S6 C8 CQ
+CJ S7 C5 C9
+CT SQ S5 D2
+C2 SK D7 D4
+C7 D8 D9 H3
+H2 H9 HJ D6
+*
+
+[Event "#"]
+[Site "#"]
+[Date "1998.07.16"]
+[Board "13"]
+[West "Gloyer A"]
+[North "Linde J"]
+[East "Saurer B"]
+[South "Balschun R"]
+[Dealer "N"]
+[Vulnerable "All"]
+[Deal "N:KQJ972.K65.8.765 AT64.J8.KQ95.K94 853.QT93.T7.AQ32 .A742.AJ6432.JT8"]
+[Declarer "E"]
+[Contract "3NT"]
+[Result "9"]
+[HomeTeam "J-germany"]
+[Room "Open"]
+[Round "1"]
+[Score "NS -600"]
+[Section "Junior Teams"]
+[Table "7"]
+[VisitTeam "J-austria"]
+[Auction "N"]
+2S Pass Pass 3D
+Pass 3NT Pass Pass
+Pass
+[Play "S"]
+S5 H2 S9 ST
+D7 D2 D8 DK
+DT DJ C7 D5
+CQ CJ C5 C4
+S3 C8 SJ S4
+S8 H4 SK SA
+H3 D3 S7 DQ
+C2 DA C6 D9
+C3 D4 S2 S6
+- D6 H5 -
+*
+
+[Event "#"]
+[Site "#"]
+[Date "#"]
+[Board "13"]
+[West "Kornek A"]
+[North "Lindermann A"]
+[East "Huesken F"]
+[South "Purstl C"]
+[Dealer "N"]
+[Vulnerable "All"]
+[Deal "N:KQJ972.K65.8.765 AT64.J8.KQ95.K94 853.QT93.T7.AQ32 .A742.AJ6432.JT8"]
+[Declarer "N"]
+[Contract "3S"]
+[Result "9"]
+[HomeTeam "#"]
+[Room "Closed"]
+[Round "#"]
+[Score "NS 140"]
+[Section "#"]
+[Table "#"]
+[VisitTeam "#"]
+[Auction "N"]
+3S Pass Pass Pass
+[Play "E"]
+HJ H3 HA H5
+H8 H9 H2 HK
+S4 S3 D2 SJ
+SA S5 H4 SQ
+DK D7 D3 D8
+D5 DT DA S2
+S6 S8 D4 SK
+ST HT H7 H6
+D9 C2 D6 S7
+C4 CQ C8 C5
+- HQ - -
+*
+
+[Event "#"]
+[Site "#"]
+[Date "1998.07.16"]
+[Board "14"]
+[West "Gloyer A"]
+[North "Linde J"]
+[East "Saurer B"]
+[South "Balschun R"]
+[Dealer "E"]
+[Vulnerable "None"]
+[Deal "E:764.73.Q987.AQ85 AT32.AQT2.AT5.K6 KJ8.KJ65.643.974 Q95.984.KJ2.JT32"]
+[Declarer "N"]
+[Contract "2NT"]
+[Result "7"]
+[HomeTeam "J-germany"]
+[Room "Open"]
+[Round "1"]
+[Score "NS -50"]
+[Section "Junior Teams"]
+[Table "7"]
+[VisitTeam "J-austria"]
+[Auction "E"]
+Pass 1D Pass 1NT
+Pass 2NT Pass Pass
+Pass
+[Play "E"]
+S7 S2 S8 S9
+H7 HT HJ H4
+C5 CK C9 C3
+DQ D5 D3 DJ
+D7 DT D4 DK
+H3 H2 HK H8
+D8 DA D6 D2
+S4 HQ H5 H9
+C8 HA H6 C2
+CQ C6 C4 CT
+CA S3 C7 CJ
+D9 ST SJ S5
+*
+
+[Event "#"]
+[Site "#"]
+[Date "#"]
+[Board "14"]
+[West "Kornek A"]
+[North "Lindermann A"]
+[East "Huesken F"]
+[South "Purstl C"]
+[Dealer "E"]
+[Vulnerable "None"]
+[Deal "E:764.73.Q987.AQ85 AT32.AQT2.AT5.K6 KJ8.KJ65.643.974 Q95.984.KJ2.JT32"]
+[Declarer "S"]
+[Contract "1NT"]
+[Result "9"]
+[HomeTeam "#"]
+[Room "Closed"]
+[Round "#"]
+[Score "NS 150"]
+[Section "#"]
+[Table "#"]
+[VisitTeam "#"]
+[Auction "E"]
+Pass 1NT Pass Pass
+Pass
+[Play "W"]
+H6 H4 H7 HT
+S8 SQ S4 S2
+SK S5 S6 ST
+D3 DJ DQ DA
+C7 C2 CA CK
+D4 D2 D7 DT
+C4 CJ CQ C6
+HJ H8 H3 H2
+D6 DK D8 D5
+C9 CT C5 HQ
+H5 H9 S7 HA
+SJ S9 - SA
+*
+
+[Event "#"]
+[Site "#"]
+[Date "1998.07.16"]
+[Board "15"]
+[West "Gloyer A"]
+[North "Linde J"]
+[East "Saurer B"]
+[South "Balschun R"]
+[Dealer "S"]
+[Vulnerable "NS"]
+[Deal "S:KQT83.J632.Q2.T8 76.K97.A653.A976 J52.54.JT84.QJ53 A94.AQT8.K97.K42"]
+[Declarer "E"]
+[Contract "3NT"]
+[Result "8"]
+[HomeTeam "J-germany"]
+[Room "Open"]
+[Round "1"]
+[Score "NS 50"]
+[Section "Junior Teams"]
+[Table "7"]
+[VisitTeam "J-austria"]
+[Auction "S"]
+Pass Pass Pass 1NT
+Pass 3NT Pass Pass
+Pass
+[Play "S"]
+SK S6 S2 S4
+S3 S7 SJ S9
+ST H7 S5 SA
+H2 HK H4 H8
+H3 H9 H5 HA
+H6 D3 D4 HQ
+C8 C9 CQ C2
+D2 DA DJ D7
+CT C6 C3 CK
+S8 CA C5 C4
+SQ C7 CJ D9
+*
+
+[Event "#"]
+[Site "#"]
+[Date "#"]
+[Board "15"]
+[West "Kornek A"]
+[North "Lindermann A"]
+[East "Huesken F"]
+[South "Purstl C"]
+[Dealer "S"]
+[Vulnerable "NS"]
+[Deal "S:KQT83.J632.Q2.T8 76.K97.A653.A976 J52.54.JT84.QJ53 A94.AQT8.K97.K42"]
+[Declarer "E"]
+[Contract "3NT"]
+[Result "10"]
+[HomeTeam "#"]
+[Room "Closed"]
+[Round "#"]
+[Score "NS -430"]
+[Section "#"]
+[Table "#"]
+[VisitTeam "#"]
+[Auction "S"]
+Pass Pass Pass 1NT
+Pass 3NT Pass Pass
+Pass
+[Play "S"]
+SK S6 SJ S4
+SQ S7 S5 S9
+ST H7 S2 SA
+C8 C9 CQ C2
+HJ HK H5 H8
+H2 H9 H4 HT
+H3 D3 D4 HQ
+H6 D5 D8 HA
+CT C6 C3 CK
+S3 CA C5 C4
+D2 DA DT D7
+DQ D6 DJ DK
+*
+
+[Event "#"]
+[Site "#"]
+[Date "1998.07.16"]
+[Board "16"]
+[West "Gloyer A"]
+[North "Linde J"]
+[East "Saurer B"]
+[South "Balschun R"]
+[Dealer "W"]
+[Vulnerable "EW"]
+[Deal "W:A52.AJ864.Q76.43 KT9.Q9.K853.AJ87 Q4.T32.T942.QT52 J8763.K75.AJ.K96"]
+[Declarer "S"]
+[Contract "4S"]
+[Result "9"]
+[HomeTeam "J-germany"]
+[Room "Open"]
+[Round "1"]
+[Score "NS -50"]
+[Section "Junior Teams"]
+[Table "7"]
+[VisitTeam "J-austria"]
+[Auction "W"]
+1H X Pass 4S
+Pass Pass Pass
+[Play "W"]
+HA H9 H2 H5
+C4 C7 CT CK
+S2 S9 SQ S3
+H4 HQ H3 H7
+SA ST S4 S6
+C3 CA C2 C6
+DQ D3 D2 DJ
+H6 D5 HT HK
+D6 D8 D4 DA
+S5 SK - S7
+*
+
+[Event "#"]
+[Site "#"]
+[Date "#"]
+[Board "16"]
+[West "Kornek A"]
+[North "Lindermann A"]
+[East "Huesken F"]
+[South "Purstl C"]
+[Dealer "W"]
+[Vulnerable "EW"]
+[Deal "W:A52.AJ864.Q76.43 KT9.Q9.K853.AJ87 Q4.T32.T942.QT52 J8763.K75.AJ.K96"]
+[Declarer "S"]
+[Contract "4S"]
+[Result "9"]
+[HomeTeam "#"]
+[Room "Closed"]
+[Round "#"]
+[Score "NS -50"]
+[Section "#"]
+[Table "#"]
+[VisitTeam "#"]
+[Auction "W"]
+Pass 1D Pass 1S
+Pass 1NT Pass 2C
+Pass 2H Pass 4S
+Pass Pass Pass
+[Play "W"]
+C4 C7 CT CK
+H6 HQ H3 H5
+HJ H9 H2 H7
+C3 CA C2 C6
+DQ D3 D2 DJ
+HA S9 HT HK
+D6 D5 D4 DA
+S2 SK S4 SJ
+D7 DK D9 C9
+S5 ST SQ S3
+*
+
+[Event "#"]
+[Site "#"]
+[Date "1998.07.16"]
+[Board "17"]
+[West "Gloyer A"]
+[North "Linde J"]
+[East "Saurer B"]
+[South "Balschun R"]
+[Dealer "N"]
+[Vulnerable "None"]
+[Deal "N:JT85.JT9.Q53.632 AKQ.752.JT9.A954 9643.AKQ3.K76.KQ 72.864.A842.JT87"]
+[Declarer "N"]
+[Contract "2S"]
+[Result "7"]
+[HomeTeam "J-germany"]
+[Room "Open"]
+[Round "1"]
+[Score "NS -50"]
+[Section "Junior Teams"]
+[Table "7"]
+[VisitTeam "J-austria"]
+[Auction "N"]
+Pass 1D X Pass
+1S Pass 2S Pass
+Pass Pass
+[Play "E"]
+DJ D6 D4 DQ
+SQ S3 S2 S5
+DT D7 D2 D3
+CA CQ C8 C2
+D9 DK DA D5
+H2 S4 D8 C3
+SK S6 S7 S8
+SA S9 - -
+*
+
+[Event "#"]
+[Site "#"]
+[Date "#"]
+[Board "17"]
+[West "Kornek A"]
+[North "Lindermann A"]
+[East "Huesken F"]
+[South "Purstl C"]
+[Dealer "N"]
+[Vulnerable "None"]
+[Deal "N:JT85.JT9.Q53.632 AKQ.752.JT9.A954 9643.AKQ3.K76.KQ 72.864.A842.JT87"]
+[Declarer "N"]
+[Contract "4SX"]
+[Result "8"]
+[HomeTeam "#"]
+[Room "Closed"]
+[Round "#"]
+[Score "NS -300"]
+[Section "#"]
+[Table "#"]
+[VisitTeam "#"]
+[Auction "N"]
+Pass 1C X Pass
+1S Pass 2C Pass
+2S Pass 3S Pass
+4S X Pass Pass
+Pass
+[Play "E"]
+SA S3 S2 S5
+CA CQ C7 C2
+SK S4 S7 S8
+SQ S6 H4 ST
+DJ D6 - -
+*
+
+[Event "#"]
+[Site "#"]
+[Date "1998.07.16"]
+[Board "18"]
+[West "Gloyer A"]
+[North "Linde J"]
+[East "Saurer B"]
+[South "Balschun R"]
+[Dealer "E"]
+[Vulnerable "NS"]
+[Deal "E:KT853.A.542.QT92 Q.K9764.QT98.AJ4 6.QJ82.A7.K87653 AJ9742.T53.KJ63."]
+[Declarer "S"]
+[Contract "4H"]
+[Result "9"]
+[HomeTeam "J-germany"]
+[Room "Open"]
+[Round "1"]
+[Score "NS -100"]
+[Section "Junior Teams"]
+[Table "7"]
+[VisitTeam "J-austria"]
+[Auction "E"]
+Pass 1H Pass 1S
+Pass 2D Pass 4H
+Pass Pass Pass
+[Play "W"]
+C5 H3 C2 C4
+DA D3 D2 DT
+*
+
+[Event "#"]
+[Site "#"]
+[Date "#"]
+[Board "18"]
+[West "Kornek A"]
+[North "Lindermann A"]
+[East "Huesken F"]
+[South "Purstl C"]
+[Dealer "E"]
+[Vulnerable "NS"]
+[Deal "E:KT853.A.542.QT92 Q.K9764.QT98.AJ4 6.QJ82.A7.K87653 AJ9742.T53.KJ63."]
+[Declarer "S"]
+[Contract "4H"]
+[Result "8"]
+[HomeTeam "#"]
+[Room "Closed"]
+[Round "#"]
+[Score "NS -200"]
+[Section "#"]
+[Table "#"]
+[VisitTeam "#"]
+[Auction "E"]
+Pass 1H Pass 1S
+Pass 2D Pass 3C
+Pass 3NT Pass 4H
+Pass Pass Pass
+[Play "W"]
+S6 SA S5 SQ
+H8 S2 S3 H4
+DA D3 D5 D9
+D7 D6 D2 D8
+C3 H3 C2 C4
+H2 H5 HA H6
+HJ DJ D4 DQ
+HQ HT S8 HK
+C5 S4 ST H9
+- - - DT
+*
+
+[Event "#"]
+[Site "#"]
+[Date "1998.07.16"]
+[Board "19"]
+[West "Gloyer A"]
+[North "Linde J"]
+[East "Saurer B"]
+[South "Balschun R"]
+[Dealer "S"]
+[Vulnerable "EW"]
+[Deal "S:KJ9.K952.JT96.T3 762.Q6.AK732.J62 QT843.A87.85.AK4 A5.JT43.Q4.Q9875"]
+[Declarer "N"]
+[Contract "2S"]
+[Result "9"]
+[HomeTeam "J-germany"]
+[Room "Open"]
+[Round "1"]
+[Score "NS 140"]
+[Section "Junior Teams"]
+[Table "7"]
+[VisitTeam "J-austria"]
+[Auction "S"]
+Pass Pass 1S Pass
+2S Pass Pass Pass
+[Play "E"]
+C5 CT CJ CA
+S5 SJ S2 S3
+C7 C3 C2 CK
+C8 SK C6 C4
+SA S9 S6 ST
+CQ D6 D2 S4
+C9 D9 S7 SQ
+H3 H2 HQ H8
+D4 DT DA D5
+DQ DJ DK D8
+*
+
+[Event "#"]
+[Site "#"]
+[Date "#"]
+[Board "19"]
+[West "Kornek A"]
+[North "Lindermann A"]
+[East "Huesken F"]
+[South "Purstl C"]
+[Dealer "S"]
+[Vulnerable "EW"]
+[Deal "S:KJ9.K952.JT96.T3 762.Q6.AK732.J62 QT843.A87.85.AK4 A5.JT43.Q4.Q9875"]
+[Declarer "N"]
+[Contract "2S"]
+[Result "9"]
+[HomeTeam "#"]
+[Room "Closed"]
+[Round "#"]
+[Score "NS 140"]
+[Section "#"]
+[Table "#"]
+[VisitTeam "#"]
+[Auction "S"]
+Pass Pass 1S 1NT
+X 2C X Pass
+2S Pass Pass Pass
+[Play "E"]
+DQ D6 D3 D5
+D4 D9 DK D8
+S5 DT D7 H7
+C5 C3 CJ CA
+SA SK S2 S3
+*
+
+[Event "#"]
+[Site "#"]
+[Date "1998.07.16"]
+[Board "20"]
+[West "Gloyer A"]
+[North "Linde J"]
+[East "Saurer B"]
+[South "Balschun R"]
+[Dealer "W"]
+[Vulnerable "All"]
+[Deal "W:AT92.J9.Q9852.JT QJ6.2.AJT764.643 43.AKQT8543..AK9 K875.76.K3.Q8752"]
+[Declarer "W"]
+[Contract "4H"]
+[Result "12"]
+[HomeTeam "J-germany"]
+[Room "Open"]
+[Round "1"]
+[Score "NS -680"]
+[Section "Junior Teams"]
+[Table "7"]
+[VisitTeam "J-austria"]
+[Auction "W"]
+Pass Pass 1C Pass
+1H 2D 3H Pass
+4H Pass Pass Pass
+[Play "N"]
+SQ S3 S5 SA
+H2 H3 H6 HJ
+C3 CA C2 CJ
+C4 CK C5 CT
+C6 C9 C7 H9
+*
+
+[Event "#"]
+[Site "#"]
+[Date "#"]
+[Board "20"]
+[West "Kornek A"]
+[North "Lindermann A"]
+[East "Huesken F"]
+[South "Purstl C"]
+[Dealer "W"]
+[Vulnerable "All"]
+[Deal "W:AT92.J9.Q9852.JT QJ6.2.AJT764.643 43.AKQT8543..AK9 K875.76.K3.Q8752"]
+[Declarer "E"]
+[Contract "4H"]
+[Result "12"]
+[HomeTeam "#"]
+[Room "Closed"]
+[Round "#"]
+[Score "NS -680"]
+[Section "#"]
+[Table "#"]
+[VisitTeam "#"]
+[Auction "W"]
+Pass Pass 1C Pass
+1S 2D 2H Pass
+2NT Pass 3D X
+3NT Pass 4D Pass
+4H Pass Pass Pass
+[Play "S"]
+H6 H9 H2 H3
+C2 CT C3 CA
+C5 CJ C4 CK
+*

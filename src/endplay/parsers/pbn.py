@@ -233,7 +233,7 @@ class PBNParser:
 						if curtag.lower() == "play" or curtag.lower() == "auction":
 							curtags[curtag] = { "value": m.group(2), "comment": comment, "notes": {}, "data": [] }
 							state = STATE_CONT_LIST
-						elif curtag.lower().endswith("table"):
+						elif curtag.lower().endswith("table") and curtag != "table":
 							colnames = []
 							for colname in m.group(2).split(";"):
 								cm = PBNParser.re_colname.match(colname)

@@ -8,7 +8,15 @@ basedir = Path(__file__).parent
 
 
 class TestPBN(unittest.TestCase):
-	pass
+	def __init__(self, *args, **kwargs):
+		super().__init__(*args, **kwargs)
+		self.parser = PBNParser()
+
+	def test_example1(self):
+		parser = self.parser
+		test_file = basedir / "pbn" / "example1.pbn"
+		with open(test_file) as f:
+			boards = parser.parse_file(test_file)
 
 class TestDealer(unittest.TestCase):
 	def __init__(self, *args, **kwargs):
