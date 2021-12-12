@@ -33,7 +33,7 @@ src/endplay/config.py
 TestResults/
 .coverage
 startup.py
-
+runfile
 
 # No longer generated after switching form scikit-build
 MANIFEST
