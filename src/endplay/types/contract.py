@@ -10,7 +10,6 @@ from endplay.types.penalty import Penalty
 from endplay.types.vul import Vul
 from endplay.types.bid import Bid, ContractBid
 import endplay._dds as _dds
-import ctypes
 import re
 
 contract_to_denom = [ Denom.nt, Denom.spades, Denom.hearts, Denom.diamonds, Denom.clubs ]
@@ -67,12 +66,11 @@ class Contract:
 
 	def __copy__(self) -> Contract:
 		_data = _dds.contractType()
-		intsize = ctypes.sizeof(ctypes.c_int)
-		ctypes.memmove(_data.underTricks, self._data.underTricks, intsize)
-		ctypes.memmove(_data.overTricks, self._data.overTricks, intsize)
-		ctypes.memmove(_data.level, self._data.level, intsize)
-		ctypes.memmove(_data.denom, self._data.denom, intsize)
-		ctypes.memmove(_data.seats, self._data.seats, intsize)
+		_data.underTricks = self._data.underTricks
+		_data.overTricks = self._data.overTricks
+		_data.level = self._data.level
+		_data.denom = self._data.denom
+		_data.seats = self._data.seats
 		return Contract(_data)
 
 	@property

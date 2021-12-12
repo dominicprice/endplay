@@ -269,8 +269,8 @@ class TestContract(unittest.TestCase):
 		c = Contract("4HW=")
 		other = c.copy()
 		self.assertEqual(c, other)
-		other.denom = Denom
-		self.assertEqual(c.denom, Denom.spades)
+		other.denom = Denom.clubs
+		self.assertEqual(c.denom, Denom.hearts)
 		self.assertNotEqual(c, other)
 		other.denom = c.denom
 		
