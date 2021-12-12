@@ -102,7 +102,7 @@ class ConstraintInterpreter:
 	def lambdify(self, node: Union[Node, str]) -> Expr:
 		"""
 		Convert an expression tree (or string) into an anonymous function accepting a single
-		`Deal` argument and returning the expression evaluated over this deal
+		:class:`Deal` argument and returning the expression evaluated over this deal
 
 		:param node: The root of the expression tree, or a string containing an expression
 		"""

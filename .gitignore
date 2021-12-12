@@ -10,6 +10,7 @@ CMakeSettings.json
 *.pyproj
 *.pyproj.user
 *.sln
+.env
 
 # Virtual environment
 venv/

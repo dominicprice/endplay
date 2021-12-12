@@ -8,8 +8,9 @@ from endplay.types.player import Player
 from endplay.types.denom import Denom
 from endplay.types.penalty import Penalty
 from endplay.types.vul import Vul
-from endplay.types.bid import Bid
+from endplay.types.bid import Bid, ContractBid
 import endplay._dds as _dds
+import ctypes
 import re
 
 contract_to_denom = [ Denom.nt, Denom.spades, Denom.hearts, Denom.diamonds, Denom.clubs ]
@@ -60,8 +61,23 @@ class Contract:
 		if penalty is not None: self.penalty = penalty
 		if result is not None: self.result = result
 
+	def copy(self) -> Contract:
+		"Return a copy of this contract object"
+		return self.__copy__()
+
+	def __copy__(self) -> Contract:
+		_data = _dds.contractType()
+		intsize = ctypes.sizeof(ctypes.c_int)
+		ctypes.memmove(_data.underTricks, self._data.underTricks, intsize)
+		ctypes.memmove(_data.overTricks, self._data.overTricks, intsize)
+		ctypes.memmove(_data.level, self._data.level, intsize)
+		ctypes.memmove(_data.denom, self._data.denom, intsize)
+		ctypes.memmove(_data.seats, self._data.seats, intsize)
+		return Contract(_data)
+
 	@property
 	def level(self) -> int:
+		"The level of the contract"
 		return self._data.level
 	@level.setter
 	def level(self, new_level: int) -> None:
@@ -111,7 +127,7 @@ class Contract:
 		c = Contract()
 		last = dealer.next(len(auction)-1)
 		for player, bid in last.enumerate(reversed(auction), step=-1):
-			if bid.is_contract():
+			if isinstance(bid, ContractBid):
 				c.denom = bid.denom
 				c.level = bid.level
 				c.declarer = player
@@ -122,12 +138,13 @@ class Contract:
 		# as the contract and the bidder is the (current) declarer or their
 		# partner, set the declarer to that player
 		for player, bid in dealer.enumerate(auction):
-			if bid.is_contract() and bid.denom == c.denom and player in [c.declarer, c.declarer.partner]:
+			if isinstance(bid, ContractBid) and bid.denom == c.denom and player in [c.declarer, c.declarer.partner]:
 				c.declarer = player
 				break
 		return c
 			
 	def is_passout(self) -> bool:
+		"Returns true if the contract represents a passout"
 		return self.level == 0
 
 	def score(self, vul: Vul) -> int:
@@ -204,6 +221,13 @@ class Contract:
 				if is_vul: score += 400 * res
 				else: score += 200 * res
 			return score
+
+	def __eq__(self, other: Contract) -> bool:
+		return \
+			self.level == other.level and \
+			self.denom == other.denom and \
+			self.declarer == other.declarer and \
+			self.result == other.result
 
 	def __repr__(self) -> str:
 		return f'Contract("{self!s}")'

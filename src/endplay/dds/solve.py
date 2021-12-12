@@ -60,7 +60,7 @@ def solve_board(deal: Deal, target: Optional[int] = None) -> SolvedBoard:
 	Calculate the double dummy score for all cards in the hand which is currently
 	to play in a given deal
 
-	:param deal: The deal to solve, with `first` and `trump` filled int
+	:param deal: The deal to solve, with `first` and `trump` filled in
 	:param target: If provided, only return cards which can make at least this many tricks
 	"""
 	fut = _dds.futureTricks()

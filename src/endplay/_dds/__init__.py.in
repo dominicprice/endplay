@@ -2,7 +2,7 @@
 Python bindings for Bo Haglund's DDS library. This provides a very low-level
 ctypes wrapper around the C++ library. The only extra convenience provided is
 to wrap all of the dds functions so that instead of returning error codes they
-raise a `DDSError`.
+raise a :class:`DDSError`.
 
 The encodings used by the dds library are provided here for convenience::
 
@@ -54,10 +54,9 @@ __all__ = [
 ]
 
 import ctypes
+from ctypes.util import find_library
 import os
-import re
 from collections.abc import Iterable
-from typing import Optional
 from warnings import warn
 from functools import wraps
 
@@ -67,16 +66,22 @@ from functools import wraps
 # underlying shared library from Python
 
 
-# Handle to the DDS shared library
+# Get a handle to the DDS shared library and to libc
 _cur_path = os.path.abspath(os.path.dirname(__file__))
 _dll_name = "@DDS_LIBRARY_NAME@"
 _dll_path = os.path.join(_cur_path, _dll_name)
+_libc_name = find_library("c")
 try:
 	if os.name == "nt":
 		_dll = ctypes.WinDLL(_dll_path)
+		_libc = ctypes.WinDLL(_libc_name)
 	else:
 		_dll = ctypes.CDLL(_dll_path)
+		_libc = ctypes.CDLL(_libc_name)
+	# Required on linux, doesn't do any harm on windows
 	_dll.SetMaxThreads(0)
+	# Make memcmp check its arguments before calling
+	_libc.memcmp.argtypes = (ctypes.c_void_p, ctypes.c_void_p, ctypes.c_size_t)
 except FileNotFoundError as e:
 	err = "Unable to load the dds library: shared library object not found. You may be "
 	err += "using an unsupported OS, or the endplay package has been modified by an "

@@ -14,7 +14,7 @@ DEBUG = False
 
 def constructor(f):
 	"""
-	The parse actions are defined in the `Node` class's namespace, and are 
+	The parse actions are defined in the :class:`Node` class's namespace, and are 
 	thus static methods. This decorator is simply a wrapper around `staticmethod`
 	which can print out optional debugging information if `DEBUG` is set to `True`
 	"""

@@ -20,4 +20,4 @@ class Penalty(IntEnum):
 
 	@property
 	def abbr(self) -> str:
-		return ["", "x", "xx"][self - 1]
+		return "x" * (self >> 1)

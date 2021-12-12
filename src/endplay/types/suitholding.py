@@ -3,6 +3,7 @@ from __future__ import annotations
 __all__ = ["SuitHolding"]
 
 import ctypes
+import endplay._dds as _dds
 from endplay.types.rank import Rank, AlternateRank
 from typing import Optional, Union
 from collections.abc import Iterable, Iterator
@@ -89,13 +90,8 @@ class SuitHolding:
 		"Create a PBN representation of the suit holding"
 		return "".join(rank.abbr for rank in self)
 
-	def __eq__(self, other: 'SuitHolding') -> bool:
-		if len(self) != len(other):
-			return False
-		for a, b in zip(self, other):
-			if a != b:
-				return False
-		return True
+	def __eq__(self, other: SuitHolding) -> bool:
+		return self._data[self._idx] == other._data[other._idx]
 
 	def __contains__(self, rank: Rank) -> bool:
 		if isinstance(rank, str):

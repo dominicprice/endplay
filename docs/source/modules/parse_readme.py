@@ -14,7 +14,10 @@ def builder_inited(app):
 	newsection = re.compile(r"^(#+)\s+(.*)$")
 	os.makedirs(output_dir, exist_ok = True)
 	print(f"Creating file {output_dir}/intro.md")
-	curfile = open(os.path.join(output_dir, "intro.md"), 'w', encoding="utf-8")
+	sec = 1
+	skip = False
+	curfile = open(os.path.join(output_dir, f"{sec:02d}_intro.md"), 'w', encoding="utf-8")
+	sec += 1
 	in_code_block = False
 	with open(os.path.join(module_dir, "README.md"), encoding="utf-8") as f:
 		for line in f:
@@ -29,14 +32,21 @@ def builder_inited(app):
 					if hlevel == 1:
 						curfile.write("# What is endplay?\n")
 					elif hlevel == 2:
+						if m[2] == "Table of Contents":
+							skip = True
+							continue
+						else:
+							skip = False
 						curfile.close()
 						name = m[2].replace(" ", "_").lower()
 						print(f"Creating file {output_dir}/{name}.md")
-						curfile = open(os.path.join(output_dir, name + ".md"), 'w', encoding="utf-8")
+						curfile = open(os.path.join(output_dir, f"{sec:02d}_{name}.md"), 'w', encoding="utf-8")
+						sec += 1
 						curfile.write("# " + m[2] + "\n")
 					else:
 						new_h = "#" * (hlevel - 1)
 						curfile.write(new_h + " " + m[2] + "\n")
 				else:
-					curfile.write(line)
+					if not skip:
+						curfile.write(line)
 	curfile.close()

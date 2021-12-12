@@ -1,0 +1,88 @@
+[Event "TestingPBN"]
+[Site "SampleTestSite"]
+[Date "2021.08.23"]
+[Board "17"]
+[West "ARTHUR SOMEBODY"]
+[North "JORDAN PRESENTLY"]
+[East "EDWARD PEABODY"]
+[South "JOHN SMITH"]
+[Dealer "N"]
+[Vulnerable "-"]
+[Deal "N:AT9.2.J432.A9863 76432.4.KQ.QJT72 Q.KJ976.AT8765.5 KJ85.AQT853.9.K4"]
+[Scoring "IMP"]
+[Declarer "W"]
+[Contract "5SX"]
+[Result "8"]
+[Score "NS 500"]
+[Table "13"]
+[HomeTeam "COUNTRYA"]
+[VisitTeam "COUNTRYB"]
+[ScoreIMP "NS -2 EW 2"]
+[DoubleDummyTricks "746b5747b55862758627"]
+[OptimumResultTable "Declarer;Denomination\2R;Result\2R"]
+N NT  7
+N  S  4
+N  H  6
+N  D 11
+N  C  5
+W NT  5
+W  S  8
+W  H  6
+W  D  2
+W  C  7
+[OptimumScore "NS +400"]
+[Competition "Teams"]
+[Auction "N"]
+Pass Pass 1H Pass 
+1NT 2H =1= 3D 4S 
+5D Pass Pass 5S =2= 
+X Pass Pass Pass 
+[Note "1: Spades & minor"]
+[Note "2: ♠"]
+[Play "N"]
+H2 H4 HK HA 
+D2 DQ DA D9 
+CA C2 C5 C4 
+C9 C7 SQ CK 
+S9 CT H6 H8 
+C8 CJ D5 H3 
+SA S2 D6 SK 
+ST S3 D7 SJ 
+*
+
+[Event "#"]
+[Site "#"]
+[Date "#"]
+[Board "11"]
+[West "JEAN JEANY"]
+[North "MARTINE ESPEREDO"]
+[East "BRENDA CALLOUGHWAY"]
+[South "LOUISE FORWEES"]
+[Dealer "S"]
+[Vulnerable "-"]
+[Deal "N:KT8.A96.A95.7542 Q5.KJ52.KQ874.T8 AJ92.874.JT6.AQ3 7643.QT3.32.KJ96"]
+[Scoring "IMP"]
+[Declarer ""]
+[Contract "Pass"]
+[Result ""]
+[Score "NS 0"]
+[Table "11"]
+[HomeTeam "COUNTRYC"]
+[VisitTeam "COUNTRYD"]
+[ScoreIMP "NS 4 EW -4"]
+[DoubleDummyTricks "77667775576677566775"]
+[OptimumResultTable "Declarer;Denomination\2R;Result\2R"]
+N NT  7
+N  S  7
+N  H  6
+N  D  6
+N  C  7
+W NT  6
+W  S  6
+W  H  7
+W  D  7
+W  C  5
+[OptimumScore "NS +90"]
+[Competition "Teams"]
+[Auction "S"]
+Pass Pass Pass Pass 

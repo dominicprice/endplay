@@ -3,21 +3,27 @@ from __future__ import annotations
 __all__ = ["Deal"]
 
 import sys
-import re
 import json as _json
 from typing import Union, Optional
 from collections.abc import Iterable, Iterator
 import ctypes
 from endplay.types.denom import Denom
-from endplay.types.rank import Rank, AlternateRank
+from endplay.types.rank import AlternateRank
 from endplay.types.player import Player
 from endplay.types.card import Card
-from endplay.types.suitholding import SuitHolding
 from endplay.types.hand import Hand
 from endplay.types.vul import Vul
 import endplay._dds as _dds
 
 class Deal:
+	"""
+	Class representing a bridge deal. The class keeps track of the four hands
+	at the table, as well as
+
+	* The player on initial lead to the current trick in `Deal.first`
+	* The trump suit the deal is played in in `Deal.trump`
+	* The cards played to the current trick in `Deal.curtrick`
+	"""
 	def __init__(self, 
 		pbn: str = None, 
 		first: Player = Player.north, 
@@ -142,10 +148,10 @@ class Deal:
 		else:
 			# Playing final card to a trick: Calculate winner, update first and clear current trick
 			# Lazy import to avoid circular import
-			from endplay.utils import trick_winner
+			from endplay.utils.play import trick_winner
 			if fromHand and not self[self.first.rho].remove(card):
 				raise RuntimeError("Trying to play card not in hand")
-			self.first = trick_winner(self.curtrick + [card])
+			self.first = trick_winner(self.curtrick + [card], self.first, self.trump)
 			for i in range(3):
 				self._data.currentTrickRank[i] = 0
 				
@@ -232,6 +238,13 @@ class Deal:
 
 	@staticmethod
 	def from_lin(lin: str, complete_deal: bool = False):
+		"""
+		Construct a deal from a LIN format deal string. 
+
+		:param complete_deal: If True, then add remaining cards to the last hand if it is
+			omitted from the input string (which is done by default for files downloaded
+			from BBO)
+		"""
 		if lin[0] in "1234":
 			dealer, hands = int(lin[0]), lin[1:].split(",")
 		else:
@@ -243,6 +256,22 @@ class Deal:
 		if complete_deal:
 			deal.complete_deal()
 		return deal
+
+	def to_lin(self, dealer: Optional[Player] = None, complete_deal: bool = False) -> str:
+		"""
+		Convert a deal to LIN representation as used by BBO
+
+		:param dealer: If provided, append the dealer (in LIN format) to the returned string
+		:param complete_deal: If False, omit the last hand from the string. This is the default
+			for files created by BBO.
+		"""
+		lin = str(dealer.to_lin())
+		lin += self[dealer].to_lin() + ","
+		lin += self[dealer.lho].to_lin() + ","
+		lin += self[dealer.partner].to_lin() + ","
+		if complete_deal:
+			lin += self[dealer.rho].to_lin()
+		return lin
 
 	def to_LaTeX(self, board_no: Optional[int] = None, exclude: Iterable[Player] = [], ddtable: bool = False) -> str:
 		"Return a LaTeX representation of the hand"
@@ -370,6 +399,24 @@ class Deal:
 		if isinstance(hand, str):
 			hand = Hand(hand)
 		self._data.remainCards[player] = hand._data
+
+	def compare(self, other: Deal, hands_only: bool = False) -> bool:
+		cmp = _dds._libc.memcmp
+		if cmp(self._data.remainCards, other._data.remainCards, len(self._data.remainCards)):
+			return False
+		if not hands_only:
+			if self._data.trump != other._data.trump:
+				return False
+			if self._data.first != other._data.first:
+				return False
+			if cmp(self._data.currentTrickSuit, other._data.currentTrickSuit, len(self._data.currentTrickSuit)):
+				return False
+			if cmp(self._data.currentTrickRank, other._data.currentTrickRank, len(self._data.currentTrickRank)):
+				return False
+		return True
+
+	def __eq__(self, other: Deal) -> bool:
+		return self.compare(other)
 
 	def __repr__(self) -> str:
 		return f"Deal('{self!s}')"

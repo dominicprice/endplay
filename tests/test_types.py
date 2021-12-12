@@ -27,10 +27,27 @@ class TestDeal(unittest.TestCase):
 		deal.play("S9")
 		self.assertEqual(deal.curplayer, Player.east)
 
+	def test_eq(self):
+		a = Deal(pbn)
+		b = a.copy()
+		self.assertEqual(a, b)
+		b.first = Player.west
+		self.assertNotEqual(a, b)
+		self.assertTrue(a.compare(b, True))
+		b.first = a.first
+		b.trump = Denom.diamonds
+		self.assertNotEqual(a, b)
+		self.assertTrue(a.compare(b, True))
+		b.trump = a.trump
+		b.play("S9")
+		self.assertNotEqual(a, b)
+		self.assertFalse(a.compare(b, True))
+		
+
 	def test_hands(self):
 		deal = Deal(pbn)
 		
-		for player, hand in enumerate(deal):
+		for player, hand in deal:
 			self.assertEqual(pbn_hands[player], str(hand))
 
 		self.assertEqual(str(deal.north), "974.AJ3.63.AK963")
@@ -132,6 +149,15 @@ class TestHand(unittest.TestCase):
 		hand.clear()
 		self.assertEqual(len(hand), 0)
 
+	def test_eq(self):
+		a = Hand("974.AJ3.63.AK963")
+		b = a.copy()
+		self.assertEqual(a, b)
+		a.remove("S9")
+		self.assertNotEqual(a, b)
+		a.add("S9")
+		self.assertEqual(a, b)
+
 	def test_suits(self):
 		hand = Hand(pbn_hands[0])
 		suits = pbn_hands[0].split(".")
@@ -183,6 +209,15 @@ class TestSuitHolding(unittest.TestCase):
 
 		self.assertEqual(str(holding), "74")
 
+	def test_eq(self):
+		a = SuitHolding("QT974")
+		b = a.copy()
+		self.assertEqual(a, b)
+		b.remove(Rank.RQ)
+		self.assertNotEqual(a, b)
+		b.add(Rank.RQ)
+		self.assertEqual(a, b)
+
 class TestContract(unittest.TestCase):
 	def test_properties(self):
 		c = Contract("3NTSxx-1")
@@ -230,6 +265,15 @@ class TestContract(unittest.TestCase):
 		self.assertEqual(score_vul("2SNx+1"), 870)
 		self.assertEqual(score_nonvul("3DWx-1"), -100)
 
+	def test_copy_eq(self):
+		c = Contract("4HW=")
+		other = c.copy()
+		self.assertEqual(c, other)
+		other.denom = Denom
+		self.assertEqual(c.denom, Denom.spades)
+		self.assertNotEqual(c, other)
+		other.denom = c.denom
+		
 
 class TestCard(unittest.TestCase):
 	pass

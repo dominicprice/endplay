@@ -1,5 +1,5 @@
 """
-Main class of the interact module, which derives from `Deal` but keeps track
+Main class of the interact module, which derives from :class:`Deal` but keeps track
 of changes to its state.
 """
 

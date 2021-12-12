@@ -3,7 +3,8 @@ from __future__ import annotations
 __all__ = ["Hand"]
 
 import sys
-import re
+import endplay._dds as _dds
+from endplay.config import suppress_unicode
 from endplay.types.denom import Denom
 from endplay.types.rank import Rank
 from endplay.types.card import Card
@@ -100,6 +101,17 @@ class Hand:
 		"""
 		pbn = lin[1:].replace("H", ".").replace("D", ".").replace("C", ".")
 		return Hand.from_pbn(pbn)
+
+	def to_lin(self) -> str:
+		"""
+		Convert a Hand to a LIN string
+		"""
+		lin = ""
+		with suppress_unicode():
+			for suit in Denom.suits():
+				lin += suit.abbr + self[suit].to_pbn()[::-1]
+		return lin
+
 
 	def to_LaTeX(self, vertical: bool = True, ten_as_letter: bool = False) -> str:
 		"""
@@ -212,3 +224,7 @@ class Hand:
 	def __len__(self) -> int:
 		":return: The number of cards in the hand"
 		return sum(bin(suit).count('1') for suit in self._data)
+
+	def __eq__(self, other: Hand) -> bool:
+		return not _dds._libc.memcmp(self._data, other._data, len(self._data))
+

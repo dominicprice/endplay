@@ -4,6 +4,29 @@
 
 If you find this useful and would like to contribute, or found it totally buggy and broken and want to fix it, then I am very open to contributions.
 
+## Table of Contents
+
+- [Table of Contents](#table-of-contents)
+- [Building and installing](#building-and-installing)
+  - [From PyPI](#from-pypi)
+  - [From source](#from-source)
+  - [Building the documentation](#building-the-documentation)
+  - [Running the test suite](#running-the-test-suite)
+- [Overview of submodules](#overview-of-submodules)
+- [Tutorial](#tutorial)
+  - [Inspecting deals](#inspecting-deals)
+    - [Enumerated types](#enumerated-types)
+    - [The `interact` module](#the-interact-module)
+  - [Generating hands](#generating-hands)
+    - [The main module](#the-main-module)
+  - [Double dummy analysis](#double-dummy-analysis)
+    - [Analyse](#analyse)
+    - [DD Tables](#dd-tables)
+    - [Par contract calculation and scoring contracts](#par-contract-calculation-and-scoring-contracts)
+    - [Bids and auctions: an aside](#bids-and-auctions-an-aside)
+    - [Solving for a player's hand](#solving-for-a-players-hand)
+  - [Parsing to and from bridge file formats](#parsing-to-and-from-bridge-file-formats)
+
 ## Building and installing
 
 ### From PyPI
@@ -152,6 +175,20 @@ D AQT852
 C QJT
 ```
 
+If there is a particular section of code which you would like to turn off unicode suit symbols for, for example if you are trying to export to export to a certain file format or would just like a particular piece of output to be formatted in plaintext, then you can use the `suppress_unicode` context manager:
+
+```python
+>>> config.use_unicode = True
+>>> from endplay.config import suppress_unicode
+>>> print(Denom.spades.abbr)
+♠
+>>> with suppress_unicode():
+...   print(Denom.spades.abbr)
+S
+>>> print(Denom.spades.abbr)
+♠
+```
+
 The `Hand` object which is returned is bound to the data inside the deal, so any operations you perform on the hand will update the deal too; to get a copy of the hand which doesn't affect the deal object you should use the `copy` method. `Deal` also overloads the `__setitem__` function and accepts a `Hand` object which is copied into the deal, or a PBN string which sets the cards in the hand to the specified cards:
 
 ```python
@@ -189,7 +226,7 @@ False
 ♠Q, ♥A, ♣T
 ```
 
-The individual suit holdings in the hand can be examined by using the `spades`, `hearts`, `diamonds` and `clubs` properties or using the `__getitem__` operator. This returns a `SuitHolding` object which, like accessing hands of a deal, returns an object which is bound to the data in the hand. Many of the methods defined in `Hand` are also defined in `SuitHolding`, but use the `Rank` class instead of the `Card` class:
+`Card` objects are immutable, but should not be tested for equality using identity (i.e. use `==` not `is`). The individual suit holdings in the hand can be examined by using the `spades`, `hearts`, `diamonds` and `clubs` properties or using the `__getitem__` operator. This returns a `SuitHolding` object which, like accessing hands of a deal, returns an object which is bound to the data in the hand. Many of the methods defined in `Hand` are also defined in `SuitHolding`, but use the `Rank` class instead of the `Card` class:
 
 ```python
 >>> s = h.spades
@@ -649,6 +686,59 @@ You can calculate the score of an arbitrary contract by constructing a `Contract
 -1400
 ```
 
+#### Bids and auctions: an aside
+
+While on the topic of contracts, it is worth mentioning the `Bid` class which represents a call in an auction. `Bid` objects are very weird, as they fulfill a double purpose of being able to represent *penalty actions*, i.e. "Pass", "Double" and "Redoule", as well as *contract actions* which name a strain and a level. These are represented by the `PenaltyBid` and `ContractBid` classes respectively, which derive from `Bid` but define different member variables - `PenaltyBid.penalty` vs `ContractBid.denom` and `ContractBid.level`. You can construct these directly using their `__init__` functions:
+
+```python
+from endplay.types import PenaltyBid, ContractBid, Penalty, Denom
+>>> oneclub = ContractBid(2, Denom.hearts)
+>>> double = PenaltyBid(Penalty.double)
+```
+
+or by using the `Bid` constructor to supply the name of the bid as a string:
+
+```python
+>>> twohearts = Bid("2H")
+>>> double = Bid("double") # Bid("x") also works
+```
+
+Notice however that the type you get is actually always one of `PenaltyBid` or `ContractBid` - the `Bid` constructor will always automatically downcast the class instance to the appropriate type:
+
+```python
+>>> type(twohearts)
+<class 'endplay.types.bid.ContractBid'>
+>>> type(pass_)
+<class 'endplay.types.bid.PenaltyBid'>
+```
+
+All bid class constructors also accept optional boolean `alertable` and string `announcement` parameters, of which none, either or both can be defined to allow for the case where e.g. thep oint range of a notrump bid is announced but not alertable:
+
+```python
+>>> unusual2nt = Bid("2H", announcement="Weak")
+>>> forcing_pass = Bid("Pass", alertable=True, announcement="Forcing for one round")
+```
+
+The `alertable` and `announcement` attributes can be assigned and altered after construction of the `Bid` object, but the other properties are immutable. 
+
+An auction is simply a list of bid objects:
+
+```python
+>>> auction = [ 
+...   oneclub,     forcing_pass, two_hearts, double, 
+...   Bid("Pass"), Bid("Pass"),  Bid("pass") ]
+```
+
+To calculate a contract from a given auction, you can use the `Contract.from_auction` method and provide the name of the first player to bid:
+
+```python
+>>> from endplay.types import Player, Contract
+>>> Contract.from_auction(auction, Player.west)
+Contract("2♥Ex=")
+```
+
+Any iterable of `Bid` objects satisfying the [`Reversible`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Reversible) interface can be passed as an auction.
+
 #### Solving for a player's hand
 
 The final module, `endplay.dds.solve`, provides the `solve_board`/`solve_all_boards` function pair which returns the number of tricks each card in a player's hand can yield. Let's go back to [a nice four card ending](https://www.bridgebum.com/criss_cross_squeeze.php):
@@ -709,3 +799,131 @@ K9                v♦A       ---
 
 Oops, out of luck! Notice how as opposed to the `analyse` family of functions, `solve_board` always returns the number of tricks the person playing the card can make.
 
+
+### Parsing to and from bridge file formats
+
+While not the primary aim of the library, *endplay* does support experimental parsing and writing of PBN and LIN file formats. These interfaces are in the `endplay.parsers` submodule, and aim to provide an interface consistent with that of the standard library parsing libraries. Each of the parsing packages `endplay.parsers.pbn` and `endplay.parsers.lin` provide four functions:
+- `load`: Parse a file object into a list of `Board` objects
+- `loads`: Parse a string into a list of `Board` objects
+- `dump`: Write a list of `Board` objects to a file object
+- `dumps` Write a list of `Board` objects to a string
+
+Internally, each module provides `*Encoder` and `*Decoder` classes which do the heavy lifting. These can be used directly, but their interface may be unstable so cannot be recommended. 
+
+The libraries store file information in lists of `endplay.types.Board` objects, which wrap a `Deal` as well as other information which is usually provided by these file formats. The full list of defined members can be found in the API reference as this is one of the bulkiest classes in *endplay*, in order to deal with the wealth of information that these file formats can store. We will present here a lighter introduction to the class by reading a PBN file and examining the result. We being by opening the sample PBN file in the examples directory and putting the first board into the variable `boardA`:
+
+```python
+>>> import endplay.parsers.pbn as pbn
+>>> with open("examples/pbn_files/sample.pbn") as f:
+...   boards = pbn.load(f)
+>>> boardA = boards[0]
+```
+
+From here we can explore a lot of the basic information about the deal using the tools which we have already learned:
+
+- The deal
+
+```python
+>>> boardA.deal.pprint()
+              AT9
+              2
+              J432
+              A9863
+KJ85                        76432
+AQT853                      4
+9                           KQ
+K4                          QJT72
+              Q
+              KJ976
+              AT8765
+              5
+```
+
+- The auction
+
+```python
+>>> from endplay.utils.io import pprint_auction
+>>> pprint_auction(boardA.dealer, boardA.auction, include_announcements=True)
+N    E    S    W    
+P    P    1♥   P    
+1NT  2♥*  3♦   4♠   
+5♦   P    P    5♠*  
+X    P    P    P    
+
+2♥*: Spades & minor
+5♠*: ♠
+```
+
+- The play history
+
+```python
+>>> from endplay.dds import analyse_play
+>>> analyse_play(boardA.deal, boards[0].play)
+<SolvedPlay object; data=(8, 9, 9, 9, 9, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8)>
+```
+
+- Meta-information about the board. As this can store just about anything you might want it can get a bit messy so don't worry if the code samples below go in one ear and out the other, for want of a better metaphor.
+
+```python
+>>> boardA.info.keys()
+dict_keys(['Event', 'Site', 'Date', 'West', 'North', 'East', 'South', 'Dealer', 'Scoring', 'Score', 'Table', 'HomeTeam', 'VisitTeam', 'ScoreIMP', 'DoubleDummyTricks', 'OptimumResultTable', 'OptimumScore', 'Competition'])
+>>> boardA.info.event # Dot access is case-insensitive
+'TestingPBN'
+>>> boardA.info["Site"] # Subscript access is case-sensitive
+'SampleTestSite'
+```
+
+PBN tags ending in `Table` (but not equal to `Table` - that key is for the table number the board was played at) are tabular data, and entries in the `Board.info` dictionary which end in `Table` are treated differently; instead of having string values they are dictionaries with keys for the column headings and the rows:
+
+```python
+>>> from pprint import pprint
+>>> pprint(boardA.info.OptimumResultTable)
+{'headers': ['Declarer',
+             {'alignment': 'R',
+              'minwidth': '2',
+              'name': 'Denomination',
+              'ordering': None},
+             {'alignment': 'R',
+              'minwidth': '2',
+              'name': 'Result',
+              'ordering': None}],
+ 'rows': [['N', 'NT', '7'],
+          ['N', 'S', '4'],
+          ['N', 'H', '6'],
+          ['N', 'D', '11'],
+          ['N', 'C', '5'],
+          ['W', 'NT', '5'],
+          ['W', 'S', '8'],
+          ['W', 'H', '6'],
+          ['W', 'D', '2'],
+          ['W', 'C', '7']]}
+```
+The `headers` key is a list of the column names; they can either be strings or dictionaries specifying how the columns should be displayed (see the API reference for more information). The `rows` key is a 2D list representing the rows of the table.
+
+In sample.pbn, the second board contains some fields with value "#" indicating that they should be copied over from the previous board, these are automatically resolved:
+
+```python
+>>> boardB = boards[1]
+>>> assert boardA.info.event == boardB.info.event
+```
+
+On the second board, the hand was passed out. The `Board` object is populated with an empty play history and a `Contract` object representing the pass:
+
+```python
+>>> boardB.play
+[]
+>>> boardB.contract
+Contract("Pass")
+```
+
+Using the `endplay.parsers.lin` module, we can export these boards to LIN in order to use them on BBO:
+
+```python
+>>> import endplay.parsers.lin as lin
+>>> l = lin.dumps(boards)
+>>> print(l)
+pn|JOHN SMITH,ARTHUR SOMEBODY,JORDAN PRESENTLY,EDWARD PEABODY|st||md|3S9TAH2D234JC3689A,S23467H4DQKC27TJQ,SQH679JKD5678TAC5,|rh||ah|Board 17|sv|o|mb|p|mb|p|mb|1H|mb|p|mb|1N|mb|2H|an| Spades & minor|mb|3D|mb|4S|mb|5D|mb|p|mb|p|mb|5S|an| !S|mb|d|mb|p|mb|p|mb|p|pg||pc|H2|pc|H4|pc|HK|pc|HA|pg||pc|D9|pc|D2|pc|DQ|pc|DA|pg||pc|C5|pc|C4|pc|CA|pc|C2|pg||pc|C9|pc|C7|pc|SQ|pc|CK|pg||pc|H6|pc|H8|pc|S9|pc|CT|pg||pc|C8|pc|CJ|pc|D5|pc|H3|pg||pc|S2|pc|D6|pc|SK|pc|SA|pg||pc|ST|pc|S3|pc|D7|pc|SJ|pg||mc|8|
+pn|LOUISE FORWEES,JEAN JEANY,MARTINE ESPEREDO,BRENDA CALLOUGHWAY|st||md|1S29JAH478D6TJC3QA,S3467H3TQD23C69JK,S8TKH69AD59AC2457,|rh||ah|Board 11|sv|o|mb|p|mb|p|mb|p|mb|p|pg||
+```
+
+Suit symbols are automatically escaped using the `!S`, `!H` etc... names used by BBO. Of course, far less information is stored in a LIN file than a PBN file and so many of the fields in the `info` dictionary of the `Board` are lost during the conversion. We can of course also `load` a LIN file and `dump` it into a PBN file, any keys which the PBN file expects which aren't provided by the LIN file can either be specified by appending to the `Board.info` dictionary, or else they will be given the default value of `?` as specified by the [PBN standard](https://www.tistis.nl/pbn/).

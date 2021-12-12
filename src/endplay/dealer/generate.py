@@ -91,7 +91,7 @@ def generate_deal(
 	with the dealer expression syntax (see https://www.bridgebase.com/tools/dealer/Manual/input.html#expr)
 
 	:param constraints: Constraints, as callables or strings
-	:param predeal: A `Deal` object which may be partially filled with cards; these will not
+	:param predeal: A :class:`Deal` object which may be partially filled with cards; these will not
 		be shuffled, allowing you to specify that players should have particular holdings.
 	:param swapping: An integer representing the type of swapping algorithm to use, either
 		0 (no swapping), 2 (swapping EW) or 3 (swapping EWS)
@@ -130,11 +130,11 @@ def generate_deals(
 	strict: bool = False) -> Iterator[Deal]:
 	"""
 	Generates `produce` random deals satisfying the constraints which should
-	be given as for `generate_deal`. `produce` and `max_attemps` are upper limits,
+	be given as for :func:`generate_deal`. `produce` and `max_attemps` are upper limits,
 	the first to be reached terminates the program
 
 	:param constraints: Constraints, as callables or strings
-	:param predeal: A `Deal` object which may be partially filled with cards; these will not
+	:param predeal: A :class:`Deal` object which may be partially filled with cards; these will not
 		be shuffled, allowing you to specify that players should have particular holdings.
 	:param swapping: An integer representing the type of swapping algorithm to use, either
 		0 (no swapping), 2 (swapping EW) or 3 (swapping EWS)

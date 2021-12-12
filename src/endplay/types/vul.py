@@ -31,6 +31,9 @@ class Vul(IntEnum):
 		"""
 		return Vul("obne".index(s.lower()))
 
+	def to_lin(self) -> str:
+		return "obne"[self]
+
 	@staticmethod
 	def from_board(board_no: int) -> 'Vul':
 		":return: The vulnerability of the specified board"

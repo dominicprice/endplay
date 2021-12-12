@@ -1,5 +1,5 @@
 """
-Frontends contain a `Deal` object as state, and provide an
+Frontends contain a :class:`Deal` object as state, and provide an
 `interact` method as their entry point which allows interactive
 manipulation of the deal.
 """

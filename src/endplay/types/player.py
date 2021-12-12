@@ -25,6 +25,9 @@ class Player(IntEnum):
 		"""
 		return [Player.south, Player.west, Player.north, Player.east][n - 1]
 
+	def to_lin(self) -> int:
+		return [3,4,1,2][self]
+
 	@staticmethod
 	def from_board(n: int) -> 'Player':
 		"""

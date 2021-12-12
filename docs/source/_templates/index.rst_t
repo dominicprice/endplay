@@ -1,0 +1,10 @@
+endplay documentation
+=====================
+
+:ref:`search`
+
+.. toctree::
+	:maxdepth: 3
+	:caption: Main Contents:
+
+	%SECTIONS%
