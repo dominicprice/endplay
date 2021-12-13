@@ -1,7 +1,11 @@
 endplay documentation
 =====================
 
-:ref:`search`
+These are the documentation pages for the Python package endplay. Most of 
+the information can also be found in the README.md file in the github repo,
+but is presented here broken down into sections along with some extra information
+pages and a comprehensive API reference of all the modules and packages the library
+exposes.
 
 .. toctree::
 	:maxdepth: 3

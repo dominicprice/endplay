@@ -70,13 +70,13 @@ from functools import wraps
 _cur_path = os.path.abspath(os.path.dirname(__file__))
 _dll_name = "@DDS_LIBRARY_NAME@"
 _dll_path = os.path.join(_cur_path, _dll_name)
-_libc_name = find_library("c")
 try:
 	if os.name == "nt":
 		_dll = ctypes.WinDLL(_dll_path)
-		_libc = ctypes.WinDLL(_libc_name)
+		_libc = ctypes.cdll.msvcrt
 	else:
 		_dll = ctypes.CDLL(_dll_path)
+		_libc_name = find_library("c")
 		_libc = ctypes.CDLL(_libc_name)
 	# Required on linux, doesn't do any harm on windows
 	_dll.SetMaxThreads(0)
