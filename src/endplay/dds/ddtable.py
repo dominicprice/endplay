@@ -14,16 +14,21 @@ import endplay._dds as _dds
 from endplay.types import Deal, Denom, Player
 
 class DDTable:
-	def __init__(self, data: '_dds.ddTableResults'):
+	def __init__(self, data: _dds.ddTableResults):
 		self._data = data
 		
-	def pprint(self, stream=sys.stdout) -> None:
+	def pprint(self, 
+		*, 
+		denoms: Iterable[Denom] = Denom.bidorder(),
+		players: Iterable[Player] = [Player.north, Player.south, Player.east, Player.west],
+		stream=sys.stdout) -> None:
 		"Print the double dummy table in a grid format"
-		print("   ", " ".join(denom.abbr.rjust(2) for denom in Denom.bidorder()), file=stream)
-		for player in Player.iter_order("NSWE"):
+		denoms, players = list(denoms), list(players)
+		print("   ", " ".join(denom.abbr.rjust(2) for denom in denoms), file=stream)
+		for player in players:
 			print(player.abbr.rjust(3), end='', file=stream)
-			for denom in Denom.bidorder():
-				print(str(self._data.resTable[denom][player]).rjust(3), end='', file=stream)
+			for denom in denoms:
+				print(str(self[denom, player]).rjust(3), end='', file=stream)
 			print(file=stream)
 	
 	def to_LaTeX(self) -> str:
@@ -35,20 +40,22 @@ class DDTable:
 		return res
 
 	def to_json(self) -> str:
-		return _json.dumps({ { p.name: self[d][p] for p in Player } for d in Denom })
+		return _json.dumps({ { p.name: self[d, p] for p in Player } for d in Denom })
+
+	def to_list(self) -> list[list[int]]:
+		return [[self[d, p] for p in Player] for d in Denom]
 
 	def __getitem__(self, cell: tuple[Denom, Player]) -> int:
-		"Return the specified column of the table"
+		"Return the specified cell of the table"
 		if isinstance(cell[0], Denom):
 			return self._data.resTable[cell[0]][cell[1]]
 		else:
 			return self._data.resTable[cell[1]][cell[0]]
 
-	def __repr__(self) -> str:
-		return f'<DDTable object; data={self!s}>'
-
 	def __str__(self) -> str:
-		return ", ".join(f"{denom.abbr}:{{{self[denom]}}}" for denom in Denom.bidorder())
+		return ",".join(d.abbr for d in Denom.bidorder()) + \
+			";" + ";".join(p.abbr + ":" + \
+			",".join(str(self[d, p]) for d in Denom.bidorder()) for p in Player)
 
 class DDTableList(abc.Sequence):
 	def __init__(self, data: '_dds.ddTableRes'):
