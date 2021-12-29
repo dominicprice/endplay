@@ -16,6 +16,8 @@ __version_info__ = tuple(int(i) if i.isdigit() else i for i in __version__.repla
 __author__ = "Dominic Price"
 """Author of the library"""
 
+__buildtime__ = """@ENDPLAY_BUILD_TIME@""".strip()
+
 use_unicode = True 
 """If set to False, the library will only print characters in the ASCII range"""
 
