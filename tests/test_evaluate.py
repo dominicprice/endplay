@@ -12,12 +12,27 @@ class TestEvaluate(unittest.TestCase):
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
 		self.deal = Deal(pbn)
+
 	def test_hcp(self):
 		deal = self.deal
 		self.assertEqual(hcp(deal.north), 12)
 		self.assertEqual(hcp(deal.east), 6)
 		self.assertEqual(hcp(deal.south), 11)
 		self.assertEqual(hcp(deal.west), 11)
+
+	def test_dist_points(self):
+		deal = self.deal
+		self.assertEqual(dist_points(deal.north), 1)
+		self.assertEqual(dist_points(deal.east.diamonds), 2)
+		self.assertEqual(dist_points(deal.east, mixed_fit_dist_scale), 4)
+		self.assertEqual(dist_points(deal.south, mixed_nofit_dist_scale), 2)
+		self.assertEqual(dist_points(deal.south, mixed_nofit_dist_scale, [Denom.clubs]), 0)
+		self.assertEqual(dist_points(deal.west.hearts, exclude=[Denom.hearts]), 2)
+
+	def test_total_points(self):
+		deal = self.deal
+		self.assertEqual(total_points(deal.west), 13)
+		self.assertEqual(total_points(deal.west, protect_honours=True), 10)
 
 	def test_top_honours(self):
 		deal = self.deal

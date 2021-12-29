@@ -60,13 +60,18 @@ class ConstraintInterpreter:
 
 	def reset_env(self):
 		"Reinitialise the environment to the default values"
-		default_pt = {
-			"pt0": [0,0,0,0,1], "pt1": [0,0,0,1,0], "pt2": [0,0,1,0,0],
-			"pt3": [0,1,0,0,0], "pt4": [1,0,0,0,0], "pt5": [1,1,0,0,0],
-			"pt6": [1,1,1,0,0], "pt7": [1,1,1,1,0], "pt8": [1,1,1,1,1],
-			"pt9": [6,4,2,1]
+		self._env = {
+			"pt0": [0,0,0,0,1,0,0,0,0,0,0,0,0], 
+			"pt1": [0,0,0,1,0,0,0,0,0,0,0,0,0], 
+			"pt2": [0,0,1,0,0,0,0,0,0,0,0,0,0],
+			"pt3": [0,1,0,0,0,0,0,0,0,0,0,0,0], 
+			"pt4": [1,0,0,0,0,0,0,0,0,0,0,0,0], 
+			"pt5": [1,1,0,0,0,0,0,0,0,0,0,0,0],
+			"pt6": [1,1,1,0,0,0,0,0,0,0,0,0,0], 
+			"pt7": [1,1,1,1,0,0,0,0,0,0,0,0,0], 
+			"pt8": [1,1,1,1,1,0,0,0,0,0,0,0,0],
+			"pt9": [6,4,2,1,0,0,0,0,0,0,0,0,0]
 		}
-		self._env = { key: dict(zip(reversed(Rank), val)) for key, val in default_pt.items()}
 
 	def parse(self, s: str) -> Node:
 		"Parse an expression string into a syntax tree"
