@@ -19,7 +19,7 @@ class DDTable:
 		
 	def pprint(self, 
 		*, 
-		denoms: Iterable[Denom] = Denom.bidorder(),
+		denoms: Iterable[Denom] = [Denom.clubs, Denom.diamonds, Denom.hearts, Denom.spades, Denom.nt],
 		players: Iterable[Player] = [Player.north, Player.south, Player.east, Player.west],
 		stream=sys.stdout) -> None:
 		"Print the double dummy table in a grid format"
@@ -42,8 +42,11 @@ class DDTable:
 	def to_json(self) -> str:
 		return _json.dumps({ { p.name: self[d, p] for p in Player } for d in Denom })
 
-	def to_list(self) -> list[list[int]]:
-		return [[self[d, p] for p in Player] for d in Denom]
+	def to_list(self, player_major: bool = False) -> list[list[int]]:
+		if player_major:
+			return [[self[d, p] for d in Denom] for p in Player]
+		else:
+			return [[self[d, p] for p in Player] for d in Denom]
 
 	def __getitem__(self, cell: tuple[Denom, Player]) -> int:
 		"Return the specified cell of the table"
