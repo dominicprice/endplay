@@ -19,6 +19,7 @@ If you find this useful and would like to contribute, or found it totally buggy 
     - [The `interact` module](#the-interact-module)
   - [Generating hands](#generating-hands)
     - [The main module](#the-main-module)
+  - [Evaluating hands](#evaluating-hands)
   - [Double dummy analysis](#double-dummy-analysis)
     - [Analyse](#analyse)
     - [DD Tables](#dd-tables)
@@ -475,6 +476,145 @@ Running this on my machine takes a few minutes, even with only 30 hands, as the 
 
 Of course, had we set up `stayman.dl` to produce bidding patterns for north and south, 2-way swapping would be significantly worse as swapping the east west hands does not change the value of the predicate.
 
+### Evaluating hands
+
+When constructing constraints for use with the `generate_deal`/`generate_deals` functions, or performing statistics over deals, various metrics for evaluating the quality of various aspects of a hand are useful. *endplay* comes with a variety of functions for evaluating hands in the `endplay.evaluate` submodule. A full list of the functions contained in this submodule can be found in the API documentation; the list here is merely representative of the sorts of things which can be done.
+
+#### Assigning point values to hands
+
+By far the most well known and widely applied metric for calculating the quality of a hand is the traditional 'high card points' scale where we assign points to each of the face cards: 4 for an ace, 3 for a king, 2 for a queen and 1 for a jack. The `hcp` function can be used to evaluate a hand or suit holding using this metric:
+
+```python
+>>> from endplay.types import Hand
+>>> from endplay.evaluate import hcp
+>>> hand = Hand("AQ963.J64.852.K2")
+>>> hcp(hand)
+10
+>>> hcp(hand.hearts)
+1
+```
+
+Although the 4321 metric is the most widely applied, it is sometimes preferable to use a different scale. One such scale is the *Bergen scale* which assigns 4.5/3/1.5/0.75/0.25 to the top 5 cards. This scale is built into endplay as `bergen_hcp_scale` and the `hcp` can be told to use it by passing it as the second parameter:
+
+```python
+>>> from endplay.evaluate import bergen_hcp_scale
+>>> hcp(hand, bergen_hcp_scale)
+9.75
+```
+
+If you want to use your own custom scale, then you can pass a list of numbers containing the point values of the cards in the order A, K, Q, J, ..., 3, 2. If the list has less than 13 values, then it is assumed to be continued with zeroes:
+
+```python
+>>> custom_hcp_scale = [6,4,2,1] # A=6, K=4, Q=2, J=1, all other cards worth no points
+>>> hcp(hand, custom_hcp_scale)
+13
+```
+
+Another quality of the hand which is often described in terms of points is the distribution. A common system is to assign 3 points for a void, 2 points for a singleton and a single point for a doubleton. This is the standard behaviour of the `dist_points` function:
+
+```python
+>>> from endplay.evaluate import dist_points
+>>> hand2 = Hand("AK.JT98765..Q963")
+>>> dist_points(hand2)
+4
+>>> dist_points(hand2.diamonds)
+3
+```
+
+As with the high card points scale, there are many different ways of counting points and so the `dist_points` function accepts a `scale` parameter which defines the counting method. *endplay* comes with five different scales built into the `evalute` module:
+
+- `shortage_nofit_dist_scale`: The standard 3/2/1 scale
+- `shortage_fit_dist_scale`: A 5/3/1 scale, often applied to a hand once a trump fit has been found
+- `length_dist_scale`: Assigns a point for every extra card in a suit longer than 4, e.g. a five card suit is worth 1 point and a seven card suit is worth 3.
+- `mixed_nofit_dist_scale`: A combination of `shortage_nofit_dist_scale` and `length_dist_scale`
+- `mixed_fit_dist_scale`: A combination of `shortage_fit_dist_scale` and `length_dist_scale`
+
+Custom scales can be passed as lists where the `n`th element (zero-indexed) is the number of points awarded to a suit of length `n`, and as with the `hcp` function the list is assumed to be padded with zeroes if later elements are omitted. As an example, the following scale just counts the number of tripletons in a hand:
+
+```python
+>>> tripletons = [0, 0, 0, 1]
+>>> dist_points(hand, tripletons)
+2
+>>> dist_points(hand2, tripletons)
+0
+```
+
+If a trump suit is found, then it usually the case that shortage points are not included in the calculation of distribution points. To account for this, `dist_points` also takes an `exclude` parameter with a list of suits to exclude from the calculation. Note that this is ignored if the object is a `SuitHolding` instead of a `Hand`:
+
+```python
+>>> dist_points(hand2, exclude=[Denom.spades])
+3
+>>> dist_points(hand2.diamonds, exclude=[Denom.diamonds])
+3
+```
+
+High card points and distribution points are often combined into a scale known as 'total points'. In its most basic form, this is simply the sum of the two metrics:
+
+```python
+>>> from endplay.evaluate import total_points
+>>> total_points(hand2) # = hcp(hand2) + dist_points(hand2) = 10 + 4
+14
+```
+
+An optional `trump` parameter can be provided with a suit which is added to the `exclude` list of `dist_points`:
+
+```python
+>>> total_points(hand2, trump=Denom.spades)
+13
+```
+
+Unprotected honours, i.e. honours which will drop if the opponents play higher honours from the top, are often discounted from the total points calculation. This can be enabled by setting the `protect_honours` flag:
+
+```python
+>>> total_points(hand) # 10 HCP and 1 doubleton
+11
+>>> total_points(hand, protect_honours=True) #Jxx drops and the point is removed
+10
+```
+
+A more advanced method of calculating the overall strength of a hand is the [Kaplan Four Cs](http://www.rpbridge.net/8j19.htm) method which is implemented in the `cccc` algorithm:
+
+```python
+>>> from endplay.evaluate import cccc
+>>> cccc(hand)
+11.15
+>>> cccc(hand2)
+13.950000000000001
+```
+
+#### Evaluating shape
+
+The shape of a hand can be evaluated using the `shape` and `exact_shape` functions; the former returns the shape ordered from longest to shortest whilst the latter always returns the shape in the order spades, hearts, diamonds and clubs:
+
+```python
+>>> from endplay.types import Hand
+>>> from endplay.evaluate import shape, exact_shape
+>>> h = Hand("AK92.A3.Q9.AK762")
+>>> shape(h)
+[5, 4, 2, 2]
+>>> exact_shape(h)
+[4, 2, 2, 5]
+```
+
+Various predicate functions are provided to query more generally the 'class' of the hand shape:
+
+```python
+>>> from endplay.evaluate import is_balanced, is_semibalanced, is_single_suited, is_two_suited
+>>> is_balanced(h) # 4333, 4432 or 5332
+False
+>>> is_semibalanced(h) # balanced or 5422
+True
+>>> is_single_suited(h) # 6 or more cards in one suit
+False
+>>> is_two_suited(h) # 10 cards in two suits
+False
+```
+
+There are more variants on these and optional parameters to fine tune their definitions, which can be found in the API documentation.
+
+
+
+
 ### Double dummy analysis
 
 A particularly important feature of *endplay* is the ability to call routines from the [C++ dds library](https://github.com/dds-bridge/dds). The library is built and distributed with *endplay* so it is not necessary to have a copy of the library built on your machine. 
@@ -580,8 +720,8 @@ This is one of the simplest and most powerful functions in the `dds` module. Let
      ♣  ♦  ♥  ♠ NT
   N 13 10  9 13 13
   S 13 10  9 13 13
-  W  0  2  4  0  0
   E  0  2  4  0  0
+  W  0  2  4  0  0
 ```
 
 Individual results are accessible through the overloaded `__getitem__` operator:
@@ -605,8 +745,8 @@ The multiple-deal variant `calc_all_tables` accepts an extra argument not availa
      ♣  ♦  ♥  ♠ NT
   N  0  0  0  0 13
   S  0  0  0  0 13
-  W  0  0  0  0  0
   E  0  0  0  0  0
+  W  0  0  0  0  0
 ```
 
 (NB: If you don't understand how `table, *_ =` works then don't worry, it is just a quick way to store the first element of the returned list into `table` and the other elements, in this case an empty list as we only requested one table, into the variable `_` which we will throw away.)
