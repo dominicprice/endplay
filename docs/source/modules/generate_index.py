@@ -1,12 +1,12 @@
-from pathlib import Path
+from pathlib import Path, WindowsPath
 from itertools import takewhile
 
 def setup(app):
 	app.connect("builder-inited", builder_inited)
-	app.add_config_value("index_pages_root", None, 'env', [Path])
-	app.add_config_value("index_output_file", None, 'env', [Path])
+	app.add_config_value("index_pages_root", None, 'env', [Path, WindowsPath])
+	app.add_config_value("index_output_file", None, 'env', [Path, WindowsPath])
 	app.add_config_value("index_sections", None, 'env', [list])
-	app.add_config_value("index_template_file", None, 'env', [Path])
+	app.add_config_value("index_template_file", None, 'env', [Path, WindowsPath])
 
 def builder_inited(app):
 	pages_dir = app.config.index_pages_root
@@ -16,9 +16,9 @@ def builder_inited(app):
 	for section in app.config.index_sections:
 		path = Path(pages_dir, section)
 		if path.is_file():
-			sections.append(str(path.with_suffix("").relative_to(root_dir)))
+			sections.append(path.with_suffix("").relative_to(root_dir).as_posix())
 		else:
-			subsections = [str(file.with_suffix("").relative_to(root_dir)) for file in path.iterdir()]
+			subsections = [f.with_suffix("").relative_to(root_dir).as_posix() for f in path.iterdir()]
 			sections += sorted(subsections)
 
 	# tee input to output, replacing the %SECTIONS% tag with the actual sections

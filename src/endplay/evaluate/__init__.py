@@ -64,13 +64,14 @@ def dist_points(obj: Union[Hand, SuitHolding], scale: list[int] = shortage_nofit
 	Return the extra points for distribution for a hand or suit holding using the given scale.
 	Five scales are predefined: 
 
-	- `shortage_nofit_dist_scale`: 
-		Standard evaluation of shortage points if no trump fit is agreed, void=3, singleton=2, doubleton=1
-	- `shortage_fit_dist_scale`: 
-		Standard evaluation of shortage points if trump fit is agreed, void=5, singleton=3, doubleton=1
-	- `length_dist_scale`: 
-		Standard evaluation of length points, one point for each extra card in a suit with more than four
-		cards in it, i.e. 5 cards=1, 6 cards=2, etc...
+	* `shortage_nofit_dist_scale`: Standard evaluation of shortage points if no trump fit is agreed, 
+	  void=3, singleton=2, doubleton=1
+
+	* `shortage_fit_dist_scale`: Standard evaluation of shortage points if trump fit is agreed, 
+	  void=5, singleton=3, doubleton=1
+
+	* `length_dist_scale`: Standard evaluation of length points, one point for each extra card in a 
+	  suit with more than four cards in it, i.e. 5 cards=1, 6 cards=2, etc...
 
 	:param obj: Hand or suit holding to evaluate
 	:param scale: A list of 14 numbers which assign points to each suit length in ascending order,
@@ -96,6 +97,8 @@ def total_points(
 	:param obj: Hand or suit holding to evaluate
 	:param hcp_scale: The HCP scale to use, as for the `hcp` function
 	:param dist_scale: The distribution points scale, as for the `dist_scale` function
+	:param trump: If set then distribution points for the given suit are excluded from 
+		the calculation
 	:param protect_honours: If `True`, then honours must be protected for their HCP
 		to be included, i.e. king singleton, queen doubleton etc do not contribute to
 		total points

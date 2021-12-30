@@ -89,7 +89,7 @@ index_sections = [
 	"reference/endplay.rst"
 ]
 
-# copy everything from 'pages' into 'build_pages'
+# copy everything from 'static_pages' into 'pages'
 copy_tree("static_pages", "pages", update=True)
 
 # -- Options for HTML output -------------------------------------------------
@@ -100,3 +100,26 @@ html_css_files = [
 	'css/split_params.css',
 	'css/pretty_toc.css'
 ]
+html_js_files = [
+	'js/split_method_params.js'
+]
+
+
+# -- Patch for resolving cross references ------------------------------------
+
+from sphinx.domains.python import PythonDomain
+
+class PythonDomainXref(PythonDomain):
+	def find_obj(self, env, modname, classname, name, type, searchmode=0):
+		"""If multiple locations for an object are found, then resolve to the most specific"""
+		orig_matches = PythonDomain.find_obj(self, env, modname, classname, name, type, searchmode)
+		if len(orig_matches) <= 1:
+			return orig_matches
+		longest_match, length = None, 0
+		for match in orig_matches:
+			if len(match[0]) > length:
+				longest_match, length = match, len(match[0])
+		return [longest_match]
+
+def setup(sphinx):
+	sphinx.add_domain(PythonDomainXref, override=True)

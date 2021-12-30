@@ -6,7 +6,8 @@
 */
 
 /* Newlines (\a) and spaces (\20) before each parameter */
-.sig-param::before {
+.sig-param::before,
+.pymeth-custom-nl::before {
     content: "\a\20\20\20\20\20\20\20\20";
     white-space: pre;
 }

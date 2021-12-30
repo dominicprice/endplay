@@ -28,7 +28,5 @@
 
 {%- if not is_namespace %}
 
----------------
-
 {{ automodule(pkgname, automodule_options) }}
 {% endif %}
