@@ -43,7 +43,9 @@ class SolvedBoardList(Sequence):
 
 	def __getitem__(self, i: int) -> SolvedBoard:
 		":return: The solved board at index `i`"
-		if i >= len(self):
+		if i < 0:
+			i = len(self) - i
+		if i < 0 or i >= len(self):
 			return IndexError
 		return SolvedBoard(self._data.solvedBoard[i])
 

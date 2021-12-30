@@ -24,7 +24,9 @@ class SolvedPlay(Sequence):
 
 	def __getitem__(self, i: int) -> int:
 		":return: The number of tricks that declarer can make after the ith card is played"
-		if i >= len(self):
+		if i < 0:
+			i = len(self) - i
+		if i < 0 or i >= len(self):
 			raise IndexError
 		return self._data.tricks[i]
 
@@ -44,7 +46,9 @@ class SolvedPlayList(Sequence):
 
 	def __getitem__(self, i: int) -> SolvedPlay:
 		":return: The solved play at index `i`"
-		if i >= len(self):
+		if i < 0:
+			i = len(self) - i
+		if i < 0 or i >= len(self):
 			raise IndexError
 		return SolvedPlay(self._data.solved[i])
 

@@ -7,13 +7,16 @@ from __future__ import annotations
 __all__ = ["DDTable", "DDTableList", "calc_dd_table", "calc_all_tables"]
 
 import sys
-import json as _json
 from collections import abc
 from collections.abc import Iterable
 import endplay._dds as _dds
 from endplay.types import Deal, Denom, Player
 
 class DDTable:
+	"""
+	Python wrapper for the `_dds.ddTableResults` class. Entries can be accessed
+	using the `__getitem__` operator e.g. table[Denom.clubs, Player.west]
+	"""
 	def __init__(self, data: _dds.ddTableResults):
 		self._data = data
 		
@@ -22,7 +25,12 @@ class DDTable:
 		denoms: Iterable[Denom] = [Denom.clubs, Denom.diamonds, Denom.hearts, Denom.spades, Denom.nt],
 		players: Iterable[Player] = [Player.north, Player.south, Player.east, Player.west],
 		stream=sys.stdout) -> None:
-		"Print the double dummy table in a grid format"
+		"""
+		Print the double dummy table in a grid format
+		
+		:param denoms: Specify the columns of the table
+		:param players: Specify the rows of the table
+		"""
 		denoms, players = list(denoms), list(players)
 		print("   ", " ".join(denom.abbr.rjust(2) for denom in denoms), file=stream)
 		for player in players:
@@ -32,6 +40,7 @@ class DDTable:
 			print(file=stream)
 	
 	def to_LaTeX(self) -> str:
+		"""Create a LaTeX string of the table"""
 		res = r"\begin{tabular}{| c | c  c  c  c c |}"
 		res += r"\hline & $\clubsuit$ & $\diamondsuit$ & $\heartsuit$ & $\spadesuit$ & NT \\ \hline "
 		for player in Player.iter_order("NSEW"):
@@ -39,17 +48,19 @@ class DDTable:
 		res += r"\hline \end{tabular}"
 		return res
 
-	def to_json(self) -> str:
-		return _json.dumps({ { p.name: self[d, p] for p in Player } for d in Denom })
-
 	def to_list(self, player_major: bool = False) -> list[list[int]]:
+		"""
+		Convert the table to a 2d list
+
+		:param player_major: If `True`, the returned list is index by player first then strain
+		"""
 		if player_major:
 			return [[self[d, p] for d in Denom] for p in Player]
 		else:
 			return [[self[d, p] for p in Player] for d in Denom]
 
 	def __getitem__(self, cell: tuple[Denom, Player]) -> int:
-		"Return the specified cell of the table"
+		"""Return the specified cell of the table"""
 		if isinstance(cell[0], Denom):
 			return self._data.resTable[cell[0]][cell[1]]
 		else:
@@ -70,7 +81,9 @@ class DDTableList(abc.Sequence):
 
 	def __getitem__(self, i: int) -> DDTable:
 		"Return the double dummy table at index `i`"
-		if i >= len(self):
+		if i < 0:
+			i = len(self) - i
+		if i < 0 or i >= len(self):
 			raise IndexError
 		return DDTable(self._data.results[i])
 
