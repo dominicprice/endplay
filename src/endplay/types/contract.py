@@ -17,7 +17,7 @@ denom_to_contract = [ 1, 2,3,4,0 ]
 
 class Contract:
 	"Class representing a specific contract"
-	_pat = re.compile(r"^([1-7])((?:NT)|S|H|D|C)([NSEW]?)(X{0,2})((?:=|(?:[+-]\d+))?)$")
+	_pat = re.compile(r"^([1-7])((?:NT?)|S|H|D|C)([NSEW]?)((?:XX|X|D|R)?)((?:=|(?:[+-]\d+))?)$")
 	def __init__(
 		self, 
 		data: Union[_dds.contractType, str, None] = None, 

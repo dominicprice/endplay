@@ -109,7 +109,7 @@ class PBNDecoder:
 				board.dealer = Player.find(value) if value else None
 				flattened_auction = [b for row in fields["data"] for b in row]
 				for bid in flattened_auction:
-					if bid.lower == "ap":
+					if bid.lower() == "ap":
 						# All pass, add three passes
 						for _ in range(3):
 							board.auction.append(Bid("pass"))

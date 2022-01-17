@@ -37,6 +37,12 @@ class TestPBN(unittest.TestCase):
 		self.assertLoadsDumpsEqual(file)
 		self.assertLoadDumpEqual(file)
 
+	def test_03(self):
+		file = basedir / "pbn" / "example3.pbn"
+		with open(file) as f:
+			boards = pbn.load(f)
+
+
 class TestDealer(unittest.TestCase):
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
