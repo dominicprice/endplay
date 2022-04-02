@@ -23,7 +23,6 @@ class Bid:
 	:vartype announcement: Optional[str]
 	"""
 	def __init__(self, name: str, alertable: bool = False, announcement: Optional[str] = None):
-		name = name
 		try:
 			penalty = Penalty.find(name)
 			object.__setattr__(self, "__class__", PenaltyBid)
@@ -69,7 +68,7 @@ class ContractBid(Bid):
 		return f"ContractBid(denom={self.denom!r}, level={self.level!r}, alertable={self.alertable!r}, announcement={self.announcement!r})"
 
 	def __str__(self):
-		return f"{self.level}{self.denom.abbr}" + ("*" if self.alertable else "")
+		return f"{self.level}{self.denom.abbr}" + ("!" if self.alertable else "") + ("*" if self.announcement else "")
 
 class PenaltyBid(Bid):
 	"""
@@ -94,4 +93,4 @@ class PenaltyBid(Bid):
 		return f"PenaltyBid(penalty={self.penalty!r}, alertable={self.alertable!r}, announcement={self.announcement!r})"
 
 	def __str__(self):
-		return (self.penalty.abbr or "p").upper() + ("*" if self.alertable else "")
+		return (self.penalty.abbr or "p").upper() + ("!" if self.alertable else "") + ("*" if self.announcement else "")

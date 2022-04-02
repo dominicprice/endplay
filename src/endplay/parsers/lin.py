@@ -50,10 +50,9 @@ class LINDecoder:
 				board_num = int(value[5:])
 			elif key == "mb":
 				# Marks a bid
-				auction.append(Bid(value))
+				auction.append(Bid(value, value[-1:] == "!"))
 			elif key == "an":
 				# Marks an alert for the previous bid
-				auction[-1].alertable = True
 				auction[-1].announcement = unescape_suits(value)
 			elif key == "pc":
 				# Marks a card in the play section
@@ -121,9 +120,9 @@ class LINEncoder:
 			for bid in board.auction:
 				lin += "mb|"
 				if isinstance(bid, ContractBid):
-					lin += f"{bid.level}{bid.denom.abbr[0]}|"
+					lin += f"{bid.level}{bid.denom.abbr[0]}" + ("!" if bid.alertable else "") + "|"
 				else:
-					lin += bid.penalty.name[0] + "|"
+					lin += bid.penalty.name[0] + ("!" if bid.alertable else "") + "|"
 				if bid.announcement is not None:
 					lin += f"an|{escape_suits(bid.announcement)}|"
 			lin += "pg||"

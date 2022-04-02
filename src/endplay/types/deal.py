@@ -237,7 +237,7 @@ class Deal:
 		return _json.dumps(d, indent=indent)
 
 	@staticmethod
-	def from_lin(lin: str, complete_deal: bool = False):
+	def from_lin(lin: str, complete_deal: bool = True):
 		"""
 		Construct a deal from a LIN format deal string. 
 
@@ -246,12 +246,11 @@ class Deal:
 			from BBO)
 		"""
 		if lin[0] in "1234":
-			dealer, hands = int(lin[0]), lin[1:].split(",")
+			hands = lin[1:].split(",")
 		else:
-			dealer, hands = 3, lin.split(",")
+			hands = lin.split(",")
 		deal = Deal()
-		start = Player.from_lin(dealer)
-		for player, hand in zip(Player.iter_from(start), hands):
+		for player, hand in zip(Player.iter_from(Player.south), hands):
 			deal[player] = Hand.from_lin(hand)
 		if complete_deal:
 			deal.complete_deal()
@@ -265,12 +264,13 @@ class Deal:
 		:param complete_deal: If False, omit the last hand from the string. This is the default
 			for files created by BBO.
 		"""
-		lin = str(dealer.to_lin())
-		lin += self[dealer].to_lin() + ","
-		lin += self[dealer.lho].to_lin() + ","
-		lin += self[dealer.partner].to_lin() + ","
+		if dealer is not None:
+			lin = str(dealer.to_lin())
+		lin += self[Player.south].to_lin() + ","
+		lin += self[Player.west].to_lin() + ","
+		lin += self[Player.north].to_lin() + ","
 		if complete_deal:
-			lin += self[dealer.rho].to_lin()
+			lin += self[Player.east].to_lin()
 		return lin
 
 	def to_LaTeX(self, board_no: Optional[int] = None, exclude: Iterable[Player] = [], ddtable: bool = False) -> str:

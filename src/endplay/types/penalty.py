@@ -10,7 +10,7 @@ class Penalty(IntEnum):
 
 	@staticmethod
 	def find(name: str):
-		if not name or name[0].lower() in "np":
+		if not name or name[0].lower() in "np" or name.lower() == "ap":
 			return Penalty.passed
 		if name.lower() == 'x' or name[0].lower() == 'd':
 			return Penalty.doubled
