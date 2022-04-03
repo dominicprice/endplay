@@ -10,7 +10,13 @@ __all__ = [
 
 from endplay.types import Card, Player, Denom, Rank
 from collections.abc import Iterable
-from more_itertools import grouper
+from itertools import zip_longest
+
+# copied from more_itertools for backwards compatibility with old versions of the
+# library which swapped the order of the first two parameters
+def _grouper(iterable, n, fillvalue=None):
+	args = [iter(iterable)] * n
+	return zip_longest(fillvalue=fillvalue, *args)
 
 def trick_winner(trick: Iterable[Card], first: Player, trump: Denom):
 	"Calculate the winner of a trick"
@@ -30,7 +36,7 @@ def total_tricks(play: Iterable[Card], trump: Denom):
 	"""
 	first = Player.north
 	tricks = 0
-	for trick in grouper(play, 4):
+	for trick in _grouper(play, 4):
 		winner = trick_winner(trick, first, trump)
 		if winner in [Player.north, Player.south]:
 			tricks += 1
@@ -95,7 +101,7 @@ def tabularise_play(
 	"""
 	table = []
 	winner = first
-	for trick in grouper(play, 4, pad_value):
+	for trick in _grouper(play, 4, pad_value):
 		new_winner = trick_winner(trick, winner, trump)
 		# rotate the trick so that first is first
 		rots = winner.turns_to(first)
