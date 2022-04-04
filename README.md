@@ -832,7 +832,7 @@ While on the topic of contracts, it is worth mentioning the `Bid` class which re
 
 ```python
 from endplay.types import PenaltyBid, ContractBid, Penalty, Denom
->>> oneclub = ContractBid(2, Denom.hearts)
+>>> oneclub = ContractBid(1, Denom.clubs)
 >>> double = PenaltyBid(Penalty.double)
 ```
 
@@ -852,7 +852,7 @@ Notice however that the type you get is actually always one of `PenaltyBid` or `
 <class 'endplay.types.bid.PenaltyBid'>
 ```
 
-All bid class constructors also accept optional boolean `alertable` and string `announcement` parameters, of which none, either or both can be defined to allow for the case where e.g. thep oint range of a notrump bid is announced but not alertable:
+All bid class constructors also accept optional boolean `alertable` and string `announcement` parameters, of which none, either or both can be defined to allow for the case where e.g. the point range of a notrump bid is announced but not alertable:
 
 ```python
 >>> unusual2nt = Bid("2H", announcement="Weak")
@@ -1002,7 +1002,7 @@ X    P    P    P
 <SolvedPlay object; data=(8, 9, 9, 9, 9, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8)>
 ```
 
-- Meta-information about the board. As this can store just about anything you might want it can get a bit messy so don't worry if the code samples below go in one ear and out the other, for want of a better metaphor.
+- Meta-information about the board. As this can store just about anything you might want it can get a bit messy, so although I have tried to keep it as basic as possible don't worry if the code samples below go in one ear and out the other
 
 ```python
 >>> boardA.info.keys()
