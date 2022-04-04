@@ -1,7 +1,7 @@
 ﻿
 import unittest
 from pathlib import Path
-from endplay.parsers import pbn, lin, dealer
+from endplay.parsers import pbn, lin, json, dealer
 from endplay import config
 from tempfile import TemporaryFile
 config.use_unicode = False
@@ -85,6 +85,28 @@ class TestLIN(unittest.TestCase):
 		self.assertLoadsDumpsEqual(file)
 		self.assertLoadDumpEqual(file)
 			
+class TestJSON(unittest.TestCase):
+	def assertPBNLoadsDumps(self, file: Path):
+		with open(file) as f:
+			sin = f.read()
+		boards = pbn.loads(sin)
+		jout = json.dumps(boards)
+		boards2 = json.loads(jout)
+		sout = pbn.dumps(boards2)
+		self.assertSequenceEqual(sin, sout, seq_type=str)
+	
+	def assertPBNLoadDump(self, file: Path):
+		with open(file) as f:
+			sin = f.read()
+		boards = pbn.loads(sin)
+		jout = json.dumps(boards)
+		boards2 = json.loads(jout)
+		sout = pbn.dumps(boards2)
+		self.assertSequenceEqual(sin, sout, seq_type=str)
+
+	def test_01(self):
+		file = basedir / "pbn" / "example2.pbn"
+		self.assertPBNLoadsDumps(file)
 
 if __name__ == "__main__":
 	unittest.main()
