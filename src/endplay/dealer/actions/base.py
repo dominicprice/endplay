@@ -5,11 +5,10 @@ Base actions class to provide the interface.
 __all__ = ["BaseActions"]
 
 import sys
-import os
 from importlib.resources import read_text
 from typing import Optional, Union
 from abc import ABC, abstractmethod
-from endplay.types import Deal, Player
+from endplay.types import Player
 from endplay.dealer.constraint import Expr
 
 class BaseActions(ABC):

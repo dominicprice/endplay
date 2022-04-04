@@ -5,7 +5,7 @@ Parser for Dealer scripts
 __all__ = [ "DealerParser", "ParseException" ]
 
 from typing import TextIO
-from endplay.types import Player, Vul, Hand, Contract, Denom, Card, Deal
+from endplay.types import Player, Vul, Hand, Contract, Denom, Deal
 import pyparsing as pp
 pp.ParserElement.enablePackrat()
 ParseException = pp.ParseException

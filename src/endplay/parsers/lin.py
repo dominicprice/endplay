@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-__all__ = [ "LINParser", "dump", "dumps", "load", "loads" ]
+__all__ = [ "LINEncodeError", "dump", "dumps", "load", "loads" ]
 
 from typing import TextIO
 from more_itertools import chunked

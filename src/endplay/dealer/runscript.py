@@ -11,6 +11,7 @@ from typing import Optional
 import shutil
 from tempfile import mkdtemp
 import time
+import warnings
 from subprocess import run
 from endplay.parsers.dealer import DealerParser, ParseException, Node
 from endplay.dealer.constraint import ConstraintInterpreter
@@ -86,7 +87,7 @@ def run_script(
 		try:
 			with open(script) as f:
 				doctree = parser.parse_file(f)
-		except FileNotFoundError as e:
+		except FileNotFoundError:
 			raise RuntimeError(f"{script}: no such file")
 		except OSError as e:
 			raise RuntimeError(f"Could not load script: {e}")
@@ -251,7 +252,7 @@ def run_script(
 		try:
 			shutil.rmtree(tmpdir)
 		except Exception as e:
-			warnings.warn(f"Unable to remove temporary directory tree {tmpdir}", ResourceWarning)
+			warnings.warn(f"Unable to remove temporary directory tree {tmpdir}: {e}", ResourceWarning)
 
 	if verbose:
 		print("Generated", actual_generated, "hands")

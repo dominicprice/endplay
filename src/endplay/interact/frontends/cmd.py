@@ -100,7 +100,6 @@ class CmdFrontend(cmd.Cmd):
 			print(f"Could not parse {args[0]} as player name")
 			return
 		try:
-			cur_pbn = str(self.deal[player])
 			self.deal[player] = Hand(args[1])
 		except RuntimeError:
 			print(f"Invalid PBN string: `{args[0]}`")
@@ -145,7 +144,7 @@ class CmdFrontend(cmd.Cmd):
 			try:
 				new_deal = generate_deal(arg)
 			except RuntimeError:
-				print(f"Could not generate deal satisfying this constraint")
+				print("Could not generate deal satisfying this constraint")
 		else:
 			new_deal = generate_deal()
 		self.deal.reset(str(new_deal))
@@ -223,7 +222,6 @@ class CmdFrontend(cmd.Cmd):
 		dealer
 		"""
 		vul = Vul.from_board(self.board_no)
-		dealer = Player.west.next(self.board_no)
 		p = par(self.deal, vul, self.deal.first)
 		print(f"Par score: {p.score}")
 		for contract in p:

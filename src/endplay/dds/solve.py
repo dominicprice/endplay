@@ -28,7 +28,7 @@ class SolvedBoard(Iterable):
 					yield (card, self._data.score[i])
 
 	def __repr__(self) -> str:
-		return f'<SolvedBoard object>'
+		return '<SolvedBoard object>'
 
 	def __str__(self) -> str:
 		return '{' + ", ".join("b[0]:b[1]" for b in self) + '}'

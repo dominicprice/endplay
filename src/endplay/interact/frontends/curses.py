@@ -6,7 +6,7 @@ dealing hands and performing double-dummy analysis.
 __all__ = ["CursesFrontend"]
 
 import curses
-from curses.textpad import Textbox, rectangle
+from curses.textpad import Textbox
 
 class CursesFrontend:
 	def __init__(self):

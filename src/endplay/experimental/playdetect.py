@@ -4,7 +4,7 @@ Algorithms for detecting play techniques
 
 from __future__ import annotations
 
-__all__ = ["detect_play", "SingleFinesse", "PlayTechniqueBase"]
+__all__ = ["detect_play", "SimpleFinesse", "PlayTechniqueBase"]
 
 from endplay.types import Deal, Card, Rank, SuitHolding
 

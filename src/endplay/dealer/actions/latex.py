@@ -2,7 +2,7 @@
 Actions class for producing LaTeX output.
 """
 
-__all__ = ["LateXActions"]
+__all__ = ["LaTeXActions"]
 
 from endplay.dealer.actions.base import BaseActions
 from endplay.types import Denom, Player

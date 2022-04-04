@@ -219,11 +219,9 @@ class PBNDecoder:
 			# Ignore tag if repeated
 			if self.curtag in self.curtags:
 				return False
-			value = m.group(2)
 			# Get the comment attached to the line (if any)
-			comment = None
 			if m.group(3):
-				comment, needcont = PBNDecoder._get_comment(m.group(3), False)
+				_, needcont = PBNDecoder._get_comment(m.group(3), False)
 				if needcont:
 					self.state = PBNDecoder.State.COMMENTBLOCK
 			# Add the tag to the current game, entering into State.DATA if it is a 
@@ -476,7 +474,7 @@ class PBNEncoder:
 	def export_file(self, boards: list[Board], fp: TextIO) -> None:
 		"Export current data into a file object"
 		fp.write(f"% PBN {self.pbn_version}\n")
-		fp.write(f"% EXPORT\n\n")
+		fp.write("% EXPORT\n\n")
 		for board in boards:
 			self.export_board(board)
 			fp.writelines(self.tags)

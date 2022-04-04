@@ -180,14 +180,6 @@ class Hand:
 	def clubs(self, suit: SuitHolding) -> None:
 		self[Denom.clubs] = suit
 
-	def __eq__(self, other: 'Hand') -> bool:
-		if len(self) != len(other):
-			return False
-		for a, b in zip(self, other):
-			if a != b:
-				return False
-		return True
-	
 	def __contains__(self, card: Card) -> bool:
 		":return: True if card is in this hand"
 		if isinstance(card, str):

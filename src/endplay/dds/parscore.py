@@ -46,7 +46,7 @@ class ParList(Iterable):
 				yield Contract(self._data.contracts[i])
 
 	def __repr__(self) -> str:
-		return f'<ParList object>'
+		return '<ParList object>'
 
 def par(
 	deal: Union[Deal, DDTable], 

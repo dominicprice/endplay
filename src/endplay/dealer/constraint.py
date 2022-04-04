@@ -11,7 +11,7 @@ __all__ = [ "ConstraintInterpreter" ]
 import re
 from typing import Callable, Any, Union
 from endplay.parsers.dealer import Node, DealerParser
-from endplay.types import Deal, Denom, Rank
+from endplay.types import Deal, Denom
 from endplay.evaluate import (hcp, standard_hcp_scale, losers, controls, cccc, quality, exact_shape)
 from endplay.dds import analyse_play
 
@@ -49,7 +49,7 @@ class ConstraintInterpreter:
 
 		:param name: The name of the variable to remove
 		"""
-		if _re_pt.match(name):
+		if self._re_pt.match(name):
 			raise RuntimeError(f"Trying to unset required environment variable {name}")
 		del self._env[name]
 
@@ -244,11 +244,6 @@ class ConstraintInterpreter:
 		hand = deal[node.first_child.value]
 		s = exact_shape(hand)
 		return self._evaluate_shape(node.last_child, s)
-
-
-	def _fn_hascard(self, node, deal):
-		hand = deal[node.first_child.value]
-		return node.last_child.value in hand
 
 	def _fn_if(self, node, deal):
 		if self.evaluate(node.first_child):

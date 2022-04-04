@@ -3,7 +3,6 @@ from __future__ import annotations
 __all__ = ["SuitHolding"]
 
 import ctypes
-import endplay._dds as _dds
 from endplay.types.rank import Rank, AlternateRank
 from typing import Optional, Union
 from collections.abc import Iterable, Iterator

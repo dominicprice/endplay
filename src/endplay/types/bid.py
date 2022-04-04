@@ -2,13 +2,9 @@ from __future__ import annotations
 
 __all__ = [ "Bid", "ContractBid", "PenaltyBid" ]
 
-import sys
-from more_itertools import chunked
 from endplay.types.denom import Denom
 from endplay.types.penalty import Penalty
-from endplay.types.player import Player
-from collections.abc import Iterable
-from typing import Optional, Union, NoReturn, TextIO
+from typing import Optional, Union, NoReturn
 
 class Bid:
 	"""

@@ -120,13 +120,13 @@ class HTMLActions(BaseActions):
 			self.write('<tr>', end='')
 			if self.board_numbers:
 				self.write(f'<td><div class="value">{i}</div></td>', end='')
-			self.write(f'<td><div class="value">')
+			self.write('<td><div class="value">')
 			for obj in objs:
 				if callable(obj):
 					self.write(obj(deal), end='')
 				else:
 					self.write(str(obj).replace('\n', "<br>"), end='')
-			self.write(f'</div></td>')
+			self.write('</div></td>')
 			self.write('</tr>')
 		self.write('</table>')
 
