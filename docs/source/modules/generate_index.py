@@ -30,5 +30,5 @@ def builder_inited(app):
 				for section in sections:
 					fout.write(indent + section + "\n")
 			else:
-				fout.write(line)
+				fout.write(line.replace("%VERSION%", app.config.release))
 	

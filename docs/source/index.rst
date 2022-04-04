@@ -1,4 +1,4 @@
-endplay documentation
+endplay v0.4.6-beta documentation
 =====================
 
 These are the documentation pages for the Python package endplay. Most of 
