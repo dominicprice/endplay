@@ -275,14 +275,97 @@ class TestContract(unittest.TestCase):
 		other.denom = c.denom
 		
 
-class TestCard(unittest.TestCase):
-	pass
+class TestPlayer(unittest.TestCase):
+	def test_find(self):
+		self.assertEqual(Player.find("north"), Player.north)
+		self.assertEqual(Player.find("S"), Player.south)
+		self.assertRaises(ValueError, Player.find, "")
+		self.assertRaises(ValueError, Player.find, "thisisnotacompassdirection")
 
-class TestSuit(unittest.TestCase):
-	pass
+	def test_lin(self):
+		self.assertEqual(Player.from_lin(1),Player.south)
+		self.assertEqual(Player.from_lin(2), Player.west)
+		self.assertRaises(ValueError, Player.from_lin, 0)
+		self.assertRaises(ValueError, Player.from_lin, 8)
+		for i in range(1, 5):
+			self.assertEqual(i, Player.from_lin(i).to_lin())
+
+	def test_iter(self):
+		self.assertEqual(Player.north.turns_to(Player.south), 2)
+		self.assertEqual(Player.east.turns_to(Player.north), 3)
+		self.assertEqual(Player.south.turns_to(Player.south), 0)
+		self.assertEqual(Player.north.prev(2), Player.south)
+		self.assertEqual(Player.east.next(1), Player.north)
+		self.assertEqual(Player.west.lho, Player.north)
+		self.assertEqual(Player.north.partner, Player.south)
+		self.assertEqual(Player.east.rho, Player.north)
+
+class TestDenom(unittest.TestCase):
+	def test_find(self):
+		self.assertEqual(Denom.find("D"), Denom.diamonds)
+		self.assertEqual(Denom.find("N"), Denom.nt)
+		self.assertEqual(Denom.find("♥"), Denom.hearts)
+		self.assertRaises(ValueError, Denom.find, "")
+		self.assertRaises(ValueError, Denom.find, "thisisnotadenom")
+
+	def test_predicates(self):
+		self.assertTrue(Denom.hearts.is_suit())
+		self.assertFalse(Denom.nt.is_suit())
+		self.assertTrue(Denom.spades.is_major())
+		self.assertFalse(Denom.diamonds.is_major())
+		self.assertFalse(Denom.hearts.is_minor())
+		self.assertTrue(Denom.clubs.is_minor())
+
+class TestPenalty(unittest.TestCase):
+	def test_find(self):
+		self.assertEqual(Penalty.find("pass"), Penalty.passed)
+		self.assertRaises(ValueError, Penalty.find, "thisisnotapenalty")
+
 
 class TestRank(unittest.TestCase):
-	pass
+	def test_find(self):
+		self.assertEqual(Rank.find("3"), Rank.R3)
+		self.assertEqual(Rank.find("J"), Rank.RJ)
+		self.assertEqual(Rank.find("q"), Rank.RQ)
+		self.assertRaises(ValueError, Rank.find, "")
+		self.assertRaises(ValueError, Rank.find, "thisisnotarank")
+
+	def test_find_alternate(self):
+		self.assertEqual(AlternateRank.find("t"), AlternateRank.RT)
+		self.assertEqual(AlternateRank.find("K"), AlternateRank.RK)
+		self.assertRaises(ValueError, AlternateRank.find, "")
+		self.assertRaises(ValueError, AlternateRank.find, "thisisnotarank")
+
+	def test_convert(self):
+		self.assertEqual(Rank.R2.to_alternate(), AlternateRank.R2)
+		self.assertEqual(Rank.R5.to_alternate(), AlternateRank.R5)
+		self.assertEqual(Rank.RA.to_alternate(), AlternateRank.RA)
+		self.assertEqual(AlternateRank.R2.to_standard(), Rank.R2)
+		self.assertEqual(AlternateRank.R5.to_standard(), Rank.R5)
+		self.assertEqual(AlternateRank.RA.to_standard(), Rank.RA)
+		for rank in Rank:
+			self.assertEqual(rank, rank.to_alternate().to_standard())
+		
+
+class TestVul(unittest.TestCase):
+	def test_find(self):
+		self.assertEqual(Vul.find("ew"), Vul.ew)
+		self.assertEqual(Vul.find("-"), Vul.none)
+		self.assertRaises(ValueError, Vul.find, "thisisnotavul")
+
+	def test_lin(self):
+		self.assertEqual(Vul.from_lin("o"), Vul.none)
+		self.assertEqual(Vul.from_lin("b"), Vul.both)
+		self.assertEqual(Vul.from_lin("n"), Vul.ns)
+		self.assertEqual(Vul.from_lin("e"), Vul.ew)
+		for v in "obne":
+			self.assertEqual(v, Vul.from_lin(v).to_lin())
+
+	def test_board(self):
+		self.assertEqual(Vul.from_board(1), Vul.none)
+		self.assertEqual(Vul.from_board(13), Vul.both)
+		self.assertEqual(Vul.from_board(18), Vul.ns)
+		self.assertEqual(Vul.from_board(35), Vul.ew)
 
 if __name__ == "__main__":
 	unittest.main()

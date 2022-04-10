@@ -17,6 +17,8 @@ class Denom(IntEnum):
 	def find(name: str) -> 'Denom':
 		"Convert a string value into a Denom object"
 		try:
+			if name == "":
+				raise ValueError
 			return Denom("SHDCN♠♥♦♣N♤♡♢♧".index(name[0].upper()) % 5)
 		except ValueError:
 			raise ValueError(f"Could not convert {name} into a Denom object")

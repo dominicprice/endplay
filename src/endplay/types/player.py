@@ -3,6 +3,7 @@ from __future__ import annotations
 __all__ = ["Player"]
 
 from enum import IntEnum
+from endplay.types.vul import Vul
 from collections.abc import Iterator, Iterable
 
 class Player(IntEnum):
@@ -15,7 +16,12 @@ class Player(IntEnum):
 	@staticmethod
 	def find(name: str) -> 'Player':
 		"Convert a string into a Player object"
-		return Player("NESW".index(name[0].upper()))
+		try:
+			if name == "":
+				raise ValueError
+			return Player("NESW".index(name[0].upper()))
+		except ValueError:
+			raise ValueError(f"could not convert '{name}' to Player")
 	
 	@staticmethod
 	def from_lin(n: int) -> 'Player':
@@ -23,6 +29,8 @@ class Player(IntEnum):
 		Convert a BBO LIN representation of a player into a Player object.
 		The conversion is determined by 1=S, 2=W, 3=N, 4=E
 		"""
+		if n < 1 or n > 4:
+			raise ValueError(f"n must be in range 1 <= n <= 4")
 		return [Player.south, Player.west, Player.north, Player.east][n - 1]
 
 	def to_lin(self) -> int:

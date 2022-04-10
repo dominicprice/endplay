@@ -16,20 +16,25 @@ class Vul(IntEnum):
 			return Vul.ns
 		elif name.lower() in [ "e", "w", "ew" ]:
 			return Vul.ew
-		elif name.lower() in [ "all", "both", "A", "B" ]:
+		elif name.lower() in [ "all", "both", "a", "b" ]:
 			return Vul.both
 		elif name.lower() in [ "", "none", "-", "luv" ]:
 			return Vul.none
 		else:
-			raise ValueError
+			raise ValueError(f"could not convert '{name}' to Vul")
 
 	@staticmethod
 	def from_lin(s: str) -> 'Vul':
 		"""
 		Convert a BBO LIN string of vulnerability into a Vul object.
-		The conversion is determined by 0=none, e=ew, n=ns, b=both
+		The conversion is determined by o=none, e=ew, n=ns, b=both
 		"""
-		return Vul("obne".index(s.lower()))
+		try:
+			if s == "":
+				raise ValueError
+			return Vul("obne".index(s.lower()))
+		except ValueError:
+			raise ValueError(f"invalid lin vulnerability '{s}': must be one of o, b, n, e")
 
 	def to_lin(self) -> str:
 		return "obne"[self]

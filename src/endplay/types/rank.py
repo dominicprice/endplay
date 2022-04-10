@@ -29,7 +29,10 @@ class Rank(IntEnum):
 
 	@staticmethod
 	def find(value: str) -> 'Rank':
-		return Rank[f"R{value.upper()}"]
+		try:
+			return Rank[f"R{value.upper()}"]
+		except KeyError:
+			raise ValueError(f"could not convert '{value}' to Rank")
 
 	def to_alternate(self) -> 'AlternateRank':
 		# Calculate integer log2
@@ -65,8 +68,11 @@ class AlternateRank(IntEnum):
 		return self.name[1]
 		
 	@staticmethod
-	def find(value: str):
-		return Rank[f"R{value}"]
+	def find(value: str) -> 'AlternateRank':
+		try:
+			return AlternateRank[f"R{value.upper()}"]
+		except KeyError:
+			raise ValueError(f"could not convert '{value}' to AlternateRank")
 		
 	def to_standard(self) -> Rank:
 		# Calculate integer power of 2
