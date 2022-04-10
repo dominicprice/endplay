@@ -295,10 +295,17 @@ class TestPlayer(unittest.TestCase):
 		self.assertEqual(Player.east.turns_to(Player.north), 3)
 		self.assertEqual(Player.south.turns_to(Player.south), 0)
 		self.assertEqual(Player.north.prev(2), Player.south)
-		self.assertEqual(Player.east.next(1), Player.north)
+		self.assertEqual(Player.east.next(1), Player.south)
 		self.assertEqual(Player.west.lho, Player.north)
 		self.assertEqual(Player.north.partner, Player.south)
-		self.assertEqual(Player.east.rho, Player.north)
+		self.assertEqual(Player.east.rho, Player.north)	
+		
+	def test_is_vul(self):
+		self.assertTrue(Player.north.is_vul(Vul.ns))
+		self.assertTrue(Player.south.is_vul(Vul.both))
+		self.assertFalse(Player.east.is_vul(Vul.ns))
+		self.assertFalse(Player.west.is_vul(Vul.none))
+		self.assertTrue(Player.east.is_vul(Vul.ew))
 
 class TestDenom(unittest.TestCase):
 	def test_find(self):

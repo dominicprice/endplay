@@ -43,6 +43,12 @@ class Player(IntEnum):
 		"""
 		return Player.west.next(n)
 
+	def is_vul(self, vul: Vul) -> bool:
+		return \
+			vul == Vul.both or \
+			(vul == Vul.ns and self in [Player.north, Player.south]) or \
+			(vul == Vul.ew and self in [Player.east, Player.west])
+
 	def enumerate(self, iterable: Iterable, step: int = 1) -> Iterator:
 		"""
 		Return an iterator whose `next` method returns a tuple
