@@ -2,16 +2,18 @@ from __future__ import annotations
 
 __all__ = ["Hand"]
 
+import ctypes
 import sys
+from collections.abc import Iterable, Iterator
+from typing import Union
+
 import endplay._dds as _dds
 from endplay.config import suppress_unicode
+from endplay.types.card import Card
 from endplay.types.denom import Denom
 from endplay.types.rank import Rank
-from endplay.types.card import Card
 from endplay.types.suitholding import SuitHolding
-import ctypes
-from typing import Union
-from collections.abc import Iterator, Iterable
+
 
 class Hand:
 	"Class allowing manipulations of cards in the hand of a single player"
@@ -24,7 +26,11 @@ class Hand:
 		if isinstance(data, str):
 			self._data = (ctypes.c_uint * 4)(0, 0, 0, 0)
 			suits = data.split(".")
+			if len(suits) > 4:
+				raise RuntimeError(f"hand contains more than four suits: {data})")
 			for i, suit in enumerate(suits):
+				if suit and suit[0].upper() in "SHDC":
+					suit = suit[1:]
 				for rank in suit:
 					self._data[i] |= Rank.find(rank).value
 		else:
@@ -35,7 +41,7 @@ class Hand:
 
 	def copy(self) -> 'Hand':
 		return self.__copy__()
-	
+
 	def add(self, card: Card) -> bool:
 		"""
 		Adds a card to the hand
@@ -87,7 +93,7 @@ class Hand:
 		:param pbn: A PBN string for a hand, e.g. "QT62..AQT852.QJT"
 		"""
 		return Hand(pbn)
-				
+
 	def to_pbn(self) -> str:
 		":return: A PBN representation of the hand"
 		return '.'.join(str(self[suit]) for suit in Denom.suits())
@@ -119,7 +125,7 @@ class Hand:
 
 		:param vertical: If True uses \\vhand, else \\hhand layout
 		:param title: The hand title. If vertical is False this is ignored
-		"""		
+		"""
 		if vertical:
 			res, sep = r"\begin{tabular}{l}", r"\\"
 		else:
@@ -131,7 +137,7 @@ class Hand:
 			else:
 				for rank in self[suit]:
 					res += r"\makebox[.8em]{"
-					res += "1\kern-.16em0" if (rank == Rank.RT and not ten_as_letter) else rank.abbr
+					res += r"1\kern-.16em0" if (rank == Rank.RT and not ten_as_letter) else rank.abbr
 					res += "}"
 			res += sep
 		if vertical:
@@ -147,7 +153,7 @@ class Hand:
 		"Remove all cards from the hand"
 		for i in range(4):
 			self._data[i] &= 0
-			
+
 	@property
 	def spades(self) -> SuitHolding:
 		"The spade holding of the hand"
@@ -155,7 +161,7 @@ class Hand:
 	@spades.setter
 	def spades(self, suit: SuitHolding) -> None:
 		self[Denom.spades] = suit
-	
+
 	@property
 	def hearts(self) -> SuitHolding:
 		"The heart holding of the hand"
@@ -219,4 +225,3 @@ class Hand:
 
 	def __eq__(self, other: Hand) -> bool:
 		return not _dds._libc.memcmp(self._data, other._data, len(self._data))
-

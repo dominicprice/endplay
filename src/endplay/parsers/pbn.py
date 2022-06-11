@@ -6,15 +6,20 @@ from __future__ import annotations
 
 __all__ = ["PBNDecoder", "load", "loads", "dump", "dumps"]
 
-from itertools import chain
-from more_itertools import chunked
 import re
-from endplay.types import Deal, Denom, Rank, Bid, ContractBid, Vul, Card, Player, Board, Contract
-from endplay.utils.play import linearise_play, tabularise_play, tricks_to_result, result_to_tricks
-from endplay.config import suppress_unicode
-from typing import TextIO, Union
 from enum import Enum
 from io import StringIO
+from itertools import chain
+from typing import TextIO, Union
+
+from more_itertools import chunked
+
+from endplay.config import suppress_unicode
+from endplay.types import (Bid, Board, Card, Contract, ContractBid, Deal,
+                           Denom, Player, Rank, Vul)
+from endplay.utils.play import (linearise_play, result_to_tricks,
+                                tabularise_play, tricks_to_result)
+
 
 class PBNDecodeError(ValueError):
 	def __init__(self, msg, line, lineno):

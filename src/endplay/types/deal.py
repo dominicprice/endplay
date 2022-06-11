@@ -2,18 +2,20 @@ from __future__ import annotations
 
 __all__ = ["Deal"]
 
-import sys
-import json as _json
-from typing import Union, Optional
-from collections.abc import Iterable, Iterator
 import ctypes
-from endplay.types.denom import Denom
-from endplay.types.rank import AlternateRank
-from endplay.types.player import Player
-from endplay.types.card import Card
-from endplay.types.hand import Hand
-from endplay.types.vul import Vul
+import json as _json
+import sys
+from collections.abc import Iterable, Iterator
+from typing import Optional, Union
+
 import endplay._dds as _dds
+from endplay.types.card import Card
+from endplay.types.denom import Denom
+from endplay.types.hand import Hand
+from endplay.types.player import Player
+from endplay.types.rank import AlternateRank
+from endplay.types.vul import Vul
+
 
 class Deal:
 	"""
@@ -24,11 +26,11 @@ class Deal:
 	* The trump suit the deal is played in in `Deal.trump`
 	* The cards played to the current trick in `Deal.curtrick`
 	"""
-	def __init__(self, 
-		pbn: str = None, 
-		first: Player = Player.north, 
-		trump: Denom = Denom.nt, 
-		*, 
+	def __init__(self,
+		pbn: str = None,
+		first: Player = Player.north,
+		trump: Denom = Denom.nt,
+		*,
 		complete_deal: bool = False):
 		self._data = _dds.deal()
 		self.clear()
@@ -37,20 +39,25 @@ class Deal:
 		if pbn is not None:
 			if len(pbn) > 2 and pbn[1] == ":":
 				start, hands = Player.find(pbn[0]), pbn[2:].split()
+			else:
+				start, hands = Player.north, pbn.split()
+			if len(hands) > 4:
+				raise RuntimeError(f"deal contains more than four hands: {pbn}")
 			for player, hand in zip(Player.iter_from(start), hands):
-				self[player] = hand
+				if hand != "-":
+					self[player] = hand
 			if complete_deal:
 				self.complete_deal()
-		
+
 	def __copy__(self) -> 'Deal':
 		other = Deal()
 		other._data.trump = self._data.trump
 		other._data.first = self._data.first
-		sizeOfTrick = ctypes.sizeof(ctypes.c_int) * 3
-		sizeOfCards = ctypes.sizeof(ctypes.c_uint) * 4 * 4
-		ctypes.memmove(other._data.currentTrickSuit, self._data.currentTrickSuit, sizeOfTrick)
-		ctypes.memmove(other._data.currentTrickRank, self._data.currentTrickRank, sizeOfTrick)
-		ctypes.memmove(other._data.remainCards, self._data.remainCards, sizeOfCards)
+		size_of_trick = ctypes.sizeof(ctypes.c_int) * 3
+		size_of_cards = ctypes.sizeof(ctypes.c_uint) * 4 * 4
+		ctypes.memmove(other._data.currentTrickSuit, self._data.currentTrickSuit, size_of_trick)
+		ctypes.memmove(other._data.currentTrickRank, self._data.currentTrickRank, size_of_cards)
+		ctypes.memmove(other._data.remainCards, self._data.remainCards, size_of_cards)
 		return other
 
 	def copy(self) -> 'Deal':
@@ -64,7 +71,7 @@ class Deal:
 	@trump.setter
 	def trump(self, denom: Denom) -> None:
 		self._data.trump = denom
-		
+
 	@property
 	def first(self) -> Player:
 		"The player to lead the first card to the current trick"
@@ -72,17 +79,17 @@ class Deal:
 	@first.setter
 	def first(self, player) -> None:
 		self._data.first = player
-		
+
 	@property
 	def curplayer(self) -> Player:
 		"The player to play the next card to the current trick"
 		return Player(self._data.first).next(len(self.curtrick))
-				
+
 	@property
 	def curhand(self) -> Hand:
 		"The hand of the `curplayer`"
 		return self[self.curplayer]
-				
+
 	@property
 	def north(self) -> Hand:
 		"The north hand"
@@ -90,7 +97,7 @@ class Deal:
 	@north.setter
 	def north(self, hand: Hand) -> None:
 		self[Player.north] = hand
-		
+
 	@property
 	def east(self) -> Hand:
 		"The east hand"
@@ -98,7 +105,7 @@ class Deal:
 	@east.setter
 	def east(self, hand: Hand) -> None:
 		self[Player.east] = hand
-		
+
 	@property
 	def south(self) -> Hand:
 		"The south hand"
@@ -106,7 +113,7 @@ class Deal:
 	@south.setter
 	def south(self, hand: Hand) -> None:
 		self[Player.south] = hand
-		
+
 	@property
 	def west(self) -> Hand:
 		"The west hand"
@@ -114,8 +121,8 @@ class Deal:
 	@west.setter
 	def west(self, hand: Hand) -> None:
 		self[Player.west] = hand
-		
-	@property	
+
+	@property
 	def curtrick(self) -> list[Card]:
 		"Return a list of cards played to the current trick"
 		trick = []
@@ -125,7 +132,7 @@ class Deal:
 				break
 			trick.append(Card(suit=Denom(suit), rank=AlternateRank(rank).to_standard()))
 		return trick
-		
+
 	def play(self, card: Card, fromHand: bool = True) -> None:
 		"""
 		Play a card to the current trick. If the played card completes the trick then the entire
@@ -154,7 +161,7 @@ class Deal:
 			self.first = trick_winner(self.curtrick + [card], self.first, self.trump)
 			for i in range(3):
 				self._data.currentTrickRank[i] = 0
-				
+
 	def unplay(self, toHand: bool = True) -> Card:
 		"""
 		Unplay the last card played to the current trick. Throws a RuntimeError if the current
@@ -203,7 +210,7 @@ class Deal:
 		:param pbn: A PBN string, e.g. "N:974.AJ3.63.AK963 K83.K9752.7.8752 AQJ5.T864.KJ94.4 T62.Q.AQT852.QJT"
 		"""
 		return Deal(pbn)
-			
+
 	def to_pbn(self) -> str:
 		"Return a PBN string representation of the deal"
 		return 'N:' + ' '.join(str(self[player]) for player in Player)
@@ -239,7 +246,7 @@ class Deal:
 	@staticmethod
 	def from_lin(lin: str, complete_deal: bool = True):
 		"""
-		Construct a deal from a LIN format deal string. 
+		Construct a deal from a LIN format deal string.
 
 		:param complete_deal: If True, then add remaining cards to the last hand if it is
 			omitted from the input string (which is done by default for files downloaded
@@ -344,22 +351,22 @@ class Deal:
 		while self.curtrick:
 			self.unplay(False)
 
-	def pprint(self, 
-		board_no: int = None, 
-		exclude: list[Player] = [], 
+	def pprint(self,
+		board_no: int = None,
+		exclude: list[Player] = [],
 		stream=sys.stdout,
 		*,
 		vul: Optional[Vul] = None,
 		dealer: Optional[Player] = None) -> None:
 		"""
-		Print the deal in a hand diagram format. 
+		Print the deal in a hand diagram format.
 
 		:param board_no: If provided, the hand diagram will display the board
 			number, vulnerability and dealer in the top-left corner
 		"""
 		spacing = " " * 13
 		played_cards = ["  "] * 4
-		prefixes = ["    ^", "       >", "    v", "  <"]
+		prefixes = ["	^", "	   >", "	v", "  <"]
 		titles = [ spacing ] * 4
 		if board_no is not None:
 			titles[0] = f"Board {board_no}".center(13)
@@ -381,11 +388,11 @@ class Deal:
 		for suit in Denom.suits():
 			s = (str(self[Player.south][suit]) or "---") if Player.south not in exclude else ""
 			print(spacing, s, file=stream)
-			
+
 	def __contains__(self, card: Card) -> bool:
 		":return: True if card is in the current deal"
 		return any(card in hand for _, hand in self)
-	
+
 	def __iter__(self) -> Iterator[Player, Hand]:
 		":return: An iterator over the north, east, south and west hands respectively"
 		yield from ((player, self[player]) for player in Player)

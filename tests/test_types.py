@@ -1,7 +1,8 @@
 import unittest
-from endplay.types import *
 
 from endplay import config
+from endplay.types import *
+
 config.use_unicode = False
 
 pbn = "N:974.AJ3.63.AK963 K83.K9752.7.8752 AQJ5.T864.KJ94.4 T62.Q.AQT852.QJT"
@@ -42,11 +43,10 @@ class TestDeal(unittest.TestCase):
 		b.play("S9")
 		self.assertNotEqual(a, b)
 		self.assertFalse(a.compare(b, True))
-		
 
 	def test_hands(self):
 		deal = Deal(pbn)
-		
+
 		for player, hand in deal:
 			self.assertEqual(pbn_hands[player], str(hand))
 
@@ -97,7 +97,7 @@ class TestDeal(unittest.TestCase):
 
 	def test_curtrick2(self):
 		deal = Deal(
-			"N:J84.JT94.KQT.T97 T93.K5.J9653.J82 K65.A73.72.AKQ53 AQ72.Q862.A84.64", 
+			"N:J84.JT94.KQT.T97 T93.K5.J9653.J82 K65.A73.72.AKQ53 AQ72.Q862.A84.64",
 			Player.west, Denom.clubs)
 		for card in "\
 			C4 CT C2 C3 HJ HK HA H2 \
@@ -110,10 +110,29 @@ class TestDeal(unittest.TestCase):
 		self.assertEqual(len(deal.north), 2)
 
 	def test_pbn(self):
-		deal = Deal(pbn)
-		self.assertEqual(deal.to_pbn(), pbn)
-		deal = Deal.from_pbn(pbn2)
-		self.assertEqual(deal.to_pbn(), pbn2)
+		deal1 = Deal(pbn)
+		self.assertEqual(deal1.to_pbn(), pbn)
+
+		deal2 = Deal.from_pbn(pbn2)
+		self.assertEqual(deal2.to_pbn(), pbn2)
+
+		pbn_with_suits = "S:SA7.H864.DQJT73.CAKQ SQ2.H952.D62.CJT9742 SKT853.HT3.D954.C653 SJ964.HAKQJ7.DAK8.C8"
+		deal3 = Deal(pbn_with_suits) # assert no error
+
+		pbn_no_first = pbn[2:]
+		deal4 = Deal(pbn_no_first) # assert no error
+		self.assertEqual(deal1, deal4)
+
+		pbn_too_many_hands = pbn + " " + pbn_no_first
+		self.assertRaises(RuntimeError, lambda: Deal(pbn_too_many_hands))
+
+		pbn_void = "N:974.AJ3.63.AK963 - AQJ5.T864.KJ94.4 -"
+		deal5 = Deal(pbn_void)
+		self.assertEqual(len(deal5.north), 13)
+		self.assertEqual(len(deal5.east), 0)
+		self.assertEqual(len(deal5.south), 13)
+		self.assertEqual(len(deal5.west), 0)
+
 
 	def test_json(self):
 		pass
@@ -148,6 +167,7 @@ class TestHand(unittest.TestCase):
 		self.assertEqual(hand.to_pbn(), pbn_hands[0])
 		hand.clear()
 		self.assertEqual(len(hand), 0)
+		self.assertRaises(RuntimeError, lambda: Hand("974.AJ3.63.AK963."))
 
 	def test_eq(self):
 		a = Hand("974.AJ3.63.AK963")
@@ -273,7 +293,7 @@ class TestContract(unittest.TestCase):
 		self.assertEqual(c.denom, Denom.hearts)
 		self.assertNotEqual(c, other)
 		other.denom = c.denom
-		
+
 
 class TestPlayer(unittest.TestCase):
 	def test_find(self):
@@ -298,8 +318,8 @@ class TestPlayer(unittest.TestCase):
 		self.assertEqual(Player.east.next(1), Player.south)
 		self.assertEqual(Player.west.lho, Player.north)
 		self.assertEqual(Player.north.partner, Player.south)
-		self.assertEqual(Player.east.rho, Player.north)	
-		
+		self.assertEqual(Player.east.rho, Player.north)
+
 	def test_is_vul(self):
 		self.assertTrue(Player.north.is_vul(Vul.ns))
 		self.assertTrue(Player.south.is_vul(Vul.both))
@@ -352,7 +372,7 @@ class TestRank(unittest.TestCase):
 		self.assertEqual(AlternateRank.RA.to_standard(), Rank.RA)
 		for rank in Rank:
 			self.assertEqual(rank, rank.to_alternate().to_standard())
-		
+
 
 class TestVul(unittest.TestCase):
 	def test_find(self):
