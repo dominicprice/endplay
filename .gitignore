@@ -14,6 +14,7 @@ CMakeSettings.json
 
 # Virtual environment
 venv/
+.python-version
 
 # Files produced by setup.py
 dist/
