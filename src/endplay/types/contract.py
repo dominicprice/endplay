@@ -3,7 +3,8 @@ from __future__ import annotations
 __all__ = ["Contract"]
 
 import re
-from typing import Union, Optional, Protocol, TypeVar
+from typing import Union, Optional
+from collections.abc import Sequence
 
 from endplay.types.player import Player
 from endplay.types.denom import Denom
@@ -11,17 +12,6 @@ from endplay.types.penalty import Penalty
 from endplay.types.vul import Vul
 from endplay.types.bid import Bid, ContractBid
 import endplay._dds as _dds
-
-
-# ReversibleSized is a combination of collections.abc.Reversible
-# and collection.abc.Sized
-T = TypeVar("T")
-class ReversibleSized(Protocol[T]):
-	def __len__(self) -> int:
-		...
-	def __reversed__(self) -> reversed[T]:
-		...
-
 
 contract_to_denom = [ Denom.nt, Denom.spades, Denom.hearts, Denom.diamonds, Denom.clubs ]
 denom_to_contract = [ 1, 2,3,4,0 ]
@@ -126,7 +116,7 @@ class Contract:
 			self._data.overTricks = 0
 
 	@staticmethod
-	def from_auction(dealer: Player, auction: ReversibleSized[Bid]):
+	def from_auction(dealer: Player, auction: Sequence[Bid]):
 		"""
 		Construct a contract from a bidding sequence
 		"""
