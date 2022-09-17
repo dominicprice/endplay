@@ -4,29 +4,35 @@
 
 If you find this useful and would like to contribute, or found it totally buggy and broken and want to fix it, then I am very open to contributions.
 
-## Table of Contents
+<!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-refresh-toc -->
+**Table of Contents**
 
-- [Table of Contents](#table-of-contents)
-- [Building and installing](#building-and-installing)
-  - [From PyPI](#from-pypi)
-  - [From source](#from-source)
-  - [Building the documentation](#building-the-documentation)
-  - [Running the test suite](#running-the-test-suite)
-- [Overview of submodules](#overview-of-submodules)
-- [Tutorial](#tutorial)
-  - [Inspecting deals](#inspecting-deals)
-    - [Enumerated types](#enumerated-types)
-    - [The `interact` module](#the-interact-module)
-  - [Generating hands](#generating-hands)
-    - [The main module](#the-main-module)
-  - [Evaluating hands](#evaluating-hands)
-  - [Double dummy analysis](#double-dummy-analysis)
-    - [Analyse](#analyse)
-    - [DD Tables](#dd-tables)
-    - [Par contract calculation and scoring contracts](#par-contract-calculation-and-scoring-contracts)
-    - [Bids and auctions: an aside](#bids-and-auctions-an-aside)
-    - [Solving for a player's hand](#solving-for-a-players-hand)
-  - [Parsing to and from bridge file formats](#parsing-to-and-from-bridge-file-formats)
+- [endplay](#endplay)
+    - [Building and installing](#building-and-installing)
+        - [From PyPI](#from-pypi)
+        - [From source](#from-source)
+        - [For development](#for-development)
+        - [Building the documentation](#building-the-documentation)
+        - [Running the test suite](#running-the-test-suite)
+    - [Overview of submodules](#overview-of-submodules)
+    - [Tutorial](#tutorial)
+        - [Inspecting deals](#inspecting-deals)
+            - [Enumerated types](#enumerated-types)
+            - [The `interact` module](#the-interact-module)
+        - [Generating hands](#generating-hands)
+            - [The main module](#the-main-module)
+        - [Evaluating hands](#evaluating-hands)
+            - [Assigning point values to hands](#assigning-point-values-to-hands)
+            - [Evaluating shape](#evaluating-shape)
+        - [Double dummy analysis](#double-dummy-analysis)
+            - [Analyse](#analyse)
+            - [DD Tables](#dd-tables)
+            - [Par contract calculation and scoring contracts](#par-contract-calculation-and-scoring-contracts)
+            - [Bids and auctions: an aside](#bids-and-auctions-an-aside)
+            - [Solving for a player's hand](#solving-for-a-players-hand)
+        - [Parsing to and from bridge file formats (PBN, LIN, JSON)](#parsing-to-and-from-bridge-file-formats-pbn-lin-json)
+
+<!-- markdown-toc end -->
 
 ## Building and installing
 
@@ -36,8 +42,8 @@ Binary Python wheels are built and distributed on [PyPI](https://pypi.org/projec
 
 | Architecture | Windows  | Linux    | MacOS    |
 | ------------ | -------- | -------- | :------- |
-| x86          | 3.7-3.10 | N/A      | 3.7-3.10 |
-| x64          | 3.7-3.10 | 3.7-3.10 | 3.7-3.10 |
+| x86          | 3.7-3.11 | N/A      | 3.7-3.11 |
+| x64          | 3.7-3.11 | 3.7-3.11 | 3.7-3.11 |
 
 On these systems `python3 -m pip install endplay` will install these pre-built wheels, otherwise it will attempt to install from the source distribution which requires a C++ compiler on your system. Note that *endplay* requires Python 3.7+.
 
@@ -954,7 +960,7 @@ K9                v♦A       ---
 Oops, out of luck! Notice how as opposed to the `analyse` family of functions, `solve_board` always returns the number of tricks the person playing the card can make.
 
 
-### Parsing to and from bridge file formats
+### Parsing to and from bridge file formats (PBN, LIN, JSON)
 
 While not the primary aim of the library, *endplay* does support experimental parsing and writing of PBN and LIN file formats. These interfaces are in the `endplay.parsers` submodule, and aim to provide an interface consistent with that of the standard library parsing libraries. Each of the parsing packages `endplay.parsers.pbn`, `endplay.parsers.lin` and `endplay.parsers.json` provide four functions:
 - `load`: Parse a file object into a list of `Board` objects
