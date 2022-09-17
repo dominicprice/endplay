@@ -12,7 +12,7 @@ class Player(IntEnum):
 	east	= 1
 	south	= 2
 	west	= 3
-	
+
 	@staticmethod
 	def find(name: str) -> 'Player':
 		"Convert a string into a Player object"
@@ -22,7 +22,7 @@ class Player(IntEnum):
 			return Player("NESW".index(name[0].upper()))
 		except ValueError:
 			raise ValueError(f"could not convert '{name}' to Player")
-	
+
 	@staticmethod
 	def from_lin(n: int) -> 'Player':
 		"""
@@ -70,7 +70,7 @@ class Player(IntEnum):
 		"""
 		for i in range(4):
 			yield self.next(i)
-		
+
 	@staticmethod
 	def iter_order(order: str) -> Iterator['Player']:
 		"""
@@ -87,11 +87,11 @@ class Player(IntEnum):
 		if distance < 0:
 			distance += 4
 		return distance
-		
+
 	def prev(self, n: int = 1) -> 'Player':
 		":return: The player who is n places right of the current player"
 		return Player((self-n)  % 4)
-		
+
 	def next(self, n: int = 1) -> 'Player':
 		":return: The player who is n places left of the current player"
 		return Player((self + n) % 4)
@@ -108,7 +108,7 @@ class Player(IntEnum):
 	def rho(self) -> 'Player':
 		":return: The player to the current player's right"
 		return self.prev(1)
-		
+
 	@property
 	def abbr(self) -> str:
 		":return: A single character string for the player name"

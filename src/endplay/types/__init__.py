@@ -4,8 +4,8 @@ Bo Haglund's DDS library but with a more Pythonic interface. These types
 are used by all the submodules in the endplay library.
 """
 
-__all__ = [ 
-	"Vul", "Rank", "AlternateRank", "Player", "Denom", "Card", 
+__all__ = [
+	"Vul", "Rank", "AlternateRank", "Player", "Denom", "Card",
 	"Hand", "Deal", "Contract", "Penalty", "SuitHolding", "Bid",
 	"Board", "ContractBid", "PenaltyBid"]
 

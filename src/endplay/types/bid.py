@@ -22,21 +22,12 @@ class Bid:
 		try:
 			penalty = Penalty.find(name)
 			object.__setattr__(self, "__class__", PenaltyBid)
-			PenaltyBid.__init__(self, penalty, alertable, announcement)
+			PenaltyBid.__init__(self, penalty, alertable, announcement) # type: ignore
 		except ValueError:
 			level, denom = int(name[0]), Denom.find(name[1])
 			object.__setattr__(self, "__class__", ContractBid)
-			ContractBid.__init__(self, level, denom, alertable, announcement)
+			ContractBid.__init__(self, level, denom, alertable, announcement) # type: ignore
 
-	def __setattr__(self, attr: str, value: str) -> Union[None, NoReturn]:
-		if attr in ["alertable", "announcement"]:
-			object.__setattr__(self, attr, value)
-		else:
-			raise TypeError("Cannot assign to immutable Bid object")
-
-	def __delattr__(self, attr: str) -> NoReturn:
-		raise TypeError("Cannot delete attribute of immutable Bid object")
-		
 class ContractBid(Bid):
 	"""
 	Class representing a call that names a contract, i.e. has a level and strain
@@ -50,15 +41,15 @@ class ContractBid(Bid):
 	:ivar announcement: String transcription of the announcement for this bid
 	:vartype announcement: Optional[str]
 	"""
-	def __init__(self, 
-		level: int, 
-		denom: Denom, 
-		alertable: bool = False, 
+	def __init__(self,
+		level: int,
+		denom: Denom,
+		alertable: bool = False,
 		announcement: Optional[str] = None):
-		object.__setattr__(self, "level", level)
-		object.__setattr__(self, "denom", denom)
-		object.__setattr__(self, "alertable", alertable)
-		object.__setattr__(self, "announcement", announcement)
+		self.level = level
+		self.denom = denom
+		self.alertable = alertable
+		self.announcement = announcement
 
 	def __repr__(self):
 		return f"ContractBid(denom={self.denom!r}, level={self.level!r}, alertable={self.alertable!r}, announcement={self.announcement!r})"
@@ -69,7 +60,7 @@ class ContractBid(Bid):
 class PenaltyBid(Bid):
 	"""
 	Class representing a call that does not name a contract, i.e. pass, double or redouble
-	
+
 	:ivar penalty: The type of the call
 	:vartype penalty: Penalty
 	:ivar alertable: Flag indicating whether the bid is alertable
@@ -77,13 +68,13 @@ class PenaltyBid(Bid):
 	:ivar announcement: String transcription of the announcement for this bid
 	:vartype announcement: Optional[str]
 	"""
-	def __init__(self, 
-		penalty: Penalty, 
+	def __init__(self,
+		penalty: Penalty,
 		alertable: bool = False,
 		announcement: Optional[str] = None):
-		object.__setattr__(self, "penalty", penalty)
-		object.__setattr__(self, "alertable", alertable)
-		object.__setattr__(self, "announcement", announcement)
+		self.penalty = penalty
+		self.alertable = alertable
+		self.announcement = announcement
 
 	def __repr__(self):
 		return f"PenaltyBid(penalty={self.penalty!r}, alertable={self.alertable!r}, announcement={self.announcement!r})"

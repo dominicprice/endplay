@@ -27,7 +27,7 @@ class Deal:
 	* The cards played to the current trick in `Deal.curtrick`
 	"""
 	def __init__(self,
-		pbn: str = None,
+		pbn: Optional[str] = None,
 		first: Player = Player.north,
 		trump: Denom = Denom.nt,
 		*,
@@ -271,8 +271,7 @@ class Deal:
 		:param complete_deal: If False, omit the last hand from the string. This is the default
 			for files created by BBO.
 		"""
-		if dealer is not None:
-			lin = str(dealer.to_lin())
+		lin = "" if dealer is None else str(dealer.to_lin())
 		lin += self[Player.south].to_lin() + ","
 		lin += self[Player.west].to_lin() + ","
 		lin += self[Player.north].to_lin() + ","
@@ -327,8 +326,8 @@ class Deal:
 			ctypes.memmove(rc[2], rc[1], l)
 			ctypes.memmove(rc[1], tmp, l)
 		elif n == 2: # nesw -> swne
-			self.swap(0, 2)
-			self.swap(1, 3)
+			self.swap(Player.north, Player.south)
+			self.swap(Player.east, Player.west)
 		elif n == 3: # nesw -> eswn:
 			ctypes.memmove(rc[0], rc[1], l)
 			ctypes.memmove(rc[1], rc[2], l)
@@ -352,7 +351,7 @@ class Deal:
 			self.unplay(False)
 
 	def pprint(self,
-		board_no: int = None,
+		board_no: Optional[int] = None,
 		exclude: list[Player] = [],
 		stream=sys.stdout,
 		*,
@@ -393,7 +392,7 @@ class Deal:
 		":return: True if card is in the current deal"
 		return any(card in hand for _, hand in self)
 
-	def __iter__(self) -> Iterator[Player, Hand]:
+	def __iter__(self) -> Iterator[tuple[Player, Hand]]:
 		":return: An iterator over the north, east, south and west hands respectively"
 		yield from ((player, self[player]) for player in Player)
 
@@ -401,7 +400,7 @@ class Deal:
 		":return: The specified hand"
 		return Hand(self._data.remainCards[player])
 
-	def __setitem__(self, player: Player, hand: Hand) -> None:
+	def __setitem__(self, player: Player, hand: Union[Hand, str]) -> None:
 		"Set the hand to the specified hand, which may be in the format of a PBN string"
 		if isinstance(hand, str):
 			hand = Hand(hand)

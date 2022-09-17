@@ -46,14 +46,14 @@ class PBNDecoder:
 		META = 1
 		DATA = 2
 		COMMENTBLOCK = 3
-	
+
 	def __init__(self):
 		#warnings.warn("endplay.parsers.PBNDecoder is now deprecated and subject to be replaced with a different interface at any time")
 		self.metadata = {}
 
-	def _get_comment(text, iscont: bool):
+	def _get_comment(self, text: str, iscont: bool):
 		"""
-		Returns the comment contained in text, and a flag which 
+		Returns the comment contained in text, and a flag which
 		is set to True if the comment requires continuation or
 		False otherwise
 		"""
@@ -64,20 +64,20 @@ class PBNDecoder:
 			return (text, True)
 		else:
 			# Match a single line comment (begins with a semicolon)
-			m = PBNDecoder.re_lcomment.match(text) 
+			m = PBNDecoder.re_lcomment.match(text)
 			if m:
 				return (m.group(1), False)
-				
+
 			# Match a block comment that ends on the same line (e.g. { xyz })
 			m = PBNDecoder.re_bcomment_line.match(text)
 			if m:
 				return (m.group(1), False)
-				
+
 			# Match a block comment that begins on the line but is continued (e.g. { xy)
 			m = PBNDecoder.re_bcomment_begin.match(text)
 			if m:
 				return (m.group(1), True)
-		
+
 			# No comment found
 			return None
 
@@ -226,7 +226,7 @@ class PBNDecoder:
 				return False
 			# Get the comment attached to the line (if any)
 			if m.group(3):
-				_, needcont = PBNDecoder._get_comment(m.group(3), False)
+				_, needcont = self._get_comment(m.group(3), False)
 				if needcont:
 					self.state = PBNDecoder.State.COMMENTBLOCK
 			# Add the tag to the current game, entering into State.DATA if it is a 
@@ -264,9 +264,9 @@ class PBNDecoder:
 			raise PBNDecodeError("Expected a tag", curline, self.lineno)
 
 	def _parse_commentblock(self, curline):
-		comment, needcont = PBNDecoder._get_comment(curline, True)
+		_, needcont = self._get_comment(curline, True)
 		if not needcont:
-			self.state == PBNDecoder.State.NONE
+			self.state = PBNDecoder.State.NONE
 		return True
 
 	def parse_file(self, f: TextIO) -> list[Board]:
@@ -279,7 +279,7 @@ class PBNDecoder:
 		self.state = PBNDecoder.State.META
 		self.curtag = None
 		self.lineno = 0
-			
+
 		# Loop over lines, keeping track of what type of line we are expecting.
 		# If the line isn't consumed, change the state and fallthrough to a 
 		# method which can consume the line. Always append a blank line to the
@@ -290,7 +290,7 @@ class PBNDecoder:
 
 			if curline.startswith("%") and self.state != PBNDecoder.State.META:
 				continue
-				
+
 			if self.state == PBNDecoder.State.META:	
 				if not self._parse_meta(curline):
 					continue
@@ -304,13 +304,13 @@ class PBNDecoder:
 				if not self._parse_commentblock(curline):
 					continue
 
-		return self.boards		
+		return self.boards
 
 class PBNEncoder:
 	def __init__(self):
 		self.tags = []
 		self.pbn_version = "2.1"
-			
+
 	def _create_tag(self, key, value, data=None):
 		key = key[:1].upper() + key[1:]
 		tagpair = f'[{key} "{value}"]'
@@ -351,7 +351,7 @@ class PBNEncoder:
 				res.append(cell.rjust(minwidth))
 		return res
 
-	def export_board(self, board: Board) -> list[str]:
+	def export_board(self, board: Board):
 		# Split the board info into mandatory and supplementary tags
 		event = "?"
 		site = "?"
@@ -427,7 +427,7 @@ class PBNEncoder:
 					cstr = f"{c.level}{c.denom.abbr}{c.penalty.abbr}"
 					res = result_to_tricks(board.contract.result, board.contract.level)
 				self._create_tag("Contract", cstr)
-				self._create_tag("Result", res)			
+				self._create_tag("Result", res)
 
 			# Print play and auction
 			notes = {}
@@ -446,12 +446,12 @@ class PBNEncoder:
 							tablerow.append(f"={idx}=")
 					table.append(tablerow)
 				self._create_tag("Auction", board.dealer.abbr, table)
-			
+
 			if board.play:
 				pad_value = Card(suit=Denom.nt, rank=Rank.R2)
 				table = tabularise_play(
 					board.play, 
-					board.contract.declarer.lho, 
+					board.contract.declarer.lho,
 					board.contract.denom)
 				string_table = []
 				for row in table:
@@ -484,7 +484,7 @@ class PBNEncoder:
 			self.export_board(board)
 			fp.writelines(self.tags)
 			fp.write("\n")
-		
+
 
 def load(fp: TextIO) -> list[Board]:
 	"Read a PBN file object into a list of :class:`Board` objects"

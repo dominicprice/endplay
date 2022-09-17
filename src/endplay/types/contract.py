@@ -2,15 +2,26 @@ from __future__ import annotations
 
 __all__ = ["Contract"]
 
-from typing import Union
-from collections.abc import Reversible
+import re
+from typing import Union, Optional, Protocol, TypeVar
+
 from endplay.types.player import Player
 from endplay.types.denom import Denom
 from endplay.types.penalty import Penalty
 from endplay.types.vul import Vul
 from endplay.types.bid import Bid, ContractBid
 import endplay._dds as _dds
-import re
+
+
+# ReversibleSized is a combination of collections.abc.Reversible
+# and collection.abc.Sized
+T = TypeVar("T")
+class ReversibleSized(Protocol[T]):
+	def __len__(self) -> int:
+		...
+	def __reversed__(self) -> reversed[T]:
+		...
+
 
 contract_to_denom = [ Denom.nt, Denom.spades, Denom.hearts, Denom.diamonds, Denom.clubs ]
 denom_to_contract = [ 1, 2,3,4,0 ]
@@ -19,14 +30,14 @@ class Contract:
 	"Class representing a specific contract"
 	_pat = re.compile(r"^([1-7])((?:NT?)|S|H|D|C)([NSEW]?)((?:XX|X|D|R)?)((?:=|(?:[+-]\d+))?)$")
 	def __init__(
-		self, 
-		data: Union[_dds.contractType, str, None] = None, 
-		*, 
-		level: int = None, 
-		denom: Denom = None, 
-		declarer: Player = None, 
-		penalty: Penalty = None, 
-		result: int = None):
+		self,
+		data: Union[_dds.contractType, str, None] = None,
+		*,
+		level: Optional[int] = None,
+		denom: Optional[Denom] = None,
+		declarer: Optional[Player] = None,
+		penalty: Optional[Penalty] = None,
+		result: Optional[int] = None):
 		"""
 		Construct a new contract. If no parameters are passed, a passout is constructed.
 
@@ -115,7 +126,7 @@ class Contract:
 			self._data.overTricks = 0
 
 	@staticmethod
-	def from_auction(dealer: Player, auction: Reversible[Bid]):
+	def from_auction(dealer: Player, auction: ReversibleSized[Bid]):
 		"""
 		Construct a contract from a bidding sequence
 		"""
@@ -140,7 +151,7 @@ class Contract:
 				c.declarer = player
 				break
 		return c
-			
+
 	def is_passout(self) -> bool:
 		"Returns true if the contract represents a passout"
 		return self.level == 0
@@ -178,6 +189,8 @@ class Contract:
 				else:
 					s = [-200] + [-400] * 2 + [-600] * 10
 					return sum(s[:-res])
+			else:
+				raise ValueError(f"Unknown penalty {self.penalty}")
 		else:
 			d, l = self.denom, self.level
 			# Contract score

@@ -17,7 +17,7 @@ from endplay.types.suitholding import SuitHolding
 
 class Hand:
 	"Class allowing manipulations of cards in the hand of a single player"
-	def __init__(self, data: Union[str, ctypes.c_uint * 4] = "..."):
+	def __init__(self, data: Union[str, ctypes.Array[ctypes.c_uint]] = "..."):
 		"""
 		Construct a hand object
 
@@ -192,7 +192,7 @@ class Hand:
 			card = Card(name = card)
 		elif not isinstance(card, Card):
 			raise ValueError("card must be of type Card or str")
-		return self._data[card.suit.value] & card.rank.value
+		return bool(self._data[card.suit.value] & card.rank.value)
 
 	def __str__(self) -> str:
 		":return: A PBN string representation of the hand"
@@ -215,7 +215,7 @@ class Hand:
 		if isinstance(holding, str):
 			self[suit].clear()
 			for rank in holding:
-				self[suit].add(Rank.find(rank))
+				self[suit].add(rank)
 		else:
 			self._data[suit] = holding._data[holding._idx]
 
@@ -223,5 +223,7 @@ class Hand:
 		":return: The number of cards in the hand"
 		return sum(bin(suit).count('1') for suit in self._data)
 
-	def __eq__(self, other: Hand) -> bool:
+	def __eq__(self, other: object) -> bool:
+		if not isinstance(other, Hand):
+			return NotImplemented
 		return not _dds._libc.memcmp(self._data, other._data, len(self._data))

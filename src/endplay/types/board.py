@@ -26,10 +26,10 @@ class Board:
 	:vartype play: list[Card]
 	:ivar board_num: The board number of this deal
 	:vartype board_num: int
-	:ivar vul: The board vulnerability. If this isn't defined 
+	:ivar vul: The board vulnerability. If this isn't defined
 		(i.e. set to `None`) then it is deduced from `board_num`
 	:vartype vul: Vul
-	:ivar dealer: The board dealer. Similarly to `vul` this can 
+	:ivar dealer: The board dealer. Similarly to `vul` this can
 		be deduced from `board_num`
 	:vartype dealer: Player
 	:ivar claimed: Flag indicating whether the play ended as a result
@@ -40,16 +40,16 @@ class Board:
 		dot-access as a convenience (i.e. `board.info.event` and `board.info.Event`
 		refer to the same object, but `board.info["event"]` and `board.info["Event"]`
 		would be considered different). Tabular data can be stored here, any
-		key ending with (but not equal to) `table` is treated as a table and its value 
-		should be a dictionary containing two keys: `headers` with a list of column names, 
-		and `rows` with a list of the rows. The column names can either be plain strings, 
-		or dictionaries with the keys 
-		
-		* `ordering`: Either `"+"`, `"-"` or `None` depending of if the table is sorted 
+		key ending with (but not equal to) `table` is treated as a table and its value
+		should be a dictionary containing two keys: `headers` with a list of column names,
+		and `rows` with a list of the rows. The column names can either be plain strings,
+		or dictionaries with the keys
+
+		* `ordering`: Either `"+"`, `"-"` or `None` depending of if the table is sorted
 			ascending, descending or unsorted with respect to this column
 		* `name`: A string value with the name of the column
 		* `minwidth`: The minimum width that values in this column should be
-		* `alignment`: `"L"` or `"R"` depending on if this column should be left or right 
+		* `alignment`: `"L"` or `"R"` depending on if this column should be left or right
 			aligned. Ignored unless `minwidth` is defined
 	"""
 	class Info(dict):
@@ -106,7 +106,7 @@ class Board:
 		self.info = Board.Info(**kwargs)
 
 	@property
-	def dealer(self) -> Player:
+	def dealer(self) -> Optional[Player]:
 		"""
 		Dealer of the board. If not defined, then attempts to
 		calculate based on the value of `board_num`
@@ -122,7 +122,7 @@ class Board:
 		self._dealer = value
 
 	@property
-	def vul(self) -> Vul:
+	def vul(self) -> Optional[Vul]:
 		"""
 		Vulnerability of the board. If not defined, then attempts
 		to calculate based on the value of `board_num`
@@ -138,20 +138,21 @@ class Board:
 		self._vul = value
 
 	@property
-	def contract(self) -> Contract:
+	def contract(self) -> Optional[Contract]:
 		"""
 		The contract the board was played in. If not provided, then
 		attempts to calculate based on the auction and play history.
 		"""
 		if self._contract is not None:
 			return self._contract
-		elif self.auction:
-			c = Contract.from_auction(self.auction)
+		elif self.auction and self.dealer:
+			c = Contract.from_auction(self.dealer, self.auction)
 			if self.play:
 				from endplay.utils.play import total_tricks, tricks_to_result
 				c.result = tricks_to_result(
 					total_tricks(self.play, self.deal.trump), 
 					c.level)
+			return c
 		else:
 			return None
 	@contract.setter

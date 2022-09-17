@@ -437,7 +437,7 @@ def ConvertToSidesTextFormat(pres: parResultsMaster, resp: parTextResults):
 	return _dll.ConvertToDealerTextFormat(ctypes.byref(pres), ctypes.byref(resp))
 
 @_try_call
-def CalcPar(tableDeal: ddTableDeal, vulnerable: int, CalcDDtablePBN: ddTableResults, presp: parResults):
+def CalcPar(tableDeal: ddTableDeal, vulnerable: int, tablep: ddTableResults, presp: parResults):
 	"Solves for both the DD result table and the par contracts. Is deprecated, use a CalcDDtable function plus Par() instead!"
 	warn("Use CalcDDtable + Par instead", DeprecationWarning)
 	return _dll.CalcPar(tableDeal, vulnerable, ctypes.byref(tablep), ctypes.byref(presp))

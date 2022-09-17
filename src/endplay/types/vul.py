@@ -45,7 +45,7 @@ class Vul(IntEnum):
 		i = board_no - 1
 		shift = (i // 4) % 4
 		return [Vul.none ,Vul.ns, Vul.ew, Vul.both][(i + shift) % 4]
-		
+
 
 	@property
 	def abbr(self) -> str:

@@ -1,4 +1,4 @@
-from __future__ import annotations	
+from __future__ import annotations
 
 __all__ = ["Denom"]
 
@@ -28,7 +28,7 @@ class Denom(IntEnum):
 		":return: An iterator over all the denominations in the order they appera in a bidding box"
 		yield from [Denom.clubs, Denom.diamonds, Denom.hearts, Denom.spades, Denom.nt]
 
-	@staticmethod 
+	@staticmethod
 	def suits(reverse: bool = False) -> Iterator['Denom']:
 		"""
 		Iterate over the suits, excluding notrumps

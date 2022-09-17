@@ -6,7 +6,7 @@ class Rank(IntEnum):
 	"""
 	Encodes the rank of a suit. The standard values use
 	powers of two, however some internal functions use
-	an alternative encoding AlternateRank using the 
+	an alternative encoding AlternateRank using the
 	values 2-14.
 	"""
 	R2 = 0x0004
@@ -43,10 +43,10 @@ class Rank(IntEnum):
 				break
 			y += 1
 		return AlternateRank(y)
-		
+
 class AlternateRank(IntEnum):
 	"""
-	Encodes the rank of a suit using the values 2-14. Used 
+	Encodes the rank of a suit using the values 2-14. Used
 	for internal functions, for APIs use the Rank class.
 	"""
 	R2 =  2
@@ -62,18 +62,18 @@ class AlternateRank(IntEnum):
 	RQ = 12
 	RK = 13
 	RA = 14
-	
+
 	@property
 	def abbr(self) -> str:
 		return self.name[1]
-		
+
 	@staticmethod
 	def find(value: str) -> 'AlternateRank':
 		try:
 			return AlternateRank[f"R{value.upper()}"]
 		except KeyError:
 			raise ValueError(f"could not convert '{value}' to AlternateRank")
-		
+
 	def to_standard(self) -> Rank:
 		# Calculate integer power of 2
 		return Rank(2 << (self.value-1))
