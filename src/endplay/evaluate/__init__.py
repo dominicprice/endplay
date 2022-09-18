@@ -5,8 +5,8 @@ Functions for evaluating bridge hands using a variety of different metrics.
 from __future__ import annotations
 
 __all__ = [
-	"standard_hcp_scale", "bergen_hcp_scale", "hcp", "shortage_nofit_dist_scale", 
-	"shortage_fit_dist_scale", "length_dist_scale", "mixed_fit_dist_scale", 
+	"standard_hcp_scale", "bergen_hcp_scale", "hcp", "shortage_nofit_dist_scale",
+	"shortage_fit_dist_scale", "length_dist_scale", "mixed_fit_dist_scale",
 	"mixed_nofit_dist_scale", "dist_points", "total_points",
 	"top_honours", "losers", "cccc", "quality", "controls", "rule_of_n",
 	"exact_shape", "shape", "major_shape", "minor_shape", "is_balanced",
@@ -18,14 +18,14 @@ from collections.abc import Iterable
 from endplay.types import Hand, SuitHolding, Card, Rank, AlternateRank, Denom
 
 # Points for each rank in order [A, K, Q, J, ...]
-standard_hcp_scale: list[int] = [4, 3, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+standard_hcp_scale: list[float] = [4, 3, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 """Classic HCP scale with A=4, K=3, Q=2, J=1"""
-bergen_hcp_scale: list[int] = [4.5, 3, 1.5, 0.75, 0.25, 0, 0, 0, 0, 0, 0, 0, 0]
+bergen_hcp_scale: list[float] = [4.5, 3, 1.5, 0.75, 0.25, 0, 0, 0, 0, 0, 0, 0, 0]
 """Bergen HCP scale with A=4.5, K=3, Q=1.5, J=0.75, T=0.25"""
 
 def hcp(
-	obj: Union[Iterable[Union[Card, Rank, AlternateRank]], Card, Rank, AlternateRank], 
-	scale: list[int] = standard_hcp_scale) -> float:
+	obj: Union[Iterable[Union[Card, Rank, AlternateRank]], Card, Rank, AlternateRank],
+	scale: list[float] = standard_hcp_scale) -> float:
 	"""
 	Return the high card points of a hand or suit holding using a given scale. Two
 	scales are predefined: `standard_hcp_scale` which uses the traditional 4321
@@ -37,7 +37,7 @@ def hcp(
 		worth 4 points, a king 3 etc...
 	"""
 	if len(scale) < 13:
-		scale = list(scale) + [0] * (13 - len(scale))
+		scale += [0] * (13 - len(scale))
 	if isinstance(obj, Card):
 		return scale[14 - obj.rank.to_alternate()]
 	elif isinstance(obj, Rank):
@@ -48,29 +48,29 @@ def hcp(
 		return sum(hcp(card, scale) for card in obj)
 
 # Points for each suit length in order [0/void, 1/singleton, 2/doubleton, 3, ...]
-shortage_nofit_dist_scale: list[int] = [3, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+shortage_nofit_dist_scale: list[float] = [3, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 """Distribution point scale with void=3, singleton=2, doubleton=1"""
-shortage_fit_dist_scale: list[int] = [5, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+shortage_fit_dist_scale: list[float] = [5, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 """Distribution point scale when a trump fit is found with void=5, singleton=3, doubleton=1"""
-length_dist_scale: list[int] = [0, 0, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+length_dist_scale: list[float] = [0, 0, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 """Distribution point scale which awards a point for each extra card in a suit over 4"""
-mixed_nofit_dist_scale: list[int] = [3, 2, 1, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+mixed_nofit_dist_scale: list[float] = [3, 2, 1, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 """Combined scale using `shortage_nofit_dist_scale` and `length_dist_scale`"""
-mixed_fit_dist_scale: list[int] = [5, 3, 1, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+mixed_fit_dist_scale: list[float] = [5, 3, 1, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 """Combined scale using `shortage_fit_dist_scale` and `length_dist_scale`"""
 
-def dist_points(obj: Union[Hand, SuitHolding], scale: list[int] = shortage_nofit_dist_scale, exclude: Iterable[Denom] = []) -> float:
+def dist_points(obj: Union[Hand, SuitHolding], scale: list[float] = shortage_nofit_dist_scale, exclude: Iterable[Denom] = []) -> float:
 	"""
 	Return the extra points for distribution for a hand or suit holding using the given scale.
-	Five scales are predefined: 
+	Five scales are predefined:
 
-	* `shortage_nofit_dist_scale`: Standard evaluation of shortage points if no trump fit is agreed, 
+	* `shortage_nofit_dist_scale`: Standard evaluation of shortage points if no trump fit is agreed,
 	  void=3, singleton=2, doubleton=1
 
-	* `shortage_fit_dist_scale`: Standard evaluation of shortage points if trump fit is agreed, 
+	* `shortage_fit_dist_scale`: Standard evaluation of shortage points if trump fit is agreed,
 	  void=5, singleton=3, doubleton=1
 
-	* `length_dist_scale`: Standard evaluation of length points, one point for each extra card in a 
+	* `length_dist_scale`: Standard evaluation of length points, one point for each extra card in a
 	  suit with more than four cards in it, i.e. 5 cards=1, 6 cards=2, etc...
 
 	:param obj: Hand or suit holding to evaluate
@@ -80,15 +80,15 @@ def dist_points(obj: Union[Hand, SuitHolding], scale: list[int] = shortage_nofit
 		is passed, in order to e.g. exclude the trump suit from the calculation
 	"""
 	if len(scale) < 14:
-		scale = list(scale) + [0] * (14 - len(scale))
+		scale += [0] * (14 - len(scale))
 	if isinstance(obj, SuitHolding):
 		return scale[len(obj)]
 	return sum(dist_points(obj[suit], scale) if suit not in exclude else 0 for suit in Denom.suits())
 
 def total_points(
-	obj: Union[Hand, SuitHolding], 
-	hcp_scale: list[int] = standard_hcp_scale, 
-	dist_scale: list[int] = shortage_nofit_dist_scale,
+	obj: Union[Hand, SuitHolding],
+	hcp_scale: list[float] = standard_hcp_scale,
+	dist_scale: list[float] = shortage_nofit_dist_scale,
 	trump: Optional[Denom] = None,
 	protect_honours: bool = False):
 	"""
@@ -97,7 +97,7 @@ def total_points(
 	:param obj: Hand or suit holding to evaluate
 	:param hcp_scale: The HCP scale to use, as for the `hcp` function
 	:param dist_scale: The distribution points scale, as for the `dist_scale` function
-	:param trump: If set then distribution points for the given suit are excluded from 
+	:param trump: If set then distribution points for the given suit are excluded from
 		the calculation
 	:param protect_honours: If `True`, then honours must be protected for their HCP
 		to be included, i.e. king singleton, queen doubleton etc do not contribute to
@@ -241,7 +241,7 @@ def controls(hand: Union[Iterable, Card, Rank]) -> int:
 	else:
 		return sum(controls(card) for card in hand)
 
-def rule_of_n(hand: Hand) -> int:
+def rule_of_n(hand: Hand) -> float:
 	"Returns the hcp of the hand added to the length of the two longest suits"
 	s = shape(hand)
 	return hcp(hand) + s[0] + s[1]
@@ -283,7 +283,7 @@ def is_semibalanced(hand: Hand) -> bool:
 
 def is_minor_semibalanced(hand: Hand) -> bool:
 	"""
-	Returns True if the hand shape is balanced or contains 
+	Returns True if the hand shape is balanced or contains
 	doubletons in both minors
 	"""
 	return is_balanced(hand) or minor_shape(hand) == [2, 2]
