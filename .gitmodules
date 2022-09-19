@@ -1,3 +1,4 @@
 [submodule "libs/dds"]
 	path = libs/dds
-	url = https://github.com/dds-bridge/dds
+	url = https://github.com/dominicprice/dds
+	branch = endplay-stable
