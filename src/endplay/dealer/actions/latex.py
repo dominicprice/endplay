@@ -1,4 +1,4 @@
-﻿"""
+"""
 Actions class for producing LaTeX output.
 """
 

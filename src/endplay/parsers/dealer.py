@@ -1,4 +1,4 @@
-﻿"""
+"""
 Parser for Dealer scripts
 """
 

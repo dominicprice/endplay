@@ -1,4 +1,4 @@
-﻿"""
+"""
 Generic routines for generating deals based on a set of constraints
 """
 

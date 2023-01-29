@@ -1,4 +1,4 @@
-﻿import io
+import io
 import warnings
 import unittest
 import os

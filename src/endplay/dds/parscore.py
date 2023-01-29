@@ -1,4 +1,4 @@
-﻿"""
+"""
 Par contract and scoring function
 """
 

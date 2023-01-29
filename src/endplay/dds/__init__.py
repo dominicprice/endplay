@@ -1,4 +1,4 @@
-﻿"""
+"""
 Higher-level wrappers around Bo Haglund's dds wrapper, using the
 Python types defined in `endplay.types` and which use sensible
 defaults for the internal state such as threading indexes.

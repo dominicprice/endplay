@@ -1,4 +1,4 @@
-﻿"""
+"""
 Solving functions from the DDS library, which calculate the double dummy
 results for playing each card in a player's hand.
 """

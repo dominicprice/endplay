@@ -1,4 +1,4 @@
-﻿"""
+"""
 Endplay - A bridge tools library with generating, analysing and scoring.
 Released under the MIT licence (see the LICENCE file provided with this distribution)
 """

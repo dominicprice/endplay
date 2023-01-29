@@ -1,4 +1,4 @@
-﻿"""
+"""
 Engine for converting dealer-syntax expressions into evaluatable
 Python functions. You should not need to use this directly unless
 you are developing your own functions, as most functions accept

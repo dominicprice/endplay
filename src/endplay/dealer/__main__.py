@@ -1,4 +1,4 @@
-﻿"""
+"""
 The endplay.dealer program is a reimplementation of Hans van Staveren's dealer program
 which can be used to generate hands for partnerships bidding training or for
 generating statistics that can be used to design conventions, or win postmortems.

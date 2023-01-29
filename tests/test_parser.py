@@ -1,4 +1,4 @@
-﻿
+
 import unittest
 from pathlib import Path
 from endplay.parsers import pbn, lin, json, dealer

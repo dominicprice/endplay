@@ -1,4 +1,4 @@
-﻿__all__ = ["Penalty"]
+__all__ = ["Penalty"]
 
 from enum import IntEnum
 

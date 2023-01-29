@@ -1,4 +1,4 @@
-﻿"""
+"""
 Analysis functions from the DDS library, which calculate the double dummy
 number of tricks available given a play history.
 """
