@@ -125,13 +125,14 @@ class CmdFrontend(cmd.Cmd):
 		Example 1: redeal
 		Example 2: redeal N:95..A. 8.5.Q. .QT5.. Q..T4.
 		"""
+		self.deal.reset()
 		if arg:
 			try:
-				self.deal.reset(arg)
+				new_deal = Deal(arg)
+				for player, hand in new_deal:
+					self.deal[player] = hand
 			except RuntimeError:
 				print(f"Invalid PBN string: `{arg}`")
-		else:
-			self.deal = Deal()
 		self.needs_printing = True
 
 	def do_shuffle(self, arg):
@@ -144,10 +145,12 @@ class CmdFrontend(cmd.Cmd):
 			try:
 				new_deal = generate_deal(arg)
 			except RuntimeError:
-				print("Could not generate deal satisfying this constraint")
+				raise RuntimeError("Could not generate deal satisfying this constraint")
 		else:
 			new_deal = generate_deal()
-		self.deal.reset(str(new_deal))
+		self.deal.reset()
+		for player, hand in new_deal:
+			self.deal[player] = hand
 		self.needs_printing = True
 
 	def do_first(self, arg):
