@@ -2,6 +2,7 @@
 
 import os
 import pathlib
+import pipfile
 from setuptools import setup, Extension
 from setuptools.command.build_ext import build_ext
 
@@ -69,10 +70,21 @@ class cmakeable_build_ext(build_ext):
 			self.spawn(['cmake'] + cmake_build_args)
 		os.chdir(str(cwd))
 
+def get_install_requires():
+	pf = pipfile.load("Pipfile")
+	res = []
+	for package, version in pf.data.items():
+		if version == "*":
+			res.append(package)
+		else:
+			res.append(package + version)
+	return res
+
 setup(
 	ext_modules = [CMakeExtension('endplay')],
 	cmdclass = {
 		'build_ext': cmakeable_build_ext,
 	},
+	install_requires = get_install_requires(),
 	test_suite = "tests"
 )

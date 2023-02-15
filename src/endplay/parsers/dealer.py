@@ -4,6 +4,8 @@ Parser for Dealer scripts
 
 __all__ = [ "DealerParser", "ParseException" ]
 
+import sys
+import json
 from typing import TextIO
 from endplay.types import Player, Vul, Hand, Contract, Denom, Deal
 import pyparsing as pp
@@ -14,7 +16,7 @@ DEBUG = False
 
 def constructor(f):
 	"""
-	The parse actions are defined in the :class:`Node` class's namespace, and are 
+	The parse actions are defined in the :class:`Node` class's namespace, and are
 	thus static methods. This decorator is simply a wrapper around `staticmethod`
 	which can print out optional debugging information if `DEBUG` is set to `True`
 	"""
@@ -43,12 +45,12 @@ class Node:
 	FUNCTION = 4 # Defines a function with its arguments as children
 	ACTION = 5 # Defines an action with the optioal arguments as children
 	VALUE = 6 # Defines a literal value. The value is stored as the corresponding Python type
-	
+
 	def __init__(self, value, dtype):
 		self.value = value
 		self.dtype = dtype
 		self.children = []
-		
+
 	def append_child(self, child):
 		self.children.append(child)
 
@@ -67,17 +69,25 @@ class Node:
 	@property
 	def n_children(self) -> int:
 		return len(self.children)
-		
-	def pprint(self, indent = 0):
-		print(f"{' ': >{indent}}↪ {self.value!r}", end='')
-		if self.dtype == Node.VALUE: print(f" ({type (self.value)})")
-		else: print(f" (dtype {self.dtype})")
+
+	def pprint(self, indent: int = 0, file: TextIO = sys.stdout):
+		print(f"{' ': >{indent}}↪ {self.value!r}", end='', file=file)
+		if self.dtype == Node.VALUE:
+			print(f" ({type (self.value)})", file=file)
+		else:
+			print(f" (dtype {self.dtype})", file=file)
 		for child in self.children:
 			try:
-				child.pprint(indent + 2)
+				child.pprint(indent + 2, file)
 			except AttributeError:
 				raise RuntimeError(f"Non-node child {child} found")
-			
+
+	def serialize(self, indent: int = 0, file: TextIO = sys.stdout):
+		class CustomEncoder(json.JSONEncoder):
+			def default(self, o):
+				return o.__dict__
+		json.dump(self, file, cls=CustomEncoder)
+
 	def __repr__(self):
 		return "{" + str(self.value) + (": " + ",".join(str(s) for s in self.children) if self.children else "") + "}"
 
@@ -92,7 +102,7 @@ class Node:
 		node = Node(op, Node.OPERATOR)
 		node.append_child(arg)
 		return node
-	
+
 	@constructor
 	def from_binaryop(string, location, tokens):
 		args = tokens[0]
@@ -103,7 +113,7 @@ class Node:
 			node.append_child(rhs)
 			args = [node, *rest]
 		return args[0]
-		
+
 	@constructor
 	def from_ternaryop(string, location, tokens):
 		args = tokens[0]
@@ -120,7 +130,7 @@ class Node:
 		for arg in args:
 			f.append_child(arg)
 		return f
-		
+
 	@constructor
 	def from_input(string, location, tokens):
 		f, *args = tokens
@@ -128,40 +138,33 @@ class Node:
 		for arg in args:
 			node.append_child(arg)
 		return node
-		
+
 	@constructor
 	def from_number(string, location, tokens):
 		i, f = int(tokens[0]), float(tokens[0])
 		return Node(i if i == f else f, Node.VALUE)
-		
+
 	@constructor
 	def from_string(string, location, tokens):
 		return Node(tokens[0][1:-1], Node.VALUE)
-		
+
 	@constructor
 	def from_compass(string, location, tokens):
 		player = Player.find(tokens[0])
 		return Node(player, Node.VALUE)
-		
+
 	@constructor
 	def from_vul(string, location, tokens):
 		vul = Vul.find(tokens[0])
 		return Node(vul, Node.VALUE)
-		
-	@constructor
-	def from_suitholding(string, location, tokens):
-		node = Node(tokens[0], Node.SUITHOLDING)
-		holding = Node(tokens[1], Node.STRING)
-		node.append_child(holding)
-		return node
-	
+
 	@constructor
 	def from_variable(string, location, tokens):
 		node = Node("define", Node.ACTION)
 		node.append_child(Node(tokens[0], Node.SYMBOL))
 		node.append_child(tokens[2])
 		return node
-		
+
 	@constructor
 	def from_action(string, location, tokens):
 		node = Node(tokens[0], Node.ACTION)
@@ -327,9 +330,9 @@ class DealerParser:
 			(bin4, 2, pp.opAssoc.LEFT, Node.from_binaryop),
 			(bin5, 2, pp.opAssoc.LEFT, Node.from_binaryop),
 			(bin6, 2, pp.opAssoc.LEFT, Node.from_binaryop),
-			(ternary, 3, pp.opAssoc.RIGHT, Node.from_ternaryop)])		
+			(ternary, 3, pp.opAssoc.RIGHT, Node.from_ternaryop)])
 		expr <<= operator
-		
+
 		# Actions
 		printall = pp.CaselessKeyword("printall")
 		printall.setParseAction(Node.from_action)
@@ -354,7 +357,7 @@ class DealerParser:
 			pp.Suppress(",") + ppc.number + pp.Suppress(",") + ppc.number + pp.Suppress(",") + expr + \
 			pp.Suppress(",") + ppc.number + pp.Suppress(",") + ppc.number + pp.Suppress(")")
 		frequency2.setParseAction(Node.from_action)
-		
+
 		# Inputs
 		generate = pp.CaselessKeyword("generate") + ppc.number
 		generate.setParseAction(Node.from_input)
@@ -379,10 +382,10 @@ class DealerParser:
 		action.setParseAction(Node.from_input)
 		variable = ppc.identifier + pp.Literal("=") + expr
 		variable.setParseAction(Node.from_variable)
-		
+
 		# Combine into the grammar for the whole file
 		self.grammar = pp.ZeroOrMore(
-			generate | produce | vulnerable | dealer | predeal | 
+			generate | produce | vulnerable | dealer | predeal |
 			pointcount | altcount | condition | action | variable
 		)
 		self.grammar.ignore(pp.cppStyleComment)
@@ -396,7 +399,7 @@ class DealerParser:
 		self.grammar.ignore(pp.pythonStyleComment)
 
 		self.expr = expr
-		
+
 	def _build_tree(self, parseResults: pp.ParseResults) -> Node:
 		root = Node("root", Node.ROOT)
 		for action in parseResults:
@@ -423,7 +426,7 @@ class DealerParser:
 		"""
 		parseResults = self.grammar.parseFile(f, parseAll=True)
 		return self._build_tree(parseResults)
-		
+
 	def parse_string(self, s: str) -> Node:
 		"""
 		Parse a strimg into a syntax tree

@@ -1,0 +1,18 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+pyparsing = "*"
+tqdm = "*"
+numpy = ">=1.16"
+matplotlib = "*"
+more_itertools = "*"
+
+[dev-packages]
+pytest = "*"
+cmake = "*"
+wheel = "*"
+setuptools = ">=42"
+pipfile = "*"

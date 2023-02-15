@@ -54,61 +54,15 @@ __all__ = [
 ]
 
 import ctypes
-from ctypes.util import find_library
-import os
 from collections.abc import Iterable
 from warnings import warn
 from functools import wraps
+from endplay import _dll
 
 
 #----------------------------------------------------
-# Meta functionality required accessing the
-# underlying shared library from Python
-
-
-# Get a handle to the DDS shared library and to libc
-_cur_path = os.path.abspath(os.path.dirname(__file__))
-_dll_name = "@DDS_LIBRARY_NAME@"
-_dll_path = os.path.join(_cur_path, _dll_name)
-try:
-	if os.name == "nt":
-		_dll = ctypes.WinDLL(_dll_path)
-		_libc = ctypes.cdll.msvcrt
-	else:
-		_dll = ctypes.CDLL(_dll_path)
-		_libc_name = find_library("c")
-		_libc = ctypes.CDLL(_libc_name)
-	# Required on linux, doesn't do any harm on windows
-	_dll.SetMaxThreads(0)
-	# Make memcmp check its arguments before calling
-	_libc.memcmp.argtypes = (ctypes.c_void_p, ctypes.c_void_p, ctypes.c_size_t)
-except FileNotFoundError as e:
-	err = "Unable to load the dds library: shared library object not found. You may be "
-	err += "using an unsupported OS, or the endplay package has been modified by an "
-	err += "external program and needs to be reinstalled.\n"
-	err += "Note: Should be located in " + _dll_path + ".\n"
-	try:
-		ls = os.listdir(_cur_path)
-		err += "Note: Contents of directory is " + ", ".join(ls)
-	except FileNotFoundError:
-		err += "Note: Containing directory does not exist"
-	err += "Note: The error raised by ctypes states the following reason:\n"
-	err += f"Note: {e}"
-	raise RuntimeError(err)
-except OSError as e:
-	err = "Unable to load the dds library: shared library object could not be loaded by ctypes.\n"
-	err += "Note: This probably means that the library was compiled for a different "
-	err += "architecture to your current machine.\n"
-	err += "Note: If you have a C++ compiler on your computer, you can try to install the library "
-	err += "from source with the command `pip install endplay --no-binary`\n"
-	err += "Note: Otherwise, please raise this as a bug on the github issue tracker ( "
-	err += "https://github.com/dominicprice/endplay/issues ). You should include information "
-	err += "about what platform you are on in the issue by including the result of running "
-	err += 'python -c "import platform; print(platform.architecture(), platform.machine())"\n'
-	err += "Note: The error raised by ctypes states the following reason:\n"
-	err += f"Note: {e}"
-	raise RuntimeError(err)
-# Hard coded constants from the DDS library (used for the size of stack-allocated arrays and stuff)
+# Hard coded constants from the DDS library (used
+#  for the size of stack-allocated arrays etc...)
 MAXNOOFBOARDS = @DDS_MAXNOOFBOARDS@
 MAXNOOFTABLES = @DDS_MAXNOOFTABLES@
 

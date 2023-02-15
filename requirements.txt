@@ -1,3 +1,0 @@
-cmake
-wheel
-setuptools>=42

@@ -12,6 +12,11 @@ CMakeSettings.json
 *.sln
 .env
 
+# Editor files
+compile_commands.json
+.pyrightconfig.json
+.cache/
+
 # Virtual environment
 venv/
 .python-version
