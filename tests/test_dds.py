@@ -40,7 +40,11 @@ class TestPar(unittest.TestCase):
 		self.assertSequenceEqual([str(c) for c in parlist], ["4SN=", "4SS="])
 
 class TestSolve(unittest.TestCase):
-	pass
+    def test_01(self):
+        d = Deal("N:987... K45... AQ2... T63...", first = Player.west, trump = Denom.spades)
+        d.play("S6")
+        for _, tricks in solve_board(d):
+            self.assertEqual(tricks, 2)
 
 class TestDDTable(unittest.TestCase):
 	def test_single(self):

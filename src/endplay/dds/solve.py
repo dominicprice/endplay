@@ -67,10 +67,10 @@ def solve_board(deal: Deal, target: Optional[int] = None) -> SolvedBoard:
 	"""
 	fut = _dds.futureTricks()
 	if target is None or target <= 0:
-		target, solutions = -1, 3
+		target, solutions = -1, 2
 	else:
 		solutions = 2
-	_dds.SolveBoard(deal._data, target, solutions, 0, fut, 0)
+	_dds.SolveBoard(deal._data, target, solutions, 1, fut, 0)
 	return SolvedBoard(fut)
 
 def solve_all_boards(deals: Iterable[Deal], target: Optional[int] = None) -> SolvedBoardList:
