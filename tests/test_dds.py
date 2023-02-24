@@ -8,6 +8,7 @@ config.use_unicode = False
 pbn = "N:9642.95.AKQT4.K7 KJ3.K3.98.T98654 AQT85.Q862..AQJ2 7.AJT74.J76532.3"
 pbn2 = "N:953.4.KQT3.AJ972 AJ7.K95.A864.KT6 KQT86.AT87.5.Q83 42.QJ632.J972.54"
 pbn3 = "N:653.JT32.432.872 A.A9876.JT8.KJT3 JT972.KQ5.965.Q9 KQ84.4.AKQ7.A654"
+pbn4 = "N:987... K45... AQ2... T63..."
 
 class TestAnalyse(unittest.TestCase):
 	def test_01(self):
@@ -41,10 +42,20 @@ class TestPar(unittest.TestCase):
 
 class TestSolve(unittest.TestCase):
     def test_01(self):
-        d = Deal("N:987... K45... AQ2... T63...", first = Player.west, trump = Denom.spades)
+        d = Deal(pbn4, first = Player.west, trump = Denom.spades)
         d.play("S6")
         for _, tricks in solve_board(d):
             self.assertEqual(tricks, 2)
+
+    
+    def test_02(self):
+        d = Deal(pbn4, first = Player.west, trump = Denom.spades)
+        d.play("S6")
+
+        deals = [d]
+        for solution in solve_all_boards([d]):
+            for _, tricks in solution:
+                self.assertEqual(tricks, 2)
 
 class TestDDTable(unittest.TestCase):
 	def test_single(self):

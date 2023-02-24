@@ -46,7 +46,7 @@ class SolvedBoardList(Sequence):
 		if i < 0:
 			i = len(self) - i
 		if i < 0 or i >= len(self):
-			return IndexError
+			raise IndexError
 		return SolvedBoard(self._data.solvedBoard[i])
 
 	def __repr__(self) -> str:
@@ -85,7 +85,7 @@ def solve_all_boards(deals: Iterable[Deal], target: Optional[int] = None) -> Sol
 	bop = _dds.boards()
 	bop.noOfBoards = 0
 	if target is None or target <= 0:
-		target, solutions = -1, 3
+		target, solutions = -1, 2
 	else:
 		solutions = 2
 	for i, deal in enumerate(deals):
@@ -94,7 +94,7 @@ def solve_all_boards(deals: Iterable[Deal], target: Optional[int] = None) -> Sol
 		bop.deals[i] = deal._data
 		bop.target[i] = target
 		bop.solutions[i] = solutions
-		bop.mode[i] = 0
+		bop.mode[i] = 1
 		bop.noOfBoards += 1
 
 	solvedp = _dds.solvedBoards()
