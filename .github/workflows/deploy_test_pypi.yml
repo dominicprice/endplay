@@ -19,7 +19,8 @@ env:
     fi
   # Do not build 32-bit wheels for Linux (yet?), as this requires setting up cross-compilation
   # Do not build pypy on windows due to a bug in building pillow
-  CIBW_SKIP: "*_i686 pp37-win_amd64 pp38-win_amd64"
+  CIBW_BUILD: "cp37-* cp38-* cp39-* cp310-* cp311-* cp312-* pp37-* pp38-* pp39-*"
+  CIBW_SKIP: "*_i686 pp*-win_amd64"
   # Ensure that installing numpy on mac uses the openblas library, see
   # the issue in https://github.com/numpy/numpy/issues/15947
   CIBW_BEFORE_ALL_MACOS: brew install openblas
@@ -35,7 +36,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-20.04, windows-2019, macos-10.15]
+        os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
       - uses: actions/checkout@v2
         with:
