@@ -4,14 +4,11 @@
 
 name: Build, test and upload to PyPI
 
-on:
-  release:
-    types:
-      - published
+on: [workflow_dispatch]
 
 jobs:
   build:
-    uses: ./github/workflows/build_and_test.yml
+    uses: ./.github/workflows/build_and_test.yml
 
   upload_pypi:
     needs: [build]
