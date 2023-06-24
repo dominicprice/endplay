@@ -4,7 +4,10 @@
 
 name: Build, test and upload to PyPI
 
-on: [workflow_dispatch]
+on:
+  release:
+    types:
+      - published
 
 jobs:
   build:
