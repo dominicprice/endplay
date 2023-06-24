@@ -5,17 +5,16 @@ Actions class for producing plaintext output.
 __all__ = ["TerminalActions"]
 
 from io import StringIO
-from typing import Optional
 
 import endplay.stats as stats
 from endplay.dealer.actions.base import BaseActions, BaseActionsWriter
 from endplay.dealer.constraint import Expr
-from endplay.types import Deal, Player
+from endplay.types import Player
 
 
 class TerminalActions(BaseActions):
 
-    def open(self, fname: Optional[str], deals: list[Deal]):
+    def open(self, fname, deals):
         return TerminalActionsWriter(self, fname, deals)
 
 

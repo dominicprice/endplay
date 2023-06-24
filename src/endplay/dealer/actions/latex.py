@@ -5,17 +5,16 @@ Actions class for producing LaTeX output.
 __all__ = ["LaTeXActions"]
 
 from io import StringIO
-from typing import Optional
 
 import endplay.stats as stats
 import matplotlib.pyplot as plt
 from endplay.dealer.actions.base import BaseActions, BaseActionsWriter
-from endplay.types import Deal, Denom, Player
+from endplay.types import Denom, Player
 
 
 class LaTeXActions(BaseActions):
 
-    def open(self, fname: Optional[str], deals: list[Deal]):
+    def open(self, fname, deals):
         return LaTeXActionsWriter(self, fname, deals)
 
 

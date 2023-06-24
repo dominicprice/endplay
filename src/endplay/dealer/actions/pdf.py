@@ -3,15 +3,13 @@ import shutil
 import warnings
 from subprocess import run
 from tempfile import mkdtemp
-from typing import Optional
 
 from endplay.dealer.actions.latex import LaTeXActions, LaTeXActionsWriter
-from endplay.types import Deal
 
 
 class PDFActions(LaTeXActions):
 
-    def open(self, fname: Optional[str], deals: list[Deal]):
+    def open(self, fname, deals):
         return PDFActionsWriter(self, fname, deals)
 
 

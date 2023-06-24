@@ -5,17 +5,16 @@ Actions class for producing HTML output
 __all__ = ["HTMLActions"]
 
 from io import StringIO
-from typing import Optional
 
 import endplay.stats as stats
 import matplotlib.pyplot as plt
 from endplay.dealer.actions.base import BaseActions, BaseActionsWriter
-from endplay.types import Deal, Denom, Player, Vul
+from endplay.types import Denom, Player, Vul
 
 
 class HTMLActions(BaseActions):
 
-    def open(self, fname: Optional[str], deals: list[Deal]) -> "HTMLActionsWriter":
+    def open(self, fname, deals) -> "HTMLActionsWriter":
         return HTMLActionsWriter(self, fname, deals)
 
 
