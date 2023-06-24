@@ -6,7 +6,7 @@ __all__ = ["BaseActions"]
 
 import sys
 from abc import ABC, abstractmethod
-from typing import Optional, TextIO, Union
+from typing import List, Optional, TextIO, Union
 
 from endplay.dealer.constraint import ConstraintInterpreter, Expr
 from endplay.parsers.dealer import Node
@@ -23,13 +23,13 @@ class BaseActions(ABC):
         self.interp = interp
 
     @abstractmethod
-    def open(self, fname: Optional[str], deals: list[Deal]) -> "BaseActionsWriter":
+    def open(self, fname: Optional[str], deals: List[Deal]) -> "BaseActionsWriter":
         ...
 
 
 class BaseActionsWriter(ABC):
 
-    def __init__(self, actions: BaseActions, fname: Optional[str], deals: list[Deal]):
+    def __init__(self, actions: BaseActions, fname: Optional[str], deals: List[Deal]):
         self.actions = actions
         self.deals = deals
         self.fname = fname
