@@ -1,7 +1,57 @@
 [project]
 name = "endplay"
+description = "A suite of tools for generation and analysis of bridge deals"
+readme = {file = "README.md", content-type = "text/markdown"}
 requires-python = ">=3.7"
-dynamic = ["version", "description", "readme", "authors", "keywords", "classifiers", "urls"]
+license = {file = "LICENCE"}
+keywords = [
+    "bridge",
+    "cards",
+    "games",
+    "double dummy",
+    "dds",
+    "analysis",
+    "stats",
+    "deal",
+    "dealer"
+]
+authors = [
+    {name = "Dominic Price", email="dominicprice@outlook.com"}
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Natural Language :: English",
+    "Topic :: Games/Entertainment",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent"
+]
+dependencies = [
+    "pyparsing",
+    "tqdm",
+    "numpy>=1.16",
+    "more_itertools"
+]
+dynamic = ["version"]
+
+[project.optional-dependencies]
+plot = ["matplotlib"]
+
+[project.urls]
+"Homepage" = "https://github.com/dominicprice/endplay"
+"Documentation" = "https://endplay.readthedocs.io"
+"Bug Tracker" = "https://github.com/dominicprice/endplay/issues"
+
+[project.scripts]
+endplay-interact = "endplay.interact.__main__:main"
+endplay-dealer = "endplay.dealer.__main__:main"
+
+[tool.setuptools]
+package-data = {"endplay.dealer.actions.templates" = ["preamble.*", "postamble.*"]}
 
 [build-system]
 requires = [
@@ -9,5 +59,11 @@ requires = [
   "wheel",
   "cmake"
 ]
-
 build-backend = 'setuptools.build_meta'
+
+[tool.yapf]
+column_limit = 120
+
+[tool.flake8]
+ignore = "W191"
+exclude = [".git", "__pycache__", "build"]

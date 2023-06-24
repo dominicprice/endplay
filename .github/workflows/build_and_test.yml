@@ -30,7 +30,7 @@ jobs:
       # Do not build 32-bit wheels for Windows, as this breaks installation of contourpy (dependency of
       # matplotlib)
       # Do not build pypy on windows due to a bug in building pillow
-      CIBW_BUILD: "cp37-* cp38-* cp39-* cp310-* cp311-* pp37-* pp38-* pp39-*"
+      CIBW_BUILD: "cp37-* cp38-* cp39-* cp310-* cp311-* cp-312-* pp37-* pp38-* pp39-*"
       CIBW_SKIP: "*_i686 *-win32 pp*-win_amd64"
 
       # Ensure that installing numpy on mac uses the openblas library, see
@@ -49,6 +49,10 @@ jobs:
       - uses: actions/checkout@v2
         with:
           submodules: recursive
+      - name: Display selected Python versions
+        run: |
+          echo "::notice CIBW_BUILD = {CIBW_BUILD}"
+          echo "::notice CIBW_SKIP = {CIBW_SKIP}"
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.13.1
       - uses: actions/upload-artifact@v3
