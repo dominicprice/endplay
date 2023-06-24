@@ -34,12 +34,10 @@ dependencies = [
     "pyparsing",
     "tqdm",
     "numpy>=1.16",
+    "matplotlib",
     "more_itertools"
 ]
 dynamic = ["version"]
-
-[project.optional-dependencies]
-plot = ["matplotlib"]
 
 [project.urls]
 "Homepage" = "https://github.com/dominicprice/endplay"
