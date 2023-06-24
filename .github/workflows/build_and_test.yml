@@ -27,9 +27,11 @@ jobs:
         fi
 
       # Do not build 32-bit wheels for Linux (yet?), as this requires setting up cross-compilation
+      # Do not build 32-bit wheels for Windows, as this breaks installation of contourpy (dependency of
+      # matplotlib)
       # Do not build pypy on windows due to a bug in building pillow
       CIBW_BUILD: "cp37-* cp38-* cp39-* cp310-* cp311-* pp37-* pp38-* pp39-*"
-      CIBW_SKIP: "*_i686 pp*-win_amd64"
+      CIBW_SKIP: "*_i686 *-win32 pp*-win_amd64"
 
       # Ensure that installing numpy on mac uses the openblas library, see
       # the issue in https://github.com/numpy/numpy/issues/15947
