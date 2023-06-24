@@ -48,9 +48,6 @@ dynamic = ["version"]
 endplay-interact = "endplay.interact.__main__:main"
 endplay-dealer = "endplay.dealer.__main__:main"
 
-[tool.setuptools]
-package-data = {"endplay.dealer.actions.templates" = ["preamble.*", "postamble.*"]}
-
 [build-system]
 requires = [
   "setuptools>=42",

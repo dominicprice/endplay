@@ -71,9 +71,9 @@ class cmakeable_build_ext(build_ext):
 
 
 packages = [
-    "endplay", "endplay._dds", "endplay.dds", "endplay.dealer", "endplay.dealer.actions",
-    "endplay.dealer.actions.templates", "endplay.evaluate", "endplay.experimental", "endplay.interact",
-    "endplay.interact.frontends", "endplay.parsers", "endplay.types", "endplay.stats", "endplay.utils"
+    "endplay", "endplay._dds", "endplay.dds", "endplay.dealer", "endplay.dealer.actions", "endplay.evaluate",
+    "endplay.experimental", "endplay.interact", "endplay.interact.frontends", "endplay.parsers", "endplay.types",
+    "endplay.stats", "endplay.utils"
 ]
 
 with open("VERSION") as f:
