@@ -73,7 +73,7 @@ class TerminalActionsWriter(BaseActionsWriter):
             for obj in objs:
                 if isinstance(obj, str):
                     self.write(obj, end='')
-                elif isinstance(obj, Expr):
+                else:
                     self.write(obj(deal), end='')
             self.write()
 
