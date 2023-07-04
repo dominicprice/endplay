@@ -6,8 +6,9 @@ __all__ = ["LaTeXActions"]
 
 from io import StringIO
 
-import endplay.stats as stats
 import matplotlib.pyplot as plt
+
+import endplay.stats as stats
 from endplay.dealer.actions.base import BaseActions, BaseActionsWriter
 from endplay.types import Denom, Player
 
@@ -43,8 +44,7 @@ class LaTeXActionsWriter(BaseActionsWriter):
             self.write(r"\begin{tabular}{l | l | l | l | l | l}")
             self.write(r"& \textbf{North} & \textbf{East} & \textbf{South} & \textbf{West} & \textbf{Value} \\ \hline")
             self.write(r"$\spadesuit$ &", " & ".join(str(deal[p][Denom.spades]) for p in Player), r"& \\ ")
-            self.write(r"$\heartsuit$ &", " & ".join(str(deal[p][Denom.hearts]) for p in Player), "&", expr(deal),
-                       r"\\ ")
+            self.write(r"$\heartsuit$ &", " & ".join(str(deal[p][Denom.hearts]) for p in Player), "&", expr(deal), r"\\ ")
             self.write(r"$\diamondsuit$ &", " & ".join(str(deal[p][Denom.diamonds]) for p in Player), r"& \\ ")
             self.write(r"$\clubsuit$ &", " & ".join(str(deal[p][Denom.clubs]) for p in Player), r"& \\ ")
             self.write(r"\end{tabular} \\ ")

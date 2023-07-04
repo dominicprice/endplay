@@ -10,10 +10,11 @@ import warnings
 from collections.abc import Iterator
 from typing import Optional, Union
 
-from endplay.dealer.constraint import ConstraintInterpreter, Expr
-from endplay.types import Card, Deal, Denom, Player, Rank
 from numpy.random import RandomState  # guaranteed to be stable for numpy>=1.16
 from tqdm import trange
+
+from endplay.dealer.constraint import ConstraintInterpreter, Expr
+from endplay.types import Card, Deal, Denom, Player, Rank
 
 
 class DealNotGeneratedError(RuntimeError):
@@ -83,12 +84,7 @@ class InconsistentSwappingAlgorithmWarning(Warning):
 #}
 
 
-def generate_deal(*constraints: Union[Expr, str],
-                  predeal: Deal = Deal(),
-                  swapping: int = 0,
-                  seed: Optional[int] = None,
-                  max_attempts: int = 1000000,
-                  env: dict = {}) -> Deal:
+def generate_deal(*constraints: Union[Expr, str], predeal: Deal = Deal(), swapping: int = 0, seed: Optional[int] = None, max_attempts: int = 1000000, env: dict = {}) -> Deal:
     """
 	Generates a random deal satisfying the constraints, giving 13 cards to each player.
 	The constraints should be supplied as functions taking a whole deal and returning
@@ -111,27 +107,11 @@ def generate_deal(*constraints: Union[Expr, str],
     # exhaustion_is_error to True (as it really *is* an error to not generate a single hand)
     # and we set show_progress to False as this would show all zeros right until the one hand
     # we want to produce is produced.
-    deals = generate_deals(*constraints,
-                           predeal=predeal,
-                           swapping=swapping,
-                           show_progress=False,
-                           produce=1,
-                           seed=seed,
-                           max_attempts=max_attempts,
-                           env=env,
-                           strict=True)
+    deals = generate_deals(*constraints, predeal=predeal, swapping=swapping, show_progress=False, produce=1, seed=seed, max_attempts=max_attempts, env=env, strict=True)
     return next(deals)
 
 
-def generate_deals(*constraints: Union[Expr, str],
-                   predeal: Deal = Deal(),
-                   swapping: int = 0,
-                   show_progress: bool = False,
-                   produce: int = 40,
-                   seed: Optional[int] = None,
-                   max_attempts: int = 1000000,
-                   env: dict = {},
-                   strict: bool = False) -> Iterator[Deal]:
+def generate_deals(*constraints: Union[Expr, str], predeal: Deal = Deal(), swapping: int = 0, show_progress: bool = False, produce: int = 40, seed: Optional[int] = None, max_attempts: int = 1000000, env: dict = {}, strict: bool = False) -> Iterator[Deal]:
     """
 	Generates `produce` random deals satisfying the constraints which should
 	be given as for :func:`generate_deal`. `produce` and `max_attemps` are upper limits,
@@ -154,11 +134,9 @@ def generate_deals(*constraints: Union[Expr, str],
 		`produce` hands are produced. Otherwise, a warning is generated
 	"""
     if swapping == 2 and (len(predeal.west) > 0 or len(predeal.east) > 0):
-        warnings.warn("2-way swapping is incompatible with E/W predealt, output may be unexpected",
-                      InconsistentSwappingAlgorithmWarning)
+        warnings.warn("2-way swapping is incompatible with E/W predealt, output may be unexpected", InconsistentSwappingAlgorithmWarning)
     elif swapping == 3 and (len(predeal.west) > 0 or len(predeal.east) > 0 or len(predeal.south) > 0):
-        warnings.warn("3-way swapping is incompatible with E/W/S predealt, output may be unexpected",
-                      InconsistentSwappingAlgorithmWarning)
+        warnings.warn("3-way swapping is incompatible with E/W/S predealt, output may be unexpected", InconsistentSwappingAlgorithmWarning)
 
     rs = RandomState(seed)
 

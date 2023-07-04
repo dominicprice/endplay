@@ -6,8 +6,9 @@ __all__ = ["HTMLActions"]
 
 from io import StringIO
 
-import endplay.stats as stats
 import matplotlib.pyplot as plt
+
+import endplay.stats as stats
 from endplay.dealer.actions.base import BaseActions, BaseActionsWriter
 from endplay.types import Denom, Player, Vul
 
@@ -51,8 +52,7 @@ class HTMLActionsWriter(BaseActionsWriter):
                 else:
                     hands[player] = r'<div class="hand {player.name}"></div>'
             self.write('<div class="deal" style="margin: 20px">')
-            self.write(info, hands[Player.north], box, hands[Player.west], compass, hands[Player.east], box,
-                       hands[Player.south], box)
+            self.write(info, hands[Player.north], box, hands[Player.west], compass, hands[Player.east], box, hands[Player.south], box)
             self.write('</div>')
         self.write("</div>")
 

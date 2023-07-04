@@ -15,8 +15,7 @@ from endplay.types import Deal, Player, Vul
 
 class BaseActions(ABC):
 
-    def __init__(self, board_numbers: bool, vul: Optional[Vul], dealer: Optional[Player],
-                 interp: ConstraintInterpreter):
+    def __init__(self, board_numbers: bool, vul: Optional[Vul], dealer: Optional[Player], interp: ConstraintInterpreter):
         self.board_numbers = board_numbers
         self.vul = vul
         self.dealer = dealer
@@ -151,12 +150,5 @@ class BaseActionsWriter(ABC):
         ...
 
     @abstractmethod
-    def frequency2d(self,
-                    ex1: Expr,
-                    lb1: float,
-                    hb1: float,
-                    ex2: Expr,
-                    lb2: float,
-                    hb2: float,
-                    s: Optional[str] = None):
+    def frequency2d(self, ex1: Expr, lb1: float, hb1: float, ex2: Expr, lb2: float, hb2: float, s: Optional[str] = None):
         ...

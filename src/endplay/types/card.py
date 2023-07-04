@@ -1,14 +1,15 @@
 __all__ = ["Card"]
 
-from typing import Optional
 from dataclasses import dataclass
+from typing import Optional
 
 from endplay.types.denom import Denom
 from endplay.types.rank import Rank
 
+
 @dataclass(frozen=True)
 class Card:
-	"""
+    """
 	Immutabale class representing a card with `suit` and `rank` read-only attributes
 
 	:ivar suit: The suit of the card
@@ -16,28 +17,28 @@ class Card:
 	:ivar rank: The rank of the card
 	:vartype rank: Rank
 	"""
-	rank: Rank
-	suit: Denom
+    rank: Rank
+    suit: Denom
 
-	def __init__(self, name: Optional[str] = None, *, suit: Optional[Denom] = None, rank: Optional[Rank] = None):
-		"""
+    def __init__(self, name: Optional[str] = None, *, suit: Optional[Denom] = None, rank: Optional[Rank] = None):
+        """
 		Construct a card either from a string name or from Denom and Rank objects
 
 		:param name: The name of the card, e.g. "S9" or "HT"
 		:param suit: The suit of the card
 		:param rank: The rank of the card
 		"""
-		if name is not None:
-			suit = Denom.find(name[0])
-			rank = Rank.find(name[1])
+        if name is not None:
+            suit = Denom.find(name[0])
+            rank = Rank.find(name[1])
 
-		if not isinstance(suit, Denom):
-			raise ValueError("suit must be of type Denom")
-		object.__setattr__(self, "suit", suit)
+        if not isinstance(suit, Denom):
+            raise ValueError("suit must be of type Denom")
+        object.__setattr__(self, "suit", suit)
 
-		if not isinstance(rank, Rank):
-			raise ValueError("rank must be of type Rank")
-		object.__setattr__(self, "rank", rank)
+        if not isinstance(rank, Rank):
+            raise ValueError("rank must be of type Rank")
+        object.__setattr__(self, "rank", rank)
 
-	def __str__(self) -> str:
-		return f"{self.suit.abbr}{self.rank.abbr}"
+    def __str__(self) -> str:
+        return f"{self.suit.abbr}{self.rank.abbr}"

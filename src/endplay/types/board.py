@@ -2,17 +2,19 @@ from __future__ import annotations
 
 __all__ = ["Board"]
 
-from endplay.types.deal import Deal
-from endplay.types.contract import Contract
-from endplay.types.vul import Vul
-from endplay.types.player import Player
+from collections.abc import Iterable
+from typing import Any, Optional
+
 from endplay.types.bid import Bid
 from endplay.types.card import Card
-from typing import Optional, Any
-from collections.abc import Iterable
+from endplay.types.contract import Contract
+from endplay.types.deal import Deal
+from endplay.types.player import Player
+from endplay.types.vul import Vul
+
 
 class Board:
-	"""
+    """
 	Class representing a deal along with the play, auction and other table
 	information
 
@@ -52,109 +54,105 @@ class Board:
 		* `alignment`: `"L"` or `"R"` depending on if this column should be left or right
 			aligned. Ignored unless `minwidth` is defined
 	"""
-	class Info(dict):
-		"""
+
+    class Info(dict):
+        """
 		Dictionary-like class which alows for case-insensitive dot-access,
 		for example::
 
 			info["Event"] = "WBF 2017"
 			print(info.event) # WBF 2017
 		"""
-		def _find_key(self, key: str):
-			key = key.casefold()
-			for k in self:
-				if k.casefold() == key:
-					return k
-			return None
-		def __getattr__(self, attr: str) -> Any:
-			key = self._find_key(attr)
-			if key is not None:
-				return self[key]
-			return None
-		def __setattr__(self, attr: str, value: Any) -> None:
-			key = self._find_key(attr)
-			if key is not None:
-				self[key] = value
-			else:
-				self[attr] = value
-		def __delattr__(self, attr: str) -> None:
-			key = self._find_key(attr)
-			if key is not None:
-				del self[key]
-			else:
-				raise KeyError(attr)
 
-	def __init__(self, 
-		deal: Optional[Deal] = None,
-		auction: Optional[Iterable[Bid]] = None,
-		play: Optional[Iterable[Card]] = None,
-		board_num: Optional[int] = None,
-		*,
-		vul: Optional[Vul] = None,
-		dealer: Optional[Player] = None,
-		contract: Optional[Contract] = None,
-		claimed: bool = False,
-		**kwargs):
-		self.deal = deal.copy() if deal is not None else Deal()
-		self.auction = list(auction) if auction is not None else []
-		self.play = list(play) if play is not None else []
-		self.board_num = board_num
-		self._dealer = dealer
-		self._vul = vul
-		self._contract = contract
-		self.claimed = claimed
-		self.info = Board.Info(**kwargs)
+        def _find_key(self, key: str):
+            key = key.casefold()
+            for k in self:
+                if k.casefold() == key:
+                    return k
+            return None
 
-	@property
-	def dealer(self) -> Optional[Player]:
-		"""
+        def __getattr__(self, attr: str) -> Any:
+            key = self._find_key(attr)
+            if key is not None:
+                return self[key]
+            return None
+
+        def __setattr__(self, attr: str, value: Any) -> None:
+            key = self._find_key(attr)
+            if key is not None:
+                self[key] = value
+            else:
+                self[attr] = value
+
+        def __delattr__(self, attr: str) -> None:
+            key = self._find_key(attr)
+            if key is not None:
+                del self[key]
+            else:
+                raise KeyError(attr)
+
+    def __init__(self, deal: Optional[Deal] = None, auction: Optional[Iterable[Bid]] = None, play: Optional[Iterable[Card]] = None, board_num: Optional[int] = None, *, vul: Optional[Vul] = None, dealer: Optional[Player] = None, contract: Optional[Contract] = None, claimed: bool = False, **kwargs):
+        self.deal = deal.copy() if deal is not None else Deal()
+        self.auction = list(auction) if auction is not None else []
+        self.play = list(play) if play is not None else []
+        self.board_num = board_num
+        self._dealer = dealer
+        self._vul = vul
+        self._contract = contract
+        self.claimed = claimed
+        self.info = Board.Info(**kwargs)
+
+    @property
+    def dealer(self) -> Optional[Player]:
+        """
 		Dealer of the board. If not defined, then attempts to
 		calculate based on the value of `board_num`
 		"""
-		if self._dealer is not None:
-			return self._dealer
-		elif self.board_num is not None:
-			return Player.from_board(self.board_num)
-		else:
-			return None
-	@dealer.setter
-	def dealer(self, value: Player) -> None:
-		self._dealer = value
+        if self._dealer is not None:
+            return self._dealer
+        elif self.board_num is not None:
+            return Player.from_board(self.board_num)
+        else:
+            return None
 
-	@property
-	def vul(self) -> Optional[Vul]:
-		"""
+    @dealer.setter
+    def dealer(self, value: Player) -> None:
+        self._dealer = value
+
+    @property
+    def vul(self) -> Optional[Vul]:
+        """
 		Vulnerability of the board. If not defined, then attempts
 		to calculate based on the value of `board_num`
 		"""
-		if self._vul is not None:
-			return self._vul
-		elif self.board_num is not None:
-			return Vul.from_board(self.board_num)
-		else:
-			return None
-	@vul.setter
-	def vul(self, value: Vul) -> None:
-		self._vul = value
+        if self._vul is not None:
+            return self._vul
+        elif self.board_num is not None:
+            return Vul.from_board(self.board_num)
+        else:
+            return None
 
-	@property
-	def contract(self) -> Optional[Contract]:
-		"""
+    @vul.setter
+    def vul(self, value: Vul) -> None:
+        self._vul = value
+
+    @property
+    def contract(self) -> Optional[Contract]:
+        """
 		The contract the board was played in. If not provided, then
 		attempts to calculate based on the auction and play history.
 		"""
-		if self._contract is not None:
-			return self._contract
-		elif self.auction and self.dealer:
-			c = Contract.from_auction(self.dealer, self.auction)
-			if self.play:
-				from endplay.utils.play import total_tricks, tricks_to_result
-				c.result = tricks_to_result(
-					total_tricks(self.play, self.deal.trump), 
-					c.level)
-			return c
-		else:
-			return None
-	@contract.setter
-	def contract(self, value: Contract) -> None:
-		self._contract = value
+        if self._contract is not None:
+            return self._contract
+        elif self.auction and self.dealer:
+            c = Contract.from_auction(self.dealer, self.auction)
+            if self.play:
+                from endplay.utils.play import total_tricks, tricks_to_result
+                c.result = tricks_to_result(total_tricks(self.play, self.deal.trump), c.level)
+            return c
+        else:
+            return None
+
+    @contract.setter
+    def contract(self, value: Contract) -> None:
+        self._contract = value

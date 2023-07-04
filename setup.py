@@ -46,8 +46,9 @@ class cmakeable_build_ext(build_ext):
         # Setup args passed to cmake
         config = 'Debug' if self.debug else 'Release'
         cmake_config_args = [
-            '-DCMAKE_INSTALL_PREFIX=' + str(extdir.parent.absolute()), '-DCMAKE_BUILD_TYPE=' + config,
-            '-DSETUPTOOLS_BUILD=1'
+            '-DCMAKE_INSTALL_PREFIX=' + str(extdir.parent.absolute()),
+            '-DCMAKE_BUILD_TYPE=' + config,
+            '-DSETUPTOOLS_BUILD=1',
         ]
         if os.name == 'nt':
             if bits == 64:
@@ -64,24 +65,36 @@ class cmakeable_build_ext(build_ext):
 
         os.chdir(str(build_temp))
         self.spawn(['cmake', str(cwd)] + cmake_config_args)
-        if not self.dry_run:
+        if not self.dry_run:  # pyright: ignore
             cmake_build_args = ["--build", ".", "--target", "install", "--config", config]
             self.spawn(['cmake'] + cmake_build_args)
         os.chdir(str(cwd))
 
 
 packages = [
-    "endplay", "endplay._dds", "endplay.dds", "endplay.dealer", "endplay.dealer.actions", "endplay.evaluate",
-    "endplay.experimental", "endplay.interact", "endplay.interact.frontends", "endplay.parsers", "endplay.types",
-    "endplay.stats", "endplay.utils"
+    "endplay",
+    "endplay._dds",
+    "endplay.dds",
+    "endplay.dealer",
+    "endplay.dealer.actions",
+    "endplay.evaluate",
+    "endplay.experimental",
+    "endplay.interact",
+    "endplay.interact.frontends",
+    "endplay.parsers",
+    "endplay.types",
+    "endplay.stats",
+    "endplay.utils",
 ]
 
 with open("VERSION") as f:
     version = f.read().strip()
 
-setup(ext_modules=[CMakeExtension('endplay')],
-      cmdclass={'build_ext': cmakeable_build_ext},
-      package_dir={"": "src"},
-      packages=packages,
-      test_suite="tests",
-      version=version)
+setup(
+    ext_modules=[CMakeExtension('endplay')],
+    cmdclass={'build_ext': cmakeable_build_ext},
+    package_dir={"": "src"},
+    packages=packages,
+    test_suite="tests",
+    version=version,
+)

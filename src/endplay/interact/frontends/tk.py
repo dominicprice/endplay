@@ -7,6 +7,8 @@ __all__ = ["TkFrontend"]
 
 from endplay.interact import InteractiveDeal
 
+
 class TkFrontend:
+
     def __init__(self, deal: InteractiveDeal):
         raise NotImplementedError

@@ -45,11 +45,11 @@ __all__ = [
 	"ddTableResults", "ddTablesRes", "parResults", "allParResults", "parResultsDealer",
 	"contractType", "parResultsMaster", "parTextResults", "DDSInfo", "playTraceBin",
 	"playTracePBN", "playTracesBin", "playTracesPBN", "solvedPlay", "solvedPlays",
-	"SetMaxThreads", "FreeMemory", "ErrorMessage", "DDSError",  "SolveBoard", 
+	"SetMaxThreads", "FreeMemory", "ErrorMessage", "DDSError",  "SolveBoard",
 	"SolveBoardPBN", "CalcDDtable", "CalcDDtablePBN", "CalcAllTables", "CalcAllTablesPBN",
-	"SolveAllBoards", "SolveAllBoardsBin", "SolveAllChunksBin", "SolveAllChunks", 
-	"SolveAllChunksPBN", "Par", "DealerPar", "DealerParBin", "ConvertToDealerTextFormat", 
-	"SidesPar", "SidesParBin", "ConvertToSidesTextFormat", "CalcPar", "CalcParPBN", 
+	"SolveAllBoards", "SolveAllBoardsBin", "SolveAllChunksBin", "SolveAllChunks",
+	"SolveAllChunksPBN", "Par", "DealerPar", "DealerParBin", "ConvertToDealerTextFormat",
+	"SidesPar", "SidesParBin", "ConvertToSidesTextFormat", "CalcPar", "CalcParPBN",
 	"AnalysePlayBin", "AnalysePlayPBN", "AnalyseAllPlaysBin", "AnalyseAllPlaysPBN"
 ]
 
@@ -136,12 +136,12 @@ class dealPBN(ctypes.Structure):
 
 class ddTableDeal(ctypes.Structure):
 	_fields_ = [
-		("cards", (ctypes.c_uint * 4) * 4)	
+		("cards", (ctypes.c_uint * 4) * 4)
 	]
 
 class ddTableDealPBN(ctypes.Structure):
 	_fields_ = [
-		("cards", ctypes.c_char * 80)	
+		("cards", ctypes.c_char * 80)
 	]
 
 class ddTableDeals(ctypes.Structure):
@@ -192,7 +192,7 @@ class solvedBoards(ctypes.Structure):
 
 class ddTableResults(ctypes.Structure):
 	_fields_ = [
-		("resTable", (ctypes.c_int * 4) * 5)	
+		("resTable", (ctypes.c_int * 4) * 5)
 	]
 
 class ddTablesRes(ctypes.Structure):
@@ -209,7 +209,7 @@ class parResults(ctypes.Structure):
 
 class allParResults(ctypes.Structure):
 	_fields_ = [
-		("presults", parResults * MAXNOOFTABLES)	
+		("presults", parResults * MAXNOOFTABLES)
 	]
 
 class parResultsDealer(ctypes.Structure):
@@ -265,7 +265,7 @@ class playTraceBin(ctypes.Structure):
 class playTracePBN(ctypes.Structure):
 	_fields_ = [
 		("number", ctypes.c_int),
-		("cards", ctypes.c_char * 106)	
+		("cards", ctypes.c_char * 106)
 	]
 
 class playTracesBin(ctypes.Structure):
@@ -298,13 +298,13 @@ class solvedPlays(ctypes.Structure):
 
 def SetMaxThreads(userThreads: int):
 	"""
-	Used at initial start and can also be called with 
-	a request for allocating memory for a specified 
-	number of threads. Is apparently¸mandatory on Linux 
+	Used at initial start and can also be called with
+	a request for allocating memory for a specified
+	number of threads. Is apparently¸mandatory on Linux
 	and Mac (optional on Windows)
 	"""
 	return _dll.SetMaxThreads(userThreads)
-	
+
 def FreeMemory():
 	"Frees DDS allocated dynamical memory."
 	return _dll.FreeMemory()
@@ -325,7 +325,7 @@ class DDSError(RuntimeError):
 		msg = ctypes.create_string_buffer(80)
 		_dll.ErrorMessage(code, msg)
 		super().__init__(msg.value.decode('utf-8'))
-		
+
 def _try_call(func):
 	@wraps(func)
 	def wrapper(*args):
@@ -340,7 +340,7 @@ def _try_call(func):
 #----------------------------------------------------
 # Functions exposed by DDS related to hand
 # calculations. These are all wrapped with the
-# _try_call decorator which converts the return code 
+# _try_call decorator which converts the return code
 # into an DDSError exception if an error is indicated.
 
 @_try_call
