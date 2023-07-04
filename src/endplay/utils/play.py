@@ -6,14 +6,14 @@ from __future__ import annotations
 
 __all__ = ["trick_winner", "total_tricks", "tricks_to_result", "result_to_tricks", "linearise_play"]
 
-from collections.abc import Iterable
+from collections.abc import Iterable, Sequence
 
 from more_itertools import grouper
 
 from endplay.types import Card, Denom, Player, Rank
 
 
-def trick_winner(trick: Iterable[Card], first: Player, trump: Denom):
+def trick_winner(trick: Sequence[Card], first: Player, trump: Denom):
     "Calculate the winner of a trick"
     winner, topcard = first, trick[0]
     for i in range(1, 4):
@@ -55,20 +55,20 @@ def result_to_tricks(result: int, level: int):
     return 6 + level + result
 
 
-def linearise_play(table: list[Card], first: Player, trump: Denom, pad_value: Card = Card(suit=Denom.nt, rank=Rank.R2)) -> list[str]:
+def linearise_play(table: list[list[Card]], first: Player, trump: Denom, pad_value: Card = Card(suit=Denom.nt, rank=Rank.R2)) -> list[Card]:
     """
 	Convert a table-style play history to a linear play history.
 	PBN record play history is in blocks of four tricks always
 	starting with the same player, but many double dummy solving
 	algorithms rely on a linear play history where cards are recorded
-	in the order they are played. 
+	in the order they are played.
 
 	Some data formats include the ability to write cards with an unimportant
-	value, and which are required for the table structure. The `pad_value` 
+	value, and which are required for the table structure. The `pad_value`
 	parameter should be set to a sentinel value (usually a card with nt suit)
 	to be recognised
 	"""
-    play = []
+    play: list[Card] = []
     winner = first
     for row in table:
         # rotate the trick so that the winner is first
@@ -86,7 +86,7 @@ def linearise_play(table: list[Card], first: Player, trump: Denom, pad_value: Ca
 def tabularise_play(play: list[Card], first: Player, trump: Denom, *, pad_value: Card = Card(suit=Denom.nt, rank=Rank.R2)):
     """
 	Convert a linear play sequence into a table, where the first element in each row
-	is the card played by the player `first`. 
+	is the card played by the player `first`.
 	If the number of tricks in the play sequence is not not divisible by four, then the
 	table will be padded out with `pad_value`.
 	"""

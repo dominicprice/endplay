@@ -218,17 +218,16 @@ class Deal:
         return 'N:' + ' '.join(str(self[player]) for player in Player)
 
     @staticmethod
-    def from_json(json: Union[str, dict]):
-        if isinstance(json, str):
-            json = _json.loads(json)
+    def from_json(json_str: str):
+        j = _json.loads(json_str)
         deal = Deal()
-        deal.north = json["north"]
-        deal.east = json["east"]
-        deal.south = json["south"]
-        deal.west = json["west"]
-        deal.first = Player.find(json["first"])
-        deal.trump = Denom.find(json["trump"])
-        for card in json["curtrick"]:
+        deal.north = j["north"]
+        deal.east = j["east"]
+        deal.south = j["south"]
+        deal.west = j["west"]
+        deal.first = Player.find(j["first"])
+        deal.trump = Denom.find(j["trump"])
+        for card in j["curtrick"]:
             deal.play(card, False)
         return deal
 

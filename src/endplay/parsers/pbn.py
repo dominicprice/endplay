@@ -15,10 +15,8 @@ from typing import TextIO, Union
 from more_itertools import chunked
 
 from endplay.config import suppress_unicode
-from endplay.types import (Bid, Board, Card, Contract, ContractBid, Deal,
-                           Denom, Player, Rank, Vul)
-from endplay.utils.play import (linearise_play, result_to_tricks,
-                                tabularise_play, tricks_to_result)
+from endplay.types import (Bid, Board, Card, Contract, ContractBid, Deal, Denom, PenaltyBid, Player, Rank, Vul)
+from endplay.utils.play import (linearise_play, result_to_tricks, tabularise_play, tricks_to_result)
 
 
 class PBNDecodeError(ValueError):
@@ -143,7 +141,7 @@ class PBNDecoder:
                     if len(raw_row) == 1 and raw_row[0] == "*":
                         board.claimed = True
                         break
-                    row = []
+                    row: list[Card] = []
                     for card in raw_row:
                         if card.startswith("=") and card.endswith("="):
                             pass  # ignore play annotations for now
@@ -155,6 +153,8 @@ class PBNDecoder:
                         else:
                             row.append(Card(card))
                     table.append(row)
+                if board.contract is None:
+                    raise RuntimeError("cannot calculate play history without a contract")
                 board.play = linearise_play(table, first, board.contract.denom)
             else:
                 # By default, add to the info section
@@ -228,7 +228,7 @@ class PBNDecoder:
                 return False
             # Get the comment attached to the line (if any)
             if m.group(3):
-                _, needcont = self._get_comment(m.group(3), False)
+                _, needcont = self._get_comment(m.group(3), False)  # pyright: ignore
                 if needcont:
                     self.state = PBNDecoder.State.COMMENTBLOCK
             # Add the tag to the current game, entering into State.DATA if it is a
@@ -261,7 +261,7 @@ class PBNDecoder:
             raise PBNDecodeError("Expected a tag", curline, self.lineno)
 
     def _parse_commentblock(self, curline):
-        _, needcont = self._get_comment(curline, True)
+        _, needcont = self._get_comment(curline, True)  # pyright: ignore
         if not needcont:
             self.state = PBNDecoder.State.NONE
         return True
@@ -437,17 +437,21 @@ class PBNEncoder:
                     for bid in row:
                         if isinstance(bid, ContractBid):
                             tablerow.append(f"{bid.level}{bid.denom.abbr}")
-                        else:
+                        elif isinstance(bid, PenaltyBid):
                             tablerow.append(bid.penalty.abbr.upper() or "Pass")
                         if bid.announcement:
                             idx = len(notes) + 1
                             notes[idx] = bid.announcement
                             tablerow.append(f"={idx}=")
                     table.append(tablerow)
+                if board.dealer is None:
+                    raise ValueError("cannot generate Auction tag with no dealer")
                 self._create_tag("Auction", board.dealer.abbr, table)
 
             if board.play:
                 pad_value = Card(suit=Denom.nt, rank=Rank.R2)
+                if board.contract is None:
+                    raise ValueError("cannot generate Play tag with no contract")
                 table = tabularise_play(board.play, board.contract.declarer.lho, board.contract.denom)
                 string_table = []
                 for row in table:

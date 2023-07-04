@@ -4,7 +4,23 @@ Bo Haglund's DDS library but with a more Pythonic interface. These types
 are used by all the submodules in the endplay library.
 """
 
-__all__ = ["Vul", "Rank", "AlternateRank", "Player", "Denom", "Card", "Hand", "Deal", "Contract", "Penalty", "SuitHolding", "Bid", "Board", "ContractBid", "PenaltyBid"]
+__all__ = [
+    "Vul",
+    "Rank",
+    "AlternateRank",
+    "Player",
+    "Denom",
+    "Card",
+    "Hand",
+    "Deal",
+    "Contract",
+    "Penalty",
+    "SuitHolding",
+    "Bid",
+    "Board",
+    "ContractBid",
+    "PenaltyBid",
+]
 
 from endplay.types.bid import Bid, ContractBid, PenaltyBid
 from endplay.types.board import Board

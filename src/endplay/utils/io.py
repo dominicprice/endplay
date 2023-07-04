@@ -15,7 +15,13 @@ from more_itertools import chunked
 from endplay.types import Bid, Player
 
 
-def pprint_auction(first: Player, auction: Iterable[Bid], *, include_announcements=False, stream: TextIO = sys.stdout):
+def pprint_auction(
+    first: Player,
+    auction: Iterable[Bid],
+    *,
+    include_announcements=False,
+    stream: TextIO = sys.stdout,
+):
     for player in first.iter_from():
         print(player.abbr.ljust(5), end="", file=stream)
     print(file=stream)

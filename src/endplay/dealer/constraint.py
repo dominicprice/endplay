@@ -12,8 +12,7 @@ import re
 from typing import Any, Callable, Union
 
 from endplay.dds import analyse_play
-from endplay.evaluate import (cccc, controls, exact_shape, hcp, losers,
-                              quality, standard_hcp_scale)
+from endplay.evaluate import (cccc, controls, exact_shape, hcp, losers, quality, standard_hcp_scale)
 from endplay.parsers.dealer import DealerParser, Node
 from endplay.types import Deal, Denom
 

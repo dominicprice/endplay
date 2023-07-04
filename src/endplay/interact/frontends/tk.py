@@ -12,3 +12,6 @@ class TkFrontend:
 
     def __init__(self, deal: InteractiveDeal):
         raise NotImplementedError
+
+    def interact(self):
+        raise NotImplementedError

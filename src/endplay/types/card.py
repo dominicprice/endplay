@@ -20,7 +20,13 @@ class Card:
     rank: Rank
     suit: Denom
 
-    def __init__(self, name: Optional[str] = None, *, suit: Optional[Denom] = None, rank: Optional[Rank] = None):
+    def __init__(
+        self,
+        name: Optional[str] = None,
+        *,
+        suit: Optional[Denom] = None,
+        rank: Optional[Rank] = None,
+    ):
         """
 		Construct a card either from a string name or from Denom and Rank objects
 

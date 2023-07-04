@@ -5,6 +5,8 @@ of changes to its state.
 
 __all__ = ["InteractiveDeal"]
 
+from typing import Optional
+
 from endplay.types import Card, Deal, Denom, Player
 
 
@@ -14,7 +16,7 @@ class InteractiveDeal(Deal):
 	This is the basis of the various frontends to the interact package.
 	"""
 
-    def __init__(self, pbn: str = None, first: Player = Player.north, trump: Denom = Denom.nt):
+    def __init__(self, pbn: Optional[str] = None, first: Player = Player.north, trump: Denom = Denom.nt):
         self._history = []
         super().__init__(pbn, first, trump)
 
@@ -57,6 +59,7 @@ class InteractiveDeal(Deal):
         card = super().unplay(toHand)
         hist = ("unplay", self.curplayer, card, toHand)
         self._history.append(hist)
+        return card
 
     def _undo_unplay(self, player, card, toHand):
         super().play(card, toHand)

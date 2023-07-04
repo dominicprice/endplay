@@ -11,7 +11,7 @@ from endplay.types.rank import AlternateRank, Rank
 
 class SuitHolding:
 
-    def __init__(self, data: Union[ctypes.c_uint * 4, str] = "", idx: Optional[int] = None):
+    def __init__(self, data: Union[ctypes.Array[ctypes.c_uint], str] = "", idx: Optional[int] = None):
         """
 		Construct a suit holding
 

@@ -8,9 +8,7 @@ import json as _json
 from collections.abc import Collection, Mapping
 from enum import IntEnum
 
-from endplay.types import (Board, Card, Contract, ContractBid, Deal, Denom,
-                           Hand, Penalty, PenaltyBid, Player, Rank,
-                           SuitHolding, Vul)
+from endplay.types import (Board, Card, Contract, ContractBid, Deal, Denom, Hand, Penalty, PenaltyBid, Player, Rank, SuitHolding, Vul)
 
 
 def _check_keys(keys: set, mandatory: set, optional: set = set()):
@@ -22,13 +20,14 @@ def _check_keys(keys: set, mandatory: set, optional: set = set()):
 def _object_hook(d: dict):
     keys = set(d.keys())
     if _check_keys(keys, set(["level", "denom"]), set(["alertable", "announcement"])):
-        return ContractBid(d.get("level"), Denom.find(d.get("denom")), d.get("alertable", False), d.get("announcement"))
+
+        return ContractBid(d["level"], Denom.find(d["denom"]), d.get("alertable", False), d.get("announcement"))
     elif _check_keys(keys, set(["penalty"]), set(["alertable", "announcement"])):
-        return PenaltyBid(Penalty.find(d.get("penalty")), d.get("alertable", False), d.get("announcement"))
+        return PenaltyBid(Penalty.find(d["penalty"]), d.get("alertable", False), d.get("announcement"))
     elif _check_keys(keys, set(["suit", "rank"])):
-        return Card(suit=Denom.find(d.get("suit")), rank=Rank.find(d.get("rank")))
+        return Card(suit=Denom.find(d["suit"]), rank=Rank.find(d["rank"]))
     elif _check_keys(keys, set(["level", "denom", "declarer"]), set(["penalty", "result"])):
-        return Contract(level=d.get("level"), denom=Denom.find(d.get("denom")), declarer=Player.find(d.get("declarer")), penalty=Penalty.find(d.get("penalty", "pass")), result=d.get("result", 0))
+        return Contract(level=d["level"], denom=Denom.find(d["denom"]), declarer=Player.find(d["declarer"]), penalty=Penalty.find(d.get("penalty", "pass")), result=d.get("result", 0))
     elif _check_keys(keys, set(["north", "south", "east", "west"]), set(["first", "trump", "curtrick"])):
         deal = Deal(first=Player.find(d.get("first", "north")), trump=Denom.find(d.get("trump", "nt")))
         for hand in ["north", "south", "east", "west"]:
@@ -38,23 +37,24 @@ def _object_hook(d: dict):
             deal.play(card)
         return deal
     elif _check_keys(keys, set(["deal", "auction", "play", "board_num"]), set(["vul", "dealer", "contract", "claimed", "info"])):
+
+        vul = Vul.find(d["vul"]) if "vul" in d else None
+        dealer = Player.find(d["dealer"]) if "dealer " in d else None
+        contract = d.get("contract", None)
         board = Board(
             deal=d.get("deal"),
             auction=d.get("auction"),
             play=d.get("play"),
             board_num=d.get("board_num"),
+            claimed=d.get("claimed", False),
+            vul=vul,
+            dealer=dealer,
+            contract=contract,
         )
-        if "vul" in d:
-            board.vul = Vul.find(d.get("vul"))
-        if "dealer" in d:
-            board.dealer = Player.find(d.get("dealer"))
-        if "contract" in d:
-            board.contract = d.get("contract")
-        if "claimed" in d:
-            board.claimed = d.get("claimed")
         if "info" in d:
-            for key, val in d.get("info").items():
+            for key, val in d["info"].items():
                 board.info[key] = val
+
         return board
     else:
         return d
@@ -75,7 +75,7 @@ def _preprocess_intenum(o):
     if isinstance(o, IntEnum):
         return {'__class__': o.__class__.__name__, '__value__': (o.value, )}
     if isinstance(o, dict):
-        return {k: _preprocess_intenum(v) for k, v in o.iteritems()}
+        return {k: _preprocess_intenum(v) for k, v in o.items()}
     if isinstance(o, (list, tuple)):
         return [_preprocess_intenum(v) for v in o]
     return o
@@ -126,7 +126,7 @@ class JSONEncoder(_json.JSONEncoder):
         elif isinstance(o, SuitHolding):
             return [r.name for r in o]
         else:
-            return super().default(self, o)
+            return super().default(o)
 
 
 def dump(obj, fp, *, skipkeys=False, ensure_ascii=True, check_circular=True, allow_nan=True, indent=None, separators=None, default=None, sort_keys=False, **kw):

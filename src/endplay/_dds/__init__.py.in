@@ -329,8 +329,6 @@ class DDSError(RuntimeError):
 def _try_call(func):
 	@wraps(func)
 	def wrapper(*args):
-		if _dll is None:
-			init()
 		res = func(*args)
 		if res != 1:
 			raise DDSError(res)
@@ -427,7 +425,7 @@ def SidesPar(tablep: ddTableResults, presp: parResultsDealer, vulnerable: int):
 	return _dll.SidesPar(ctypes.byref(tablep), ctypes.byref(presp), vulnerable)
 
 @_try_call
-def SidesParBin(tablep: ddTableResults, sidesRes: parResultsMaster * 2, vulnerable: int):
+def SidesParBin(tablep: ddTableResults, sidesRes: ctypes.Array[parResultsMaster], vulnerable: int):
 	"Similar to SidesPar, but with binary output."
 	return _dll.SidesParBin(ctypes.byref(tablep), ctypes.byref(sidesRes), vulnerable)
 

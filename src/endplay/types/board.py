@@ -91,7 +91,19 @@ class Board:
             else:
                 raise KeyError(attr)
 
-    def __init__(self, deal: Optional[Deal] = None, auction: Optional[Iterable[Bid]] = None, play: Optional[Iterable[Card]] = None, board_num: Optional[int] = None, *, vul: Optional[Vul] = None, dealer: Optional[Player] = None, contract: Optional[Contract] = None, claimed: bool = False, **kwargs):
+    def __init__(
+        self,
+        deal: Optional[Deal] = None,
+        auction: Optional[Iterable[Bid]] = None,
+        play: Optional[Iterable[Card]] = None,
+        board_num: Optional[int] = None,
+        *,
+        vul: Optional[Vul] = None,
+        dealer: Optional[Player] = None,
+        contract: Optional[Contract] = None,
+        claimed: bool = False,
+        **kwargs,
+    ):
         self.deal = deal.copy() if deal is not None else Deal()
         self.auction = list(auction) if auction is not None else []
         self.play = list(play) if play is not None else []
@@ -116,7 +128,7 @@ class Board:
             return None
 
     @dealer.setter
-    def dealer(self, value: Player) -> None:
+    def dealer(self, value: Optional[Player]) -> None:
         self._dealer = value
 
     @property
@@ -133,7 +145,7 @@ class Board:
             return None
 
     @vul.setter
-    def vul(self, value: Vul) -> None:
+    def vul(self, value: Optional[Vul]) -> None:
         self._vul = value
 
     @property
@@ -154,5 +166,5 @@ class Board:
             return None
 
     @contract.setter
-    def contract(self, value: Contract) -> None:
+    def contract(self, value: Optional[Contract]) -> None:
         self._contract = value

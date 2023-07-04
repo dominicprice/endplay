@@ -10,32 +10,8 @@ import pyparsing as pp
 
 from endplay.types import Contract, Deal, Denom, Hand, Player, Vul
 
-pp.ParserElement.enablePackrat()
+pp.ParserElement.enable_packrat()
 ParseException = pp.ParseException
-
-DEBUG = False
-
-
-def constructor(f):
-    """
-	The parse actions are defined in the :class:`Node` class's namespace, and are 
-	thus static methods. This decorator is simply a wrapper around `staticmethod`
-	which can print out optional debugging information if `DEBUG` is set to `True`
-	"""
-    global DEBUG
-    if DEBUG:
-
-        def wrapper(string, location, tokens):
-            try:
-                res = f(string, location, tokens)
-                print(tokens, "->", res)
-                return res
-            except Exception as e:
-                print("Error construction AST:", e)
-
-        return staticmethod(wrapper)
-    else:
-        return staticmethod(f)
 
 
 class Node:
@@ -87,11 +63,11 @@ class Node:
     def __repr__(self):
         return "{" + str(self.value) + (": " + ",".join(str(s) for s in self.children) if self.children else "") + "}"
 
-    @constructor
+    @staticmethod
     def from_symbol(string, location, tokens):
         return Node(tokens[0], Node.SYMBOL)
 
-    @constructor
+    @staticmethod
     def from_unaryop(string, location, tokens):
         args = tokens[0]
         op, arg = args[0], args[1]
@@ -99,7 +75,7 @@ class Node:
         node.append_child(arg)
         return node
 
-    @constructor
+    @staticmethod
     def from_binaryop(string, location, tokens):
         args = tokens[0]
         while len(args) > 1:
@@ -110,7 +86,7 @@ class Node:
             args = [node, *rest]
         return args[0]
 
-    @constructor
+    @staticmethod
     def from_ternaryop(string, location, tokens):
         args = tokens[0]
         node = Node("if", Node.FUNCTION)
@@ -119,7 +95,7 @@ class Node:
         node.append_child(args[4])
         return node
 
-    @constructor
+    @staticmethod
     def from_function(string, location, tokens):
         name, *args = tokens
         f = Node(name, Node.FUNCTION)
@@ -127,7 +103,7 @@ class Node:
             f.append_child(arg)
         return f
 
-    @constructor
+    @staticmethod
     def from_input(string, location, tokens):
         f, *args = tokens
         node = Node(f, Node.ACTION)
@@ -135,40 +111,33 @@ class Node:
             node.append_child(arg)
         return node
 
-    @constructor
+    @staticmethod
     def from_number(string, location, tokens):
         i, f = int(tokens[0]), float(tokens[0])
         return Node(i if i == f else f, Node.VALUE)
 
-    @constructor
+    @staticmethod
     def from_string(string, location, tokens):
         return Node(tokens[0][1:-1], Node.VALUE)
 
-    @constructor
+    @staticmethod
     def from_compass(string, location, tokens):
         player = Player.find(tokens[0])
         return Node(player, Node.VALUE)
 
-    @constructor
+    @staticmethod
     def from_vul(string, location, tokens):
         vul = Vul.find(tokens[0])
         return Node(vul, Node.VALUE)
 
-    @constructor
-    def from_suitholding(string, location, tokens):
-        node = Node(tokens[0], Node.SUITHOLDING)
-        holding = Node(tokens[1], Node.STRING)
-        node.append_child(holding)
-        return node
-
-    @constructor
+    @staticmethod
     def from_variable(string, location, tokens):
         node = Node("define", Node.ACTION)
         node.append_child(Node(tokens[0], Node.SYMBOL))
         node.append_child(tokens[2])
         return node
 
-    @constructor
+    @staticmethod
     def from_action(string, location, tokens):
         node = Node(tokens[0], Node.ACTION)
         for arg in tokens[1:]:
@@ -179,14 +148,14 @@ class Node:
                 node.append_child(arg)
         return node
 
-    @constructor
+    @staticmethod
     def from_contract(string, location, tokens):
         level = tokens[1]
         denom = tokens[2]
         contract = Contract(level=level, denom=denom)
         return Node(contract, Node.VALUE)
 
-    @constructor
+    @staticmethod
     def from_hand(string, location, tokens):
         hand = Hand()
         for token in tokens:
@@ -194,7 +163,7 @@ class Node:
             hand[denom] = token[1]
         return Node(hand, Node.VALUE)
 
-    @constructor
+    @staticmethod
     def from_predeal(string, location, tokens):
         deal = Deal()
         for i in range(1, len(tokens), 2):
@@ -203,7 +172,7 @@ class Node:
         action.append_child(Node(deal, Node.VALUE))
         return action
 
-    @constructor
+    @staticmethod
     def from_pattern(string, location, tokens):
         shape = []
         for char in tokens[0]:
@@ -213,13 +182,13 @@ class Node:
                 shape.append(int(char))
         return Node(tuple(shape), Node.VALUE)
 
-    @constructor
+    @staticmethod
     def from_shape_any(string, location, tokens):
         node = Node("any", Node.OPERATOR)
         node.append_child(tokens[0][1])
         return node
 
-    @constructor
+    @staticmethod
     def from_shape_combine(string, location, tokens):
         args = tokens[0]
         while len(args) > 1:
@@ -230,20 +199,20 @@ class Node:
             args = [node, *rest]
         return args[0]
 
-    @constructor
+    @staticmethod
     def from_shapelist(string, location, tokens):
         return tokens[0]
 
-    @constructor
+    @staticmethod
     def from_denom(string, location, tokens):
         denom = Denom.find(tokens[0])
         return Node(denom, Node.VALUE)
 
-    @constructor
+    @staticmethod
     def from_nl(string, location, tokens):
         return Node("\n", Node.VALUE)
 
-    @constructor
+    @staticmethod
     def from_card(string, location, tokens):
         return Node(f"{tokens[1]}{tokens[0]}", Node.VALUE)
 
@@ -257,7 +226,7 @@ def new_func(name, *args):
             name += arg + pp.Suppress(",")
         name += args[-1]
     name += pp.Suppress(")")
-    name.setParseAction(Node.from_function)
+    name.set_parse_action(Node.from_function)
     return name
 
 
@@ -267,31 +236,31 @@ class DealerParser:
         # Initialise most of the value types
         ppc = pp.pyparsing_common
         number = ppc.number
-        number.setParseAction(Node.from_number)
+        number.set_parse_action(Node.from_number)
         newline = pp.Keyword("\\n")
-        newline.setParseAction(Node.from_nl)
+        newline.set_parse_action(Node.from_nl)
         string = pp.dblQuotedString
-        string.setParseAction(Node.from_string)
+        string.set_parse_action(Node.from_string)
         compass = pp.oneOf("north south east west", caseless=True, asKeyword=True)
-        compass.setParseAction(Node.from_compass)
+        compass.set_parse_action(Node.from_compass)
         suit = pp.Regex(r"spades?") | pp.Regex(r"hearts?") | pp.Regex(r"diamonds?") | pp.Regex(r"clubs?")
-        suit.setParseAction(Node.from_denom)
+        suit.set_parse_action(Node.from_denom)
         strain = pp.Regex(r"notrumps?") | pp.Regex(r"spades?") | pp.Regex(r"hearts?") | pp.Regex(r"diamonds?") | pp.Regex(r"clubs?")
-        strain.setParseAction(Node.from_denom)
+        strain.set_parse_action(Node.from_denom)
         vul = pp.oneOf("none ns ew all", caseless=True, asKeyword=True)
-        vul.setParseAction(Node.from_vul)
+        vul.set_parse_action(Node.from_vul)
         card_suit = pp.oneOf("s h d c", caseless=True)
         card_rank = pp.Word("AKQJTakqjt98765432")
         card = pp.Word("AKQJTakqjt98765432") + pp.Word("SHDCshdc")
-        card.setParseAction(Node.from_card)
+        card.set_parse_action(Node.from_card)
         suitholding = pp.Group(card_suit + pp.OneOrMore(card_rank))
         hand = pp.delimitedList(suitholding)
-        hand.setParseAction(Node.from_hand)
+        hand.set_parse_action(Node.from_hand)
         pattern = pp.Word("0123456789xX", exact=4)
-        pattern.setParseAction(Node.from_pattern)
+        pattern.set_parse_action(Node.from_pattern)
         shapelist = pp.infixNotation(pattern, [(pp.oneOf("any"), 1, pp.opAssoc.RIGHT, Node.from_shape_any), (pp.oneOf("+ -"), 2, pp.opAssoc.LEFT, Node.from_shape_combine)])
         contract = pp.Literal("x") + pp.oneOf("1 2 3 4 5 6 7") + pp.oneOf("N S H D C")
-        contract.setParseAction(Node.from_contract)
+        contract.set_parse_action(Node.from_contract)
 
         # Functions in expressions. This does function name checking at parse time, which in my
         # first attempt at implementing this was the only way to make the grammar unambiguous.
@@ -315,7 +284,7 @@ class DealerParser:
         expr = pp.Forward()
         symbol = pp.Regex(r"(?!(printall)|(print)|(printew)|(printpbn)|(printcompact)|(printes)|" + \
          r"(printoneline)|(average)|(frequency))[a-zA-Z0-9_-]+")
-        symbol.setParseAction(Node.from_symbol)
+        symbol.set_parse_action(Node.from_symbol)
         unary1 = pp.oneOf("! not")
         bin1 = pp.oneOf("* / %")
         bin2 = pp.oneOf("+ -")
@@ -329,50 +298,50 @@ class DealerParser:
 
         # Actions
         printall = pp.CaselessKeyword("printall")
-        printall.setParseAction(Node.from_action)
+        printall.set_parse_action(Node.from_action)
         print_compass = pp.CaselessKeyword("print") + pp.Suppress("(") - pp.Group(pp.delimitedList(compass)) + pp.Suppress(")")
-        print_compass.setParseAction(Node.from_action)
+        print_compass.set_parse_action(Node.from_action)
         printew = pp.CaselessKeyword("printew")
-        printew.setParseAction(Node.from_action)
+        printew.set_parse_action(Node.from_action)
         printpbn = pp.CaselessKeyword("printpbn")
-        printpbn.setParseAction(Node.from_action)
+        printpbn.set_parse_action(Node.from_action)
         printcompact = pp.CaselessKeyword("printcompact") + pp.Optional(expr)
-        printcompact.setParseAction(Node.from_action)
+        printcompact.set_parse_action(Node.from_action)
         printoneline = pp.CaselessKeyword("printoneline") + pp.Optional(expr)
-        printoneline.setParseAction(Node.from_action)
+        printoneline.set_parse_action(Node.from_action)
         printes = pp.CaselessKeyword("printes") + pp.delimitedList(string | expr | newline)
-        printes.setParseAction(Node.from_action)
+        printes.set_parse_action(Node.from_action)
         average = pp.CaselessKeyword("average") + pp.Optional(string) + expr
-        average.setParseAction(Node.from_action)
+        average.set_parse_action(Node.from_action)
         frequency = pp.CaselessKeyword("frequency") + pp.Optional(string) + pp.Suppress("(") + expr + \
          pp.Suppress(",") + ppc.number + pp.Suppress(",") + ppc.number + pp.Suppress(")")
-        frequency.setParseAction(Node.from_action)
+        frequency.set_parse_action(Node.from_action)
         frequency2 = pp.CaselessKeyword("frequency") + pp.Optional(string) + pp.Suppress("(") + expr + \
          pp.Suppress(",") + ppc.number + pp.Suppress(",") + ppc.number + pp.Suppress(",") + expr + \
          pp.Suppress(",") + ppc.number + pp.Suppress(",") + ppc.number + pp.Suppress(")")
-        frequency2.setParseAction(Node.from_action)
+        frequency2.set_parse_action(Node.from_action)
 
         # Inputs
         generate = pp.CaselessKeyword("generate") + ppc.number
-        generate.setParseAction(Node.from_input)
+        generate.set_parse_action(Node.from_input)
         produce = pp.CaselessKeyword("produce") + ppc.number
-        produce.setParseAction(Node.from_input)
+        produce.set_parse_action(Node.from_input)
         vulnerable = pp.CaselessKeyword("vulnerable") + vul
-        vulnerable.setParseAction(Node.from_input)
+        vulnerable.set_parse_action(Node.from_input)
         dealer = pp.CaselessKeyword("dealer") + compass
-        dealer.setParseAction(Node.from_input)
+        dealer.set_parse_action(Node.from_input)
         predeal = pp.CaselessKeyword("predeal") + pp.OneOrMore(compass + hand)
-        predeal.setParseAction(Node.from_predeal)
+        predeal.set_parse_action(Node.from_predeal)
         pointcount = pp.CaselessKeyword("pointcount") + pp.delimitedList(ppc.number)
-        pointcount.setParseAction(Node.from_input)
+        pointcount.set_parse_action(Node.from_input)
         altcount = pp.CaselessKeyword("altcount") + ppc.number + pp.delimitedList(ppc.number)
-        altcount.setParseAction(Node.from_input)
+        altcount.set_parse_action(Node.from_input)
         condition = pp.CaselessKeyword("condition") + expr
-        condition.setParseAction(Node.from_input)
+        condition.set_parse_action(Node.from_input)
         action = pp.CaselessKeyword("action") + pp.delimitedList(printall | print_compass | printew | printpbn | printcompact | printoneline | printes | average | frequency | frequency2)
-        action.setParseAction(Node.from_input)
+        action.set_parse_action(Node.from_input)
         variable = ppc.identifier + pp.Literal("=") + expr
-        variable.setParseAction(Node.from_variable)
+        variable.set_parse_action(Node.from_variable)
 
         # Combine into the grammar for the whole file
         self.grammar = pp.ZeroOrMore(generate | produce | vulnerable | dealer | predeal | pointcount | altcount | condition | action | variable)
@@ -402,8 +371,10 @@ class DealerParser:
 		:param s: The condition string, e.g. "hcp(n) == 10 && shape(s) == 4432"
 		:return: The root node of the syntax tree
 		"""
-        parseResults = self.expr.parseString(s, parseAll=True)
-        return parseResults[0]
+        parse_results = self.expr.parse_string(s, parseAll=True)
+        res = parse_results[0]
+        assert isinstance(res, Node)
+        return res
 
     def parse_file(self, f: TextIO) -> Node:
         """
@@ -412,7 +383,7 @@ class DealerParser:
 		:param f: A handle to a file or TextIO stream to be parsed
 		:return: The root node of the syntax tree
 		"""
-        parseResults = self.grammar.parseFile(f, parseAll=True)
+        parseResults = self.grammar.parse_file(f, parseAll=True)
         return self._build_tree(parseResults)
 
     def parse_string(self, s: str) -> Node:
@@ -422,5 +393,5 @@ class DealerParser:
 		:param s: The string to parse
 		:return: The root node of the syntax tree
 		"""
-        parseResults = self.grammar.parseString(s, parseAll=True)
+        parseResults = self.grammar.parse_string(s, parseAll=True)
         return self._build_tree(parseResults)

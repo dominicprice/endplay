@@ -24,11 +24,16 @@ def average(deals: Iterable[Deal], func: Expr):
     return fmean(func(deal) for deal in deals)
 
 
-def frequency(deals: Iterable[Deal], func: Expr, lb: int, ub: int) -> list[int]:
+def frequency(
+    deals: Iterable[Deal],
+    func: Expr,
+    lb: int,
+    ub: int,
+) -> list[int]:
     """
 	Calculate the value of a function over a range of deals, and bin the results into
 	unit-sized bins around integer values from `lb` to `ub`
-	
+
 	:param deals: The input sequence of deals
 	:param func: The function to evaluate over `deals`
 	:param lb: Value below which values are ignored
@@ -45,7 +50,15 @@ def frequency(deals: Iterable[Deal], func: Expr, lb: int, ub: int) -> list[int]:
     return hist
 
 
-def cofrequency(deals: Iterable[Deal], func1: Expr, func2: Expr, lb1: Optional[float] = None, ub1: Optional[float] = None, lb2: Optional[float] = None, ub2: Optional[float] = None) -> list[list[int]]:
+def cofrequency(
+    deals: Iterable[Deal],
+    func1: Expr,
+    func2: Expr,
+    lb1: int,
+    ub1: int,
+    lb2: int,
+    ub2: int,
+) -> list[list[int]]:
     """
 	Calculate the value of two functions over a range of deals, and bin the results into
 	unit-sized bins around integer values from `lb` to `ub` to form a matrix

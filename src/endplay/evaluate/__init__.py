@@ -4,7 +4,34 @@ Functions for evaluating bridge hands using a variety of different metrics.
 
 from __future__ import annotations
 
-__all__ = ["standard_hcp_scale", "bergen_hcp_scale", "hcp", "shortage_nofit_dist_scale", "shortage_fit_dist_scale", "length_dist_scale", "mixed_fit_dist_scale", "mixed_nofit_dist_scale", "dist_points", "total_points", "top_honours", "losers", "cccc", "quality", "controls", "rule_of_n", "exact_shape", "shape", "major_shape", "minor_shape", "is_balanced", "is_semibalanced", "is_minor_semibalanced", "is_single_suited", "is_two_suited", "is_three_suited"]
+__all__ = [
+    "standard_hcp_scale",
+    "bergen_hcp_scale",
+    "hcp",
+    "shortage_nofit_dist_scale",
+    "shortage_fit_dist_scale",
+    "length_dist_scale",
+    "mixed_fit_dist_scale",
+    "mixed_nofit_dist_scale",
+    "dist_points",
+    "total_points",
+    "top_honours",
+    "losers",
+    "cccc",
+    "quality",
+    "controls",
+    "rule_of_n",
+    "exact_shape",
+    "shape",
+    "major_shape",
+    "minor_shape",
+    "is_balanced",
+    "is_semibalanced",
+    "is_minor_semibalanced",
+    "is_single_suited",
+    "is_two_suited",
+    "is_three_suited",
+]
 
 from collections.abc import Iterable
 from typing import Optional, Union
@@ -18,7 +45,10 @@ bergen_hcp_scale: list[float] = [4.5, 3, 1.5, 0.75, 0.25, 0, 0, 0, 0, 0, 0, 0, 0
 """Bergen HCP scale with A=4.5, K=3, Q=1.5, J=0.75, T=0.25"""
 
 
-def hcp(obj: Union[Iterable[Union[Card, Rank, AlternateRank]], Card, Rank, AlternateRank], scale: list[float] = standard_hcp_scale) -> float:
+def hcp(
+    obj: Union[Iterable[Union[Card, Rank, AlternateRank]], Card, Rank, AlternateRank],
+    scale: list[float] = standard_hcp_scale,
+) -> float:
     """
 	Return the high card points of a hand or suit holding using a given scale. Two
 	scales are predefined: `standard_hcp_scale` which uses the traditional 4321
@@ -54,7 +84,11 @@ mixed_fit_dist_scale: list[float] = [5, 3, 1, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 """Combined scale using `shortage_fit_dist_scale` and `length_dist_scale`"""
 
 
-def dist_points(obj: Union[Hand, SuitHolding], scale: list[float] = shortage_nofit_dist_scale, exclude: Iterable[Denom] = []) -> float:
+def dist_points(
+    obj: Union[Hand, SuitHolding],
+    scale: list[float] = shortage_nofit_dist_scale,
+    exclude: Iterable[Denom] = [],
+) -> float:
     """
 	Return the extra points for distribution for a hand or suit holding using the given scale.
 	Five scales are predefined:
@@ -81,7 +115,13 @@ def dist_points(obj: Union[Hand, SuitHolding], scale: list[float] = shortage_nof
     return sum(dist_points(obj[suit], scale) if suit not in exclude else 0 for suit in Denom.suits())
 
 
-def total_points(obj: Union[Hand, SuitHolding], hcp_scale: list[float] = standard_hcp_scale, dist_scale: list[float] = shortage_nofit_dist_scale, trump: Optional[Denom] = None, protect_honours: bool = False):
+def total_points(
+    obj: Union[Hand, SuitHolding],
+    hcp_scale: list[float] = standard_hcp_scale,
+    dist_scale: list[float] = shortage_nofit_dist_scale,
+    trump: Optional[Denom] = None,
+    protect_honours: bool = False,
+) -> float:
     """
 	Return the sum of high card points and distribution points in a hand.
 

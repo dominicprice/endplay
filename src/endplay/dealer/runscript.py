@@ -11,15 +11,28 @@ import random
 import time
 from typing import Optional
 
-from endplay.dealer.actions import (HTMLActions, LaTeXActions, PDFActions,
-                                    TerminalActions)
+from endplay.dealer.actions import (HTMLActions, LaTeXActions, PDFActions, TerminalActions)
 from endplay.dealer.constraint import ConstraintInterpreter
 from endplay.dealer.generate import generate_deals
 from endplay.parsers.dealer import DealerParser, Node, ParseException
 from endplay.types import Deal, Player, Vul
 
 
-def run_script(script: Optional[str], show_progress: bool = False, produce: int = 40, generate: int = 1000000, seed: Optional[int] = None, verbose: bool = False, swapping: int = 0, outformat: str = "plain", outfile: Optional[str] = None, constraints: list[str] = [], actions: list[str] = [], predeal: str = "", board_numbers: bool = False) -> list[Deal]:
+def run_script(
+    script: Optional[str],
+    show_progress: bool = False,
+    produce: int = 40,
+    generate: int = 1000000,
+    seed: Optional[int] = None,
+    verbose: bool = False,
+    swapping: int = 0,
+    outformat: str = "plain",
+    outfile: Optional[str] = None,
+    constraints: list[str] = [],
+    actions: list[str] = [],
+    predeal: str = "",
+    board_numbers: bool = False,
+) -> list[Deal]:
     """
     Execute a dealer script file
 
@@ -119,7 +132,15 @@ def run_script(script: Optional[str], show_progress: bool = False, produce: int 
     # Produce hands
     compiled_constraints = [interp.lambdify(c) for c in parsed_constraints]
     deals = []
-    generator = generate_deals(*compiled_constraints, predeal=deal, swapping=swapping, show_progress=show_progress, produce=produce, seed=seed, max_attempts=generate)
+    generator = generate_deals(
+        *compiled_constraints,
+        predeal=deal,
+        swapping=swapping,
+        show_progress=show_progress,
+        produce=produce,
+        seed=seed,
+        max_attempts=generate,
+    )
     try:
         while True:
             deals.append(next(generator))

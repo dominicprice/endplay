@@ -9,8 +9,7 @@ from typing import TextIO
 from more_itertools import chunked
 
 from endplay.config import suppress_unicode
-from endplay.types import (Bid, Board, Card, Contract, ContractBid, Deal,
-                           Player, Vul)
+from endplay.types import (Bid, Board, Card, Contract, ContractBid, Deal, PenaltyBid, Player, Vul)
 from endplay.utils.escape import escape_suits, unescape_suits
 from endplay.utils.play import result_to_tricks, total_tricks, tricks_to_result
 
@@ -68,6 +67,8 @@ class LINDecoder:
                 # Marks that tricks were claimed
                 claimed = True
                 if contract is None:
+                    if dealer is None:
+                        raise ValueError("lin contains a contract but no dealer")
                     contract = Contract.from_auction(dealer, auction)
                     contract.result = tricks_to_result(int(value), contract.level)
             else:
@@ -81,6 +82,8 @@ class LINDecoder:
         # make sure 'first' and 'trump' in deal are set correctly if there is
         # a contract
         if contract is not None:
+            if deal is None:
+                raise ValueError("lin contains contract but no deal")
             deal.first = contract.declarer.lho
             deal.trump = contract.denom
         return Board(deal, auction, play, board_num, vul=vul, dealer=dealer, contract=contract, claimed=claimed, **info)
@@ -128,7 +131,7 @@ class LINEncoder:
                 lin += "mb|"
                 if isinstance(bid, ContractBid):
                     lin += f"{bid.level}{bid.denom.abbr[0]}" + ("!" if bid.alertable else "") + "|"
-                else:
+                elif isinstance(bid, PenaltyBid):
                     lin += bid.penalty.name[0] + ("!" if bid.alertable else "") + "|"
                 if bid.announcement is not None:
                     lin += f"an|{escape_suits(bid.announcement)}|"
@@ -139,6 +142,8 @@ class LINEncoder:
                 if len(trick) == 4:
                     lin += "pg||"
             if board.claimed:
+                if board.contract is None:
+                    raise ValueError("claimed board has no contract")
                 tricks = result_to_tricks(board.contract.result, board.contract.level)
                 lin += f"mc|{tricks}|"
         return lin
