@@ -11,8 +11,12 @@ import random
 import time
 from typing import Optional
 
-from endplay.dealer.actions import (HTMLActions, LaTeXActions, PDFActions,
-                                    TerminalActions)
+from endplay.dealer.actions import (
+    HTMLActions,
+    LaTeXActions,
+    PDFActions,
+    TerminalActions,
+)
 from endplay.dealer.actions.base import BaseActions
 from endplay.dealer.constraint import ConstraintInterpreter
 from endplay.dealer.generate import generate_deals

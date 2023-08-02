@@ -7,8 +7,17 @@ __all__ = ["LINEncodeError", "dump", "dumps", "load", "loads"]
 from typing import TextIO
 
 from endplay.config import suppress_unicode
-from endplay.types import (Bid, Board, Card, Contract, ContractBid, Deal,
-                           PenaltyBid, Player, Vul)
+from endplay.types import (
+    Bid,
+    Board,
+    Card,
+    Contract,
+    ContractBid,
+    Deal,
+    PenaltyBid,
+    Player,
+    Vul,
+)
 from endplay.utils.escape import escape_suits, unescape_suits
 from endplay.utils.play import result_to_tricks, total_tricks, tricks_to_result
 from more_itertools import chunked

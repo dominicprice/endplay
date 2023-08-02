@@ -5,11 +5,12 @@ from enum import IntEnum
 
 class Rank(IntEnum):
     """
-	Encodes the rank of a suit. The standard values use
-	powers of two, however some internal functions use
-	an alternative encoding AlternateRank using the
-	values 2-14.
-	"""
+    Encodes the rank of a suit. The standard values use
+    powers of two, however some internal functions use
+    an alternative encoding AlternateRank using the
+    values 2-14.
+    """
+
     R2 = 0x0004
     R3 = 0x0008
     R4 = 0x0010
@@ -29,13 +30,13 @@ class Rank(IntEnum):
         return self.name[1]
 
     @staticmethod
-    def find(value: str) -> 'Rank':
+    def find(value: str) -> "Rank":
         try:
             return Rank[f"R{value.upper()}"]
         except KeyError:
             raise ValueError(f"could not convert '{value}' to Rank")
 
-    def to_alternate(self) -> 'AlternateRank':
+    def to_alternate(self) -> "AlternateRank":
         # Calculate integer log2
         x, y = self.value, 0
         while True:
@@ -48,9 +49,10 @@ class Rank(IntEnum):
 
 class AlternateRank(IntEnum):
     """
-	Encodes the rank of a suit using the values 2-14. Used
-	for internal functions, for APIs use the Rank class.
-	"""
+    Encodes the rank of a suit using the values 2-14. Used
+    for internal functions, for APIs use the Rank class.
+    """
+
     R2 = 2
     R3 = 3
     R4 = 4
@@ -70,7 +72,7 @@ class AlternateRank(IntEnum):
         return self.name[1]
 
     @staticmethod
-    def find(value: str) -> 'AlternateRank':
+    def find(value: str) -> "AlternateRank":
         try:
             return AlternateRank[f"R{value.upper()}"]
         except KeyError:

@@ -11,7 +11,7 @@ class Vul(IntEnum):
     ew = 3
 
     @staticmethod
-    def find(name: str) -> 'Vul':
+    def find(name: str) -> "Vul":
         "Convert a string into a Vul object"
         if name.lower() in ["n", "s", "ns"]:
             return Vul.ns
@@ -25,23 +25,25 @@ class Vul(IntEnum):
             raise ValueError(f"could not convert '{name}' to Vul")
 
     @staticmethod
-    def from_lin(s: str) -> 'Vul':
+    def from_lin(s: str) -> "Vul":
         """
-		Convert a BBO LIN string of vulnerability into a Vul object.
-		The conversion is determined by o=none, e=ew, n=ns, b=both
-		"""
+        Convert a BBO LIN string of vulnerability into a Vul object.
+        The conversion is determined by o=none, e=ew, n=ns, b=both
+        """
         try:
             if s == "":
                 raise ValueError
             return Vul("obne".index(s.lower()))
         except ValueError:
-            raise ValueError(f"invalid lin vulnerability '{s}': must be one of o, b, n, e")
+            raise ValueError(
+                f"invalid lin vulnerability '{s}': must be one of o, b, n, e"
+            )
 
     def to_lin(self) -> str:
         return "obne"[self]
 
     @staticmethod
-    def from_board(board_no: int) -> 'Vul':
+    def from_board(board_no: int) -> "Vul":
         ":return: The vulnerability of the specified board"
         i = board_no - 1
         shift = (i // 4) % 4

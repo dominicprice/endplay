@@ -34,15 +34,15 @@ def frequency(
     ub: int,
 ) -> list[int]:
     """
-	Calculate the value of a function over a range of deals, and bin the results into
-	unit-sized bins around integer values from `lb` to `ub`
+    Calculate the value of a function over a range of deals, and bin the results into
+    unit-sized bins around integer values from `lb` to `ub`
 
-	:param deals: The input sequence of deals
-	:param func: The function to evaluate over `deals`
-	:param lb: Value below which values are ignored
-	:param ub: Value above which values are ignored
-	:return: An array of bins, and a tuple containing the left and right boundaries
-	"""
+    :param deals: The input sequence of deals
+    :param func: The function to evaluate over `deals`
+    :param lb: Value below which values are ignored
+    :param ub: Value above which values are ignored
+    :return: An array of bins, and a tuple containing the left and right boundaries
+    """
     lb, ub = floor(lb), ceil(ub)
     bins = list(range(lb, ub + 1))
     hist = [0] * len(bins)
@@ -63,17 +63,17 @@ def cofrequency(
     ub2: int,
 ) -> list[list[int]]:
     """
-	Calculate the value of two functions over a range of deals, and bin the results into
-	unit-sized bins around integer values from `lb` to `ub` to form a matrix
+    Calculate the value of two functions over a range of deals, and bin the results into
+    unit-sized bins around integer values from `lb` to `ub` to form a matrix
 
-	:param deals: The input sequence of deals
-	:param func1: The first function to evaluate over `deals`
-	:param func2: The second function to evaluate over `deals`
-	:param lower_bound1: Value below which values returned from func1 are ignored
-	:param upper_bound1: Value above which values returned from func1 are ignored
-	:param lower_bound2: Value below which values returned from func2 are ignored
-	:param upper_bound2: Value above which values returned from func2 are ignored
-	"""
+    :param deals: The input sequence of deals
+    :param func1: The first function to evaluate over `deals`
+    :param func2: The second function to evaluate over `deals`
+    :param lower_bound1: Value below which values returned from func1 are ignored
+    :param upper_bound1: Value above which values returned from func1 are ignored
+    :param lower_bound2: Value below which values returned from func2 are ignored
+    :param upper_bound2: Value above which values returned from func2 are ignored
+    """
     lb1, ub1 = floor(lb1), ceil(ub1)
     lb2, ub2 = floor(lb2), ceil(ub2)
     data1, data2 = [], []

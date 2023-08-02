@@ -14,8 +14,13 @@ from endplay.types import Deal, Player, Vul
 
 
 class BaseActions(ABC):
-
-    def __init__(self, board_numbers: bool, vul: Optional[Vul], dealer: Optional[Player], interp: ConstraintInterpreter):
+    def __init__(
+        self,
+        board_numbers: bool,
+        vul: Optional[Vul],
+        dealer: Optional[Player],
+        interp: ConstraintInterpreter,
+    ):
         self.board_numbers = board_numbers
         self.vul = vul
         self.dealer = dealer
@@ -27,7 +32,6 @@ class BaseActions(ABC):
 
 
 class BaseActionsWriter(ABC):
-
     def __init__(self, actions: BaseActions, fname: Optional[str], deals: List[Deal]):
         self.actions = actions
         self.deals = deals
@@ -39,7 +43,7 @@ class BaseActionsWriter(ABC):
             self.f = sys.stdout
             self.closef = False
         else:
-            self.f = open(self.fname, 'w')
+            self.f = open(self.fname, "w")
             self.closef = True
         self.on_enter()
         return self
@@ -55,7 +59,9 @@ class BaseActionsWriter(ABC):
         if self.f is None:
             raise RuntimeError("stream is not open for writing")
         if "file" in kwargs:
-            raise RuntimeError("Unexpected keyword argument 'file' passed to BaseActions.write")
+            raise RuntimeError(
+                "Unexpected keyword argument 'file' passed to BaseActions.write"
+            )
         print(*objs, **kwargs, file=self.f)
 
     def run_action(self, node: Node):
@@ -89,7 +95,9 @@ class BaseActionsWriter(ABC):
             self.printes(*objs)
         elif node.value == "average":
             if len(node.children) == 2:
-                s, expr = node.first_child.value, self.actions.interp.lambdify(node.last_child)
+                s, expr = node.first_child.value, self.actions.interp.lambdify(
+                    node.last_child
+                )
             else:
                 s, expr = None, self.actions.interp.lambdify(node.last_child)
             self.average(expr, s)
@@ -98,9 +106,17 @@ class BaseActionsWriter(ABC):
                 s, args = node.children[0].value, node.children[1:]
             else:
                 s, args = None, node.children
-            ex1, lb1, ub1 = self.actions.interp.lambdify(args[0]), args[1].value, args[2].value
+            ex1, lb1, ub1 = (
+                self.actions.interp.lambdify(args[0]),
+                args[1].value,
+                args[2].value,
+            )
             if len(args) > 3:
-                ex2, lb2, ub2 = self.actions.interp.lambdify(args[3]), args[4].value, args[5].value
+                ex2, lb2, ub2 = (
+                    self.actions.interp.lambdify(args[3]),
+                    args[4].value,
+                    args[5].value,
+                )
                 self.frequency2d(ex1, lb1, ub1, ex2, lb2, ub2, s)
             else:
                 self.frequency1d(ex1, lb1, ub1, s)
@@ -146,9 +162,24 @@ class BaseActionsWriter(ABC):
         ...
 
     @abstractmethod
-    def frequency1d(self, expr: Expr, lower_bound: float, upper_bound: float, s: Optional[str] = None):
+    def frequency1d(
+        self,
+        expr: Expr,
+        lower_bound: float,
+        upper_bound: float,
+        s: Optional[str] = None,
+    ):
         ...
 
     @abstractmethod
-    def frequency2d(self, ex1: Expr, lb1: float, hb1: float, ex2: Expr, lb2: float, hb2: float, s: Optional[str] = None):
+    def frequency2d(
+        self,
+        ex1: Expr,
+        lb1: float,
+        hb1: float,
+        ex2: Expr,
+        lb2: float,
+        hb2: float,
+        s: Optional[str] = None,
+    ):
         ...

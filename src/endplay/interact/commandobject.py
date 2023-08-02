@@ -5,10 +5,17 @@ from inspect import Parameter, signature
 from typing import Generic, Optional, Protocol, Type, TypeVar, Union
 
 from endplay.evaluate import hcp
-from endplay.interact.actions import (Action, DealAction, PlayAction,
-                                      SetBoardAction, SetFirstAction,
-                                      SetHandAction, SetTrumpAction,
-                                      ShuffleAction, UnplayAction)
+from endplay.interact.actions import (
+    Action,
+    DealAction,
+    PlayAction,
+    SetBoardAction,
+    SetFirstAction,
+    SetHandAction,
+    SetTrumpAction,
+    ShuffleAction,
+    UnplayAction,
+)
 from endplay.types.card import Card
 from endplay.types.deal import Deal
 from endplay.types.denom import Denom

@@ -22,7 +22,6 @@ from endplay.types import Card, Deal
 
 
 class SolvedPlay(Sequence):
-
     def __init__(self, data: _dds.solvedPlay):
         self._data = data
 
@@ -50,14 +49,13 @@ class SolvedPlay(Sequence):
             return [self[ii] for ii in range(*i.indices(len(self)))]
 
     def __repr__(self) -> str:
-        return f'<SolvedPlay object; data={self!s}>'
+        return f"<SolvedPlay object; data={self!s}>"
 
     def __str__(self) -> str:
         return "(" + ", ".join(str(p) for p in self) + ")"
 
 
 class SolvedPlayList(Sequence):
-
     def __init__(self, data: _dds.solvedPlays):
         self._data = data
 
@@ -73,7 +71,9 @@ class SolvedPlayList(Sequence):
     def __getitem__(self, i: slice) -> Sequence[SolvedPlay]:
         ...
 
-    def __getitem__(self, i: Union[int, slice]) -> Union[SolvedPlay, Sequence[SolvedPlay]]:
+    def __getitem__(
+        self, i: Union[int, slice]
+    ) -> Union[SolvedPlay, Sequence[SolvedPlay]]:
         ":return: The solved play at index `i`"
         if isinstance(i, int):
             if i < 0:
@@ -85,7 +85,7 @@ class SolvedPlayList(Sequence):
             return [self[ii] for ii in range(*i.indices(len(self)))]
 
     def __repr__(self) -> str:
-        return f'<SolvedPlayList; length={len(self)}'
+        return f"<SolvedPlayList; length={len(self)}"
 
     def __str__(self) -> str:
         return "[" + ", ".join(str(s) for s in self) + "]"
@@ -93,14 +93,14 @@ class SolvedPlayList(Sequence):
 
 def analyse_start(deal: Deal, declarer_is_first: bool = False) -> int:
     """
-	Calculate the most tricks declarer can make.
+    Calculate the most tricks declarer can make.
 
-	:param deal: The deal to analyse
-	:param declarer_is_first: The algorithm assumes that the person who leads is to the left
-		of the declarer (as would be the case with the first card led
-		to a hand), but to return the result as seen from the leader's
-		perspective you can set this to True
-	"""
+    :param deal: The deal to analyse
+    :param declarer_is_first: The algorithm assumes that the person who leads is to the left
+            of the declarer (as would be the case with the first card led
+            to a hand), but to return the result as seen from the leader's
+            perspective you can set this to True
+    """
     # Create empty play trace
     playBin = _dds.playTraceBin()
     playBin.number = 0
@@ -113,12 +113,14 @@ def analyse_start(deal: Deal, declarer_is_first: bool = False) -> int:
         return solvedp.tricks[0]
 
 
-def analyse_play(deal: Deal, play: Iterable[Union[Card, str]], declarer_is_first: bool = False) -> SolvedPlay:
+def analyse_play(
+    deal: Deal, play: Iterable[Union[Card, str]], declarer_is_first: bool = False
+) -> SolvedPlay:
     """
-	Calculate a list of double dummy values after each card in `play`
-	is played to the hand. This returns `len(play)+1` results, as there
-	is also a result before any card has been played
-	"""
+    Calculate a list of double dummy values after each card in `play`
+    is played to the hand. This returns `len(play)+1` results, as there
+    is also a result before any card has been played
+    """
     # Convert play to playTraceBin
     playBin = _dds.playTraceBin()
     playBin.number = 0
@@ -139,11 +141,13 @@ def analyse_play(deal: Deal, play: Iterable[Union[Card, str]], declarer_is_first
     return SolvedPlay(solvedp)
 
 
-def analyse_all_starts(deals: Iterable[Deal], declarer_is_first: bool = False) -> list[int]:
+def analyse_all_starts(
+    deals: Iterable[Deal], declarer_is_first: bool = False
+) -> list[int]:
     """
-	Optimized version of analyse for multiple deals which uses threading to
-	speed up the calculation
-	"""
+    Optimized version of analyse for multiple deals which uses threading to
+    speed up the calculation
+    """
     # Convert deals into boards
     bop = _dds.boards()
     bop.noOfBoards = 0
@@ -168,16 +172,23 @@ def analyse_all_starts(deals: Iterable[Deal], declarer_is_first: bool = False) -
     _dds.AnalyseAllPlaysBin(bop, plp, solvedp, 0)
     if declarer_is_first:
         # Calculate and return starting_cards-n, as it returns the tricks from the perspective of RHO
-        return [starting_cards[i] - solvedp.solved[i].tricks[0] for i in range(plp.noOfBoards)]
+        return [
+            starting_cards[i] - solvedp.solved[i].tricks[0]
+            for i in range(plp.noOfBoards)
+        ]
     else:
         return [solvedp.solved[i].tricks[0] for i in range(plp.noOfBoards)]
 
 
-def analyse_all_plays(deals: Iterable[Deal], plays: Iterable[Iterable[Card]], declarer_is_first: bool = False) -> SolvedPlayList:
+def analyse_all_plays(
+    deals: Iterable[Deal],
+    plays: Iterable[Iterable[Card]],
+    declarer_is_first: bool = False,
+) -> SolvedPlayList:
     """
-	Optimized version of analyse_play for multiple deals which uses
-	threading to speed up the calculation
-	"""
+    Optimized version of analyse_play for multiple deals which uses
+    threading to speed up the calculation
+    """
     # Convert deals into boards
     bop = _dds.boards()
     bop.noOfBoards = 0
@@ -210,5 +221,7 @@ def analyse_all_plays(deals: Iterable[Deal], plays: Iterable[Iterable[Card]], de
     if declarer_is_first:
         for i in range(bop.noOfBoards):
             for j in range(solvedp.solved[i].number):
-                solvedp.solved[i].tricks[j] = starting_cards[i] - solvedp.solved[i].tricks[j]
+                solvedp.solved[i].tricks[j] = (
+                    starting_cards[i] - solvedp.solved[i].tricks[j]
+                )
     return SolvedPlayList(solvedp)

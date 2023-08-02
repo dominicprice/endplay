@@ -12,8 +12,15 @@ import re
 from typing import Any, Callable, Union
 
 from endplay.dds import analyse_play
-from endplay.evaluate import (cccc, controls, exact_shape, hcp, losers,
-                              quality, standard_hcp_scale)
+from endplay.evaluate import (
+    cccc,
+    controls,
+    exact_shape,
+    hcp,
+    losers,
+    quality,
+    standard_hcp_scale,
+)
 from endplay.parsers.dealer import DealerParser, Node
 from endplay.types import Deal, Denom
 
@@ -22,14 +29,16 @@ Expr = Callable[[Deal], Union[float, int, bool]]
 
 class ConstraintInterpreter:
     """
-	Provides an interface for evaluating constraints in the Dealer program syntax
-	and testing them against a deal
-	"""
+    Provides an interface for evaluating constraints in the Dealer program syntax
+    and testing them against a deal
+    """
 
     # Precompiled regexes for matching some more complex function names
     _re_suit = re.compile(r"(?:spades?)|(?:hearts?)|(?:diamonds?)|(?:clubs)")
     _re_pt = re.compile(r"(?:pt[0-9])")
-    _re_namedpt = re.compile(r"(?:tens?)|(?:jacks?)|(?:queens?)|(?:kings?)|(?:aces?)|(?:top[2-5])|(?:c13)")
+    _re_namedpt = re.compile(
+        r"(?:tens?)|(?:jacks?)|(?:queens?)|(?:kings?)|(?:aces?)|(?:top[2-5])|(?:c13)"
+    )
 
     def __init__(self):
         self.parser = DealerParser()
@@ -37,21 +46,21 @@ class ConstraintInterpreter:
 
     def set_env(self, name: str, value: Any):
         """
-		Insert a new variable into the interpreter's environment or change the value 
-		of an existing variable
+        Insert a new variable into the interpreter's environment or change the value
+        of an existing variable
 
-		:param name: The name of the environment variable
-		:param value: The new value of the variable
-		"""
+        :param name: The name of the environment variable
+        :param value: The new value of the variable
+        """
         self._env[name] = value
 
     def unset_env(self, name: str):
         """
-		Remove an variable from the interpreter's environment. Attempting to remove an
-		essential variable (one of the ptN scale definitions) throws an error
+        Remove an variable from the interpreter's environment. Attempting to remove an
+        essential variable (one of the ptN scale definitions) throws an error
 
-		:param name: The name of the variable to remove
-		"""
+        :param name: The name of the variable to remove
+        """
         if self._re_pt.match(name):
             raise RuntimeError(f"Trying to unset required environment variable {name}")
         del self._env[name]
@@ -62,7 +71,18 @@ class ConstraintInterpreter:
 
     def reset_env(self):
         "Reinitialise the environment to the default values"
-        self._env = {"pt0": [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0], "pt1": [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0], "pt2": [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "pt3": [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "pt4": [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "pt5": [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "pt6": [1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "pt7": [1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0], "pt8": [1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0], "pt9": [6, 4, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0]}
+        self._env = {
+            "pt0": [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+            "pt1": [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            "pt2": [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            "pt3": [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            "pt4": [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            "pt5": [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            "pt6": [1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            "pt7": [1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            "pt8": [1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+            "pt9": [6, 4, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        }
 
     def parse(self, s: str) -> Node:
         "Parse an expression string into a syntax tree"
@@ -97,11 +117,11 @@ class ConstraintInterpreter:
 
     def lambdify(self, node: Union[Node, str]) -> Expr:
         """
-		Convert an expression tree (or string) into an anonymous function accepting a single
-		:class:`Deal` argument and returning the expression evaluated over this deal
+        Convert an expression tree (or string) into an anonymous function accepting a single
+        :class:`Deal` argument and returning the expression evaluated over this deal
 
-		:param node: The root of the expression tree, or a string containing an expression
-		"""
+        :param node: The root of the expression tree, or a string containing an expression
+        """
         if isinstance(node, str):
             node = self.parse(node)
         return lambda deal: self.evaluate(node, deal)
@@ -142,9 +162,9 @@ class ConstraintInterpreter:
         elif ConstraintInterpreter._re_pt.match(node.value):
             return self._fn_hcp(node, deal, self._env[node.value])
         elif ConstraintInterpreter._re_namedpt.match(node.value):
-            if node.value == 'c13':
+            if node.value == "c13":
                 idx = 9
-            elif node.value[:-1] == 'top':
+            elif node.value[:-1] == "top":
                 idx = 3 + int(node.value[-1])
             else:
                 idx = "tjqka".find(node.value[0])
@@ -194,7 +214,9 @@ class ConstraintInterpreter:
         elif node.n_children == 2:
             return controls(deal[node.first_child.value][node.last_child.value])
         else:
-            raise RuntimeError(f"controls() given {node.n_children} arguments, expected 2")
+            raise RuntimeError(
+                f"controls() given {node.n_children} arguments, expected 2"
+            )
 
     def _fn_loser(self, node, deal):
         if node.n_children == 1:
@@ -274,43 +296,69 @@ class ConstraintInterpreter:
             raise ValueError(f"Unknown operator {node.value}")
 
     def _op_and(self, node, deal):
-        return self.evaluate(node.first_child, deal) and self.evaluate(node.last_child, deal)
+        return self.evaluate(node.first_child, deal) and self.evaluate(
+            node.last_child, deal
+        )
 
     def _op_or(self, node, deal):
-        return self.evaluate(node.first_child, deal) or self.evaluate(node.last_child, deal)
+        return self.evaluate(node.first_child, deal) or self.evaluate(
+            node.last_child, deal
+        )
 
     def _op_not(self, node, deal):
         return not self.evaluate(node.first_child, deal)
 
     def _op_equal(self, node, deal):
-        return self.evaluate(node.first_child, deal) == self.evaluate(node.last_child, deal)
+        return self.evaluate(node.first_child, deal) == self.evaluate(
+            node.last_child, deal
+        )
 
     def _op_notequal(self, node, deal):
-        return self.evaluate(node.first_child, deal) != self.evaluate(node.last_child, deal)
+        return self.evaluate(node.first_child, deal) != self.evaluate(
+            node.last_child, deal
+        )
 
     def _op_less(self, node, deal):
-        return self.evaluate(node.first_child, deal) < self.evaluate(node.last_child, deal)
+        return self.evaluate(node.first_child, deal) < self.evaluate(
+            node.last_child, deal
+        )
 
     def _op_leq(self, node, deal):
-        return self.evaluate(node.first_child, deal) <= self.evaluate(node.last_child, deal)
+        return self.evaluate(node.first_child, deal) <= self.evaluate(
+            node.last_child, deal
+        )
 
     def _op_greater(self, node, deal):
-        return self.evaluate(node.first_child, deal) > self.evaluate(node.last_child, deal)
+        return self.evaluate(node.first_child, deal) > self.evaluate(
+            node.last_child, deal
+        )
 
     def _op_geq(self, node, deal):
-        return self.evaluate(node.first_child, deal) >= self.evaluate(node.last_child, deal)
+        return self.evaluate(node.first_child, deal) >= self.evaluate(
+            node.last_child, deal
+        )
 
     def _op_add(self, node, deal):
-        return self.evaluate(node.first_child, deal) + self.evaluate(node.last_child, deal)
+        return self.evaluate(node.first_child, deal) + self.evaluate(
+            node.last_child, deal
+        )
 
     def _op_sub(self, node, deal):
-        return self.evaluate(node.first_child, deal) - self.evaluate(node.last_child, deal)
+        return self.evaluate(node.first_child, deal) - self.evaluate(
+            node.last_child, deal
+        )
 
     def _op_mul(self, node, deal):
-        return self.evaluate(node.first_child, deal) * self.evaluate(node.last_child, deal)
+        return self.evaluate(node.first_child, deal) * self.evaluate(
+            node.last_child, deal
+        )
 
     def _op_div(self, node, deal):
-        return self.evaluate(node.first_child, deal) / self.evaluate(node.last_child, deal)
+        return self.evaluate(node.first_child, deal) / self.evaluate(
+            node.last_child, deal
+        )
 
     def _op_mod(self, node, deal):
-        return self.evaluate(node.first_child, deal) % self.evaluate(node.last_child, deal)
+        return self.evaluate(node.first_child, deal) % self.evaluate(
+            node.last_child, deal
+        )

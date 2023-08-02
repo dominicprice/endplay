@@ -15,7 +15,7 @@ class Denom(IntEnum):
     nt = 4
 
     @staticmethod
-    def find(name: str) -> 'Denom':
+    def find(name: str) -> "Denom":
         "Convert a string value into a Denom object"
         try:
             if name == "":
@@ -25,18 +25,18 @@ class Denom(IntEnum):
             raise ValueError(f"Could not convert {name} into a Denom object")
 
     @staticmethod
-    def bidorder() -> Iterator['Denom']:
+    def bidorder() -> Iterator["Denom"]:
         ":return: An iterator over all the denominations in the order they appera in a bidding box"
         yield from [Denom.clubs, Denom.diamonds, Denom.hearts, Denom.spades, Denom.nt]
 
     @staticmethod
-    def suits(reverse: bool = False) -> Iterator['Denom']:
+    def suits(reverse: bool = False) -> Iterator["Denom"]:
         """
-		Iterate over the suits, excluding notrumps
+        Iterate over the suits, excluding notrumps
 
-		:param reverse: If true, return suits in the order clubs -> spades
-		:return: An iterator over the four suits
-		"""
+        :param reverse: If true, return suits in the order clubs -> spades
+        :return: An iterator over the four suits
+        """
         r = range(3, -1, -1) if reverse else range(4)
         for i in r:
             yield Denom(i)
@@ -57,6 +57,7 @@ class Denom(IntEnum):
     def abbr(self) -> str:
         ":return: A short identifier for the denomination"
         import endplay.config as config
+
         if self == Denom.nt:
             return "NT"
         elif config.use_unicode:

@@ -10,13 +10,14 @@ from endplay.types.rank import Rank
 @dataclass(frozen=True)
 class Card:
     """
-	Immutabale class representing a card with `suit` and `rank` read-only attributes
+    Immutabale class representing a card with `suit` and `rank` read-only attributes
 
-	:ivar suit: The suit of the card
-	:vartype suit: Denom
-	:ivar rank: The rank of the card
-	:vartype rank: Rank
-	"""
+    :ivar suit: The suit of the card
+    :vartype suit: Denom
+    :ivar rank: The rank of the card
+    :vartype rank: Rank
+    """
+
     rank: Rank
     suit: Denom
 
@@ -28,12 +29,12 @@ class Card:
         rank: Optional[Rank] = None,
     ):
         """
-		Construct a card either from a string name or from Denom and Rank objects
+        Construct a card either from a string name or from Denom and Rank objects
 
-		:param name: The name of the card, e.g. "S9" or "HT"
-		:param suit: The suit of the card
-		:param rank: The rank of the card
-		"""
+        :param name: The name of the card, e.g. "S9" or "HT"
+        :param suit: The suit of the card
+        :param rank: The rank of the card
+        """
         if name is not None:
             suit = Denom.find(name[0])
             rank = Rank.find(name[1])

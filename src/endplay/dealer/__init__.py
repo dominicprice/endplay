@@ -5,7 +5,7 @@ Functionality for generating bridge deals. This submodule provides an API via
 Hans van Staveren's original dealer program
 """
 
-__all__ = ['run_script', 'generate_deal', 'generate_deals']
+__all__ = ["run_script", "generate_deal", "generate_deals"]
 
 from endplay.dealer.constraint import ConstraintInterpreter
 from endplay.dealer.generate import generate_deal, generate_deals

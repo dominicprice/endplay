@@ -4,7 +4,13 @@ Miscellaneous functions relating to play history
 
 from __future__ import annotations
 
-__all__ = ["trick_winner", "total_tricks", "tricks_to_result", "result_to_tricks", "linearise_play"]
+__all__ = [
+    "trick_winner",
+    "total_tricks",
+    "tricks_to_result",
+    "result_to_tricks",
+    "linearise_play",
+]
 
 from collections.abc import Iterable, Sequence
 
@@ -27,9 +33,9 @@ def trick_winner(trick: Sequence[Card], first: Player, trump: Denom):
 
 def total_tricks(play: Iterable[Card], trump: Denom):
     """
-	Calculate the total number of tricks made by the side
-	initially on lead in `play` with the given trump suit
-	"""
+    Calculate the total number of tricks made by the side
+    initially on lead in `play` with the given trump suit
+    """
     first = Player.north
     tricks = 0
     for trick in grouper(iterable=play, n=4):
@@ -41,33 +47,38 @@ def total_tricks(play: Iterable[Card], trump: Denom):
 
 def tricks_to_result(tricks: int, level: int):
     """
-	Convert tricks made to a result, e.g. 8 tricks
-	in a 4-level contract becomes -2
-	"""
+    Convert tricks made to a result, e.g. 8 tricks
+    in a 4-level contract becomes -2
+    """
     return tricks - (level + 6)
 
 
 def result_to_tricks(result: int, level: int):
     """
-	Convert a result to tricks made, e.g. +1 in a
-	3 level contract becomes 10
-	"""
+    Convert a result to tricks made, e.g. +1 in a
+    3 level contract becomes 10
+    """
     return 6 + level + result
 
 
-def linearise_play(table: list[list[Card]], first: Player, trump: Denom, pad_value: Card = Card(suit=Denom.nt, rank=Rank.R2)) -> list[Card]:
+def linearise_play(
+    table: list[list[Card]],
+    first: Player,
+    trump: Denom,
+    pad_value: Card = Card(suit=Denom.nt, rank=Rank.R2),
+) -> list[Card]:
     """
-	Convert a table-style play history to a linear play history.
-	PBN record play history is in blocks of four tricks always
-	starting with the same player, but many double dummy solving
-	algorithms rely on a linear play history where cards are recorded
-	in the order they are played.
+    Convert a table-style play history to a linear play history.
+    PBN record play history is in blocks of four tricks always
+    starting with the same player, but many double dummy solving
+    algorithms rely on a linear play history where cards are recorded
+    in the order they are played.
 
-	Some data formats include the ability to write cards with an unimportant
-	value, and which are required for the table structure. The `pad_value`
-	parameter should be set to a sentinel value (usually a card with nt suit)
-	to be recognised
-	"""
+    Some data formats include the ability to write cards with an unimportant
+    value, and which are required for the table structure. The `pad_value`
+    parameter should be set to a sentinel value (usually a card with nt suit)
+    to be recognised
+    """
     play: list[Card] = []
     winner = first
     for row in table:
@@ -83,13 +94,19 @@ def linearise_play(table: list[list[Card]], first: Player, trump: Denom, pad_val
     return play
 
 
-def tabularise_play(play: list[Card], first: Player, trump: Denom, *, pad_value: Card = Card(suit=Denom.nt, rank=Rank.R2)):
+def tabularise_play(
+    play: list[Card],
+    first: Player,
+    trump: Denom,
+    *,
+    pad_value: Card = Card(suit=Denom.nt, rank=Rank.R2),
+):
     """
-	Convert a linear play sequence into a table, where the first element in each row
-	is the card played by the player `first`.
-	If the number of tricks in the play sequence is not not divisible by four, then the
-	table will be padded out with `pad_value`.
-	"""
+    Convert a linear play sequence into a table, where the first element in each row
+    is the card played by the player `first`.
+    If the number of tricks in the play sequence is not not divisible by four, then the
+    table will be padded out with `pad_value`.
+    """
     table = []
     winner = first
     for trick in grouper(iterable=play, n=4, fillvalue=pad_value):

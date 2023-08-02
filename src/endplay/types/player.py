@@ -16,7 +16,7 @@ class Player(IntEnum):
     west = 3
 
     @staticmethod
-    def find(name: str) -> 'Player':
+    def find(name: str) -> "Player":
         "Convert a string into a Player object"
         try:
             if name == "":
@@ -26,11 +26,11 @@ class Player(IntEnum):
             raise ValueError(f"could not convert '{name}' to Player")
 
     @staticmethod
-    def from_lin(n: int) -> 'Player':
+    def from_lin(n: int) -> "Player":
         """
-		Convert a BBO LIN representation of a player into a Player object.
-		The conversion is determined by 1=S, 2=W, 3=N, 4=E
-		"""
+        Convert a BBO LIN representation of a player into a Player object.
+        The conversion is determined by 1=S, 2=W, 3=N, 4=E
+        """
         if n < 1 or n > 4:
             raise ValueError(f"n must be in range 1 <= n <= 4")
         return [Player.south, Player.west, Player.north, Player.east][n - 1]
@@ -39,77 +39,78 @@ class Player(IntEnum):
         return [3, 4, 1, 2][self]
 
     @staticmethod
-    def from_board(n: int) -> 'Player':
+    def from_board(n: int) -> "Player":
         """
-		Return the player who is the dealer of the corresponding board
-		"""
+        Return the player who is the dealer of the corresponding board
+        """
         return Player.west.next(n)
 
     def is_vul(self, vul: Vul) -> bool:
-        return \
-         vul == Vul.both or \
-         (vul == Vul.ns and self in [Player.north, Player.south]) or \
-         (vul == Vul.ew and self in [Player.east, Player.west])
+        return (
+            vul == Vul.both
+            or (vul == Vul.ns and self in [Player.north, Player.south])
+            or (vul == Vul.ew and self in [Player.east, Player.west])
+        )
 
     def enumerate(self, iterable: Iterable, step: int = 1) -> Iterator:
         """
-		Return an iterator whose `next` method returns a tuple
-		containing a Player (starting from this player) and the
-		values obtained from iterating over iterable, where the
-		player increments each time by `step` rotations clockwise
-		"""
+        Return an iterator whose `next` method returns a tuple
+        containing a Player (starting from this player) and the
+        values obtained from iterating over iterable, where the
+        player increments each time by `step` rotations clockwise
+        """
         player = self
         for item in iterable:
             yield player, item
             player = player.next(step)
 
-    def iter_from(self) -> Iterator['Player']:
+    def iter_from(self) -> Iterator["Player"]:
         """
-		Iterate over all four players, clockwise, starting from
-		this player
+        Iterate over all four players, clockwise, starting from
+        this player
 
-		:return: An iterator over all four players in play order
-		"""
+        :return: An iterator over all four players in play order
+        """
         for i in range(4):
             yield self.next(i)
 
     @staticmethod
-    def iter_order(order: str) -> Iterator['Player']:
+    def iter_order(order: str) -> Iterator["Player"]:
         """
-		Iterate over a sequence of players in a given order
+        Iterate over a sequence of players in a given order
 
-		:param order: The specified order as a four-character string or list of strings
-		:return: An iterator over the players in the specified order
-		"""
+        :param order: The specified order as a four-character string or list of strings
+        :return: An iterator over the players in the specified order
+        """
         yield from (Player.find(c) for c in order)
 
-    def turns_to(self, other: 'Player') -> int:
+    def turns_to(self, other: "Player") -> int:
         "Return the number of positions clockwise `other` is from `self`"
         distance = int(other) - int(self)
         if distance < 0:
             distance += 4
         return distance
 
-    def prev(self, n: int = 1) -> 'Player':
+    def prev(self, n: int = 1) -> "Player":
         ":return: The player who is n places right of the current player"
         return Player((self - n) % 4)
 
-    def next(self, n: int = 1) -> 'Player':
+    def next(self, n: int = 1) -> "Player":
         ":return: The player who is n places left of the current player"
         return Player((self + n) % 4)
 
     @property
-    def lho(self) -> 'Player':
+    def lho(self) -> "Player":
         ":return: The player on the current player's left"
         return self.next(1)
 
     @property
-    def partner(self) -> 'Player':
+    def partner(self) -> "Player":
         ":return: The player opposite the current player"
         return Player((self + 2) % 4)
 
     @property
-    def rho(self) -> 'Player':
+    def rho(self) -> "Player":
         ":return: The player to the current player's right"
         return self.prev(1)
 
