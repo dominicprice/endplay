@@ -2,6 +2,7 @@ import unittest
 
 from endplay import config
 from endplay.dds import *
+from endplay.dds.solve import SolveMode
 from endplay.types import *
 
 config.use_unicode = False
@@ -13,7 +14,6 @@ pbn4 = "N:987... K45... AQ2... T63..."
 
 
 class TestAnalyse(unittest.TestCase):
-
     def test_01(self):
         deal1 = Deal(pbn)
         play1 = ["s9", "sk", "sq", "s7", "h3", "hq", "h4", "h9"]
@@ -38,7 +38,6 @@ class TestAnalyse(unittest.TestCase):
 
 
 class TestPar(unittest.TestCase):
-
     def test_01(self):
         deal = Deal(pbn)
         parlist = par(deal, Vul.none, Player.north)
@@ -47,25 +46,68 @@ class TestPar(unittest.TestCase):
 
 
 class TestSolve(unittest.TestCase):
-
-    def test_01(self):
+    def test_solve_one(self):
         d = Deal(pbn4, first=Player.west, trump=Denom.spades)
         d.play("S6")
         for _, tricks in solve_board(d):
             self.assertEqual(tricks, 2)
 
-    def test_02(self):
+    def test_solve_all(self):
         d = Deal(pbn4, first=Player.west, trump=Denom.spades)
         d.play("S6")
 
         deals = [d]
-        for solution in solve_all_boards([d]):
+        for solution in solve_all_boards(deals):
             for _, tricks in solution:
                 self.assertEqual(tricks, 2)
 
+    def test_modes(self):
+        d = Deal(pbn2, first=Player.west, trump=Denom.spades)
+        d.play("C4")
+        res_expected = {
+            SolveMode.Default: [
+                (Card("CA"), 9),
+                (Card("C7"), 9),
+                (Card("C2"), 9),
+                (Card("C9"), 9),
+                (Card("CJ"), 9),
+            ],
+            SolveMode.OptimalOne: [(Card("CA"), 9)],
+            SolveMode.OptimalAll: [
+                (Card("CA"), 9),
+                (Card("C7"), 9),
+                (Card("C2"), 9),
+                (Card("C9"), 9),
+                (Card("CJ"), 9),
+            ],
+            SolveMode.LegalOne: [(Card("CA"), 0)],
+            SolveMode.LegalAll: [
+                (Card("CA"), 0),
+                (Card("C7"), 0),
+                (Card("C2"), 0),
+                (Card("C9"), 0),
+                (Card("CJ"), 0),
+            ],
+            SolveMode.TargetOne: [(Card("CA"), 3)],
+            SolveMode.TargetAll: [
+                (Card("CA"), 3),
+                (Card("C7"), 3),
+                (Card("C2"), 3),
+                (Card("C9"), 3),
+                (Card("CJ"), 3),
+            ],
+        }
+
+        for mode, expected in res_expected.items():
+            sols = solve_board(d, mode, 3)
+            self.assertSequenceEqual(
+                expected,
+                list(sols),
+                f"mode {mode.name} produced unexpected results",
+            )
+
 
 class TestDDTable(unittest.TestCase):
-
     def test_single(self):
         deal = Deal(pbn)
         ddtable = calc_dd_table(deal)

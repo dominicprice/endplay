@@ -109,7 +109,7 @@ class Deal:
         return self[Player.north]
 
     @north.setter
-    def north(self, hand: Hand) -> None:
+    def north(self, hand: Union[Hand, str]) -> None:
         self[Player.north] = hand
 
     @property
@@ -118,7 +118,7 @@ class Deal:
         return self[Player.east]
 
     @east.setter
-    def east(self, hand: Hand) -> None:
+    def east(self, hand: Union[Hand, str]) -> None:
         self[Player.east] = hand
 
     @property
@@ -127,7 +127,7 @@ class Deal:
         return self[Player.south]
 
     @south.setter
-    def south(self, hand: Hand) -> None:
+    def south(self, hand: Union[Hand, str]) -> None:
         self[Player.south] = hand
 
     @property
@@ -136,7 +136,7 @@ class Deal:
         return self[Player.west]
 
     @west.setter
-    def west(self, hand: Hand) -> None:
+    def west(self, hand: Union[Hand, str]) -> None:
         self[Player.west] = hand
 
     @property
@@ -461,7 +461,7 @@ class Deal:
             )
             print(spacing, s, file=stream)
 
-    def __contains__(self, card: Card) -> bool:
+    def __contains__(self, card: Union[Card, str]) -> bool:
         ":return: True if card is in the current deal"
         return any(card in hand for _, hand in self)
 

@@ -4,10 +4,9 @@ Parser for Dealer scripts
 
 __all__ = ["DealerParser", "ParseException"]
 
-from typing import TextIO
+from typing import Optional, TextIO
 
 import pyparsing as pp
-
 from endplay.types import Contract, Deal, Denom, Hand, Player, Vul
 
 pp.ParserElement.enable_packrat()
@@ -182,7 +181,7 @@ class Node:
 
     @staticmethod
     def from_pattern(string, location, tokens):
-        shape = []
+        shape: list[Optional[int]] = []
         for char in tokens[0]:
             if char in "xX":
                 shape.append(None)

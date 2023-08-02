@@ -8,12 +8,14 @@ __all__ = ["CursesFrontend"]
 import curses
 import io
 import shlex
+import textwrap
 from curses.textpad import Textbox
 from typing import Optional
 
 from endplay.dds.ddtable import calc_dd_table
 from endplay.dds.solve import solve_board
 from endplay.interact.commandobject import CommandObject
+from endplay.interact.frontends.base import BaseFrontend
 from endplay.types.denom import Denom
 from endplay.types.player import Player
 
@@ -32,7 +34,7 @@ def addcstr(win: "curses._CursesWindow", y: int, x: int, s: str):
             win.addch(y, i, c)
 
 
-class CursesFrontend:
+class CursesFrontend(BaseFrontend):
     dealwin: "curses._CursesWindow"
     trickswin: "curses._CursesWindow"
     infowin: "curses._CursesWindow"
@@ -124,8 +126,9 @@ class CursesFrontend:
             self.tablewin.addstr(2, 2, str(e))
 
         # history
-        max_lines, _ = self.consolewin.getmaxyx()
+        max_lines, max_cols = self.consolewin.getmaxyx()
         max_lines -= 1
+        max_cols -= 5
         output: list[tuple[str, int]] = []
         for i, cmd in enumerate(reversed(self.console_lines)):
             lines_remaining = max_lines - len(output)
@@ -138,7 +141,8 @@ class CursesFrontend:
             if cmd[1] is not None:
                 c = curses.color_pair(4) if cmd[2] else curses.color_pair(1)
                 for l in cmd[1].splitlines():
-                    cmd_output += [(l, c)]
+                    for splitl in textwrap.fill(l, max_cols).splitlines():
+                        cmd_output += [(splitl, c)]
             if len(cmd_output) > lines_remaining:
                 cmd_output = cmd_output[len(cmd_output) - lines_remaining :]
             output = cmd_output + output

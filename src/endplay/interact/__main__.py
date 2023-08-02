@@ -7,8 +7,8 @@ import argparse
 
 import endplay.config as config
 from endplay.interact.commandobject import CommandObject
-from endplay.interact.frontends import CmdFrontend, CursesFrontend
-from endplay.interact.frontends.html import HTMLFrontend
+from endplay.interact.frontends import (BaseFrontend, CmdFrontend,
+                                        CursesFrontend, HTMLFrontend)
 from endplay.types import Denom, Player
 from endplay.types.deal import Deal
 
@@ -89,6 +89,7 @@ def main():
 
     cmdobj = CommandObject(deal)
 
+    frontend: BaseFrontend
     if args.frontend == "cmd":
         frontend = CmdFrontend(cmdobj)
     elif args.frontend == "curses":

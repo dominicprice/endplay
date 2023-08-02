@@ -9,11 +9,12 @@ import os
 import shlex
 import webbrowser
 from http.server import BaseHTTPRequestHandler, HTTPServer
-from typing import Union
+from typing import Optional, Union
 
 from endplay.dds.ddtable import calc_dd_table
 from endplay.dds.solve import solve_board
 from endplay.interact.commandobject import CommandObject
+from endplay.interact.frontends.base import BaseFrontend
 from endplay.types.denom import Denom
 from endplay.types.player import Player
 from endplay.types.vul import Vul
@@ -22,7 +23,7 @@ g_cmdobj = CommandObject(None)
 script_dir = os.path.dirname(os.path.realpath(__file__))
 
 
-class HTMLFrontend:
+class HTMLFrontend(BaseFrontend):
     def __init__(self, cmdobj: CommandObject):
         global g_cmdobj
         g_cmdobj = cmdobj
@@ -127,6 +128,7 @@ class EndplayServer(BaseHTTPRequestHandler):
         except Exception:
             solutions = None
 
+        table: Optional[dict[str, dict[str, int]]]
         try:
             if len(g_cmdobj.deal[Player.north]) == 0:
                 raise RuntimeError
@@ -139,7 +141,10 @@ class EndplayServer(BaseHTTPRequestHandler):
         except Exception:
             table = None
 
-        hcp = {player.name: g_cmdobj.cmd_hcp(player.name) for player in Player}
+        hcp = {
+            player.name: CommandObject.cmd_hcp(g_cmdobj, player.name)
+            for player in Player
+        }
 
         self.send_response(200)
         self.send_header("Content-Type", "application/json")

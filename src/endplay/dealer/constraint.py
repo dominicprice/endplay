@@ -12,15 +12,8 @@ import re
 from typing import Any, Callable, Union
 
 from endplay.dds import analyse_play
-from endplay.evaluate import (
-    cccc,
-    controls,
-    exact_shape,
-    hcp,
-    losers,
-    quality,
-    standard_hcp_scale,
-)
+from endplay.evaluate import (cccc, controls, exact_shape, hcp, losers,
+                              quality, standard_hcp_scale)
 from endplay.parsers.dealer import DealerParser, Node
 from endplay.types import Deal, Denom
 
@@ -71,7 +64,7 @@ class ConstraintInterpreter:
 
     def reset_env(self):
         "Reinitialise the environment to the default values"
-        self._env = {
+        self._env: dict[str, Any] = {
             "pt0": [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
             "pt1": [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             "pt2": [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -88,7 +81,7 @@ class ConstraintInterpreter:
         "Parse an expression string into a syntax tree"
         return self.parser.parse_expr(s)
 
-    def evaluate(self, node: Union[Node, str], deal: Deal) -> float:
+    def evaluate(self, node: Union[Node, str], deal: Deal) -> Any:
         "Evaluate an expression tree over a specific deal into a logical or arithmetic type"
         if isinstance(node, str):
             node = self.parse(node)
@@ -186,7 +179,7 @@ class ConstraintInterpreter:
         elif node.value == "hascard":
             return self._fn_hascard(node, deal)
         elif node.value == "imp" or node.value == "imps":
-            return self._fn_imp(node, deal)
+            return self._fn_imps(node, deal)
         else:
             raise ValueError(f"Unknown function {node.value}")
 
@@ -258,7 +251,7 @@ class ConstraintInterpreter:
         return self._evaluate_shape(node.last_child, s)
 
     def _fn_if(self, node, deal):
-        if self.evaluate(node.first_child):
+        if self.evaluate(node.first_child, deal):
             return self.evaluate(node.middle_child, deal)
         else:
             return self.evaluate(node.last_child, deal)

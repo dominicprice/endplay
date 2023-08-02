@@ -196,7 +196,7 @@ class Hand:
     def clubs(self, suit: SuitHolding) -> None:
         self[Denom.clubs] = suit
 
-    def __contains__(self, card: Card) -> bool:
+    def __contains__(self, card: Union[Card, str]) -> bool:
         ":return: True if card is in this hand"
         if isinstance(card, str):
             card = Card(name=card)

@@ -8,9 +8,10 @@ __all__ = ["CmdFrontend"]
 import shlex
 
 from endplay.interact.commandobject import CommandObject
+from endplay.interact.frontends.base import BaseFrontend
 
 
-class CmdFrontend:
+class CmdFrontend(BaseFrontend):
     def __init__(self, cmdobj: CommandObject):
         self.cmdobj = cmdobj
         self._ps1 = "{onlead}> "

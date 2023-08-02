@@ -1,3 +1,7 @@
+"""
+The actions which can be applied to a `CommandObject`.
+"""
+
 from abc import ABC, abstractmethod, abstractproperty
 from typing import TYPE_CHECKING, Any, Optional, Union
 
@@ -83,6 +87,7 @@ class PlayAction(Action):
             cmdobj.deal.unplay()
         else:
             first, curtrick = self.prev_trick
+            cmdobj.deal[first.rho].add(self.card)
             cmdobj.deal._data.first = first
             for card in curtrick:
                 cmdobj.deal.play(card, False)

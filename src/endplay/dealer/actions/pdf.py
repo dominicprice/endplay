@@ -46,6 +46,6 @@ class PDFActionsWriter(LaTeXActionsWriter):
             shutil.rmtree(self.tmpdir)
         except Exception as e:
             warnings.warn(
-                f"Unable to remove temporary directory tree {tmpdir}: {e}",
+                f"Unable to remove temporary directory tree {self.tmpdir}: {e}",
                 ResourceWarning,
             )

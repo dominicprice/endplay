@@ -105,5 +105,5 @@ class TerminalActionsWriter(BaseActionsWriter):
         width = max(max(len(cell) for cell in row) for row in rows)
         self.write(" ".join(c.rjust(width) for c in rows[0]))
         self.write("+".rjust(width) + "-" + "-".join("-" * width for _ in rows[0][1:]))
-        for row in rows[1:]:
-            self.write(" ".join(c.rjust(width) for c in row))
+        for r in rows[1:]:
+            self.write(" ".join(c.rjust(width) for c in r))

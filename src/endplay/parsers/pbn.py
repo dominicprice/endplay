@@ -10,28 +10,13 @@ import re
 from enum import Enum
 from io import StringIO
 from itertools import chain
-from typing import TextIO, Union
+from typing import Any, Optional, TextIO, Union
 
 from endplay.config import suppress_unicode
-from endplay.types import (
-    Bid,
-    Board,
-    Card,
-    Contract,
-    ContractBid,
-    Deal,
-    Denom,
-    PenaltyBid,
-    Player,
-    Rank,
-    Vul,
-)
-from endplay.utils.play import (
-    linearise_play,
-    result_to_tricks,
-    tabularise_play,
-    tricks_to_result,
-)
+from endplay.types import (Bid, Board, Card, Contract, ContractBid, Deal,
+                           Denom, PenaltyBid, Player, Rank, Vul)
+from endplay.utils.play import (linearise_play, result_to_tricks,
+                                tabularise_play, tricks_to_result)
 from more_itertools import chunked
 
 
@@ -42,19 +27,29 @@ class PBNDecodeError(ValueError):
         self.lineno = lineno
 
 
+class RE:
+    lcomment = re.compile(r"\s*;\s*(.*?)")
+    bcomment_line = re.compile(r"\s*{\s*(.*?)}")
+    bcomment_begin = re.compile(r"\s*{\s*(.*)")
+    bcomment_end = re.compile(r"(.*)}")
+    ignore = re.compile(r"%.*")
+    fileformat = re.compile(r"%\s*(EXPORT|IMPORT)", re.IGNORECASE)
+    pbnversion = re.compile(r"%\s*PBN (\d+)\.(\d+)", re.IGNORECASE)
+    metatag = re.compile(r"%\s*([\w-]+):\s*(.*?)")
+    tagpair = re.compile(r"\[(\w+)\s+\"(.*?)\"\](\s*[;{]?.*)")
+    note = re.compile(r"(\d+):(.*)")
+    colname = re.compile(r"([+-]?)(\w+)(?:\\(\d+)([LR]?))?", re.IGNORECASE)
+
+
 class PBNDecoder:
-    # Precompile some regular expressions
-    re_lcomment = re.compile(r"\s*;\s*(.*?)")
-    re_bcomment_line = re.compile(r"\s*{\s*(.*?)}")
-    re_bcomment_begin = re.compile(r"\s*{\s*(.*)")
-    re_bcomment_end = re.compile(r"(.*)}")
-    re_ignore = re.compile(r"%.*")
-    re_fileformat = re.compile(r"%\s*(EXPORT|IMPORT)", re.IGNORECASE)
-    re_pbnversion = re.compile(r"%\s*PBN (\d+)\.(\d+)", re.IGNORECASE)
-    re_metatag = re.compile(r"%\s*([\w-]+):\s*(.*?)")
-    re_tagpair = re.compile(r"\[(\w+)\s+\"(.*?)\"\](\s*[;{]?.*)")
-    re_note = re.compile(r"(\d+):(.*)")
-    re_colname = re.compile(r"([+-]?)(\w+)(?:\\(\d+)([LR]?))?", re.IGNORECASE)
+    metadata: dict[str, Any]
+    boards: list[Board]
+    prevtags: dict[str, Any]
+    curtags: dict[str, Any]
+    notes: dict[str, str]
+    state: PBNDecoder.State
+    curtag: Optional[str]
+    lineno: int
 
     class State(Enum):
         NONE = 0
@@ -64,41 +59,41 @@ class PBNDecoder:
 
     def __init__(self):
         # warnings.warn("endplay.parsers.PBNDecoder is now deprecated and subject to be replaced with a different interface at any time")
-        self.metadata = {}
+        self.clear()
 
-    def _get_comment(self, text: str, iscont: bool):
+    def _get_comment(self, text: str, iscont: bool) -> tuple[Optional[str], bool]:
         """
         Returns the comment contained in text, and a flag which
         is set to True if the comment requires continuation or
         False otherwise
         """
         if iscont:
-            m = PBNDecoder.re_bcomment_end.match(text)
+            m = RE.bcomment_end.match(text)
             if m:
                 return (m.group(1), False)
             return (text, True)
         else:
             # Match a single line comment (begins with a semicolon)
-            m = PBNDecoder.re_lcomment.match(text)
+            m = RE.lcomment.match(text)
             if m:
                 return (m.group(1), False)
 
             # Match a block comment that ends on the same line (e.g. { xyz })
-            m = PBNDecoder.re_bcomment_line.match(text)
+            m = RE.bcomment_line.match(text)
             if m:
                 return (m.group(1), False)
 
             # Match a block comment that begins on the line but is continued (e.g. { xy)
-            m = PBNDecoder.re_bcomment_begin.match(text)
+            m = RE.bcomment_begin.match(text)
             if m:
                 return (m.group(1), True)
 
             # No comment found
-            return None
+            return (None, False)
 
-    def _tags_to_board(self):
+    def _tags_to_board(self) -> Optional[Board]:
         if len(self.curtags) == 0:
-            return
+            return None
         board = Board()
         declarer = None
         tricks = None
@@ -197,9 +192,9 @@ class PBNDecoder:
                 board.deal.trump = board.contract.denom
         return board
 
-    def _parse_meta(self, curline):
+    def _parse_meta(self, curline: str) -> bool:
         # Match against PBN version (e.g. % PBN 2.1)
-        m = PBNDecoder.re_pbnversion.match(curline)
+        m = RE.pbnversion.match(curline)
         if m:
             self.metadata["version"] = {
                 "major": int(m.group(1)),
@@ -207,44 +202,47 @@ class PBNDecoder:
             }
             return False
         # Match against IMPORT/EXPORT (e.g. % EXPORT)
-        m = PBNDecoder.re_fileformat.match(curline)
+        m = RE.fileformat.match(curline)
         if m:
             self.metadata["format"] = m.group(1).upper()
             return False
         # Match against some other metadata (e.g. % Creator: Joe Bloggs)
-        m = PBNDecoder.re_metatag.match(curline)
+        m = RE.metatag.match(curline)
         if m:
             self.metadata[m.group(1)] = m.group(2)
             return False
         # Some other comment line we can ignore
-        if PBNDecoder.re_ignore.match(curline):
+        if RE.ignore.match(curline):
             return False
         # No match found, metadata section complete
         self.state = PBNDecoder.State.NONE
         return True
 
-    def _parse_conttable(self, curline):
+    def _parse_conttable(self, curline: str) -> bool:
         # Revert to PBNDecoder.State.NONE if a tag or empty line is encountered
-        if PBNDecoder.re_tagpair.match(curline) or curline == "":
+        if RE.tagpair.match(curline) or curline == "":
             self.state = PBNDecoder.State.NONE
         # Split the line by whitespace add add the elements to the tag value
         else:
+            if self.curtag is None:
+                raise RuntimeError("curtag is None while parsing table")
             self.curtags[self.curtag]["data"] += [curline.split()]
         return True
 
-    def _parse_none(self, curline):
+    def _parse_none(self, curline: str) -> bool:
         # Empty line, start new game (or ignore if the current game is empty)
         if curline == "":
             if self.curtags:
                 board = self._tags_to_board()
-                self.boards.append(board)
-                self.prevtags, self.curtags = self.curtags, {}
+                if board is not None:
+                    self.boards.append(board)
+                    self.prevtags, self.curtags = self.curtags, {}
             return False
         # Comment line, ignore
-        if PBNDecoder.re_ignore.match(curline):
+        if RE.ignore.match(curline):
             return False
         # Tag pair
-        m = PBNDecoder.re_tagpair.match(curline)
+        m = RE.tagpair.match(curline)
         if m:
             self.curtag = m.group(1)
             # Ignore tag if repeated
@@ -252,11 +250,13 @@ class PBNDecoder:
                 return False
             # Get the comment attached to the line (if any)
             if m.group(3):
-                _, needcont = self._get_comment(m.group(3), False)  # pyright: ignore
+                _, needcont = self._get_comment(m.group(3), False)
                 if needcont:
                     self.state = PBNDecoder.State.COMMENTBLOCK
             # Add the tag to the current game, entering into State.DATA if it is a
             # section that expects data (play, auction or *table)
+            if self.curtag is None:
+                raise RuntimeError("curtag is None while parsing tag")
             if self.curtag.lower() == "play" or self.curtag.lower() == "auction":
                 self.curtags[self.curtag] = {"value": m.group(2), "data": []}
                 self.state = PBNDecoder.State.DATA
@@ -265,7 +265,7 @@ class PBNDecoder:
             ):
                 colnames = []
                 for colname in m.group(2).split(";"):
-                    cm = PBNDecoder.re_colname.match(colname)
+                    cm = RE.colname.match(colname)
                     if cm:
                         if (
                             (not cm.group(1))
@@ -299,22 +299,25 @@ class PBNDecoder:
         else:
             raise PBNDecodeError("Expected a tag", curline, self.lineno)
 
-    def _parse_commentblock(self, curline):
-        _, needcont = self._get_comment(curline, True)  # pyright: ignore
+    def _parse_commentblock(self, curline: str) -> bool:
+        _, needcont = self._get_comment(curline, True)
         if not needcont:
             self.state = PBNDecoder.State.NONE
         return True
 
-    def parse_file(self, f: TextIO) -> list[Board]:
-        "Parse a PBN file"
-
+    def clear(self) -> None:
+        self.metadata: dict[str, Any] = {}
         self.boards: list[Board] = []
-        self.prevtags = {}
-        self.curtags = {}
+        self.prevtags: dict[str, Any] = {}
+        self.curtags: dict[str, Any] = {}
         self.notes: dict[str, str] = {}
         self.state = PBNDecoder.State.META
-        self.curtag = None
+        self.curtag: Optional[str] = None
         self.lineno = 0
+
+    def parse_file(self, f: TextIO) -> list[Board]:
+        "Parse a PBN file"
+        self.clear()
 
         # Loop over lines, keeping track of what type of line we are expecting.
         # If the line isn't consumed, change the state and fallthrough to a
@@ -348,7 +351,9 @@ class PBNEncoder:
         self.tags = []
         self.pbn_version = "2.1"
 
-    def _create_tag(self, key, value, data=None):
+    def _create_tag(
+        self, key: str, value: Any, data: Optional[list[Any]] = None
+    ) -> None:
         key = key[:1].upper() + key[1:]
         tagpair = f'[{key} "{value}"]'
         if data is not None:
@@ -388,7 +393,7 @@ class PBNEncoder:
                 res.append(cell.rjust(minwidth))
         return res
 
-    def export_board(self, board: Board):
+    def export_board(self, board: Board) -> None:
         # Split the board info into mandatory and supplementary tags
         event = "?"
         site = "?"

@@ -34,6 +34,12 @@ class TestDeal(unittest.TestCase):
         deal.play("S9")
         self.assertEqual(deal.curplayer, Player.east)
 
+    def test_legal_moves(self):
+        deal = Deal(pbn)
+        deal.play("S4")
+        expected = [Card("S3"), Card("S8"), Card("SK")]
+        self.assertEqual(expected, deal.legal_moves())
+
     def test_eq(self):
         a = Deal(pbn)
         b = a.copy()

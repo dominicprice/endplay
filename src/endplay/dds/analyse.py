@@ -114,7 +114,9 @@ def analyse_start(deal: Deal, declarer_is_first: bool = False) -> int:
 
 
 def analyse_play(
-    deal: Deal, play: Iterable[Union[Card, str]], declarer_is_first: bool = False
+    deal: Deal,
+    play: Iterable[Union[Card, str]],
+    declarer_is_first: bool = False,
 ) -> SolvedPlay:
     """
     Calculate a list of double dummy values after each card in `play`
@@ -142,7 +144,8 @@ def analyse_play(
 
 
 def analyse_all_starts(
-    deals: Iterable[Deal], declarer_is_first: bool = False
+    deals: Iterable[Deal],
+    declarer_is_first: bool = False,
 ) -> list[int]:
     """
     Optimized version of analyse for multiple deals which uses threading to
@@ -182,7 +185,7 @@ def analyse_all_starts(
 
 def analyse_all_plays(
     deals: Iterable[Deal],
-    plays: Iterable[Iterable[Card]],
+    plays: Iterable[Iterable[Union[Card, str]]],
     declarer_is_first: bool = False,
 ) -> SolvedPlayList:
     """
