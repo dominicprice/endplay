@@ -127,9 +127,9 @@ python3 -m pytest
 
 - `endplay.dds` is a high-level wrapper around Bo Haglund's [dds library](https://github.com/dds-bridge/dds) which takes care of converting between the different types and encodings it uses internally and providing sensible defaults for things such as the number of threads it uses. A lower level wrapper `endplay._dds`, which is little more than the basic `ctypes` declarations, is also provided and is used internally by the dds functions when making library calls.
 
-- `endplay.parsers` provides tools for parsing common file types which are used as inputs and outputs for bridge software, this includes PBN and Dealer. These produce document tree representation of the input files and are used internally for many things, but can also be traversed manually to create programs which interact with other bridge software easily
+- `endplay.parsers` provides tools for parsing common file types which are used as inputs and outputs for bridge software, this includes PBN and Dealer. These produce document tree representation of the input files and are used internally for many things, but can also be traversed manually to create programs which interact with other bridge software easily.
 
-- `endplay.interact` provides the `InteractiveDeal` class which keeps an undo stack whenever its state is modified, making it easier to interact with the deal. The main purpose of the module is a CLI tool which provides a simple REPL for analysing bridge deals which is available as a main module with `python3 -m endplay.interact` (or simply `endplay-interact`)
+- `endplay.interact` provides the `CommandObject` class which keeps an undo stack whenever its state is modified, making it easier to interact with the deal. The main purpose of the module is to provide a tool to create interactive deal programs, such as the main module (`python3 -m endplay.interact` or `endplay-interact`) which provides a a set of frontends analysing bridge deals.
 
 
 
@@ -349,45 +349,14 @@ A full list of the methods can be found in the API reference of the documentatio
 
 #### The `interact` module
 
-One of my main motivations for building up this library is that sometimes I just want a quick way to see how a hand would play in a particular contract, or step through a deal card by card checking to see if a particular play would work. Using an interactive Python environment this is relatively easy, but in the end I developed a separate module called `interact` which implements (using the Python `cmd` library) its own REPL specifically for moving through a hand. It can be run by executing `python3 -m endplay.interact`. You will be greeted by an empty hand diagram.
+One of my main motivations for building up this library is that sometimes I just want a quick way to see how a hand would play in a particular contract, or step through a deal card by card checking to see if a particular play would work. Using an interactive Python environment this is relatively easy, but in the end I developed a separate module called `interact` which implements a variety of frontends for interacting with deals. they can be run by executing `python3 -m endplay.interact`, and a specific frontend can be selected by using the `-x FRONTEND` flag:
+* `-x cmd` The default frontend, a simple REPL inside your terminal
+* `-x curses` A curses frontend which runs inside the terminal
+* `-x html` An HTML frontend which opens inside your web browser, with the python program acting as a local server.
 
-```
-   Board 1    ---
-    Vul -     ---
-   N deals    ---
-              ---
----                         ---
----                         ---
----                         ---
----                         ---
-              ---
-              ---
-              ---
-              ---
-N>
-```
+Both the `cmd` and `curses` frontends require you to enter shell-like commands such as `shuffle`, `deal 'PBNSTRING'` or `play SA`. You can type `help` to get a list of all available commands, or `help CMDNAME` to get a specific help message about a command. The `html` interface allows you to click on cards and buttons to interact with it, which under the hood it turns into these commands which it sends back to the server.
 
-You can specify a deal by typing `redeal <PBN string>`, or generate a random deal by typing `shuffle <constraint>` (more information on constraints can be found in the next section, *Generating hands*)
-
-```
-N> shuffle hcp(north) > 20
-
-   Board 1    KQT73
-    Vul -     KQ
-   N deals    K
-              AKJ65
-J64                         A852
-J8                          T7654
-QJ542                       A98
-874                         9
-              9
-              A932
-              T763
-              QT32
-N>
-```
-
-From here you can access many of the `Deal` and `Hand` methods; you can specify a deal by typing `redeal <PBN string>`, set a particular hand by typing `set <player> <PBN string>`, play a card by typing `play <card name>` and set the trump suit and player on lead with `trump <denom>` and `first <player>`. A full list of commands can be brought up by typing `help`, and more information on how a specific command works by typing `help <command name>`. This module also provides access to some of the double dummy solving features, the Python API of which is described farther down in this quick-start guide.
+The interactive interface keeps account of all the actions which have taken place, allowing you to type commands such as `undo` and `redo` to go back and forth through the state (or `rewind` and `fastforward` to go to either end of the history).
 
 ### Generating hands
 
