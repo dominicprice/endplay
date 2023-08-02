@@ -179,6 +179,7 @@ class Deal:
         """
         if isinstance(card, str):
             card = Card(card)
+
         for i in range(3):
             if self._data.currentTrickRank[i] == 0:
                 if from_hand and not self[self.first.next(i)].remove(card):
@@ -187,8 +188,8 @@ class Deal:
                 self._data.currentTrickSuit[i] = card.suit
                 break
         else:
-            # Playing final card to a trick: Calculate winner, update first and clear current trick
-            # Lazy import to avoid circular import
+            # Playing final card to a trick: Calculate winner, update first and
+            # clear current trick. Lazy import to avoid circular import
             from endplay.utils.play import trick_winner
 
             if from_hand and not self[self.first.rho].remove(card):
@@ -199,12 +200,13 @@ class Deal:
 
     def unplay(self, to_hand: bool = True) -> Card:
         """
-        Unplay the last card played to the current trick. Throws a RuntimeError if the current
-        trick is empty
+        Unplay the last card played to the current trick. Throws a RuntimeError
+        if the current trick is empty
 
         :param toHand: If true then the card is returned to the hand of the player who played
                 it to the trick
         :return: The card that was picked up
+
         """
         for i in reversed(range(3)):
             suit, rank = self._data.currentTrickSuit[i], self._data.currentTrickRank[i]
@@ -220,8 +222,8 @@ class Deal:
 
     def complete_deal(self) -> None:
         """
-        If there is a player with no cards, deal any cards which do not appear in anyone else's
-        hand to that player
+        If there is a player with no cards, deal any cards which do not appear
+        in anyone else's hand to that player
         """
         remaining = Hand("AKQJT98765432.AKQJT98765432.AKQJT98765432.AKQJT98765432")
         missing_hand = None
@@ -485,23 +487,25 @@ class Deal:
             self._data.remainCards, other._data.remainCards, len(self._data.remainCards)
         ):
             return False
-        if not hands_only:
-            if self._data.trump != other._data.trump:
-                return False
-            if self._data.first != other._data.first:
-                return False
-            if cmp(
-                self._data.currentTrickSuit,
-                other._data.currentTrickSuit,
-                len(self._data.currentTrickSuit),
-            ):
-                return False
-            if cmp(
-                self._data.currentTrickRank,
-                other._data.currentTrickRank,
-                len(self._data.currentTrickRank),
-            ):
-                return False
+        if hands_only:
+            return True
+
+        if self._data.trump != other._data.trump:
+            return False
+        if self._data.first != other._data.first:
+            return False
+        if cmp(
+            self._data.currentTrickSuit,
+            other._data.currentTrickSuit,
+            len(self._data.currentTrickSuit),
+        ):
+            return False
+        if cmp(
+            self._data.currentTrickRank,
+            other._data.currentTrickRank,
+            len(self._data.currentTrickRank),
+        ):
+            return False
         return True
 
     def __eq__(self, other: object) -> bool:

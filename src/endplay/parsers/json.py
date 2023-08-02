@@ -5,24 +5,12 @@ from __future__ import annotations
 __all__ = ["JSONEncoder", "JSONDecoder", "dump", "dumps", "load", "loads"]
 
 import json as _json
-from collections.abc import Collection, Mapping
 from enum import IntEnum
+from typing import IO, Any, Callable, Optional, Union
 
-from endplay.types import (
-    Board,
-    Card,
-    Contract,
-    ContractBid,
-    Deal,
-    Denom,
-    Hand,
-    Penalty,
-    PenaltyBid,
-    Player,
-    Rank,
-    SuitHolding,
-    Vul,
-)
+from endplay.types import (Board, Card, Contract, ContractBid, Deal, Denom,
+                           Hand, Penalty, PenaltyBid, Player, Rank,
+                           SuitHolding, Vul)
 
 
 def _check_keys(keys: set, mandatory: set, optional: set = set()):
@@ -210,17 +198,17 @@ class JSONEncoder(_json.JSONEncoder):
 
 
 def dump(
-    obj,
-    fp,
+    obj: Any,
+    fp: IO[str],
     *,
-    skipkeys=False,
-    ensure_ascii=True,
-    check_circular=True,
-    allow_nan=True,
-    indent=None,
-    separators=None,
-    default=None,
-    sort_keys=False,
+    skipkeys: bool = False,
+    ensure_ascii: bool = True,
+    check_circular: bool = True,
+    allow_nan: bool = True,
+    indent: Union[int, str, None] = None,
+    separators: Union[tuple[str, str], None] = None,
+    default: Union[Callable[[Any], Any], None] = None,
+    sort_keys: bool = False,
     **kw,
 ):
     return _json.dump(
@@ -242,14 +230,14 @@ def dump(
 def dumps(
     obj,
     *,
-    skipkeys=False,
-    ensure_ascii=True,
-    check_circular=True,
-    allow_nan=True,
-    indent=None,
-    separators=None,
-    default=None,
-    sort_keys=False,
+    skipkeys: bool = False,
+    ensure_ascii: bool = True,
+    check_circular: bool = True,
+    allow_nan: bool = True,
+    indent: Union[int, str, None] = None,
+    separators: Union[tuple[str, str], None] = None,
+    default: Union[Callable[[Any], Any], None] = None,
+    sort_keys: bool = False,
     **kw,
 ):
     return _json.dumps(
@@ -270,11 +258,11 @@ def dumps(
 def load(
     fp,
     *,
-    object_hook=None,
-    parse_float=None,
-    parse_int=None,
-    parse_constant=None,
-    object_pairs_hook=None,
+    object_hook: Optional[Callable[[dict[Any, Any]], Any]] = None,
+    parse_float: Optional[Callable[[str], Any]] = None,
+    parse_int: Optional[Callable[[str], Any]] = None,
+    parse_constant: Optional[Callable[[str], Any]] = None,
+    object_pairs_hook: Optional[Callable[[list[tuple[Any, Any]]], Any]] = None,
     **kw,
 ):
     return _json.load(
@@ -292,11 +280,11 @@ def load(
 def loads(
     s,
     *,
-    object_hook=None,
-    parse_float=None,
-    parse_int=None,
-    parse_constant=None,
-    object_pairs_hook=None,
+    object_hook: Optional[Callable[[dict[Any, Any]], Any]] = None,
+    parse_float: Optional[Callable[[str], Any]] = None,
+    parse_int: Optional[Callable[[str], Any]] = None,
+    parse_constant: Optional[Callable[[str], Any]] = None,
+    object_pairs_hook: Optional[Callable[[list[tuple[Any, Any]]], Any]] = None,
     **kw,
 ):
     return _json.loads(

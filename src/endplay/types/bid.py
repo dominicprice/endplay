@@ -2,10 +2,12 @@ from __future__ import annotations
 
 __all__ = ["Bid", "ContractBid", "PenaltyBid"]
 
-from typing import Optional
+from typing import Callable, Optional, TypeVar
 
 from endplay.types.denom import Denom
 from endplay.types.penalty import Penalty
+
+T = TypeVar("T")
 
 
 class Bid:
@@ -35,6 +37,20 @@ class Bid:
             level, denom = int(name[0]), Denom.find(name[1])
             object.__setattr__(self, "__class__", ContractBid)
             ContractBid.__init__(self, level, denom, alertable, announcement)  # type: ignore
+
+    def as_contract(self) -> Optional[ContractBid]:
+        """
+        Returns a typecasts to `ContractBid` if this is a contract bid,
+        otherwise returns None
+        """
+        return self if isinstance(self, ContractBid) else None
+
+    def as_penalty(self) -> Optional[PenaltyBid]:
+        """
+        Returns a typecasts to `PenaltyBid` if this is a penalty bid, otherwise
+        returns None
+        """
+        return self if isinstance(self, PenaltyBid) else None
 
 
 class ContractBid(Bid):

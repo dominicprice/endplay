@@ -63,7 +63,7 @@ class TestDeal(unittest.TestCase):
             self.assertEqual(pbn_hands[player], str(hand))
 
         self.assertEqual(str(deal.north), "974.AJ3.63.AK963")
-        deal.north = "K83.K9752.7.8752"
+        deal.north = "K83.K9752.7.8752"  # type: ignore
         self.assertEqual(str(deal.north), "K83.K9752.7.8752")
 
         self.assertEqual(str(deal.east), "K83.K9752.7.8752")
@@ -75,7 +75,7 @@ class TestDeal(unittest.TestCase):
         self.assertEqual(str(deal.south), "T62.Q.AQT852.QJT")
 
         self.assertEqual(str(deal.west), "T62.Q.AQT852.QJT")
-        deal.west = "974.AJ3.63.AK963"
+        deal.west = "974.AJ3.63.AK963"  # type: ignore
         self.assertEqual(str(deal.west), "974.AJ3.63.AK963")
 
     def test_curtrick(self):
@@ -174,7 +174,7 @@ class TestHand(unittest.TestCase):
         self.assertTrue(hand.add("S9"))
         self.assertFalse(hand.add(Card("S9")))
         self.assertTrue("S9" in hand)
-        self.assertEqual(hand.extend(("DA", Card("HK"), "S9")), 2)
+        self.assertEqual(hand.extend(["DA", Card("HK"), "S9"]), 2)
         self.assertEqual(len(hand), 3)
         self.assertTrue(hand.remove("S9"))
         self.assertFalse(Card("S9") in hand)
@@ -202,7 +202,7 @@ class TestHand(unittest.TestCase):
             self.assertEqual(str(hand[suit]), suits[i])
 
         self.assertEqual(str(hand.spades), suits[0])
-        hand.spades = suits[1]
+        hand.spades = suits[1]  # type: ignore
         self.assertEqual(str(hand.spades), suits[1])
 
         self.assertEqual(str(hand.hearts), suits[1])
@@ -214,7 +214,7 @@ class TestHand(unittest.TestCase):
         self.assertEqual(str(hand.diamonds), suits[3])
 
         self.assertEqual(str(hand.clubs), suits[3])
-        hand.clubs = suits[0]
+        hand.clubs = suits[0]  # type: ignore
         self.assertEqual(str(hand.clubs), suits[0])
 
 

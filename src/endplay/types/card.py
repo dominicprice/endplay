@@ -35,7 +35,12 @@ class Card:
         :param suit: The suit of the card
         :param rank: The rank of the card
         """
-        if name is not None:
+        if name is None:
+            if suit is None or rank is None:
+                raise ValueError("either name or both suit and rank must be defined")
+            object.__setattr__(self, "suit", suit)
+            object.__setattr__(self, "rank", rank)
+        else:
             suit = Denom.find(name[0])
             rank = Rank.find(name[1])
 

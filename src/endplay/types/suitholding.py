@@ -37,7 +37,7 @@ class SuitHolding:
     def copy(self) -> "SuitHolding":
         return self.__copy__()
 
-    def add(self, rank: Union[Rank, str]) -> bool:
+    def add(self, rank: Union[Rank, AlternateRank, str]) -> bool:
         """
         Add a rank to the suit holding
 
@@ -48,12 +48,13 @@ class SuitHolding:
             rank = Rank.find(rank)
         if isinstance(rank, AlternateRank):
             rank = rank.to_standard()
+
         if rank in self:
             return False
         self._data[self._idx] |= rank.value
         return True
 
-    def extend(self, ranks: Iterable[Rank]) -> int:
+    def extend(self, ranks: Iterable[Union[Rank, AlternateRank, str]]) -> int:
         """
         Add multiple ranks to the suit holding
 
@@ -62,7 +63,7 @@ class SuitHolding:
         """
         return sum(self.add(rank) for rank in ranks)
 
-    def remove(self, rank: Rank) -> bool:
+    def remove(self, rank: Union[Rank, AlternateRank, str]) -> bool:
         """
         Remove a rank from the suit holding
 
@@ -73,6 +74,7 @@ class SuitHolding:
             rank = Rank.find(rank)
         if isinstance(rank, AlternateRank):
             rank = rank.to_standard()
+
         if not rank in self:
             return False
         self._data[self._idx] &= ~rank.value
@@ -100,11 +102,12 @@ class SuitHolding:
             return NotImplemented
         return self._data[self._idx] == other._data[other._idx]
 
-    def __contains__(self, rank: Rank) -> bool:
+    def __contains__(self, rank: Union[Rank, AlternateRank, str]) -> bool:
         if isinstance(rank, str):
             rank = Rank.find(rank)
         if isinstance(rank, AlternateRank):
             rank = rank.to_standard()
+
         return bool(self._data[self._idx] & rank.value)
 
     def __iter__(self) -> Iterator[Rank]:

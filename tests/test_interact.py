@@ -1,3 +1,7 @@
+# mypy: disable-error-code="arg-type, call-arg"
+# ^^^ required as the @command decorator doesn't type hint very
+#     well at the moment
+
 import unittest
 
 from endplay.interact.commandobject import CommandObject

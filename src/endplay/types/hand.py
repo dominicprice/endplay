@@ -52,15 +52,13 @@ class Hand:
         """
         if isinstance(card, str):
             card = Card(name=card)
-        elif not isinstance(card, Card):
-            raise ValueError("card must be of type Card or str")
 
         if card in self:
             return False
         self._data[card.suit.value] |= card.rank.value
         return True
 
-    def extend(self, cards: Iterable[Card]) -> int:
+    def extend(self, cards: Iterable[Union[Card, str]]) -> int:
         """
         Add multiple cards to the hand
 
@@ -69,7 +67,7 @@ class Hand:
         """
         return sum(self.add(card) for card in cards)
 
-    def remove(self, card: Card) -> bool:
+    def remove(self, card: Union[Card, str]) -> bool:
         """
         Remove a card from the hand
 
@@ -79,8 +77,7 @@ class Hand:
         """
         if isinstance(card, str):
             card = Card(name=card)
-        elif not isinstance(card, Card):
-            raise ValueError("card must be of type Card or str")
+
         if card in self:
             self._data[card.suit.value] &= ~card.rank.value
             return True
@@ -124,7 +121,7 @@ class Hand:
         Create a LaTeX representation of the hand.
 
         :param vertical: If True uses \\vhand, else \\hhand layout
-        :param title: The hand title. If vertical is False this is ignored
+        :param ten_as_letter: Prints a T for tens if True, else prints 10
         """
         if vertical:
             res, sep = r"\begin{tabular}{l}", r"\\"
@@ -166,7 +163,7 @@ class Hand:
         return self[Denom.spades]
 
     @spades.setter
-    def spades(self, suit: SuitHolding) -> None:
+    def spades(self, suit: Union[SuitHolding, str]) -> None:
         self[Denom.spades] = suit
 
     @property
@@ -175,7 +172,7 @@ class Hand:
         return self[Denom.hearts]
 
     @hearts.setter
-    def hearts(self, suit: SuitHolding) -> None:
+    def hearts(self, suit: Union[SuitHolding, str]) -> None:
         self[Denom.hearts] = suit
 
     @property
@@ -184,7 +181,7 @@ class Hand:
         return self[Denom.diamonds]
 
     @diamonds.setter
-    def diamonds(self, suit: SuitHolding) -> None:
+    def diamonds(self, suit: Union[SuitHolding, str]) -> None:
         self[Denom.diamonds] = suit
 
     @property
@@ -193,15 +190,14 @@ class Hand:
         return self[Denom.clubs]
 
     @clubs.setter
-    def clubs(self, suit: SuitHolding) -> None:
+    def clubs(self, suit: Union[SuitHolding, str]) -> None:
         self[Denom.clubs] = suit
 
     def __contains__(self, card: Union[Card, str]) -> bool:
         ":return: True if card is in this hand"
         if isinstance(card, str):
             card = Card(name=card)
-        elif not isinstance(card, Card):
-            raise ValueError("card must be of type Card or str")
+
         return bool(self._data[card.suit.value] & card.rank.value)
 
     def __str__(self) -> str:
@@ -221,7 +217,7 @@ class Hand:
         ":return: The specified suit holding of the hand"
         return SuitHolding(self._data, suit.value)
 
-    def __setitem__(self, suit: Denom, holding: SuitHolding) -> None:
+    def __setitem__(self, suit: Denom, holding: Union[SuitHolding, str]) -> None:
         if isinstance(holding, str):
             self[suit].clear()
             for rank in holding:

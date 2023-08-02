@@ -10,30 +10,14 @@ import re
 from enum import Enum
 from io import StringIO
 from itertools import chain
-from typing import Any, Optional, TextIO, Union
-
-from more_itertools import chunked
+from typing import IO, Any, Optional, Union
 
 from endplay.config import suppress_unicode
-from endplay.types import (
-    Bid,
-    Board,
-    Card,
-    Contract,
-    ContractBid,
-    Deal,
-    Denom,
-    PenaltyBid,
-    Player,
-    Rank,
-    Vul,
-)
-from endplay.utils.play import (
-    linearise_play,
-    result_to_tricks,
-    tabularise_play,
-    tricks_to_result,
-)
+from endplay.types import (Bid, Board, Card, Contract, ContractBid, Deal,
+                           Denom, PenaltyBid, Player, Rank, Vul)
+from endplay.utils.play import (linearise_play, result_to_tricks,
+                                tabularise_play, tricks_to_result)
+from more_itertools import chunked
 
 
 class PBNDecodeError(ValueError):
@@ -331,7 +315,7 @@ class PBNDecoder:
         self.curtag: Optional[str] = None
         self.lineno = 0
 
-    def parse_file(self, f: TextIO) -> list[Board]:
+    def parse_file(self, f: IO[str]) -> list[Board]:
         "Parse a PBN file"
         self.clear()
 
@@ -538,7 +522,7 @@ class PBNEncoder:
             for key, value in supplementary.items():
                 self._create_tag(key, value.value, value.data)
 
-    def export_file(self, boards: list[Board], fp: TextIO) -> None:
+    def export_file(self, boards: list[Board], fp: IO[str]) -> None:
         "Export current data into a file object"
         fp.write(f"% PBN {self.pbn_version}\n")
         fp.write("% EXPORT\n\n")
@@ -548,7 +532,7 @@ class PBNEncoder:
             fp.write("\n")
 
 
-def load(fp: TextIO) -> list[Board]:
+def load(fp: IO[str]) -> list[Board]:
     "Read a PBN file object into a list of :class:`Board` objects"
     parser = PBNDecoder()
     return parser.parse_file(fp)
@@ -561,7 +545,7 @@ def loads(s: str) -> list[Board]:
     return parser.parse_file(sp)
 
 
-def dump(boards: list[Board], fp: TextIO) -> None:
+def dump(boards: list[Board], fp: IO[str]) -> None:
     "Serialize a list of :class:`Board` objects to a PBN file"
     parser = PBNEncoder()
     parser.export_file(boards, fp)

@@ -12,3 +12,4 @@ test:
 .PHONY: lint
 lint:
 	pipenv run mypy --check-untyped-defs src/endplay
+	pipenv run mypy --check-untyped-defs tests

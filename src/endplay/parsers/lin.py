@@ -4,24 +4,14 @@ from __future__ import annotations
 
 __all__ = ["LINEncodeError", "dump", "dumps", "load", "loads"]
 
-from typing import TextIO
-
-from more_itertools import chunked
+from typing import IO
 
 from endplay.config import suppress_unicode
-from endplay.types import (
-    Bid,
-    Board,
-    Card,
-    Contract,
-    ContractBid,
-    Deal,
-    PenaltyBid,
-    Player,
-    Vul,
-)
+from endplay.types import (Bid, Board, Card, Contract, ContractBid, Deal,
+                           PenaltyBid, Player, Vul)
 from endplay.utils.escape import escape_suits, unescape_suits
 from endplay.utils.play import result_to_tricks, total_tricks, tricks_to_result
+from more_itertools import chunked
 
 
 class LINDecoder:
@@ -116,7 +106,7 @@ class LINDecoder:
             boards.append(self.parse_line(line))
         return boards
 
-    def parse_file(self, f: TextIO) -> list[Board]:
+    def parse_file(self, f: IO[str]) -> list[Board]:
         boards = []
         for line in f:
             boards.append(self.parse_line(line))
@@ -179,7 +169,7 @@ class LINEncoder:
         return lin
 
 
-def load(fp: TextIO) -> list[Board]:
+def load(fp: IO[str]) -> list[Board]:
     "Read a LIN file object into an array of :class:`Board` objects"
     parser = LINDecoder()
     return parser.parse_file(fp)
@@ -191,7 +181,7 @@ def loads(s: str) -> list[Board]:
     return parser.parse_string(s)
 
 
-def dump(boards: list[Board], fp: TextIO) -> None:
+def dump(boards: list[Board], fp: IO[str]) -> None:
     "Seralize a list of :class:`Board` objects to a LIN file"
     parser = LINEncoder()
     for board in boards:
