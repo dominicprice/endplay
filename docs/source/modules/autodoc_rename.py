@@ -13,8 +13,8 @@ def builder_inited(app):
     bakfile = os.path.join(output_dir, "endplay.rst.backup")
     print(f"Modifying file {modfile}")
     shutil.copyfile(modfile, bakfile)
-    with open(bakfile, 'r') as fb:
-        with open(modfile, 'w') as fm:
+    with open(bakfile, "r") as fb:
+        with open(modfile, "w") as fm:
             for _ in range(2):
                 fb.readline()  # discarded
             title = "API Documentation"

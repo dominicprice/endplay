@@ -6,8 +6,9 @@ __all__ = ["HTMLActions"]
 
 from io import StringIO
 
-import endplay.stats as stats
 import matplotlib.pyplot as plt  # type: ignore
+
+import endplay.stats as stats
 from endplay.dealer.actions.base import BaseActions, BaseActionsWriter
 from endplay.types import Denom, Player, Vul
 

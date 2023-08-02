@@ -11,7 +11,6 @@ basedir = Path(__file__).parent
 
 
 class TestPBN(unittest.TestCase):
-
     def assertLoadDumpEqual(self, file: Path):
         with open(file) as f:
             boards = pbn.load(f)
@@ -47,7 +46,6 @@ class TestPBN(unittest.TestCase):
 
 
 class TestDealer(unittest.TestCase):
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.parser = dealer.DealerParser()
@@ -68,7 +66,6 @@ class TestDealer(unittest.TestCase):
 
 
 class TestLIN(unittest.TestCase):
-
     def assertLoadDumpEqual(self, file: Path):
         with open(file) as f:
             boards = lin.load(f)
@@ -93,7 +90,6 @@ class TestLIN(unittest.TestCase):
 
 
 class TestJSON(unittest.TestCase):
-
     def assertPBNLoadsDumps(self, file: Path):
         with open(file) as f:
             sin = f.read()

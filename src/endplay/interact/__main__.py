@@ -7,8 +7,12 @@ import argparse
 
 import endplay.config as config
 from endplay.interact.commandobject import CommandObject
-from endplay.interact.frontends import (BaseFrontend, CmdFrontend,
-                                        CursesFrontend, HTMLFrontend)
+from endplay.interact.frontends import (
+    BaseFrontend,
+    CmdFrontend,
+    CursesFrontend,
+    HTMLFrontend,
+)
 from endplay.types import Denom, Player
 from endplay.types.deal import Deal
 

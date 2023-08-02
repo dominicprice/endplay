@@ -13,10 +13,17 @@ from inspect import Parameter, signature
 from typing import Any, Generic, Optional, Protocol, TypeVar, Union
 
 from endplay.evaluate import hcp
-from endplay.interact.actions import (Action, DealAction, PlayAction,
-                                      SetBoardAction, SetFirstAction,
-                                      SetHandAction, SetTrumpAction,
-                                      ShuffleAction, UnplayAction)
+from endplay.interact.actions import (
+    Action,
+    DealAction,
+    PlayAction,
+    SetBoardAction,
+    SetFirstAction,
+    SetHandAction,
+    SetTrumpAction,
+    ShuffleAction,
+    UnplayAction,
+)
 from endplay.types.card import Card
 from endplay.types.deal import Deal
 from endplay.types.denom import Denom
@@ -26,8 +33,8 @@ from endplay.types.player import Player
 try:
     from typing import get_args, get_origin
 except ImportError:
-    from typing_extensions import (get_args,  # type: ignore[no-redef]
-                                   get_origin)
+    from typing_extensions import get_args  # type: ignore[no-redef]
+    from typing_extensions import get_origin  # type: ignore[no-redef]
 
 T = TypeVar("T")
 

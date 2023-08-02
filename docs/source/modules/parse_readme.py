@@ -3,9 +3,9 @@ import re
 
 
 def setup(app):
-    app.connect('builder-inited', builder_inited)
-    app.add_config_value('readme_module_dir', None, 'env', [str])
-    app.add_config_value('readme_output_dir', None, 'env', [str])
+    app.connect("builder-inited", builder_inited)
+    app.add_config_value("readme_module_dir", None, "env", [str])
+    app.add_config_value("readme_output_dir", None, "env", [str])
 
 
 def builder_inited(app):
@@ -18,7 +18,9 @@ def builder_inited(app):
     print(f"Creating file {output_dir}/intro.md")
     sec = 1
     skip = False
-    curfile = open(os.path.join(output_dir, f"{sec:02d}_intro.md"), 'w', encoding="utf-8")
+    curfile = open(
+        os.path.join(output_dir, f"{sec:02d}_intro.md"), "w", encoding="utf-8"
+    )
     sec += 1
     in_code_block = False
     with open(os.path.join(module_dir, "README.md"), encoding="utf-8") as f:
@@ -42,7 +44,11 @@ def builder_inited(app):
                         curfile.close()
                         name = m[2].replace(" ", "_").lower()
                         print(f"Creating file {output_dir}/{name}.md")
-                        curfile = open(os.path.join(output_dir, f"{sec:02d}_{name}.md"), 'w', encoding="utf-8")
+                        curfile = open(
+                            os.path.join(output_dir, f"{sec:02d}_{name}.md"),
+                            "w",
+                            encoding="utf-8",
+                        )
                         sec += 1
                         curfile.write("# " + m[2] + "\n")
                     else:

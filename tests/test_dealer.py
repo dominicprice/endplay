@@ -18,7 +18,6 @@ pbn = "N:9642.95.AKQT4.K7 KJ3.K3.98.T98654 AQT85.Q862..AQJ2 7.AJT74.J76532.3"
 
 
 class TestConstraints(unittest.TestCase):
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.interp = ConstraintInterpreter()
@@ -39,7 +38,18 @@ class TestConstraints(unittest.TestCase):
         return self.assertFalse(res, msg)
 
     def test_ptN(self):
-        names = ["tens", "jacks", "queen", "king", "aces", "top2", "top3", "top4", "top5", "c13"]
+        names = [
+            "tens",
+            "jacks",
+            "queen",
+            "king",
+            "aces",
+            "top2",
+            "top3",
+            "top4",
+            "top5",
+            "c13",
+        ]
         res1 = [1, 0, 1, 2, 1, 3, 4, 4, 5, 16]
         res2 = [1, 0, 1, 1, 1, 2, 3, 3, 4, 12]
         for i, name in enumerate(names):
@@ -53,7 +63,9 @@ class TestConstraints(unittest.TestCase):
         self.assertEvalsFalse("shape(north, 5332)")
         west_balanced = "shape(west, any 4333 + any 4432 + any 5332 - 5xxx - x5xx)"
         for deal in generate_deals(west_balanced, produce=20):
-            return self.assertEqual(self.interp.evaluate(west_balanced, deal), is_balanced(deal.west))
+            return self.assertEqual(
+                self.interp.evaluate(west_balanced, deal), is_balanced(deal.west)
+            )
 
     def test_functions(self):
         self.assertEvalsTo("spade(north)", 4)
@@ -101,12 +113,12 @@ class TestConstraints(unittest.TestCase):
 
 class TestDealerMain(unittest.TestCase):
     """
-	These are 'delicate tests', in that they test the functions against output which was
-	generated at a time when they were 'known to work'. This means that if at any stage
-	the output format changes, the tests will fail which means that they will need to be
-	regenerated. To do this, run the test suite with `self.generate` set to `True`; then
-	change it back to False and repeat the test suite.
-	"""
+    These are 'delicate tests', in that they test the functions against output which was
+    generated at a time when they were 'known to work'. This means that if at any stage
+    the output format changes, the tests will fail which means that they will need to be
+    regenerated. To do this, run the test suite with `self.generate` set to `True`; then
+    change it back to False and repeat the test suite.
+    """
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -116,18 +128,26 @@ class TestDealerMain(unittest.TestCase):
         self.generate = False
 
     def assertScriptOutputs(self, script_name, output_format):
-        with patch('sys.stdout', new=io.StringIO()) as output:
-            run_script(os.path.join(self.dealer_dir, script_name + ".dl"), seed=self.seed, outformat=output_format)
+        with patch("sys.stdout", new=io.StringIO()) as output:
+            run_script(
+                os.path.join(self.dealer_dir, script_name + ".dl"),
+                seed=self.seed,
+                outformat=output_format,
+            )
             script_output = output.getvalue()
-        out_fname = os.path.join(self.dealer_dir, script_name + "." + output_format + ".out")
+        out_fname = os.path.join(
+            self.dealer_dir, script_name + "." + output_format + ".out"
+        )
         if self.generate:
-            with open(out_fname, 'w', encoding='utf-8') as f:
+            with open(out_fname, "w", encoding="utf-8") as f:
                 f.write(script_output)
         with open(out_fname, encoding="utf-8") as f:
             expected_output = f.read()
         if script_output != expected_output:
-            warnings.warn("Output did not match expected output; results of hand generation may differ on this machine from the standard implementation")
-        #self.assertEqual(script_output, expected_output)
+            warnings.warn(
+                "Output did not match expected output; results of hand generation may differ on this machine from the standard implementation"
+            )
+        # self.assertEqual(script_output, expected_output)
 
     def test_print_actions(self):
         self.assertScriptOutputs("test_print_actions", "plain")
@@ -137,14 +157,13 @@ class TestDealerMain(unittest.TestCase):
     def test_stat_actions(self):
         # Checking the actual output of the plots is very unstable, and as we are not actually testing whether
         # matplotlib produces consistently produces the same output we mock the Figure class
-        with patch('matplotlib.pyplot.figure'):
+        with patch("matplotlib.pyplot.figure"):
             self.assertScriptOutputs("test_stat_actions", "plain")
             self.assertScriptOutputs("test_stat_actions", "latex")
             self.assertScriptOutputs("test_stat_actions", "html")
 
 
 class TestGenerator(unittest.TestCase):
-
     def test_01(self):
         deal1 = generate_deal()
         deal2 = generate_deal("hcp(north) == 10")

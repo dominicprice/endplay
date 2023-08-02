@@ -43,6 +43,7 @@ TestResults/
 .coverage
 startup.py
 runfile
+src/dump.txt
 
 # No longer generated after switching form scikit-build
 MANIFEST

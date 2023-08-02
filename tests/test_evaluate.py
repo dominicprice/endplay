@@ -11,7 +11,6 @@ pbn2 = "N:4.KJ32.842.AQ743 JT987.Q876.AK5.2 AK532.T.JT6.T985 Q6.A954.Q973.KJ6"
 
 
 class TestEvaluate(unittest.TestCase):
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.deal = Deal(pbn)
@@ -29,7 +28,9 @@ class TestEvaluate(unittest.TestCase):
         self.assertEqual(dist_points(deal.east.diamonds), 2)
         self.assertEqual(dist_points(deal.east, mixed_fit_dist_scale), 4)
         self.assertEqual(dist_points(deal.south, mixed_nofit_dist_scale), 2)
-        self.assertEqual(dist_points(deal.south, mixed_nofit_dist_scale, [Denom.clubs]), 0)
+        self.assertEqual(
+            dist_points(deal.south, mixed_nofit_dist_scale, [Denom.clubs]), 0
+        )
         self.assertEqual(dist_points(deal.west.hearts, exclude=[Denom.hearts]), 2)
 
     def test_total_points(self):
@@ -102,7 +103,7 @@ class TestEvaluate(unittest.TestCase):
 
         # is_two_suited
 
-        #is_three_suited
+        # is_three_suited
         self.assertTrue(is_three_suited(deal.south))
         self.assertFalse(is_three_suited(deal.north))
 

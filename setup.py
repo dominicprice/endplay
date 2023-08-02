@@ -41,33 +41,42 @@ class cmakeable_build_ext(build_ext):
 
         # Check which architecture we should be building for
         import struct
-        bits = struct.calcsize('P') * 8
+
+        bits = struct.calcsize("P") * 8
 
         # Setup args passed to cmake
-        config = 'Debug' if self.debug else 'Release'
+        config = "Debug" if self.debug else "Release"
         cmake_config_args = [
-            '-DCMAKE_INSTALL_PREFIX=' + str(extdir.parent.absolute()),
-            '-DCMAKE_BUILD_TYPE=' + config,
-            '-DSETUPTOOLS_BUILD=1',
+            "-DCMAKE_INSTALL_PREFIX=" + str(extdir.parent.absolute()),
+            "-DCMAKE_BUILD_TYPE=" + config,
+            "-DSETUPTOOLS_BUILD=1",
         ]
-        if os.name == 'nt':
+        if os.name == "nt":
             if bits == 64:
-                cmake_config_args.append('-A x64')
+                cmake_config_args.append("-A x64")
             elif bits == 32:
-                cmake_config_args.append('-A Win32')
+                cmake_config_args.append("-A Win32")
             else:
                 raise RuntimeError(f"Unknown computer architecture with {bits} bits")
         else:
-            if bits == 32: cmake_config_args.append('-DCOMPILE_32_BITS=1')
+            if bits == 32:
+                cmake_config_args.append("-DCOMPILE_32_BITS=1")
 
         # Disable warning MSB8029 (https://stackoverflow.com/a/60301902/5194459)
         os.environ["IgnoreWarnIntDirInTempDetected"] = "true"
 
         os.chdir(str(build_temp))
-        self.spawn(['cmake', str(cwd)] + cmake_config_args)
+        self.spawn(["cmake", str(cwd)] + cmake_config_args)
         if not self.dry_run:  # pyright: ignore
-            cmake_build_args = ["--build", ".", "--target", "install", "--config", config]
-            self.spawn(['cmake'] + cmake_build_args)
+            cmake_build_args = [
+                "--build",
+                ".",
+                "--target",
+                "install",
+                "--config",
+                config,
+            ]
+            self.spawn(["cmake"] + cmake_build_args)
         os.chdir(str(cwd))
 
 
@@ -91,8 +100,8 @@ with open("VERSION") as f:
     version = f.read().strip()
 
 setup(
-    ext_modules=[CMakeExtension('endplay')],
-    cmdclass={'build_ext': cmakeable_build_ext},
+    ext_modules=[CMakeExtension("endplay")],
+    cmdclass={"build_ext": cmakeable_build_ext},
     package_dir={"": "src"},
     packages=packages,
     test_suite="tests",
