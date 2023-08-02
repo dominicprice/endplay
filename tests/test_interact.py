@@ -5,7 +5,6 @@ from endplay.types import Card, Denom, Player
 
 
 class TestInteractiveDeal(unittest.TestCase):
-
     def test_properties(self):
         d = InteractiveDeal(first=Player.south, trump=Denom.spades)
         # first
@@ -13,7 +12,8 @@ class TestInteractiveDeal(unittest.TestCase):
         self.assertEqual(d.first, Player.west)
         d.undo()
         self.assertEqual(d.first, Player.south)
-        #trump
+
+        # trump
         d.trump = Denom.hearts
         self.assertEqual(d.trump, Denom.hearts)
         d.undo()

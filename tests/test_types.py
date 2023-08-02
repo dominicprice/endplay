@@ -6,12 +6,16 @@ from endplay.types import *
 config.use_unicode = False
 
 pbn = "N:974.AJ3.63.AK963 K83.K9752.7.8752 AQJ5.T864.KJ94.4 T62.Q.AQT852.QJT"
-pbn_hands = ["974.AJ3.63.AK963", "K83.K9752.7.8752", "AQJ5.T864.KJ94.4", "T62.Q.AQT852.QJT"]
+pbn_hands = [
+    "974.AJ3.63.AK963",
+    "K83.K9752.7.8752",
+    "AQJ5.T864.KJ94.4",
+    "T62.Q.AQT852.QJT",
+]
 pbn2 = "N:4.KJ32.842.AQ743 JT987.Q876.AK5.2 AK532.T.JT6.T985 Q6.A954.Q973.KJ6"
 
 
 class TestDeal(unittest.TestCase):
-
     def test_trump(self):
         deal = Deal(pbn)
         self.assertEqual(deal.trump, Denom.nt)
@@ -95,11 +99,17 @@ class TestDeal(unittest.TestCase):
             deal.play("DA")
         with self.assertRaises(RuntimeError):
             deal.unplay()
-        deal.play("DA", fromHand=False)
+        deal.play("DA", from_hand=False)
 
     def test_curtrick2(self):
-        deal = Deal("N:J84.JT94.KQT.T97 T93.K5.J9653.J82 K65.A73.72.AKQ53 AQ72.Q862.A84.64", Player.west, Denom.clubs)
-        for card in "\
+        deal = Deal(
+            "N:J84.JT94.KQT.T97 T93.K5.J9653.J82 K65.A73.72.AKQ53 AQ72.Q862.A84.64",
+            Player.west,
+            Denom.clubs,
+        )
+        for (
+            card
+        ) in "\
 			C4 CT C2 C3 HJ HK HA H2 \
 			CA C6 C7 C8 CK S7 C9 CJ \
 			H3 H6 HT H5 DK D3 D2 DA \
@@ -153,7 +163,6 @@ class TestDeal(unittest.TestCase):
 
 
 class TestHand(unittest.TestCase):
-
     def test_cards(self):
         hand = Hand()
         self.assertTrue(hand.add("S9"))
@@ -204,7 +213,6 @@ class TestHand(unittest.TestCase):
 
 
 class TestSuitHolding(unittest.TestCase):
-
     def test_cards(self):
         hand = Hand(pbn_hands[0])
         holding = hand.spades
@@ -242,7 +250,6 @@ class TestSuitHolding(unittest.TestCase):
 
 
 class TestContract(unittest.TestCase):
-
     def test_properties(self):
         c = Contract("3NTSxx-1")
         self.assertEqual(c.level, 3)
@@ -300,7 +307,6 @@ class TestContract(unittest.TestCase):
 
 
 class TestPlayer(unittest.TestCase):
-
     def test_find(self):
         self.assertEqual(Player.find("north"), Player.north)
         self.assertEqual(Player.find("S"), Player.south)
@@ -334,7 +340,6 @@ class TestPlayer(unittest.TestCase):
 
 
 class TestDenom(unittest.TestCase):
-
     def test_find(self):
         self.assertEqual(Denom.find("D"), Denom.diamonds)
         self.assertEqual(Denom.find("N"), Denom.nt)
@@ -352,14 +357,12 @@ class TestDenom(unittest.TestCase):
 
 
 class TestPenalty(unittest.TestCase):
-
     def test_find(self):
         self.assertEqual(Penalty.find("pass"), Penalty.passed)
         self.assertRaises(ValueError, Penalty.find, "thisisnotapenalty")
 
 
 class TestRank(unittest.TestCase):
-
     def test_find(self):
         self.assertEqual(Rank.find("3"), Rank.R3)
         self.assertEqual(Rank.find("J"), Rank.RJ)
@@ -385,7 +388,6 @@ class TestRank(unittest.TestCase):
 
 
 class TestVul(unittest.TestCase):
-
     def test_find(self):
         self.assertEqual(Vul.find("ew"), Vul.ew)
         self.assertEqual(Vul.find("-"), Vul.none)

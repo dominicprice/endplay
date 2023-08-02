@@ -6,18 +6,18 @@ __all__ = ["LINEncodeError", "dump", "dumps", "load", "loads"]
 
 from typing import TextIO
 
-from more_itertools import chunked
-
 from endplay.config import suppress_unicode
-from endplay.types import (Bid, Board, Card, Contract, ContractBid, Deal, PenaltyBid, Player, Vul)
+from endplay.types import (Bid, Board, Card, Contract, ContractBid, Deal,
+                           PenaltyBid, Player, Vul)
 from endplay.utils.escape import escape_suits, unescape_suits
 from endplay.utils.play import result_to_tricks, total_tricks, tricks_to_result
+from more_itertools import chunked
 
 
 class LINDecoder:
     """
-	Class providing functionality for reading the LIN file format
-	"""
+    Class providing functionality for reading the LIN file format
+    """
 
     def __init__(self):
         pass
@@ -40,7 +40,9 @@ class LINDecoder:
                 continue
             elif key == "pn":
                 # Player names are comma separated starting from south
-                info["South"], info["West"], info["North"], info["East"] = value.split(",")
+                info["South"], info["West"], info["North"], info["East"] = value.split(
+                    ","
+                )
             elif key == "md":
                 # Marks deal, starts with dealer then comma separated hands
                 dealer = Player.from_lin(int(value[0]))
@@ -86,7 +88,17 @@ class LINDecoder:
                 raise ValueError("lin contains contract but no deal")
             deal.first = contract.declarer.lho
             deal.trump = contract.denom
-        return Board(deal, auction, play, board_num, vul=vul, dealer=dealer, contract=contract, claimed=claimed, **info)
+        return Board(
+            deal,
+            auction,
+            play,
+            board_num,
+            vul=vul,
+            dealer=dealer,
+            contract=contract,
+            claimed=claimed,
+            **info,
+        )
 
     def parse_string(self, lin: str) -> list[Board]:
         boards = []
@@ -106,7 +118,6 @@ class LINEncodeError(ValueError):
 
 
 class LINEncoder:
-
     def __init__(self):
         pass
 
@@ -118,7 +129,12 @@ class LINEncoder:
             raise LINEncodeError("Cannot encode board without `deal` set")
         with suppress_unicode():
             lin = ""
-            s, w, n, e = board.info.south, board.info.west, board.info.north, board.info.east
+            s, w, n, e = (
+                board.info.south,
+                board.info.west,
+                board.info.north,
+                board.info.east,
+            )
             lin += f"pn|{s or ''},{w or ''},{n or ''},{e or ''}|"
             lin += "st||"
             lin += f"md|{board.deal.to_lin(board.dealer)}|"
@@ -130,7 +146,11 @@ class LINEncoder:
             for bid in board.auction:
                 lin += "mb|"
                 if isinstance(bid, ContractBid):
-                    lin += f"{bid.level}{bid.denom.abbr[0]}" + ("!" if bid.alertable else "") + "|"
+                    lin += (
+                        f"{bid.level}{bid.denom.abbr[0]}"
+                        + ("!" if bid.alertable else "")
+                        + "|"
+                    )
                 elif isinstance(bid, PenaltyBid):
                     lin += bid.penalty.name[0] + ("!" if bid.alertable else "") + "|"
                 if bid.announcement is not None:

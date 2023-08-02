@@ -8,14 +8,13 @@ from __future__ import annotations
 __all__ = ["SolvedBoard", "SolvedBoardList", "solve_board", "solve_all_boards"]
 
 from collections.abc import Iterable, Iterator, Sequence
-from typing import Optional
+from typing import Optional, Union, overload
 
 import endplay._dds as _dds
 from endplay.types import Card, Deal, Denom, Rank
 
 
 class SolvedBoard(Iterable):
-
     def __init__(self, data: _dds.futureTricks):
         self._data = data
 
@@ -31,14 +30,13 @@ class SolvedBoard(Iterable):
                     yield (card, self._data.score[i])
 
     def __repr__(self) -> str:
-        return '<SolvedBoard object>'
+        return "<SolvedBoard object>"
 
     def __str__(self) -> str:
-        return '{' + ", ".join(f"{b[0]}:{b[1]}" for b in self) + '}'
+        return "{" + ", ".join(f"{b[0]}:{b[1]}" for b in self) + "}"
 
 
 class SolvedBoardList(Sequence):
-
     def __init__(self, data: _dds.solvedBoards):
         self._data = data
 
@@ -46,16 +44,29 @@ class SolvedBoardList(Sequence):
         ":return: The number of boards in the list"
         return self._data.noOfBoards
 
+    @overload
     def __getitem__(self, i: int) -> SolvedBoard:
+        ...
+
+    @overload
+    def __getitem__(self, i: slice) -> Sequence[SolvedBoard]:
+        ...
+
+    def __getitem__(
+        self, i: Union[int, slice]
+    ) -> Union[SolvedBoard, Sequence[SolvedBoard]]:
         ":return: The solved board at index `i`"
-        if i < 0:
-            i = len(self) - i
-        if i < 0 or i >= len(self):
-            raise IndexError
-        return SolvedBoard(self._data.solvedBoard[i])
+        if isinstance(i, int):
+            if i < 0:
+                i = len(self) - i
+            if i < 0 or i >= len(self):
+                raise IndexError
+            return SolvedBoard(self._data.solvedBoard[i])
+        else:
+            return [self[ii] for ii in range(*i.indices(len(self)))]
 
     def __repr__(self) -> str:
-        return f'<SolvedBoardList; length={len(self)}>'
+        return f"<SolvedBoardList; length={len(self)}>"
 
     def __str__(self) -> str:
         if len(self) == 0:
@@ -65,34 +76,36 @@ class SolvedBoardList(Sequence):
 
 def solve_board(deal: Deal, target: Optional[int] = None) -> SolvedBoard:
     """
-	Calculate the double dummy score for all cards in the hand which is currently
-	to play in a given deal
+    Calculate the double dummy score for all cards in the hand which is currently
+    to play in a given deal
 
-	:param deal: The deal to solve, with `first` and `trump` filled in
-	:param target: If provided, only return cards which can make at least this many tricks
-	"""
+    :param deal: The deal to solve, with `first` and `trump` filled in
+    :param target: If provided, only return cards which can make at least this many tricks
+    """
     fut = _dds.futureTricks()
     if target is None or target <= 0:
-        target, solutions = -1, 2
+        target, solutions = -1, 3
     else:
         solutions = 2
     _dds.SolveBoard(deal._data, target, solutions, 1, fut, 0)
     return SolvedBoard(fut)
 
 
-def solve_all_boards(deals: Iterable[Deal], target: Optional[int] = None) -> SolvedBoardList:
+def solve_all_boards(
+    deals: Iterable[Deal], target: Optional[int] = None
+) -> SolvedBoardList:
     """
-	Optimized version of solve_board for multiple deals which uses threading to
-	speed up the calculation
+    Optimized version of solve_board for multiple deals which uses threading to
+    speed up the calculation
 
-	:param deals: The collection of boards to be solved, each with `first` and `trump` filled
-	:param target: If provided, only return cards which can make at least this many tricks
-	"""
+    :param deals: The collection of boards to be solved, each with `first` and `trump` filled
+    :param target: If provided, only return cards which can make at least this many tricks
+    """
     # Convert deals into boards
     bop = _dds.boards()
     bop.noOfBoards = 0
     if target is None or target <= 0:
-        target, solutions = -1, 2
+        target, solutions = -1, 3
     else:
         solutions = 2
     for i, deal in enumerate(deals):

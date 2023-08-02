@@ -1,56 +1,197 @@
 """
-A curses interface to many of the features of endplay including 
+A curses interface to many of the features of endplay including
 dealing hands and performing double-dummy analysis.
 """
 
 __all__ = ["CursesFrontend"]
 
 import curses
+import io
+import shlex
 from curses.textpad import Textbox
+from typing import Optional
+
+from endplay.dds.ddtable import calc_dd_table
+from endplay.dds.solve import solve_board
+from endplay.interact.commandobject import CommandObject
+from endplay.types.denom import Denom
+from endplay.types.player import Player
+
+
+def addcstr(win: "curses._CursesWindow", y: int, x: int, s: str):
+    for i, c in enumerate(s, x):
+        if c == Denom.spades.abbr:
+            win.addch(y, i, c, curses.color_pair(3))
+        elif c == Denom.hearts.abbr:
+            win.addch(y, i, c, curses.color_pair(4))
+        elif c == Denom.diamonds.abbr:
+            win.addch(y, i, c, curses.color_pair(5))
+        elif c == Denom.clubs.abbr:
+            win.addch(y, i, c, curses.color_pair(6))
+        else:
+            win.addch(y, i, c)
 
 
 class CursesFrontend:
+    dealwin: "curses._CursesWindow"
+    trickswin: "curses._CursesWindow"
+    infowin: "curses._CursesWindow"
+    tablewin: "curses._CursesWindow"
+    inputwin: "curses._CursesWindow"
+    consolewin: "curses._CursesWindow"
 
-    def __init__(self):
-        raise NotImplementedError
-        self.command_history = []
-        self.ps1 = "> "
+    def __init__(self, cmdobj: CommandObject):
+        self.cmdobj = cmdobj
+        self.command = ""
+        self._ps1 = "{onlead}> "
+        self.console_lines: list[tuple[str, Optional[str], bool]] = []
 
-    def _main(self, stdscr):
+    @property
+    def ps1(self):
+        return self._ps1.format(onlead=self.cmdobj.deal.curplayer.abbr)
+
+    def initialise(self, stdscr: "curses._CursesWindow"):
+        curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_WHITE)
+        curses.init_pair(2, curses.COLOR_BLACK, curses.COLOR_GREEN)
+        curses.init_pair(3, curses.COLOR_BLUE, curses.COLOR_WHITE)
+        curses.init_pair(4, curses.COLOR_RED, curses.COLOR_WHITE)
+        curses.init_pair(5, curses.COLOR_YELLOW, curses.COLOR_WHITE)
+        curses.init_pair(6, curses.COLOR_GREEN, curses.COLOR_WHITE)
+
         rows, cols = stdscr.getmaxyx()
 
-        # Deal window
-        deal_win = curses.newwin(0, 0, 12, 39)
+        # left column
+        self.dealwin = curses.newwin(14, 42, 1, 2)
+        self.infowin = curses.newwin(3, 42, 16, 2)
+        self.trickswin = curses.newwin(5, 42, 20, 2)
+        self.tablewin = curses.newwin(8, 42, 26, 2)
 
-        # DDTable window
+        # right column
+        self.consolewin = curses.newwin(rows - 4, cols - 48, 1, 46)
+        self.inputwin = curses.newwin(2, cols - 48, rows - 3, 46)
 
-        # DDTricks window
+        self.dealwin.bkgd(" ", curses.color_pair(2))
+        self.infowin.bkgd(" ", curses.color_pair(1))
+        self.trickswin.bkgd(" ", curses.color_pair(1))
+        self.tablewin.bkgd(" ", curses.color_pair(1))
+        self.consolewin.bkgd(" ", curses.color_pair(1))
+        self.inputwin.bkgd(" ", curses.color_pair(1))
 
-        stdscr.hline(12, 0, curses.ACS_HLINE, cols)
+    def update(self, stdscr: "curses._CursesWindow"):
+        self.dealwin.erase()
+        self.infowin.erase()
+        self.trickswin.erase()
+        self.tablewin.erase()
+        self.inputwin.erase()
+        self.consolewin.erase()
 
-        # Command history window
-        hist_height = rows - 15
-        hist_width = cols
-        hist_win = curses.newwin(hist_height, hist_width, 13, cols)
+        # update deal
+        stream = io.StringIO()
+        self.cmdobj.deal.pprint(stream=stream, board_no=self.cmdobj.board)
+        for i, line in enumerate(stream.getvalue().splitlines()):
+            self.dealwin.addstr(i + 1, 2, line)
 
-        stdscr.hline(rows - 2, 0, curses.ACS_HLINE, cols)
+        # update info
+        addcstr(
+            self.infowin,
+            1,
+            2,
+            f"Playing in {self.cmdobj.deal.trump.abbr}, {self.cmdobj.deal.first.abbr} leading this trick",
+        )
 
-        # Input window
-        stdscr.addstr(rows - 1, 0, self.ps1)
-        edit_win = curses.newwin(1, cols - len(self.ps1), rows - 1, len(self.ps1))
+        # update tricks
+        self.trickswin.addstr(1, 2, "Tricks:")
+        try:
+            sols = solve_board(self.cmdobj.deal)
+            cards = "".join([str(sol[0]).ljust(3) for sol in sols])
+            tricks = "".join([str(sol[1]).ljust(3) for sol in sols])
+            addcstr(self.trickswin, 2, 2, cards)
+            self.trickswin.addstr(3, 2, tricks)
+        except Exception as e:
+            self.trickswin.addstr(2, 2, str(e))
 
+        # update ddtable
+        self.tablewin.addstr(1, 2, "DD Table:")
+        try:
+            if len(self.cmdobj.deal[Player.north]) == 0:
+                raise RuntimeError("Zero cards")
+            table = calc_dd_table(self.cmdobj.deal)
+            stream = io.StringIO()
+            table.pprint(stream=stream)
+            for i, line in enumerate(stream.getvalue().splitlines()):
+                addcstr(self.tablewin, i + 2, 2, line)
+        except Exception as e:
+            self.tablewin.addstr(2, 2, str(e))
+
+        # history
+        max_lines, _ = self.consolewin.getmaxyx()
+        max_lines -= 1
+        output: list[tuple[str, int]] = []
+        for i, cmd in enumerate(reversed(self.console_lines)):
+            lines_remaining = max_lines - len(output)
+            if lines_remaining <= 0:
+                break
+
+            cmd_output = [
+                (f"[{len(self.console_lines) - i}] {cmd[0]}", curses.color_pair(3))
+            ]
+            if cmd[1] is not None:
+                c = curses.color_pair(4) if cmd[2] else curses.color_pair(1)
+                for l in cmd[1].splitlines():
+                    cmd_output += [(l, c)]
+            if len(cmd_output) > lines_remaining:
+                cmd_output = cmd_output[len(cmd_output) - lines_remaining :]
+            output = cmd_output + output
+
+        start_line = max_lines - len(output)
+        for i, (line, color) in enumerate(output, start_line):
+            self.consolewin.addstr(i + 1, 2, line, color)
+
+        # input field
+        _, input_cols = self.inputwin.getmaxyx()
+        self.inputwin.hline(curses.ACS_HLINE, input_cols)
+        self.inputwin.addstr(1, 2, self.ps1, curses.color_pair(3))
+
+        self.dealwin.noutrefresh()
+        self.infowin.noutrefresh()
+        self.trickswin.noutrefresh()
+        self.tablewin.noutrefresh()
+        self.inputwin.noutrefresh()
+        self.consolewin.noutrefresh()
+        curses.doupdate()
+
+    def process_input(self):
+        begy, begx = self.inputwin.getbegyx()
+        _, maxx = self.inputwin.getmaxyx()
+        editwin = curses.newwin(
+            1, maxx - 2 - len(self.ps1), begy + 1, begx + 2 + len(self.ps1)
+        )
+        editwin.bkgd(curses.color_pair(3))
+        textbox = Textbox(editwin)
+        textbox.edit()
+        self.command = textbox.gather()
+        self.dispatch_command()
+
+    def main(self, stdscr: "curses._CursesWindow"):
+        self.initialise(stdscr)
+        stdscr.noutrefresh()
         while True:
-            stdscr.noutrefresh()
-            deal_win.noutrefresh()
-            hist_win.noutrefresh()
-            edit_win.noutrefresh()
-            curses.doupdate()
-
-            csl_in = Textbox(edit_win)
-            cmd = csl_in.edit()
-            self.command_history.append(cmd)
-            for i, h in enumerate(self.command_history[-hist_height::-1]):
-                hist_win.addstr(hist_height - i - 1, 0, h)
+            self.update(stdscr)
+            self.process_input()
 
     def interact(self):
-        curses.wrapper(self._main)
+        curses.wrapper(self.main)
+
+    def dispatch_command(self):
+        if self.command.strip() == "":
+            return
+
+        cmdline = self.command
+        self.command = ""
+
+        try:
+            output, error = self.cmdobj.dispatch(shlex.split(cmdline)), False
+        except Exception as e:
+            output, error = "error: " + str(e), True
+
+        self.console_lines += [(cmdline, output, error)]

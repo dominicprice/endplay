@@ -188,7 +188,7 @@ def cccc(hand: Union[Hand, SuitHolding]) -> float:
     if isinstance(hand, Hand):
         return sum(cccc(hand[suit]) for suit in Denom.suits())
     l = len(hand)
-    score = 0
+    score = 0.
     # 1-5: Count point values A=4,K=3,Q=2,J=1,T=0.5
     if Rank.RA in hand: score += 4
     if Rank.RK in hand: score += 3

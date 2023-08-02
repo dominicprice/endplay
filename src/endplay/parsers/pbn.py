@@ -12,15 +12,15 @@ from io import StringIO
 from itertools import chain
 from typing import TextIO, Union
 
-from more_itertools import chunked
-
 from endplay.config import suppress_unicode
-from endplay.types import (Bid, Board, Card, Contract, ContractBid, Deal, Denom, PenaltyBid, Player, Rank, Vul)
-from endplay.utils.play import (linearise_play, result_to_tricks, tabularise_play, tricks_to_result)
+from endplay.types import (Bid, Board, Card, Contract, ContractBid, Deal,
+                           Denom, PenaltyBid, Player, Rank, Vul)
+from endplay.utils.play import (linearise_play, result_to_tricks,
+                                tabularise_play, tricks_to_result)
+from more_itertools import chunked
 
 
 class PBNDecodeError(ValueError):
-
     def __init__(self, msg, line, lineno):
         super().__init__(msg)
         self.line = line
@@ -48,15 +48,15 @@ class PBNDecoder:
         COMMENTBLOCK = 3
 
     def __init__(self):
-        #warnings.warn("endplay.parsers.PBNDecoder is now deprecated and subject to be replaced with a different interface at any time")
+        # warnings.warn("endplay.parsers.PBNDecoder is now deprecated and subject to be replaced with a different interface at any time")
         self.metadata = {}
 
     def _get_comment(self, text: str, iscont: bool):
         """
-		Returns the comment contained in text, and a flag which
-		is set to True if the comment requires continuation or
-		False otherwise
-		"""
+        Returns the comment contained in text, and a flag which
+        is set to True if the comment requires continuation or
+        False otherwise
+        """
         if iscont:
             m = PBNDecoder.re_bcomment_end.match(text)
             if m:
@@ -123,7 +123,9 @@ class PBNDecoder:
                         # bid's alert
                         idx = bid[1:-1]
                         board.auction[-1].alertable = True
-                        board.auction[-1].announcement = self.notes.get(idx, "Note not found")
+                        board.auction[-1].announcement = self.notes.get(
+                            idx, "Note not found"
+                        )
                     elif bid in "-*+":
                         # either the auction has finished, or it is a unknown call. Either
                         # way, parsing the auction is finished for us.
@@ -154,14 +156,18 @@ class PBNDecoder:
                             row.append(Card(card))
                     table.append(row)
                 if board.contract is None:
-                    raise RuntimeError("cannot calculate play history without a contract")
+                    raise RuntimeError(
+                        "cannot calculate play history without a contract"
+                    )
                 board.play = linearise_play(table, first, board.contract.denom)
             else:
                 # By default, add to the info section
                 if len(fields) == 1:
                     board.info[raw_key] = value
                 else:
-                    board.info[raw_key] = dict(headers=fields["value"], rows=fields["data"])
+                    board.info[raw_key] = dict(
+                        headers=fields["value"], rows=fields["data"]
+                    )
 
         # housekeeping: if declarer/result are manually specified
         # then add to the contract
@@ -180,7 +186,10 @@ class PBNDecoder:
         # Match against PBN version (e.g. % PBN 2.1)
         m = PBNDecoder.re_pbnversion.match(curline)
         if m:
-            self.metadata["version"] = {"major": int(m.group(1)), "minor": int(m.group(2))}
+            self.metadata["version"] = {
+                "major": int(m.group(1)),
+                "minor": int(m.group(2)),
+            }
             return False
         # Match against IMPORT/EXPORT (e.g. % EXPORT)
         m = PBNDecoder.re_fileformat.match(curline)
@@ -236,17 +245,32 @@ class PBNDecoder:
             if self.curtag.lower() == "play" or self.curtag.lower() == "auction":
                 self.curtags[self.curtag] = {"value": m.group(2), "data": []}
                 self.state = PBNDecoder.State.DATA
-            elif self.curtag.lower().endswith("table") and self.curtag.lower() != "table":
+            elif (
+                self.curtag.lower().endswith("table") and self.curtag.lower() != "table"
+            ):
                 colnames = []
                 for colname in m.group(2).split(";"):
                     cm = PBNDecoder.re_colname.match(colname)
                     if cm:
-                        if (not cm.group(1)) and (not cm.group(3)) and (not cm.group(4)):
+                        if (
+                            (not cm.group(1))
+                            and (not cm.group(3))
+                            and (not cm.group(4))
+                        ):
                             colnames += [cm.group(2)]
                         else:
-                            colnames += [{"ordering": cm.group(1) or None, "name": cm.group(2), "minwidth": cm.group(3) or None, "alignment": cm.group(4) or None}]
+                            colnames += [
+                                {
+                                    "ordering": cm.group(1) or None,
+                                    "name": cm.group(2),
+                                    "minwidth": cm.group(3) or None,
+                                    "alignment": cm.group(4) or None,
+                                }
+                            ]
                     else:
-                        raise PBNDecodeError("Could not parse column name", curline, self.lineno)
+                        raise PBNDecodeError(
+                            "Could not parse column name", curline, self.lineno
+                        )
                 self.curtags[self.curtag] = {"value": colnames, "data": []}
                 self.state = PBNDecoder.State.DATA
             elif self.curtag.lower() == "note":
@@ -269,10 +293,10 @@ class PBNDecoder:
     def parse_file(self, f: TextIO) -> list[Board]:
         "Parse a PBN file"
 
-        self.boards = []
+        self.boards: list[Board] = []
         self.prevtags = {}
         self.curtags = {}
-        self.notes = {}
+        self.notes: dict[str, str] = {}
         self.state = PBNDecoder.State.META
         self.curtag = None
         self.lineno = 0
@@ -305,7 +329,6 @@ class PBNDecoder:
 
 
 class PBNEncoder:
-
     def __init__(self):
         self.tags = []
         self.pbn_version = "2.1"
@@ -381,7 +404,9 @@ class PBNEncoder:
                 scoring = value
             elif key.endswith("table") and key != "table":
                 headers = self._serialize_columns(value["headers"])
-                rows = [self._justify_row(value["headers"], row) for row in value["rows"]]
+                rows = [
+                    self._justify_row(value["headers"], row) for row in value["rows"]
+                ]
                 supplementary[raw_key] = Board.Info(value=headers, data=rows)
             elif isinstance(value, str):
                 supplementary[raw_key] = Board.Info(value=value)
@@ -429,7 +454,7 @@ class PBNEncoder:
                 self._create_tag("Result", res)
 
             # Print play and auction
-            notes = {}
+            notes: dict[int, str] = {}
             if board.auction:
                 table = []
                 for row in chunked(board.auction, 4):
@@ -452,11 +477,13 @@ class PBNEncoder:
                 pad_value = Card(suit=Denom.nt, rank=Rank.R2)
                 if board.contract is None:
                     raise ValueError("cannot generate Play tag with no contract")
-                table = tabularise_play(board.play, board.contract.declarer.lho, board.contract.denom)
+                table = tabularise_play(
+                    board.play, board.contract.declarer.lho, board.contract.denom
+                )
                 string_table = []
-                for row in table:
+                for table_row in table:
                     string_row = []
-                    for card in row:
+                    for card in table_row:
                         if card == pad_value:
                             string_row.append("- ")
                         else:

@@ -12,7 +12,8 @@ import re
 from typing import Any, Callable, Union
 
 from endplay.dds import analyse_play
-from endplay.evaluate import (cccc, controls, exact_shape, hcp, losers, quality, standard_hcp_scale)
+from endplay.evaluate import (cccc, controls, exact_shape, hcp, losers,
+                              quality, standard_hcp_scale)
 from endplay.parsers.dealer import DealerParser, Node
 from endplay.types import Deal, Denom
 
@@ -73,7 +74,7 @@ class ConstraintInterpreter:
             node = self.parse(node)
         if node.dtype == Node.ROOT:
             # root node is just dummy, keep going down the tree
-            return self.evaluate(node.last_child)
+            return self.evaluate(node.last_child, deal)
         elif node.dtype == Node.SYMBOL:
             # symbols evaluate to their value in the environment and
             # are evaluated if they are Node instances

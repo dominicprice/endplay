@@ -10,9 +10,8 @@ import sys
 from collections.abc import Iterable
 from typing import TextIO
 
-from more_itertools import chunked
-
 from endplay.types import Bid, Player
+from more_itertools import chunked
 
 
 def pprint_auction(

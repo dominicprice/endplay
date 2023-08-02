@@ -4,6 +4,9 @@ Algorithms for detecting play techniques
 
 from __future__ import annotations
 
+import abc
+from typing import Optional
+
 __all__ = ["detect_play", "SimpleFinesse", "PlayTechniqueBase"]
 
 from endplay.types import Card, Deal, Rank, SuitHolding
@@ -38,9 +41,9 @@ def rank_above(rank: Rank, holding: SuitHolding):
 
 def rank_equivalent(rankA: Rank, rankB: Rank, remaining: SuitHolding):
     """
-	Return true if `cardA` and `cardB` are equivalent cards, given that
-	the only cards of that suit left in the deal are in `remaining`
-	"""
+    Return true if `cardA` and `cardB` are equivalent cards, given that
+    the only cards of that suit left in the deal are in `remaining`
+    """
     foundA = False
     for rank in remaining:
         if rank == rankA:
@@ -50,16 +53,19 @@ def rank_equivalent(rankA: Rank, rankB: Rank, remaining: SuitHolding):
     raise ValueError(f"{rankA} not found in remaining cards")
 
 
-class PlayTechniqueBase:
-
+class PlayTechniqueBase(abc.ABC):
     def __init__(self):
-        self.match = False
+        self.matches = False
         self.exception = None
 
     def __bool__(self):
-        return self.match
+        return self.matches
 
-    def match(self, deal, trick):
+    @abc.abstractproperty
+    def name(self) -> str:
+        ...
+
+    def match(self, deal: Deal, trick: list[Card]):
         try:
             if len(trick) != 4:
                 raise ValueError("`trick` must contain four cards")
@@ -71,9 +77,12 @@ class PlayTechniqueBase:
             self.exception = e
         return self.match
 
+    @abc.abstractmethod
+    def _match(self, deal: Deal, trick: list[Card]):
+        ...
+
 
 class Finesse(PlayTechniqueBase):
-
     def __init__(self):
         super().__init__()
         self.onside = False
@@ -82,12 +91,15 @@ class Finesse(PlayTechniqueBase):
 
 
 class SimpleFinesse(PlayTechniqueBase):
-
     def __init__(self):
         super().__init__()
         self.is_onside = False
         self.lho_covered = False
         self.rho_covered = False
+
+    @property
+    def name(self):
+        return "simple finesse"
 
     def _match(self, deal: Deal, trick: list[Card]):
         # First three cards must be the same suit
@@ -111,13 +123,14 @@ class SimpleFinesse(PlayTechniqueBase):
         # card directly above/below
 
 
-def detect_play(deal: Deal, play_history: list[Card], techniques: list[PlayTechniqueBase] = None):
-    if techniques is None:
-        techniques = [SimpleFinesse]
+def detect_play(
+    deal: Deal, play_history: list[Card], techniques: list[PlayTechniqueBase] = []
+):
+    if not techniques:
+        techniques = [SimpleFinesse()]
 
     res = []
     for technique in techniques:
-        match = technique()
         if technique.match(deal, play_history):
-            res.append(match)
+            res.append(technique.name)
     return res

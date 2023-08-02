@@ -11,7 +11,9 @@ import random
 import time
 from typing import Optional
 
-from endplay.dealer.actions import (HTMLActions, LaTeXActions, PDFActions, TerminalActions)
+from endplay.dealer.actions import (HTMLActions, LaTeXActions, PDFActions,
+                                    TerminalActions)
+from endplay.dealer.actions.base import BaseActions
 from endplay.dealer.constraint import ConstraintInterpreter
 from endplay.dealer.generate import generate_deals
 from endplay.parsers.dealer import DealerParser, Node, ParseException
@@ -57,7 +59,9 @@ def run_script(
     # If we are asked to produce more hands than we generate, we will always fail so let's not
     # waste any time trying
     if produce > generate:
-        raise ValueError(f"Asked to produce {produce} hands by generating {generate} hands")
+        raise ValueError(
+            f"Asked to produce {produce} hands by generating {generate} hands"
+        )
 
     if seed is None:
         # Generate a seed between 0 and 2**32-1 (required by numpy.random.RandomState)
@@ -127,7 +131,9 @@ def run_script(
     except NotImplementedError as e:
         exit(f"One of the features you are trying to use is unimplemented: {e}")
     except Exception as e:
-        exit(f"Unknown exception occurred: {e}", )
+        exit(
+            f"Unknown exception occurred: {e}",
+        )
 
     # Produce hands
     compiled_constraints = [interp.lambdify(c) for c in parsed_constraints]
@@ -162,6 +168,7 @@ def run_script(
             outformat = "plain"
 
     # Set up the output engine
+    actioner: BaseActions
     if outformat == "plain":
         actioner = TerminalActions(board_numbers, vul, dealer, interp)
     elif outformat == "latex":

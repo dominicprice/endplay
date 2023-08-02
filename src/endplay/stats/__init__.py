@@ -8,7 +8,7 @@ __all__ = ["average", "frequency", "cofrequency"]
 
 from collections.abc import Iterable
 from math import ceil, floor
-from typing import Optional
+from typing import SupportsFloat
 
 from endplay.dealer.constraint import Expr
 from endplay.types import Deal
@@ -16,7 +16,10 @@ from endplay.types import Deal
 try:
     from statistics import fmean
 except ImportError:
-    from statistics import mean as fmean
+    from statistics import mean as _fmean
+
+    def fmean(data: Iterable[SupportsFloat]) -> float:
+        return _fmean(data)  # type: ignore
 
 
 def average(deals: Iterable[Deal], func: Expr):

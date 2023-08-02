@@ -19,19 +19,30 @@ denom_to_contract = [1, 2, 3, 4, 0]
 
 class Contract:
     "Class representing a specific contract"
-    _pat = re.compile(r"^([1-7])((?:NT?)|S|H|D|C)([NSEW]?)((?:XX|X|D|R)?)((?:=|(?:[+-]\d+))?)$")
+    _pat = re.compile(
+        r"^([1-7])((?:NT?)|S|H|D|C)([NSEW]?)((?:XX|X|D|R)?)((?:=|(?:[+-]\d+))?)$"
+    )
 
-    def __init__(self, data: Union[_dds.contractType, str, None] = None, *, level: Optional[int] = None, denom: Optional[Denom] = None, declarer: Optional[Player] = None, penalty: Optional[Penalty] = None, result: Optional[int] = None):
+    def __init__(
+        self,
+        data: Union[_dds.contractType, str, None] = None,
+        *,
+        level: Optional[int] = None,
+        denom: Optional[Denom] = None,
+        declarer: Optional[Player] = None,
+        penalty: Optional[Penalty] = None,
+        result: Optional[int] = None,
+    ):
         """
-		Construct a new contract. If no parameters are passed, a passout is constructed.
+        Construct a new contract. If no parameters are passed, a passout is constructed.
 
-		:param data: Construct from a _dds.contractType object or contract string
-		:param level: The level of the contract
-		:param denom: The denomination of the contract
-		:param declarer: The declarer of the contract
-		:param result: The number of overtricks (positive) or undertricks (negative) made
-		:param penalty: The penalty (pass, x or xx) of the contract
-		"""
+        :param data: Construct from a _dds.contractType object or contract string
+        :param level: The level of the contract
+        :param denom: The denomination of the contract
+        :param declarer: The declarer of the contract
+        :param result: The number of overtricks (positive) or undertricks (negative) made
+        :param penalty: The penalty (pass, x or xx) of the contract
+        """
         if isinstance(data, str):
             m = Contract._pat.match(data.upper())
             if m:
@@ -48,12 +59,19 @@ class Contract:
             data = None
 
         self._data = data or _dds.contractType()
-        self.penalty = Penalty.passed if self._data.underTricks == 0 else Penalty.doubled
-        if level is not None: self.level = level
-        if denom is not None: self.denom = denom
-        if declarer is not None: self.declarer = declarer
-        if penalty is not None: self.penalty = penalty
-        if result is not None: self.result = result
+        self.penalty = (
+            Penalty.passed if self._data.underTricks == 0 else Penalty.doubled
+        )
+        if level is not None:
+            self.level = level
+        if denom is not None:
+            self.denom = denom
+        if declarer is not None:
+            self.declarer = declarer
+        if penalty is not None:
+            self.penalty = penalty
+        if result is not None:
+            self.result = result
 
     def copy(self) -> Contract:
         "Return a copy of this contract object"
@@ -116,8 +134,8 @@ class Contract:
     @staticmethod
     def from_auction(dealer: Player, auction: Sequence[Bid]):
         """
-		Construct a contract from a bidding sequence
-		"""
+        Construct a contract from a bidding sequence
+        """
         # Iterate backwards through the sequence. The penalty is the
         # first x/xx bid we find, and the contract is the first
         # contract bid we find
@@ -135,7 +153,11 @@ class Contract:
         # as the contract and the bidder is the (current) declarer or their
         # partner, set the declarer to that player
         for player, bid in dealer.enumerate(auction):
-            if isinstance(bid, ContractBid) and bid.denom == c.denom and player in [c.declarer, c.declarer.partner]:
+            if (
+                isinstance(bid, ContractBid)
+                and bid.denom == c.denom
+                and player in [c.declarer, c.declarer.partner]
+            ):
                 c.declarer = player
                 break
         return c
@@ -151,9 +173,9 @@ class Contract:
         if vul == Vul.none:
             is_vul = False
         elif vul == Vul.ns:
-            is_vul = (self.declarer in (Player.north, Player.south))
+            is_vul = self.declarer in (Player.north, Player.south)
         elif vul == Vul.ew:
-            is_vul = (self.declarer in (Player.east, Player.west))
+            is_vul = self.declarer in (Player.east, Player.west)
         else:
             is_vul = True
         res = self.result
@@ -191,17 +213,23 @@ class Contract:
             score *= self.penalty
             # Game/part-score bonus
             if score >= 100:
-                if is_vul: score += 500
-                else: score += 300
+                if is_vul:
+                    score += 500
+                else:
+                    score += 300
             else:
                 score += 50
             # Slam bonuses
             if l == 6:
-                if is_vul: score += 750
-                else: score += 500
+                if is_vul:
+                    score += 750
+                else:
+                    score += 500
             elif l == 7:
-                if is_vul: score += 1500
-                else: score += 750
+                if is_vul:
+                    score += 1500
+                else:
+                    score += 750
             # Insult bonus
             if self.penalty == Penalty.doubled:
                 score += 50
@@ -214,19 +242,26 @@ class Contract:
                 else:
                     score += 30 * res
             elif self.penalty == Penalty.doubled:
-                if is_vul: score += 200 * res
-                else: score += 100 * res
+                if is_vul:
+                    score += 200 * res
+                else:
+                    score += 100 * res
             else:
-                if is_vul: score += 400 * res
-                else: score += 200 * res
+                if is_vul:
+                    score += 400 * res
+                else:
+                    score += 200 * res
             return score
 
-    def __eq__(self, other: Contract) -> bool:
-        return \
-         self.level == other.level and \
-         self.denom == other.denom and \
-         self.declarer == other.declarer and \
-         self.result == other.result
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, Contract):
+            return NotImplemented
+        return (
+            self.level == other.level
+            and self.denom == other.denom
+            and self.declarer == other.declarer
+            and self.result == other.result
+        )
 
     def __repr__(self) -> str:
         return f'Contract("{self!s}")'

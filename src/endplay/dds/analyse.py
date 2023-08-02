@@ -15,7 +15,7 @@ __all__ = [
 ]
 
 from collections.abc import Iterable, Sequence
-from typing import Union
+from typing import Union, overload
 
 import endplay._dds as _dds
 from endplay.types import Card, Deal
@@ -30,13 +30,24 @@ class SolvedPlay(Sequence):
         ":return: The number of results in the play"
         return self._data.number
 
+    @overload
     def __getitem__(self, i: int) -> int:
+        ...
+
+    @overload
+    def __getitem__(self, i: slice) -> Sequence[int]:
+        ...
+
+    def __getitem__(self, i: Union[int, slice]) -> Union[int, Sequence[int]]:
         ":return: The number of tricks that declarer can make after the ith card is played"
-        if i < 0:
-            i = len(self) - i
-        if i < 0 or i >= len(self):
-            raise IndexError
-        return self._data.tricks[i]
+        if isinstance(i, int):
+            if i < 0:
+                i = len(self) - i
+            if i < 0 or i >= len(self):
+                raise IndexError
+            return self._data.tricks[i]
+        else:
+            return [self[ii] for ii in range(*i.indices(len(self)))]
 
     def __repr__(self) -> str:
         return f'<SolvedPlay object; data={self!s}>'
@@ -54,13 +65,24 @@ class SolvedPlayList(Sequence):
         ":return: The number of boards in the list"
         return self._data.noOfBoards
 
+    @overload
     def __getitem__(self, i: int) -> SolvedPlay:
+        ...
+
+    @overload
+    def __getitem__(self, i: slice) -> Sequence[SolvedPlay]:
+        ...
+
+    def __getitem__(self, i: Union[int, slice]) -> Union[SolvedPlay, Sequence[SolvedPlay]]:
         ":return: The solved play at index `i`"
-        if i < 0:
-            i = len(self) - i
-        if i < 0 or i >= len(self):
-            raise IndexError
-        return SolvedPlay(self._data.solved[i])
+        if isinstance(i, int):
+            if i < 0:
+                i = len(self) - i
+            if i < 0 or i >= len(self):
+                raise IndexError
+            return SolvedPlay(self._data.solved[i])
+        else:
+            return [self[ii] for ii in range(*i.indices(len(self)))]
 
     def __repr__(self) -> str:
         return f'<SolvedPlayList; length={len(self)}'

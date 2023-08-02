@@ -20,10 +20,10 @@ class Hand:
 
     def __init__(self, data: Union[str, ctypes.Array[ctypes.c_uint]] = "..."):
         """
-		Construct a hand object
+        Construct a hand object
 
-		:param data: Either a PBN string of the hand, or a reference to a _dds object
-		"""
+        :param data: Either a PBN string of the hand, or a reference to a _dds object
+        """
         if isinstance(data, str):
             self._data = (ctypes.c_uint * 4)(0, 0, 0, 0)
             suits = data.split(".")
@@ -37,19 +37,19 @@ class Hand:
         else:
             self._data = data
 
-    def __copy__(self) -> 'Hand':
+    def __copy__(self) -> "Hand":
         return Hand((ctypes.c_uint * 4).from_buffer_copy(self._data))
 
-    def copy(self) -> 'Hand':
+    def copy(self) -> "Hand":
         return self.__copy__()
 
-    def add(self, card: Card) -> bool:
+    def add(self, card: Union[Card, str]) -> bool:
         """
-		Adds a card to the hand
+        Adds a card to the hand
 
-		:param card: The card to be added to the hand
-		:return: False if the card was already in the hand, True otherwise
-		"""
+        :param card: The card to be added to the hand
+        :return: False if the card was already in the hand, True otherwise
+        """
         if isinstance(card, str):
             card = Card(name=card)
         elif not isinstance(card, Card):
@@ -62,21 +62,21 @@ class Hand:
 
     def extend(self, cards: Iterable[Card]) -> int:
         """
-		Add multiple cards to the hand
+        Add multiple cards to the hand
 
-		:param cards: An iterable of the cards to add
-		:return: The number of cards successfully added
-		"""
+        :param cards: An iterable of the cards to add
+        :return: The number of cards successfully added
+        """
         return sum(self.add(card) for card in cards)
 
     def remove(self, card: Card) -> bool:
         """
-		Remove a card from the hand
+        Remove a card from the hand
 
-		:param card: The card to be added to the hand, can be a string
-			representation e.g. "CQ"
-		:return: False if the card wasn't in the hand, True otherwise
-		"""
+        :param card: The card to be added to the hand, can be a string
+                representation e.g. "CQ"
+        :return: False if the card wasn't in the hand, True otherwise
+        """
         if isinstance(card, str):
             card = Card(name=card)
         elif not isinstance(card, Card):
@@ -87,32 +87,32 @@ class Hand:
         return False
 
     @staticmethod
-    def from_pbn(pbn: str) -> 'Hand':
+    def from_pbn(pbn: str) -> "Hand":
         """
-		Construct a Hand from a PBN string
+        Construct a Hand from a PBN string
 
-		:param pbn: A PBN string for a hand, e.g. "QT62..AQT852.QJT"
-		"""
+        :param pbn: A PBN string for a hand, e.g. "QT62..AQT852.QJT"
+        """
         return Hand(pbn)
 
     def to_pbn(self) -> str:
         ":return: A PBN representation of the hand"
-        return '.'.join(str(self[suit]) for suit in Denom.suits())
+        return ".".join(str(self[suit]) for suit in Denom.suits())
 
     @staticmethod
-    def from_lin(lin: str) -> 'Hand':
+    def from_lin(lin: str) -> "Hand":
         """
-		Construct a Hand from a LIN string
+        Construct a Hand from a LIN string
 
-		:param lin: A LIN string for a hand, e.g. "SQT62HDAQT852CQJT"
-		"""
+        :param lin: A LIN string for a hand, e.g. "SQT62HDAQT852CQJT"
+        """
         pbn = lin[1:].replace("H", ".").replace("D", ".").replace("C", ".")
         return Hand.from_pbn(pbn)
 
     def to_lin(self) -> str:
         """
-		Convert a Hand to a LIN string
-		"""
+        Convert a Hand to a LIN string
+        """
         lin = ""
         with suppress_unicode():
             for suit in Denom.suits():
@@ -121,11 +121,11 @@ class Hand:
 
     def to_LaTeX(self, vertical: bool = True, ten_as_letter: bool = False) -> str:
         """
-		Create a LaTeX representation of the hand.
+        Create a LaTeX representation of the hand.
 
-		:param vertical: If True uses \\vhand, else \\hhand layout
-		:param title: The hand title. If vertical is False this is ignored
-		"""
+        :param vertical: If True uses \\vhand, else \\hhand layout
+        :param title: The hand title. If vertical is False this is ignored
+        """
         if vertical:
             res, sep = r"\begin{tabular}{l}", r"\\"
         else:
@@ -137,7 +137,11 @@ class Hand:
             else:
                 for rank in self[suit]:
                     res += r"\makebox[.8em]{"
-                    res += r"1\kern-.16em0" if (rank == Rank.RT and not ten_as_letter) else rank.abbr
+                    res += (
+                        r"1\kern-.16em0"
+                        if (rank == Rank.RT and not ten_as_letter)
+                        else rank.abbr
+                    )
                     res += "}"
             res += sep
         if vertical:
@@ -147,12 +151,14 @@ class Hand:
     def pprint(self, vertical: bool = True, stream=sys.stdout) -> None:
         "Print the suits in the hand using suit symbols"
         sep = "\n" if vertical else " "
-        print(sep.join(f"{suit.abbr} {self[suit]}" for suit in Denom.suits()), file=stream)
+        print(
+            sep.join(f"{suit.abbr} {self[suit]}" for suit in Denom.suits()), file=stream
+        )
 
     def clear(self) -> None:
         "Remove all cards from the hand"
-        for i in range(4):
-            self._data[i] &= 0
+        for denom in Denom.suits():
+            self[denom].clear()
 
     @property
     def spades(self) -> SuitHolding:
@@ -225,7 +231,7 @@ class Hand:
 
     def __len__(self) -> int:
         ":return: The number of cards in the hand"
-        return sum(bin(suit).count('1') for suit in self._data)
+        return sum(bin(suit).count("1") for suit in self._data)
 
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, Hand):

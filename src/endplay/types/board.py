@@ -15,54 +15,54 @@ from endplay.types.vul import Vul
 
 class Board:
     """
-	Class representing a deal along with the play, auction and other table
-	information
+    Class representing a deal along with the play, auction and other table
+    information
 
-	:ivar deal: The deal at the table
-	:vartype deal: Deal
-	:ivar auction: The auction at the table
-	:vartype auction: list[Bid]
-	:ivar contract: The contract at the table
-	:vartype contract: Contract
-	:ivar play: The play history at the table
-	:vartype play: list[Card]
-	:ivar board_num: The board number of this deal
-	:vartype board_num: int
-	:ivar vul: The board vulnerability. If this isn't defined
-		(i.e. set to `None`) then it is deduced from `board_num`
-	:vartype vul: Vul
-	:ivar dealer: The board dealer. Similarly to `vul` this can
-		be deduced from `board_num`
-	:vartype dealer: Player
-	:ivar claimed: Flag indicating whether the play ended as a result
-		of a claim
-	:vartype claimed: bool
-	:ivar info: A dictionary which contains arbitrary extra information
-		about the board. The dictionary type used provided case-insensitive
-		dot-access as a convenience (i.e. `board.info.event` and `board.info.Event`
-		refer to the same object, but `board.info["event"]` and `board.info["Event"]`
-		would be considered different). Tabular data can be stored here, any
-		key ending with (but not equal to) `table` is treated as a table and its value
-		should be a dictionary containing two keys: `headers` with a list of column names,
-		and `rows` with a list of the rows. The column names can either be plain strings,
-		or dictionaries with the keys
+    :ivar deal: The deal at the table
+    :vartype deal: Deal
+    :ivar auction: The auction at the table
+    :vartype auction: list[Bid]
+    :ivar contract: The contract at the table
+    :vartype contract: Contract
+    :ivar play: The play history at the table
+    :vartype play: list[Card]
+    :ivar board_num: The board number of this deal
+    :vartype board_num: int
+    :ivar vul: The board vulnerability. If this isn't defined
+            (i.e. set to `None`) then it is deduced from `board_num`
+    :vartype vul: Vul
+    :ivar dealer: The board dealer. Similarly to `vul` this can
+            be deduced from `board_num`
+    :vartype dealer: Player
+    :ivar claimed: Flag indicating whether the play ended as a result
+            of a claim
+    :vartype claimed: bool
+    :ivar info: A dictionary which contains arbitrary extra information
+            about the board. The dictionary type used provided case-insensitive
+            dot-access as a convenience (i.e. `board.info.event` and `board.info.Event`
+            refer to the same object, but `board.info["event"]` and `board.info["Event"]`
+            would be considered different). Tabular data can be stored here, any
+            key ending with (but not equal to) `table` is treated as a table and its value
+            should be a dictionary containing two keys: `headers` with a list of column names,
+            and `rows` with a list of the rows. The column names can either be plain strings,
+            or dictionaries with the keys
 
-		* `ordering`: Either `"+"`, `"-"` or `None` depending of if the table is sorted
-			ascending, descending or unsorted with respect to this column
-		* `name`: A string value with the name of the column
-		* `minwidth`: The minimum width that values in this column should be
-		* `alignment`: `"L"` or `"R"` depending on if this column should be left or right
-			aligned. Ignored unless `minwidth` is defined
-	"""
+            * `ordering`: Either `"+"`, `"-"` or `None` depending of if the table is sorted
+                    ascending, descending or unsorted with respect to this column
+            * `name`: A string value with the name of the column
+            * `minwidth`: The minimum width that values in this column should be
+            * `alignment`: `"L"` or `"R"` depending on if this column should be left or right
+                    aligned. Ignored unless `minwidth` is defined
+    """
 
     class Info(dict):
         """
-		Dictionary-like class which alows for case-insensitive dot-access,
-		for example::
+        Dictionary-like class which alows for case-insensitive dot-access,
+        for example::
 
-			info["Event"] = "WBF 2017"
-			print(info.event) # WBF 2017
-		"""
+                info["Event"] = "WBF 2017"
+                print(info.event) # WBF 2017
+        """
 
         def _find_key(self, key: str):
             key = key.casefold()
@@ -117,9 +117,9 @@ class Board:
     @property
     def dealer(self) -> Optional[Player]:
         """
-		Dealer of the board. If not defined, then attempts to
-		calculate based on the value of `board_num`
-		"""
+        Dealer of the board. If not defined, then attempts to
+        calculate based on the value of `board_num`
+        """
         if self._dealer is not None:
             return self._dealer
         elif self.board_num is not None:
@@ -134,9 +134,9 @@ class Board:
     @property
     def vul(self) -> Optional[Vul]:
         """
-		Vulnerability of the board. If not defined, then attempts
-		to calculate based on the value of `board_num`
-		"""
+        Vulnerability of the board. If not defined, then attempts
+        to calculate based on the value of `board_num`
+        """
         if self._vul is not None:
             return self._vul
         elif self.board_num is not None:
@@ -151,16 +151,19 @@ class Board:
     @property
     def contract(self) -> Optional[Contract]:
         """
-		The contract the board was played in. If not provided, then
-		attempts to calculate based on the auction and play history.
-		"""
+        The contract the board was played in. If not provided, then
+        attempts to calculate based on the auction and play history.
+        """
         if self._contract is not None:
             return self._contract
         elif self.auction and self.dealer:
             c = Contract.from_auction(self.dealer, self.auction)
             if self.play:
                 from endplay.utils.play import total_tricks, tricks_to_result
-                c.result = tricks_to_result(total_tricks(self.play, self.deal.trump), c.level)
+
+                c.result = tricks_to_result(
+                    total_tricks(self.play, self.deal.trump), c.level
+                )
             return c
         else:
             return None

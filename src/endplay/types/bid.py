@@ -10,20 +10,23 @@ from endplay.types.penalty import Penalty
 
 class Bid:
     """
-	Base class representing an auction call. This class provides a convenience
-	constructor from a string, but upon construction will automatically donwcast
-	its type to one of :class:`ContractBid` or :class:`PenaltyBid` depending on the type of the
-	call.
+    Base class representing an auction call. This class provides a convenience
+    constructor from a string, but upon construction will automatically donwcast
+    its type to one of :class:`ContractBid` or :class:`PenaltyBid` depending on the type of the
+    call.
 
-	:ivar alertable: Flag indicating whether the bid is alertable
-	:vartype alertable: bool
-	:ivar announcement: String transcription of the announcement for this bid
-	:vartype announcement: Optional[str]
-	"""
+    :ivar alertable: Flag indicating whether the bid is alertable
+    :vartype alertable: bool
+    :ivar announcement: String transcription of the announcement for this bid
+    :vartype announcement: Optional[str]
+    """
+
     alertable: bool
     announcement: Optional[str]
 
-    def __init__(self, name: str, alertable: bool = False, announcement: Optional[str] = None):
+    def __init__(
+        self, name: str, alertable: bool = False, announcement: Optional[str] = None
+    ):
         try:
             penalty = Penalty.find(name)
             object.__setattr__(self, "__class__", PenaltyBid)
@@ -36,19 +39,25 @@ class Bid:
 
 class ContractBid(Bid):
     """
-	Class representing a call that names a contract, i.e. has a level and strain
+    Class representing a call that names a contract, i.e. has a level and strain
 
-	:ivar level: The level of the call (between 1 and 7)
-	:vartype level: int
-	:ivar denom: The strain of the call
-	:vartype strain: Denom
-	:ivar alertable: Flag indicating whether the bid is alertable
-	:vartype alertable: bool
-	:ivar announcement: String transcription of the announcement for this bid
-	:vartype announcement: Optional[str]
-	"""
+    :ivar level: The level of the call (between 1 and 7)
+    :vartype level: int
+    :ivar denom: The strain of the call
+    :vartype strain: Denom
+    :ivar alertable: Flag indicating whether the bid is alertable
+    :vartype alertable: bool
+    :ivar announcement: String transcription of the announcement for this bid
+    :vartype announcement: Optional[str]
+    """
 
-    def __init__(self, level: int, denom: Denom, alertable: bool = False, announcement: Optional[str] = None):
+    def __init__(
+        self,
+        level: int,
+        denom: Denom,
+        alertable: bool = False,
+        announcement: Optional[str] = None,
+    ):
         self.level = level
         self.denom = denom
         self.alertable = alertable
@@ -68,17 +77,22 @@ class ContractBid(Bid):
 
 class PenaltyBid(Bid):
     """
-	Class representing a call that does not name a contract, i.e. pass, double or redouble
+    Class representing a call that does not name a contract, i.e. pass, double or redouble
 
-	:ivar penalty: The type of the call
-	:vartype penalty: Penalty
-	:ivar alertable: Flag indicating whether the bid is alertable
-	:vartype alertable: bool
-	:ivar announcement: String transcription of the announcement for this bid
-	:vartype announcement: Optional[str]
-	"""
+    :ivar penalty: The type of the call
+    :vartype penalty: Penalty
+    :ivar alertable: Flag indicating whether the bid is alertable
+    :vartype alertable: bool
+    :ivar announcement: String transcription of the announcement for this bid
+    :vartype announcement: Optional[str]
+    """
 
-    def __init__(self, penalty: Penalty, alertable: bool = False, announcement: Optional[str] = None):
+    def __init__(
+        self,
+        penalty: Penalty,
+        alertable: bool = False,
+        announcement: Optional[str] = None,
+    ):
         self.penalty = penalty
         self.alertable = alertable
         self.announcement = announcement

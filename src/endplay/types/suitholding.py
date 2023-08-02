@@ -10,13 +10,16 @@ from endplay.types.rank import AlternateRank, Rank
 
 
 class SuitHolding:
-
-    def __init__(self, data: Union[ctypes.Array[ctypes.c_uint], str] = "", idx: Optional[int] = None):
+    def __init__(
+        self,
+        data: Union[ctypes.Array[ctypes.c_uint], str] = "",
+        idx: Optional[int] = None,
+    ):
         """
-		Construct a suit holding
+        Construct a suit holding
 
-		:param data: A PBN string representation of the holding or a reference to a _dds object
-		"""
+        :param data: A PBN string representation of the holding or a reference to a _dds object
+        """
         if isinstance(data, str):
             self._data = (ctypes.c_uint * 4)(0, 0, 0, 0)
             self._idx = 0
@@ -28,19 +31,19 @@ class SuitHolding:
             self._idx = idx
             self._data = data
 
-    def __copy__(self) -> 'SuitHolding':
+    def __copy__(self) -> "SuitHolding":
         return SuitHolding((ctypes.c_uint * 4).from_buffer_copy(self._data), self._idx)
 
-    def copy(self) -> 'SuitHolding':
+    def copy(self) -> "SuitHolding":
         return self.__copy__()
 
     def add(self, rank: Union[Rank, str]) -> bool:
         """
-		Add a rank to the suit holding
+        Add a rank to the suit holding
 
-		:param rank: The rank to add
-		:return: False if the rank was already in the holding, True otherwise
-		"""
+        :param rank: The rank to add
+        :return: False if the rank was already in the holding, True otherwise
+        """
         if isinstance(rank, str):
             rank = Rank.find(rank)
         if isinstance(rank, AlternateRank):
@@ -52,20 +55,20 @@ class SuitHolding:
 
     def extend(self, ranks: Iterable[Rank]) -> int:
         """
-		Add multiple ranks to the suit holding
+        Add multiple ranks to the suit holding
 
-		:parm ranks: An iterable of the ranks to add
-		:return: The number of ranks successfully added
-		"""
+        :parm ranks: An iterable of the ranks to add
+        :return: The number of ranks successfully added
+        """
         return sum(self.add(rank) for rank in ranks)
 
     def remove(self, rank: Rank) -> bool:
         """
-		Remove a rank from the suit holding
+        Remove a rank from the suit holding
 
-		:param rank: The rank to remove
-		:return: False if the rank wasn't in the holding, True otherwise
-		"""
+        :param rank: The rank to remove
+        :return: False if the rank wasn't in the holding, True otherwise
+        """
         if isinstance(rank, str):
             rank = Rank.find(rank)
         if isinstance(rank, AlternateRank):
@@ -77,15 +80,15 @@ class SuitHolding:
 
     def clear(self) -> None:
         """
-		Removes all cards from the holding
-		"""
+        Removes all cards from the holding
+        """
         self._data[self._idx] = 0
 
     @staticmethod
-    def from_pbn(pbn: str) -> 'SuitHolding':
+    def from_pbn(pbn: str) -> "SuitHolding":
         """
-		Construct a SuitHolding object from a PBN string
-		"""
+        Construct a SuitHolding object from a PBN string
+        """
         return SuitHolding(pbn)
 
     def to_pbn(self) -> str:
@@ -106,16 +109,18 @@ class SuitHolding:
 
     def __iter__(self) -> Iterator[Rank]:
         for rank in reversed(Rank):
-            if rank in self: yield rank
+            if rank in self:
+                yield rank
 
     def __reversed__(self) -> Iterator[Rank]:
         for rank in Rank:
-            if rank in self: yield rank
+            if rank in self:
+                yield rank
 
     def __len__(self) -> int:
         n = self._data[self._idx]
         b = bin(n)
-        return b.count('1')
+        return b.count("1")
 
     def __str__(self) -> str:
         return self.to_pbn()

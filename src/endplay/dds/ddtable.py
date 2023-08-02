@@ -8,8 +8,8 @@ __all__ = ["DDTable", "DDTableList", "calc_dd_table", "calc_all_tables"]
 
 import sys
 from collections import abc
-from collections.abc import Iterable
-from typing import Union
+from collections.abc import Iterable, Sequence
+from typing import Union, overload
 
 import endplay._dds as _dds
 from endplay.types import Deal, Denom, Player
@@ -17,26 +17,43 @@ from endplay.types import Deal, Denom, Player
 
 class DDTable:
     """
-	Python wrapper for the `_dds.ddTableResults` class. Entries can be accessed
-	using the `__getitem__` operator e.g. table[Denom.clubs, Player.west]
-	"""
+    Python wrapper for the `_dds.ddTableResults` class. Entries can be accessed
+    using the `__getitem__` operator e.g. table[Denom.clubs, Player.west]
+    """
 
     def __init__(self, data: _dds.ddTableResults):
         self._data = data
 
-    def pprint(self, *, denoms: Iterable[Denom] = [Denom.clubs, Denom.diamonds, Denom.hearts, Denom.spades, Denom.nt], players: Iterable[Player] = [Player.north, Player.south, Player.east, Player.west], stream=sys.stdout) -> None:
+    def pprint(
+        self,
+        *,
+        denoms: Iterable[Denom] = [
+            Denom.clubs,
+            Denom.diamonds,
+            Denom.hearts,
+            Denom.spades,
+            Denom.nt,
+        ],
+        players: Iterable[Player] = [
+            Player.north,
+            Player.south,
+            Player.east,
+            Player.west,
+        ],
+        stream=sys.stdout,
+    ) -> None:
         """
-		Print the double dummy table in a grid format
+        Print the double dummy table in a grid format
 
-		:param denoms: Specify the columns of the table
-		:param players: Specify the rows of the table
-		"""
+        :param denoms: Specify the columns of the table
+        :param players: Specify the rows of the table
+        """
         denoms, players = list(denoms), list(players)
         print("   ", " ".join(denom.abbr.rjust(2) for denom in denoms), file=stream)
         for player in players:
-            print(player.abbr.rjust(3), end='', file=stream)
+            print(player.abbr.rjust(3), end="", file=stream)
             for denom in denoms:
-                print(str(self[denom, player]).rjust(3), end='', file=stream)
+                print(str(self[denom, player]).rjust(3), end="", file=stream)
             print(file=stream)
 
     def to_LaTeX(self) -> str:
@@ -44,22 +61,29 @@ class DDTable:
         res = r"\begin{tabular}{| c | c  c  c  c c |}"
         res += r"\hline & $\clubsuit$ & $\diamondsuit$ & $\heartsuit$ & $\spadesuit$ & NT \\ \hline "
         for player in Player.iter_order("NSEW"):
-            res += player.abbr + " & " + " & ".join(str(self[denom, player]) for denom in Denom.bidorder()) + "\\\\"
+            res += (
+                player.abbr
+                + " & "
+                + " & ".join(str(self[denom, player]) for denom in Denom.bidorder())
+                + "\\\\"
+            )
         res += r"\hline \end{tabular}"
         return res
 
     def to_list(self, player_major: bool = False) -> list[list[int]]:
         """
-		Convert the table to a 2d list
+        Convert the table to a 2d list
 
-		:param player_major: If `True`, the returned list is index by player first then strain
-		"""
+        :param player_major: If `True`, the returned list is index by player first then strain
+        """
         if player_major:
             return [[self[d, p] for d in Denom] for p in Player]
         else:
             return [[self[d, p] for p in Player] for d in Denom]
 
-    def __getitem__(self, cell: Union[tuple[Denom, Player], tuple[Player, Denom]]) -> int:
+    def __getitem__(
+        self, cell: Union[tuple[Denom, Player], tuple[Player, Denom]]
+    ) -> int:
         """Return the specified cell of the table"""
         if isinstance(cell[0], Denom):
             return self._data.resTable[cell[0]][cell[1]]
@@ -67,42 +91,60 @@ class DDTable:
             return self._data.resTable[cell[1]][cell[0]]
 
     def __str__(self) -> str:
-        return ",".join(d.abbr for d in Denom.bidorder()) + \
-         ";" + ";".join(p.abbr + ":" + \
-         ",".join(str(self[d, p]) for d in Denom.bidorder()) for p in Player)
+        return (
+            ",".join(d.abbr for d in Denom.bidorder())
+            + ";"
+            + ";".join(
+                p.abbr + ":" + ",".join(str(self[d, p]) for d in Denom.bidorder())
+                for p in Player
+            )
+        )
 
 
 class DDTableList(abc.Sequence):
-
-    def __init__(self, data: '_dds.ddTablesRes'):
+    def __init__(self, data: "_dds.ddTablesRes"):
         self._data = data
 
     def __len__(self) -> int:
         "The number of double dummy tables in the list"
         return self._data.noOfBoards
 
+    @overload
     def __getitem__(self, i: int) -> DDTable:
+        ...
+
+    @overload
+    def __getitem__(self, i: slice) -> Sequence[DDTable]:
+        ...
+
+    def __getitem__(self, i: Union[int, slice]) -> Union[DDTable, Sequence[DDTable]]:
         "Return the double dummy table at index `i`"
-        if i < 0:
-            i = len(self) - i
-        if i < 0 or i >= len(self):
-            raise IndexError
-        return DDTable(self._data.results[i])
+        if isinstance(i, int):
+            if i < 0:
+                i = len(self) - i
+            if i < 0 or i >= len(self):
+                raise IndexError
+            return DDTable(self._data.results[i])
+        else:
+            return [self[ii] for ii in range(*i.indices(len(self)))]
 
     def __repr__(self) -> str:
-        return f'<DDTableList object; length={len(self)}>'
+        return f"<DDTableList object; length={len(self)}>"
 
     def __str__(self) -> str:
         if len(self) == 0:
             return "[]"
-        return '[(' + "), (".join(str(t) for t in self) + ")]"
+        return "[(" + "), (".join(str(t) for t in self) + ")]"
 
 
 def calc_dd_table(deal: Deal) -> DDTable:
     """
-	Calculates the double dummy results for all 20 possible combinations of
-	dealer and trump suit for a given deal
-	"""
+    Calculates the double dummy results for all 20 possible combinations of
+    dealer and trump suit for a given deal
+    """
+    if len(deal.curtrick) != 0:
+        raise _dds.DDSError("Cards played to trick")
+
     # Convert deal into ddTableDeal
     dl = _dds.ddTableDeal()
     dl.cards = deal._data.remainCards
@@ -112,19 +154,23 @@ def calc_dd_table(deal: Deal) -> DDTable:
     return DDTable(table)
 
 
-def calc_all_tables(deals: Iterable[Deal], exclude: Iterable[Denom] = []) -> DDTableList:
+def calc_all_tables(
+    deals: Iterable[Deal], exclude: Iterable[Denom] = []
+) -> DDTableList:
     """
-	Optimized version of calc_dd_table for multiple deals which uses threading to
-	speed up the calculation. `exclude` can contain a list of denominations to
-	exclude from the calculation, e.g. if only the notrump results for the deals
-	is required then pass `Denom.suits()`
-	"""
+    Optimized version of calc_dd_table for multiple deals which uses threading to
+    speed up the calculation. `exclude` can contain a list of denominations to
+    exclude from the calculation, e.g. if only the notrump results for the deals
+    is required then pass `Denom.suits()`
+    """
     # Convert deals to ddTableDeals
     dealsp = _dds.ddTableDeals()
     dealsp.noOfTables = 0
     for i, deal in enumerate(deals):
         if i > _dds.MAXNOOFTABLES * 5:
             raise RuntimeError(f"Too many boards, maximum is {_dds.MAXNOOFTABLES * 5}")
+        if len(deal.curtrick) != 0:
+            raise _dds.DDSError("Cards played to trick")
         dealsp.ddTableDeal[i].cards = deal._data.remainCards
         dealsp.noOfTables += 1
 
