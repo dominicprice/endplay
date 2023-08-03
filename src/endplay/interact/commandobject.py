@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 """
 Exposes the `CommandObject` class which can be used to perform actions on a
 `Deal` object while maintaining a history of the actions applied so that they
