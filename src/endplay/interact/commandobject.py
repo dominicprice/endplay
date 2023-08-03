@@ -6,7 +6,6 @@ can be undone and redone.
 
 __all__ = ["CommandError", "CommandObject"]
 
-import functools
 import textwrap
 from collections.abc import Callable
 from inspect import Parameter, signature
@@ -24,9 +23,8 @@ from endplay.types.hand import Hand
 from endplay.types.player import Player
 
 try:
-    from typing import Protocol, get_args, get_origin
+    from typing import get_args, get_origin
 except ImportError:
-    from typing_extensions import Protocol  # type: ignore[no-redef,assignment]
     from typing_extensions import get_args  # type: ignore[no-redef]
     from typing_extensions import get_origin  # type: ignore[no-redef]
 
@@ -41,70 +39,58 @@ class CommandError(RuntimeError):
     pass
 
 
-class Commandable(Protocol):
-    """
-    Protocol which matches the function signature of a `CommandObject` method
-    with the `command` decorator applied.
-    """
-
-    def __call__(self, _self: "CommandObject", *args: str) -> Optional[str]:
-        ...
+def ReturnNone(_: None) -> None:
+    return None
 
 
-class command(Generic[T]):
-    """
-    `command` is a decorator which converts a `CommandObject` method into a
-    function which takes a varargs of strings as arguments and returns an
-    optional string. The conversion is done via the arguments to the command
-    decorator, the first argument should convert the return value of the method
-    into a string, or be `None` if the functions returns `None`. The rest of
-    the arguments should convert a string to the corresponding argument in the
-    method. If the last argument in the method is *args, then the last
-    converter in given to the decorator is used to convert all the varargs.
+commands: dict[str, "Command"] = {}
 
-    Example:
-    ```
-    class CommandObject:
-        ... # rest of class
 
-        @command(str, int)
-        def cmd_addone(self, i: int) -> int:
-            return i + 1
-    ```
-    The resulting function is equivalent to
-    ```
-        def cmd_addone(self, arg1: str) -> str:
-            def inner(self, i: int) -> int:
-                return i + 1
-            res = inner(self, int(arg1))
-            return str(res)
-    ```
-    """
-
+class Command(Generic[T]):
     def __init__(
-        self, r_conv: Callable[[T], Optional[str]], *p_conv: Callable[[str], Any]
+        self,
+        f: Callable[..., T],
+        r_conv: Callable[[T], Optional[str]],
+        *p_conv: Callable[[str], Any],
     ):
+        self.f = f
         self.r_conv = r_conv
         self.p_conv = p_conv
 
-    def __call__(self, f: Callable[..., T]) -> Commandable:
-        @functools.wraps(f)
-        def inner(_self: "CommandObject", *args: str) -> Optional[str]:
-            arglist = []
-            for i, arg in enumerate(args):
-                # if we run out of converters then we have hit an *args
-                # so keep using the last converter
-                converter = self.p_conv[min(i, len(self.p_conv) - 1)]
-                arglist += [converter(arg)]
+        self.name = f.__name__.removeprefix("cmd_")
+        usage = "usage: " + self.name + " "
+        for param in signature(f).parameters.values():
+            if param.name == "self":
+                continue
+            elif param.kind == Parameter.POSITIONAL_OR_KEYWORD:
+                if get_origin(param.annotation) is Union and type(None) in get_args(
+                    param.annotation
+                ):
+                    usage += "[" + param.name + "] "
+                else:
+                    usage += param.name + " "
+            elif param.kind == Parameter.VAR_POSITIONAL:
+                usage += param.name + " [" + param.name + "...] "
+        doc = textwrap.dedent(f.__doc__ or "")
+        self.help = usage + "\n" + doc
 
-            res = f(_self, *arglist)
-            return self.r_conv(res)
+    def __call__(self, cmdobj: "CommandObject", *args: str):
+        arglist = []
+        for i, arg in enumerate(args):
+            c = self.p_conv[min(i, len(self.p_conv) - 1)]
+            arglist += [c(arg)]
+
+        res = self.f(cmdobj, *arglist)
+        return self.r_conv(res)
+
+    @staticmethod
+    def cmd(r_conv: Callable[[T], Optional[str]], *p_conv: Callable[[str], Any]):
+        def inner(f: Callable[..., T]):
+            c = Command(f, r_conv, *p_conv)
+            commands[c.name] = c
+            return f
 
         return inner
-
-
-def ReturnNone(_: None) -> None:
-    return None
 
 
 class CommandObject:
@@ -123,43 +109,26 @@ class CommandObject:
 
     def dispatch(self, cmdline: list[str]) -> Optional[str]:
         cmd, *args = cmdline
-        if hasattr(self, "cmd_" + cmd):
-            return getattr(self, "cmd_" + cmd)(*args)
-        raise CommandError("unknown command: " + cmd)
+        c = commands.get(cmd)
+        if c is None:
+            raise CommandError("unknown command: " + cmd)
+        return c(self, *args)
 
-    @command(str, str)
+    @Command.cmd(str, str)
     def cmd_help(self, cmd_name: Optional[str] = None) -> str:
         """
         Displays all available commands. If cmd_name is given, provide help
         about that command.
         """
         if cmd_name is None:
-            cmds = [
-                fname.removeprefix("cmd_")
-                for fname in vars(CommandObject)
-                if fname.startswith("cmd_")
-            ]
-            return "\n".join(cmds)
-        if hasattr(CommandObject, "cmd_" + cmd_name):
-            cmd = getattr(CommandObject, "cmd_" + cmd_name)
-            usage = "usage: " + cmd_name + " "
-            for param in signature(cmd).parameters.values():
-                if param.name == "self":
-                    continue
-                elif param.kind == Parameter.POSITIONAL_OR_KEYWORD:
-                    if get_origin(param.annotation) is Union and type(None) in get_args(
-                        param.annotation
-                    ):
-                        usage += "[" + param.name + "] "
-                    else:
-                        usage += param.name + " "
-                elif param.kind == Parameter.VAR_POSITIONAL:
-                    usage += param.name + " [" + param.name + "...] "
-            doc = cmd.__doc__ or ""
-            return usage + "\n" + textwrap.dedent(doc).strip()
-        raise CommandError("unknown command: " + cmd_name)
+            return "\n".join(commands)
 
-    @command(str, str)
+        c = commands.get(cmd_name)
+        if c is None:
+            raise CommandError("unknown command: " + cmd_name)
+        return c.help
+
+    @Command.cmd(str, str)
     def cmd_history(self) -> str:
         """
         Displays the undo and redo history. An asterisk is displayed in front
@@ -170,7 +139,7 @@ class CommandObject:
         future = ["" + action.name for action in self.future]
         return "\n".join(history + cur + future)
 
-    @command(Deal.to_pbn, str)
+    @Command.cmd(Deal.to_pbn, str)
     def cmd_shuffle(self, *constraints: str) -> Deal:
         """
         Shuffles the deal according to the given constraints which should be
@@ -181,7 +150,7 @@ class CommandObject:
         self.apply_action(action)
         return self.deal
 
-    @command(Deal.to_pbn, str)
+    @Command.cmd(Deal.to_pbn, str)
     def cmd_deal(self, pbn: str) -> Deal:
         """
         Deals the given pbn string to the players
@@ -190,7 +159,7 @@ class CommandObject:
         self.apply_action(action)
         return self.deal
 
-    @command(str, int)
+    @Command.cmd(str, int)
     def cmd_board(self, board: Optional[int] = None) -> int:
         """
         Displays the board number, and optionally changes the board number to
@@ -201,7 +170,7 @@ class CommandObject:
             self.apply_action(action)
         return self.board
 
-    @command(lambda d: d.name, Denom.find)  # type: ignore
+    @Command.cmd(lambda d: d.name, Denom.find)  # type: ignore
     def cmd_trump(self, denom: Optional[Denom] = None) -> Denom:
         """
         Displays the trump suit, and optionally changes the trump suit to the
@@ -212,7 +181,7 @@ class CommandObject:
             self.apply_action(action)
         return self.deal.trump
 
-    @command(lambda p: p.name, Player.find)  # type: ignore
+    @Command.cmd(lambda p: p.name, Player.find)  # type: ignore
     def cmd_first(self, player: Optional[Player] = None) -> Player:
         """
         Displays the player on lead to the first card of the current trick, or
@@ -223,7 +192,7 @@ class CommandObject:
             self.apply_action(action)
         return self.deal.first
 
-    @command(ReturnNone, Card)
+    @Command.cmd(ReturnNone, Card)
     def cmd_play(self, *cards: Card) -> None:
         """
         Plays the specified sequence of cards to the current trick.
@@ -234,7 +203,7 @@ class CommandObject:
             action = PlayAction(card)
             self.apply_action(action)
 
-    @command(ReturnNone)
+    @Command.cmd(ReturnNone)
     def cmd_unplay(self) -> None:
         """
         Unplays the last card played to the trick.
@@ -242,7 +211,7 @@ class CommandObject:
         action = UnplayAction()
         self.apply_action(action)
 
-    @command(lambda p: p.name, Hand)  # type: ignore
+    @Command.cmd(lambda p: p.name, Hand)  # type: ignore
     def cmd_hand(self, player: Player, hand: Optional[Hand] = None) -> Hand:
         """
         Displays the hand of the given player, or changes the player's hand to
@@ -253,14 +222,14 @@ class CommandObject:
             self.apply_action(action)
         return self.deal[player]
 
-    @command(str, Player.find)
+    @Command.cmd(str, Player.find)
     def cmd_hcp(self, player: Player) -> float:
         """
         Displays the number of high card points in the given player's hand.
         """
         return hcp(self.deal[player])
 
-    @command(ReturnNone)
+    @Command.cmd(ReturnNone)
     def cmd_rewind(self) -> None:
         """
         Rewinds to the beginning of the history.
@@ -268,7 +237,7 @@ class CommandObject:
         while self.history:
             CommandObject.cmd_undo(self)
 
-    @command(ReturnNone)
+    @Command.cmd(ReturnNone)
     def cmd_fastforward(self) -> None:
         """
         Fast-forwards to the end of the history.
@@ -276,14 +245,14 @@ class CommandObject:
         while self.future:
             CommandObject.cmd_redo(self)
 
-    @command(ReturnNone)
+    @Command.cmd(ReturnNone)
     def cmd_checkpoint(self) -> None:
         """
         Removes all past actions in the history.
         """
         self.history = []
 
-    @command(ReturnNone)
+    @Command.cmd(ReturnNone)
     def cmd_undo(self) -> None:
         """
         Undoes the last action.
@@ -294,7 +263,7 @@ class CommandObject:
         action.unapply(self)
         self.future.append(action)
 
-    @command(ReturnNone)
+    @Command.cmd(ReturnNone)
     def cmd_redo(self) -> None:
         """
         Redoes the next action.
@@ -305,7 +274,7 @@ class CommandObject:
         action.apply(self)
         self.history.append(action)
 
-    @command(ReturnNone)
+    @Command.cmd(ReturnNone)
     def cmd_exit(self) -> None:
         """
         Exits the program.

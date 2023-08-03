@@ -1,7 +1,3 @@
-# mypy: disable-error-code="arg-type, call-arg"
-# ^^^ required as the @command decorator doesn't type hint very
-#     well at the moment
-
 import unittest
 
 from endplay.interact.commandobject import CommandObject
@@ -14,13 +10,13 @@ class TestInteractiveDeal(unittest.TestCase):
         d = Deal(first=Player.south, trump=Denom.spades)
         c = CommandObject(d)
         # first
-        c.cmd_first("west")
+        c.dispatch(["first", "west"])
         self.assertEqual(c.deal.first, Player.west)
         c.cmd_undo()
         self.assertEqual(c.deal.first, Player.south)
 
         # trump
-        c.cmd_trump("hearts")
+        c.cmd_trump(Denom.hearts)
         self.assertEqual(c.deal.trump, Denom.hearts)
         c.cmd_undo()
         self.assertEqual(c.deal.trump, Denom.spades)

@@ -14,6 +14,7 @@ from typing import Optional
 
 from endplay.dds.ddtable import calc_dd_table
 from endplay.dds.solve import solve_board
+from endplay.evaluate import hcp
 from endplay.interact.commandobject import CommandObject
 from endplay.interact.frontends.base import BaseFrontend
 from endplay.types.denom import Denom
@@ -39,6 +40,7 @@ class CursesFrontend(BaseFrontend):
     trickswin: "curses._CursesWindow"
     infowin: "curses._CursesWindow"
     tablewin: "curses._CursesWindow"
+    hcpwin: "curses._CursesWindow"
     inputwin: "curses._CursesWindow"
     consolewin: "curses._CursesWindow"
 
@@ -66,7 +68,8 @@ class CursesFrontend(BaseFrontend):
         self.dealwin = curses.newwin(14, 42, 1, 2)
         self.infowin = curses.newwin(3, 42, 16, 2)
         self.trickswin = curses.newwin(5, 42, 20, 2)
-        self.tablewin = curses.newwin(8, 42, 26, 2)
+        self.tablewin = curses.newwin(8, 23, 26, 2)
+        self.hcpwin = curses.newwin(8, 17, 26, 27)
 
         # right column
         self.consolewin = curses.newwin(rows - 4, cols - 48, 1, 46)
@@ -76,14 +79,16 @@ class CursesFrontend(BaseFrontend):
         self.infowin.bkgd(" ", curses.color_pair(1))
         self.trickswin.bkgd(" ", curses.color_pair(1))
         self.tablewin.bkgd(" ", curses.color_pair(1))
+        self.hcpwin.bkgd(" ", curses.color_pair(1))
         self.consolewin.bkgd(" ", curses.color_pair(1))
         self.inputwin.bkgd(" ", curses.color_pair(1))
 
-    def update(self, stdscr: "curses._CursesWindow"):
+    def update(self):
         self.dealwin.erase()
         self.infowin.erase()
         self.trickswin.erase()
         self.tablewin.erase()
+        self.hcpwin.erase()
         self.inputwin.erase()
         self.consolewin.erase()
 
@@ -125,6 +130,13 @@ class CursesFrontend(BaseFrontend):
         except Exception as e:
             self.tablewin.addstr(2, 2, str(e))
 
+        # update hcp
+        self.hcpwin.addstr(1, 2, "HCP:")
+        self.hcpwin.addstr(2, 8, str(hcp(self.cmdobj.deal.north)))
+        self.hcpwin.addstr(4, 4, str(hcp(self.cmdobj.deal.west)))
+        self.hcpwin.addstr(4, 12, str(hcp(self.cmdobj.deal.east)))
+        self.hcpwin.addstr(6, 8, str(hcp(self.cmdobj.deal.south)))
+
         # history
         max_lines, max_cols = self.consolewin.getmaxyx()
         max_lines -= 1
@@ -160,6 +172,7 @@ class CursesFrontend(BaseFrontend):
         self.infowin.noutrefresh()
         self.trickswin.noutrefresh()
         self.tablewin.noutrefresh()
+        self.hcpwin.noutrefresh()
         self.inputwin.noutrefresh()
         self.consolewin.noutrefresh()
         curses.doupdate()
@@ -180,7 +193,7 @@ class CursesFrontend(BaseFrontend):
         self.initialise(stdscr)
         stdscr.noutrefresh()
         while True:
-            self.update(stdscr)
+            self.update()
             self.process_input()
 
     def interact(self):
