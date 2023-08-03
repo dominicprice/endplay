@@ -59,7 +59,7 @@ class Command(Generic[T]):
         self.r_conv = r_conv
         self.p_conv = p_conv
 
-        self.name = f.__name__.removeprefix("cmd_")
+        self.name = f.__name__[4:]
         usage = "usage: " + self.name + " "
         for param in signature(f).parameters.values():
             if param.name == "self":
