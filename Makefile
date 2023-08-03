@@ -2,7 +2,7 @@ export PYTHONPATH := ${PYTHONPATH}:${PWD}/src
 
 .PHONY: format
 format:
-	pipenv run isort --profile black .
+	pipenv run isort --tc --profile black .
 	pipenv run black .
 
 .PHONY: test

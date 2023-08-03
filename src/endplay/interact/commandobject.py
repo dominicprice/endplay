@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import inspect
+
 """
 Exposes the `CommandObject` class which can be used to perform actions on a
 `Deal` object while maintaining a history of the actions applied so that they
@@ -8,16 +10,24 @@ can be undone and redone.
 
 __all__ = ["CommandError", "CommandObject"]
 
+import logging
 import textwrap
 from collections.abc import Callable
 from inspect import Parameter, signature
 from typing import Any, Generic, Optional, TypeVar, Union
 
 from endplay.evaluate import hcp
-from endplay.interact.actions import (Action, DealAction, PlayAction,
-                                      SetBoardAction, SetFirstAction,
-                                      SetHandAction, SetTrumpAction,
-                                      ShuffleAction, UnplayAction)
+from endplay.interact.actions import (
+    Action,
+    DealAction,
+    PlayAction,
+    SetBoardAction,
+    SetFirstAction,
+    SetHandAction,
+    SetTrumpAction,
+    ShuffleAction,
+    UnplayAction,
+)
 from endplay.types.card import Card
 from endplay.types.deal import Deal
 from endplay.types.denom import Denom
@@ -31,6 +41,8 @@ except ImportError:
     from typing_extensions import get_origin  # type: ignore[no-redef]
 
 T = TypeVar("T")
+
+logging.basicConfig(filename="/home/dominic/curses.txt")
 
 
 class CommandError(RuntimeError):
@@ -48,7 +60,36 @@ def ReturnNone(_: None) -> None:
 commands: dict[str, "Command"] = {}
 
 
+def _gen_usage(name: str, f: Callable[..., Any]):
+    """
+    Creates a usage message from a CommandObject `cmd_` method
+    """
+    usage = name + " "
+    self_param, *params = signature(f).parameters.values()
+    if self_param.name != "self":
+        raise RuntimeError("first parameter should be 'self'")
+    for param in params:
+        if param.kind in [Parameter.POSITIONAL_OR_KEYWORD, Parameter.POSITIONAL_ONLY]:
+            if param.default is not inspect._empty:
+                usage += "[" + param.name + "] "
+            else:
+                usage += param.name + " "
+        elif param.kind == Parameter.VAR_POSITIONAL:
+            name = param.name if param.name[-1] != "s" else param.name[:-1]
+            usage += "[" + name + " [" + name + "...]] "
+        else:
+            raise RuntimeError("only positional arguments are supported")
+    return usage
+
+
 class Command(Generic[T]):
+    """
+    Wraps a CommandObject method and provides a call method which can
+    invoke the underlying function by passing in arguments as strings
+    which are converted into the correct parameter types using the conv
+    functions.
+    """
+
     def __init__(
         self,
         f: Callable[..., T],
@@ -58,23 +99,15 @@ class Command(Generic[T]):
         self.f = f
         self.r_conv = r_conv
         self.p_conv = p_conv
-
+        if not f.__name__.startswith("cmd_"):
+            raise NameError("cmd name must start with cmd_")
         self.name = f.__name__[4:]
-        usage = "usage: " + self.name + " "
-        for param in signature(f).parameters.values():
-            if param.name == "self":
-                continue
-            elif param.kind == Parameter.POSITIONAL_OR_KEYWORD:
-                if get_origin(param.annotation) is Union and type(None) in get_args(
-                    param.annotation
-                ):
-                    usage += "[" + param.name + "] "
-                else:
-                    usage += param.name + " "
-            elif param.kind == Parameter.VAR_POSITIONAL:
-                usage += param.name + " [" + param.name + "...] "
-        doc = textwrap.dedent(f.__doc__ or "")
-        self.help = usage + "\n" + doc
+        self.usage = _gen_usage(self.name, f)
+        self.doc = textwrap.dedent(f.__doc__ or "")
+
+    @property
+    def help(self):
+        return "usage: " + self.usage + "\n" + self.doc
 
     def __call__(self, cmdobj: "CommandObject", *args: str):
         arglist = []
@@ -87,6 +120,10 @@ class Command(Generic[T]):
 
     @staticmethod
     def cmd(r_conv: Callable[[T], Optional[str]], *p_conv: Callable[[str], Any]):
+        """
+        Decorator which produces a Command object from a CommandObject method
+        """
+
         def inner(f: Callable[..., T]):
             c = Command(f, r_conv, *p_conv)
             commands[c.name] = c
@@ -96,6 +133,13 @@ class Command(Generic[T]):
 
 
 class CommandObject:
+    """
+    CommandObject provides an interface for interacting with a deal using actions
+    which are pushed onto an internal history allowing them to be undone and
+    redone. The `cmd_` methods can be called normally, or `dispatch` can be called
+    with a shell like argument list to invoke one of the `cmd_` methods.
+    """
+
     def __init__(self, deal: Optional[Deal] = None):
         self.deal = deal or Deal()
         self.tricks_ns: list[list[Card]] = []
@@ -121,9 +165,12 @@ class CommandObject:
         """
         Displays all available commands. If cmd_name is given, provide help
         about that command.
+
+        Example 1: help
+        Example 2: help shuffle
         """
         if cmd_name is None:
-            return "\n".join(commands)
+            return "\n".join(cmd.usage for cmd in commands.values())
 
         c = commands.get(cmd_name)
         if c is None:
@@ -195,14 +242,15 @@ class CommandObject:
         return self.deal.first
 
     @Command.cmd(ReturnNone, Card)
-    def cmd_play(self, *cards: Card) -> None:
+    def cmd_play(self, card: Card, *cards: Card) -> None:
         """
         Plays the specified sequence of cards to the current trick.
         """
-        if len(cards) == 0:
-            raise CommandError("no cards specified to play")
-        for card in cards:
-            action = PlayAction(card)
+        action = PlayAction(card)
+        self.apply_action(action)
+
+        for c in cards:
+            action = PlayAction(c)
             self.apply_action(action)
 
     @Command.cmd(ReturnNone)

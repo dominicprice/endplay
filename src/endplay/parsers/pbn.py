@@ -12,12 +12,28 @@ from io import StringIO
 from itertools import chain
 from typing import IO, Any, Optional, Union
 
-from endplay.config import suppress_unicode
-from endplay.types import (Bid, Board, Card, Contract, ContractBid, Deal,
-                           Denom, PenaltyBid, Player, Rank, Vul)
-from endplay.utils.play import (linearise_play, result_to_tricks,
-                                tabularise_play, tricks_to_result)
 from more_itertools import chunked
+
+from endplay.config import suppress_unicode
+from endplay.types import (
+    Bid,
+    Board,
+    Card,
+    Contract,
+    ContractBid,
+    Deal,
+    Denom,
+    PenaltyBid,
+    Player,
+    Rank,
+    Vul,
+)
+from endplay.utils.play import (
+    linearise_play,
+    result_to_tricks,
+    tabularise_play,
+    tricks_to_result,
+)
 
 
 class PBNDecodeError(ValueError):

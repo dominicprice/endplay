@@ -8,9 +8,21 @@ import json as _json
 from enum import IntEnum
 from typing import IO, Any, Callable, Optional, Union
 
-from endplay.types import (Board, Card, Contract, ContractBid, Deal, Denom,
-                           Hand, Penalty, PenaltyBid, Player, Rank,
-                           SuitHolding, Vul)
+from endplay.types import (
+    Board,
+    Card,
+    Contract,
+    ContractBid,
+    Deal,
+    Denom,
+    Hand,
+    Penalty,
+    PenaltyBid,
+    Player,
+    Rank,
+    SuitHolding,
+    Vul,
+)
 
 
 def _check_keys(keys: set, mandatory: set, optional: set = set()):
