@@ -4,6 +4,11 @@ from tempfile import TemporaryFile
 
 from endplay import config
 from endplay.parsers import dealer, json, lin, pbn
+from endplay.types.bid import Bid
+from endplay.types.card import Card
+from endplay.types.contract import Contract
+from endplay.types.player import Player
+from endplay.types.vul import Vul
 
 config.use_unicode = False
 
@@ -43,6 +48,68 @@ class TestPBN(unittest.TestCase):
         file = basedir / "pbn" / "example3.pbn"
         with open(file) as f:
             boards = pbn.load(f)
+
+    def test_04(self):
+        file = basedir / "pbn" / "example4.pbn"
+        with open(file) as f:
+            boards = pbn.load(f)
+        self.assertEqual(len(boards), 1)
+        board = boards[0]
+        self.assertEqual(board.info.date, "2012.08.??")
+        self.assertEqual(board.info.event, "World Championship")
+        self.assertEqual(board.info.stage, "Final:1")
+        self.assertEqual(board.info.hometeam, "Poland")
+        self.assertEqual(board.info.visitteam, "Sweden")
+        self.assertEqual(board.info.west, "Nystrom")
+        self.assertEqual(board.info.north, "Balicki")
+        self.assertEqual(board.info.east, "Upmark")
+        self.assertEqual(board.info.south, "Zmudzinski")
+        self.assertEqual(board.board_num, 1)
+        self.assertEqual(board.dealer, Player.north)
+        self.assertEqual(board.vul, Vul.none)
+        self.assertEqual(
+            board.deal.to_pbn(Player.west),
+            "W:.AQJ85.986.JT973 A8643.97642.Q.Q8 KT9.K3.K75.AK652 QJ752.T.AJT432.4",
+        )
+        self.assertEqual(board.contract, Contract("5CE+1"))
+        self.assertSequenceEqual(
+            board.auction,
+            [
+                Bid("1NT"),
+                Bid("X"),
+                Bid("XX"),
+                Bid("4H"),
+                Bid("X"),
+                Bid("4S"),
+                Bid("4NT"),
+                Bid("X"),
+                Bid("5C"),
+                Bid("P"),
+                Bid("P"),
+                Bid("P"),
+            ],
+        )
+        self.assertSequenceEqual(
+            board.play,
+            [
+                Card("SQ"),
+                Card("C3"),
+                Card("S3"),
+                Card("S9"),
+                Card("C7"),
+                Card("C8"),
+                Card("CK"),
+                Card("C4"),
+                Card("CQ"),
+                Card("CA"),
+                Card("D2"),
+                Card("C9"),
+                Card("HT"),
+                Card("H5"),
+                Card("H2"),
+                Card("HK"),
+            ],
+        )
 
 
 class TestDealer(unittest.TestCase):

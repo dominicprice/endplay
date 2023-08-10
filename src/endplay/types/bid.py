@@ -90,6 +90,16 @@ class ContractBid(Bid):
             s += "*"
         return s
 
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, ContractBid):
+            return False
+        return (
+            self.level == other.level
+            and self.denom == other.denom
+            and self.alertable == other.alertable
+            and self.announcement == other.announcement
+        )
+
 
 class PenaltyBid(Bid):
     """
@@ -123,3 +133,12 @@ class PenaltyBid(Bid):
         if self.announcement:
             s += "*"
         return s.upper()
+
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, PenaltyBid):
+            return False
+        return (
+            self.penalty == other.penalty
+            and self.alertable == other.alertable
+            and self.announcement == other.announcement
+        )

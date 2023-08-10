@@ -1,0 +1,29 @@
+% PBN (c) 2021 rpbridge.net
+[Date "2012.08.??"]
+[Event "World Championship"]
+[Stage "Final:1"]
+[HomeTeam "Poland"] { this is a
+comment }
+[VisitTeam "Sweden"] ; this is also a comment
+[West "Nystrom"]
+{ this is also a comment }
+[North "Balicki"]
+[East "Upmark"]
+[South "Zmudzinski"]
+[Board "1"]
+[Dealer "N"]
+[Vulnerable "None"]
+[Deal "W:.AQJ85.986.JT973 A8643.97642.Q.Q8 KT9.K3.K75.AK652 QJ752.T.AJT432.4"]
+[Declarer "E"]
+[Contract "5C"]
+[Result "12"]
+[Auction "N"]
+1NT X XX 4H
+X 4S 4NT X
+5C AP
+[Play "S"]
+SQ C3 S3 S9
+C4 C7 C8 CK
+CA D2 C9 CQ
+HT H5 H2 HK
+*

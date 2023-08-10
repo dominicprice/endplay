@@ -253,9 +253,13 @@ class Deal:
         """
         return Deal(pbn)
 
-    def to_pbn(self) -> str:
-        "Return a PBN string representation of the deal"
-        return "N:" + " ".join(str(self[player]) for player in Player)
+    def to_pbn(self, first: Player = Player.north) -> str:
+        "Return a PBN string representation of the deal starting with first"
+        return (
+            first.abbr
+            + ":"
+            + " ".join(str(self[player]) for player in Player.iter_from(first))
+        )
 
     @staticmethod
     def from_json(json_str: str):

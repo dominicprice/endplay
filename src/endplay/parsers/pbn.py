@@ -12,8 +12,6 @@ from io import StringIO
 from itertools import chain
 from typing import IO, Any, Optional, Union
 
-from more_itertools import chunked
-
 from endplay.config import suppress_unicode
 from endplay.types import (
     Bid,
@@ -34,6 +32,7 @@ from endplay.utils.play import (
     tabularise_play,
     tricks_to_result,
 )
+from more_itertools import chunked
 
 
 class PBNDecodeError(ValueError):
@@ -112,6 +111,7 @@ class PBNDecoder:
             return None
         board = Board()
         declarer = None
+        dealer = None
         tricks = None
         # Loop through keys, if the key has a special variable defined in the Board class,
         # then attach the value to that variable. Otherwise, add it as a tag-value(-data)
@@ -129,6 +129,8 @@ class PBNDecoder:
                 board.deal = Deal(value)
             elif key == "declarer":
                 declarer = Player.find(value) if value else None
+            elif key == "dealer":
+                dealer = Player.find(value) if value else None
             elif key == "contract":
                 board.contract = Contract(value or "Pass")
             elif key == "result":
@@ -206,6 +208,8 @@ class PBNDecoder:
             if board.deal is not None:
                 board.deal.first = board.contract.declarer.lho
                 board.deal.trump = board.contract.denom
+                if dealer is not None:
+                    board.dealer = dealer
         return board
 
     def _parse_meta(self, curline: str) -> bool:
@@ -254,9 +258,16 @@ class PBNDecoder:
                     self.boards.append(board)
                     self.prevtags, self.curtags = self.curtags, {}
             return False
-        # Comment line, ignore
+        # Metadata line, ignore
         if RE.ignore.match(curline):
             return False
+        # Line with only a comment
+        comment, needcont = self._get_comment(curline, False)
+        if comment is not None:
+            if needcont:
+                self.state = PBNDecoder.State.COMMENTBLOCK
+            return False
+
         # Tag pair
         m = RE.tagpair.match(curline)
         if m:
