@@ -142,8 +142,7 @@ class EndplayServer(BaseHTTPRequestHandler):
             table = None
 
         hcp = {
-            player.name: CommandObject.cmd_hcp(g_cmdobj, player.name)
-            for player in Player
+            player.name: CommandObject.cmd_hcp(g_cmdobj, player) for player in Player
         }
 
         self.send_response(200)

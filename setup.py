@@ -90,6 +90,7 @@ packages = [
     "endplay.experimental",
     "endplay.interact",
     "endplay.interact.frontends",
+    "endplay.interact.frontends.html",
     "endplay.parsers",
     "endplay.types",
     "endplay.stats",

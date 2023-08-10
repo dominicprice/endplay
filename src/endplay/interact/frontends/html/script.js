@@ -62,7 +62,7 @@ function setup_event_handlers() {
     e.sidebar.fastforward.addEventListener("click", () => cmd("fastforward"));
 
     e.sidebar.shuffle.addEventListener("click", () => {
-        const constraint = prompt("Enter a constraint for the.sidebar.deal:");
+        const constraint = prompt("Enter a constraint for the deal:");
         if (constraint)
             cmd("shuffle '" + constraint + "'");
         else
@@ -74,7 +74,7 @@ function setup_event_handlers() {
             cmd("deal '" + pbn + "'");
     });
     e.sidebar.board.addEventListener("click", () => {
-        const board = prompt("Enter the.sidebar.board number:");
+        const board = prompt("Enter the board number:");
         if (board !== null)
             cmd("board '" + board + "'");
     });

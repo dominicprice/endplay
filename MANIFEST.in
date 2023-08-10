@@ -14,3 +14,6 @@ include libs/dds/src/*
 include src/endplay/interact/frontends/html/index.html
 include src/endplay/interact/frontends/html/script.js
 include src/endplay/interact/frontends/html/style.css
+
+# ensure mypy knows the module is typed
+include src/endplay/py.typed
