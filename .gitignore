@@ -31,11 +31,19 @@ src/endplay/_dds/libdds.so
 src/endplay/_dds/__init__.py
 src/endplay/config.py
 
+# clangd files
+/.cache/
+/compile_commands.json
+
+# local config
+.pyrightconfig.json
+
 # Files generated during test
 TestResults/
 .coverage
 startup.py
 runfile
+src/dump.txt
 
 # No longer generated after switching form scikit-build
 MANIFEST

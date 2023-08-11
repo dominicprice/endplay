@@ -9,3 +9,11 @@ include src/endplay/_dds/__init__.py.in
 # Files required for compiling the dds library
 include libs/dds/include/*
 include libs/dds/src/*
+
+# Files for the HTML frontend for interact
+include src/endplay/interact/frontends/html/index.html
+include src/endplay/interact/frontends/html/script.js
+include src/endplay/interact/frontends/html/style.css
+
+# ensure mypy knows the module is typed
+include src/endplay/py.typed

@@ -18,11 +18,12 @@ __author__ = "Dominic Price"
 
 __buildtime__ = """@ENDPLAY_BUILD_TIME@""".strip()
 
-use_unicode = True 
+use_unicode = True
 """If set to False, the library will only print characters in the ASCII range"""
 
+
 class suppress_unicode(ContextDecorator):
-	"""
+    """
 	Context manager to temporarily ensure that unicode output is turned off,
 	for example when writing to a file which expects suit symbols to be
 	SDHC.
@@ -34,13 +35,14 @@ class suppress_unicode(ContextDecorator):
 			print(Denom.hearts.abbr) # prints H
 		print(Denom.hearts.abbr) # prints ♥
 	"""
-	def __enter__(self):
-		global use_unicode
-		self.use_unicode = use_unicode
-		use_unicode = False
-		return self
 
-	def __exit__(self, *exc):
-		global use_unicode
-		use_unicode = self.use_unicode
-		return False
+    def __enter__(self):
+        global use_unicode
+        self.use_unicode = use_unicode
+        use_unicode = False
+        return self
+
+    def __exit__(self, *exc):
+        global use_unicode
+        use_unicode = self.use_unicode
+        return False

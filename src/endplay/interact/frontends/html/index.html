@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="/style.css">
+
+    <title>Endplay</title>
+</head>
+
+<body>
+    <div class="main">
+        <div class="table">
+            <div>
+                <div id="boardinfo">
+                    <div id="boardno"></div>
+                    <div id="vul"></div>
+                    <div id="dealer"></div>
+                </div>
+            </div>
+            <div>
+                <div class="hand" id="north">
+                    <div class="spades"></div>
+                    <div class="hearts"></div>
+                    <div class="diamonds"></div>
+                    <div class="clubs"></div>
+                </div>
+            </div>
+            <div>
+                <div id="solutions">
+
+                </div>
+            </div>
+            <div>
+                <div class="hand" id="west">
+                    <div class="spades"></div>
+                    <div class="hearts"></div>
+                    <div class="diamonds"></div>
+                    <div class="clubs"></div>
+                </div>
+            </div>
+            <div>
+                <div id="curtrick">
+                    <div></div>
+                    <div>
+                        <div class="card" id="curtrick-north"></div>
+                    </div>
+                    <div></div>
+                    <div>
+                        <div class="card" id="curtrick-west"></div>
+                    </div>
+                    <div></div>
+                    <div>
+                        <div class="card" id="curtrick-east"></div>
+                    </div>
+                    <div></div>
+                    <div>
+                        <div class="card" id="curtrick-south"></div>
+                    </div>
+                    <div></div>
+                </div>
+            </div>
+            <div>
+                <div class="hand" id="east">
+                    <div class="spades"></div>
+                    <div class="hearts"></div>
+                    <div class="diamonds"></div>
+                    <div class="clubs"></div>
+                </div>
+            </div>
+            <div>
+                <div id="hcp">
+                    <div></div>
+                    <div>
+                        <div id="hcp-north"></div>
+                    </div>
+                    <div></div>
+                    <div>
+                        <div id="hcp-west"></div>
+                    </div>
+                    <div></div>
+                    <div>
+                        <div id="hcp-east"></div>
+                    </div>
+                    <div></div>
+                    <div>
+                        <div id="hcp-south"></div>
+                    </div>
+                    <div></div>
+                </div>
+            </div>
+            <div>
+                <div class="hand" id="south">
+                    <div class="spades"></div>
+                    <div class="hearts"></div>
+                    <div class="diamonds"></div>
+                    <div class="clubs"></div>
+                </div>
+            </div>
+            <div>
+                <table id="ddtable">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th class="clubs"></th>
+                            <th class="diamonds"></th>
+                            <th class="hearts"></th>
+                            <th class="spades"></th>
+                            <th class="nt"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>N</th>
+                            <td id="dd-north-clubs"></td>
+                            <td id="dd-north-diamonds"></td>
+                            <td id="dd-north-hearts"></td>
+                            <td id="dd-north-spades"></td>
+                            <td id="dd-north-nt"></td>
+                        </tr>
+                        <tr>
+                            <th>S</th>
+                            <td id="dd-south-clubs"></td>
+                            <td id="dd-south-diamonds"></td>
+                            <td id="dd-south-hearts"></td>
+                            <td id="dd-south-spades"></td>
+                            <td id="dd-south-nt"></td>
+                        </tr>
+                        <tr>
+                            <th>E</th>
+                            <td id="dd-east-clubs"></td>
+                            <td id="dd-east-diamonds"></td>
+                            <td id="dd-east-hearts"></td>
+                            <td id="dd-east-spades"></td>
+                            <td id="dd-east-nt"></td>
+                        </tr>
+                        <tr>
+                            <th>W</th>
+                            <td id="dd-west-clubs"></td>
+                            <td id="dd-west-diamonds"></td>
+                            <td id="dd-west-hearts"></td>
+                            <td id="dd-west-spades"></td>
+                            <td id="dd-west-nt"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <div class="button-bar">
+            <button id="shuffle">Shuffle</button>
+            <button id="deal">Deal</button>
+            <button id="board">Board</button>
+        </div>
+        <div class="button-bar">
+            <button id="first-north">N</button>
+            <button id="first-east">E</button>
+            <button id="first-south">S</button>
+            <button id="first-west">W</button>
+        </div>
+        <div class="button-bar">
+            <button id="trump-spades">&spades;</button>
+            <button id="trump-hearts">&hearts;</button>
+            <button id="trump-diamonds">&diams;</button>
+            <button id="trump-clubs">&clubs;</button>
+            <button id="trump-nt">NT</button>
+        </div>
+        <div class="button-bar">
+            <button id="checkpoint">&#9745;</button>
+            <button id="rewind">&laquo;</button>
+            <button id="undo">&#8249;</button>
+            <button id="redo">&#8250;</button>
+            <button id="fastforward">&raquo;</button>
+        </div>
+        <div class="heading">History</div>
+        <div id="history">Line1<br>Line2</div>
+        <div class="heading">Message</div>
+        <div id="output">some output</div>
+    </div>
+
+    <script src="/script.js"></script>
+</body>
+
+</html>

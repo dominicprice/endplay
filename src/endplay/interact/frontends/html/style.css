@@ -1,0 +1,276 @@
+html {
+    margin: 0;
+    padding: 0;
+}
+body {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+    overflow-x: hidden;
+}
+
+.main {
+    background-color: #A47A3A;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    flex: 1;
+}
+
+.table {
+    background-color: #28a745;
+    display: grid;
+    grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+    border: 2px solid black;
+    border-radius: 5px;
+}
+
+.table>div {
+    width: 180px;
+    height: 180px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#north, #east, #south, #west {
+}
+
+.sidebar {
+    background-color: #ddd;
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    border-left: 2px solid black;
+}
+
+.button-bar {
+    display: flex;
+    flex-direction: row;
+    border-bottom: 1px solid black;
+}
+
+.button-bar button:not(:last-child) {
+    border-right: 1px solid black;
+}
+
+.button-bar button {
+    flex: 1;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    background-color: white;
+    padding: 4px;
+    font-weight: bold;
+}
+
+
+#trump-spades {
+    color: blue;
+    background-color: #B1DEFF;
+}
+
+#trump-hearts {
+    color: red;
+    background-color: #FFB1B1;
+}
+
+#trump-diamonds {
+    color: orange;
+    background-color: #FFD8B1;
+}
+
+#trump-clubs {
+    color: green;
+    background-color: #C6FFB1;
+}
+
+#notrumps {
+    color: black;
+    background-color: #D8D8D8;
+}
+
+.hand {
+    width: 100%;
+    height: 100%;
+    background-color: #F7F7B9;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: start;
+    padding-left: 10px;
+}
+
+.hand div::before {
+    margin-right: 10px;
+}
+
+.nt::before {
+    content: "NT";
+    color: black;
+}
+
+.hearts::before {
+    content: "♥";
+    color: red;
+}
+
+.spades::before {
+    content: "♠";
+    color: blue;
+}
+
+.diamonds::before {
+    content: "♦";
+    color: orange;
+}
+
+.clubs::before {
+    content: "♣";
+    color: green;
+}
+
+#curtrick {
+    display: grid;
+    grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+}
+
+#curtrick>div {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#hcp {
+    display: grid;
+    grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+}
+
+#hcp div {
+    margin: 10px;
+    font-family: monospace;
+}
+
+#history {
+    flex: 1;
+    margin: 5px;
+    padding: 5px;
+    background-color: white;
+    color: black;
+    font-family: monospace;
+    font-size: 12px;
+    line-height: 2em;
+    overflow-y: scroll;
+}
+
+#output {
+    margin: 5px;
+    background-color: white;
+    padding: 5px;
+    font-family: monospace;
+    font-size: 12px;
+}
+
+#output.error {
+    color: red;
+}
+
+.heading {
+    font-family: monospace;
+    margin-top: 7px;
+    margin-left: 3px;
+    font-size: 14px;
+}
+
+.button-bar button:hover {
+    filter: contrast(80%);
+}
+
+.button-bar button.active {
+    filter: contrast(40%);
+}
+
+#boardinfo {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: column;
+    font-family: sans-serif;
+    font-size: 20px;
+    gap: 10px;
+}
+#boardinfo div {
+    text-align: center;
+}
+
+.card {
+    font-family: monospace;
+    background-color: white;
+    border: 1px solid #666;
+    border-radius: 3px;
+    padding: 5px;
+    margin: 2px;
+    user-select: none;
+    cursor: pointer;
+}
+
+.card:not(.legal) {
+    background-color: #ddd;
+}
+
+#curtrick .card {
+    padding: 15px 5px;
+}
+
+#ddtable {
+    font-family: sans-serif;
+    border-collapse: collapse;
+}
+
+#ddtable td {
+    border-top: 1px solid black;
+    border-left: 1px solid black;
+    width: 25px;
+    text-align: center;
+}
+
+.hand>div {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#ddtable.stale td {
+    color: #444;
+}
+
+#ddtable thead th:not(:first-child) {
+    border-left: 1px solid black;
+}
+
+#ddtable tbody tr th {
+    border-top: 1px solid black;
+}
+
+#solutions {
+    font-family: monospace;
+    columns: 2;
+    height: 110px;
+    background-color: white;
+    padding: 10px;
+    border-radius: 10px;
+    column-rule: 1px solid #aaa;
+}
+
+.history {
+    border-bottom: 3px solid white;
+}
+
+.history.active {
+    border-bottom: 3px dotted #aaa;
+}

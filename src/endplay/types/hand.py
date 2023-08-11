@@ -16,214 +16,220 @@ from endplay.types.suitholding import SuitHolding
 
 
 class Hand:
-	"Class allowing manipulations of cards in the hand of a single player"
-	def __init__(self, data: Union[str, ctypes.Array[ctypes.c_uint]] = "..."):
-		"""
-		Construct a hand object
+    "Class allowing manipulations of cards in the hand of a single player"
 
-		:param data: Either a PBN string of the hand, or a reference to a _dds object
-		"""
-		if isinstance(data, str):
-			self._data = (ctypes.c_uint * 4)(0, 0, 0, 0)
-			suits = data.split(".")
-			if len(suits) > 4:
-				raise RuntimeError(f"hand contains more than four suits: {data})")
-			for i, suit in enumerate(suits):
-				if suit and suit[0].upper() in "SHDC":
-					suit = suit[1:]
-				for rank in suit:
-					self._data[i] |= Rank.find(rank).value
-		else:
-			self._data = data
+    def __init__(self, data: Union[str, ctypes.Array[ctypes.c_uint]] = "..."):
+        """
+        Construct a hand object
 
-	def __copy__(self) -> 'Hand':
-		return Hand((ctypes.c_uint * 4).from_buffer_copy(self._data))
+        :param data: Either a PBN string of the hand, or a reference to a _dds object
+        """
+        if isinstance(data, str):
+            self._data = (ctypes.c_uint * 4)(0, 0, 0, 0)
+            suits = data.split(".")
+            if len(suits) > 4:
+                raise RuntimeError(f"hand contains more than four suits: {data})")
+            for i, suit in enumerate(suits):
+                if suit and suit[0].upper() in "SHDC":
+                    suit = suit[1:]
+                for rank in suit:
+                    self._data[i] |= Rank.find(rank).value
+        else:
+            self._data = data
 
-	def copy(self) -> 'Hand':
-		return self.__copy__()
+    def __copy__(self) -> "Hand":
+        return Hand((ctypes.c_uint * 4).from_buffer_copy(self._data))
 
-	def add(self, card: Card) -> bool:
-		"""
-		Adds a card to the hand
+    def copy(self) -> "Hand":
+        return self.__copy__()
 
-		:param card: The card to be added to the hand
-		:return: False if the card was already in the hand, True otherwise
-		"""
-		if isinstance(card, str):
-			card = Card(name = card)
-		elif not isinstance(card, Card):
-			raise ValueError("card must be of type Card or str")
+    def add(self, card: Union[Card, str]) -> bool:
+        """
+        Adds a card to the hand
 
-		if card in self:
-			return False
-		self._data[card.suit.value] |= card.rank.value
-		return True
+        :param card: The card to be added to the hand
+        :return: False if the card was already in the hand, True otherwise
+        """
+        if isinstance(card, str):
+            card = Card(name=card)
 
-	def extend(self, cards: Iterable[Card]) -> int:
-		"""
-		Add multiple cards to the hand
+        if card in self:
+            return False
+        self._data[card.suit.value] |= card.rank.value
+        return True
 
-		:param cards: An iterable of the cards to add
-		:return: The number of cards successfully added
-		"""
-		return sum(self.add(card) for card in cards)
+    def extend(self, cards: Iterable[Union[Card, str]]) -> int:
+        """
+        Add multiple cards to the hand
 
-	def remove(self, card: Card) -> bool:
-		"""
-		Remove a card from the hand
+        :param cards: An iterable of the cards to add
+        :return: The number of cards successfully added
+        """
+        return sum(self.add(card) for card in cards)
 
-		:param card: The card to be added to the hand, can be a string
-			representation e.g. "CQ"
-		:return: False if the card wasn't in the hand, True otherwise
-		"""
-		if isinstance(card, str):
-			card = Card(name = card)
-		elif not isinstance(card, Card):
-			raise ValueError("card must be of type Card or str")
-		if card in self:
-			self._data[card.suit.value] &= ~card.rank.value
-			return True
-		return False
+    def remove(self, card: Union[Card, str]) -> bool:
+        """
+        Remove a card from the hand
 
-	@staticmethod
-	def from_pbn(pbn: str) -> 'Hand':
-		"""
-		Construct a Hand from a PBN string
+        :param card: The card to be added to the hand, can be a string
+                representation e.g. "CQ"
+        :return: False if the card wasn't in the hand, True otherwise
+        """
+        if isinstance(card, str):
+            card = Card(name=card)
 
-		:param pbn: A PBN string for a hand, e.g. "QT62..AQT852.QJT"
-		"""
-		return Hand(pbn)
+        if card in self:
+            self._data[card.suit.value] &= ~card.rank.value
+            return True
+        return False
 
-	def to_pbn(self) -> str:
-		":return: A PBN representation of the hand"
-		return '.'.join(str(self[suit]) for suit in Denom.suits())
+    @staticmethod
+    def from_pbn(pbn: str) -> "Hand":
+        """
+        Construct a Hand from a PBN string
 
-	@staticmethod
-	def from_lin(lin: str) -> 'Hand':
-		"""
-		Construct a Hand from a LIN string
+        :param pbn: A PBN string for a hand, e.g. "QT62..AQT852.QJT"
+        """
+        return Hand(pbn)
 
-		:param lin: A LIN string for a hand, e.g. "SQT62HDAQT852CQJT"
-		"""
-		pbn = lin[1:].replace("H", ".").replace("D", ".").replace("C", ".")
-		return Hand.from_pbn(pbn)
+    def to_pbn(self) -> str:
+        ":return: A PBN representation of the hand"
+        return ".".join(str(self[suit]) for suit in Denom.suits())
 
-	def to_lin(self) -> str:
-		"""
-		Convert a Hand to a LIN string
-		"""
-		lin = ""
-		with suppress_unicode():
-			for suit in Denom.suits():
-				lin += suit.abbr + self[suit].to_pbn()[::-1]
-		return lin
+    @staticmethod
+    def from_lin(lin: str) -> "Hand":
+        """
+        Construct a Hand from a LIN string
 
+        :param lin: A LIN string for a hand, e.g. "SQT62HDAQT852CQJT"
+        """
+        pbn = lin[1:].replace("H", ".").replace("D", ".").replace("C", ".")
+        return Hand.from_pbn(pbn)
 
-	def to_LaTeX(self, vertical: bool = True, ten_as_letter: bool = False) -> str:
-		"""
-		Create a LaTeX representation of the hand.
+    def to_lin(self) -> str:
+        """
+        Convert a Hand to a LIN string
+        """
+        lin = ""
+        with suppress_unicode():
+            for suit in Denom.suits():
+                lin += suit.abbr + self[suit].to_pbn()[::-1]
+        return lin
 
-		:param vertical: If True uses \\vhand, else \\hhand layout
-		:param title: The hand title. If vertical is False this is ignored
-		"""
-		if vertical:
-			res, sep = r"\begin{tabular}{l}", r"\\"
-		else:
-			res, sep = "", " "
-		for suit in Denom.suits():
-			res += "$\\" + suit.name + "uit$ "
-			if len(self[suit]) == 0:
-				res += "---"
-			else:
-				for rank in self[suit]:
-					res += r"\makebox[.8em]{"
-					res += r"1\kern-.16em0" if (rank == Rank.RT and not ten_as_letter) else rank.abbr
-					res += "}"
-			res += sep
-		if vertical:
-			res += r"\end{tabular}"
-		return res
+    def to_LaTeX(self, vertical: bool = True, ten_as_letter: bool = False) -> str:
+        """
+        Create a LaTeX representation of the hand.
 
-	def pprint(self, vertical: bool = True, stream=sys.stdout) -> None:
-		"Print the suits in the hand using suit symbols"
-		sep = "\n" if vertical else " "
-		print(sep.join(f"{suit.abbr} {self[suit]}" for suit in Denom.suits()), file=stream)
+        :param vertical: If True uses \\vhand, else \\hhand layout
+        :param ten_as_letter: Prints a T for tens if True, else prints 10
+        """
+        if vertical:
+            res, sep = r"\begin{tabular}{l}", r"\\"
+        else:
+            res, sep = "", " "
+        for suit in Denom.suits():
+            res += "$\\" + suit.name + "uit$ "
+            if len(self[suit]) == 0:
+                res += "---"
+            else:
+                for rank in self[suit]:
+                    res += r"\makebox[.8em]{"
+                    res += (
+                        r"1\kern-.16em0"
+                        if (rank == Rank.RT and not ten_as_letter)
+                        else rank.abbr
+                    )
+                    res += "}"
+            res += sep
+        if vertical:
+            res += r"\end{tabular}"
+        return res
 
-	def clear(self) -> None:
-		"Remove all cards from the hand"
-		for i in range(4):
-			self._data[i] &= 0
+    def pprint(self, vertical: bool = True, stream=sys.stdout) -> None:
+        "Print the suits in the hand using suit symbols"
+        sep = "\n" if vertical else " "
+        print(
+            sep.join(f"{suit.abbr} {self[suit]}" for suit in Denom.suits()), file=stream
+        )
 
-	@property
-	def spades(self) -> SuitHolding:
-		"The spade holding of the hand"
-		return self[Denom.spades]
-	@spades.setter
-	def spades(self, suit: SuitHolding) -> None:
-		self[Denom.spades] = suit
+    def clear(self) -> None:
+        "Remove all cards from the hand"
+        for denom in Denom.suits():
+            self[denom].clear()
 
-	@property
-	def hearts(self) -> SuitHolding:
-		"The heart holding of the hand"
-		return self[Denom.hearts]
-	@hearts.setter
-	def hearts(self, suit: SuitHolding) -> None:
-		self[Denom.hearts] = suit
+    @property
+    def spades(self) -> SuitHolding:
+        "The spade holding of the hand"
+        return self[Denom.spades]
 
-	@property
-	def diamonds(self) -> SuitHolding:
-		"The diamond holding of the hand"
-		return self[Denom.diamonds]
-	@diamonds.setter
-	def diamonds(self, suit: SuitHolding) -> None:
-		self[Denom.diamonds] = suit
+    @spades.setter
+    def spades(self, suit: Union[SuitHolding, str]) -> None:
+        self[Denom.spades] = suit
 
-	@property
-	def clubs(self) -> SuitHolding:
-		"The club holding of the hand"
-		return self[Denom.clubs]
-	@clubs.setter
-	def clubs(self, suit: SuitHolding) -> None:
-		self[Denom.clubs] = suit
+    @property
+    def hearts(self) -> SuitHolding:
+        "The heart holding of the hand"
+        return self[Denom.hearts]
 
-	def __contains__(self, card: Card) -> bool:
-		":return: True if card is in this hand"
-		if isinstance(card, str):
-			card = Card(name = card)
-		elif not isinstance(card, Card):
-			raise ValueError("card must be of type Card or str")
-		return bool(self._data[card.suit.value] & card.rank.value)
+    @hearts.setter
+    def hearts(self, suit: Union[SuitHolding, str]) -> None:
+        self[Denom.hearts] = suit
 
-	def __str__(self) -> str:
-		":return: A PBN string representation of the hand"
-		return self.to_pbn()
+    @property
+    def diamonds(self) -> SuitHolding:
+        "The diamond holding of the hand"
+        return self[Denom.diamonds]
 
-	def __repr__(self) -> str:
-		return f'Hand("{self.to_pbn()}")'
+    @diamonds.setter
+    def diamonds(self, suit: Union[SuitHolding, str]) -> None:
+        self[Denom.diamonds] = suit
 
-	def __iter__(self) -> Iterator[Card]:
-		":return: An iterator over the suit holdings in the order spades, hearts, diamonds and clubs"
-		for suit in Denom.suits():
-			for rank in self[suit]:
-				yield Card(suit=suit, rank=rank)
+    @property
+    def clubs(self) -> SuitHolding:
+        "The club holding of the hand"
+        return self[Denom.clubs]
 
-	def __getitem__(self, suit: Denom) -> SuitHolding:
-		":return: The specified suit holding of the hand"
-		return SuitHolding(self._data, suit.value)
+    @clubs.setter
+    def clubs(self, suit: Union[SuitHolding, str]) -> None:
+        self[Denom.clubs] = suit
 
-	def __setitem__(self, suit: Denom, holding: SuitHolding) -> None:
-		if isinstance(holding, str):
-			self[suit].clear()
-			for rank in holding:
-				self[suit].add(rank)
-		else:
-			self._data[suit] = holding._data[holding._idx]
+    def __contains__(self, card: Union[Card, str]) -> bool:
+        ":return: True if card is in this hand"
+        if isinstance(card, str):
+            card = Card(name=card)
 
-	def __len__(self) -> int:
-		":return: The number of cards in the hand"
-		return sum(bin(suit).count('1') for suit in self._data)
+        return bool(self._data[card.suit.value] & card.rank.value)
 
-	def __eq__(self, other: object) -> bool:
-		if not isinstance(other, Hand):
-			return NotImplemented
-		return not _dds._libc.memcmp(self._data, other._data, len(self._data))
+    def __str__(self) -> str:
+        ":return: A PBN string representation of the hand"
+        return self.to_pbn()
+
+    def __repr__(self) -> str:
+        return f'Hand("{self.to_pbn()}")'
+
+    def __iter__(self) -> Iterator[Card]:
+        ":return: An iterator over the suit holdings in the order spades, hearts, diamonds and clubs"
+        for suit in Denom.suits():
+            for rank in self[suit]:
+                yield Card(suit=suit, rank=rank)
+
+    def __getitem__(self, suit: Denom) -> SuitHolding:
+        ":return: The specified suit holding of the hand"
+        return SuitHolding(self._data, suit.value)
+
+    def __setitem__(self, suit: Denom, holding: Union[SuitHolding, str]) -> None:
+        if isinstance(holding, str):
+            self[suit].clear()
+            for rank in holding:
+                self[suit].add(rank)
+        else:
+            self._data[suit] = holding._data[holding._idx]
+
+    def __len__(self) -> int:
+        ":return: The number of cards in the hand"
+        return sum(bin(suit).count("1") for suit in self._data)
+
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, Hand):
+            return NotImplemented
+        return not _dds._libc.memcmp(self._data, other._data, len(self._data))

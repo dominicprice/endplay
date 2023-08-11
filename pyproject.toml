@@ -57,7 +57,11 @@ requires = [
 build-backend = 'setuptools.build_meta'
 
 [tool.yapf]
-column_limit = 120
+based_on_style = "pep8"
+column_limit = 1000
+# split_all_comma_separated_values = 0
+# split_before_closing_bracket = 1
+
 
 [tool.flake8]
 ignore = "W191"

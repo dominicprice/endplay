@@ -13,13 +13,11 @@ from endplay.types import Player
 
 
 class TerminalActions(BaseActions):
-
     def open(self, fname, deals):
         return TerminalActionsWriter(self, fname, deals)
 
 
 class TerminalActionsWriter(BaseActionsWriter):
-
     def on_enter(self):
         pass
 
@@ -31,13 +29,17 @@ class TerminalActionsWriter(BaseActionsWriter):
             raise RuntimeError("stream is not open for writing")
         exclude = [p for p in Player if p not in players]
         for i, deal in enumerate(self.deals, 1):
-            deal.pprint(board_no=i if self.actions.board_numbers else None, exclude=exclude, stream=self.f)
+            deal.pprint(
+                board_no=i if self.actions.board_numbers else None,
+                exclude=exclude,
+                stream=self.f,
+            )
             self.write()
 
     def printpbn(self):
         for i, deal in enumerate(self.deals, 1):
             if self.actions.board_numbers:
-                self.write(str(i).rjust(3), end=' ')
+                self.write(str(i).rjust(3), end=" ")
             self.write(str(deal))
 
     def printcompact(self, expr=None):
@@ -59,8 +61,8 @@ class TerminalActionsWriter(BaseActionsWriter):
     def printoneline(self, expr=None):
         for i, deal in enumerate(self.deals, 1):
             if self.actions.board_numbers:
-                self.write(str(i).rjust(3), end=' ')
-            self.write(deal.to_pbn()[2:], end=' ')
+                self.write(str(i).rjust(3), end=" ")
+            self.write(deal.to_pbn()[2:], end=" ")
             if expr is not None:
                 self.write(expr(deal))
             else:
@@ -69,12 +71,12 @@ class TerminalActionsWriter(BaseActionsWriter):
     def printes(self, *objs):
         for i, deal in enumerate(self.deals, 1):
             if self.actions.board_numbers:
-                self.write(str(i).rjust(3), end=' ')
+                self.write(str(i).rjust(3), end=" ")
             for obj in objs:
                 if isinstance(obj, str):
-                    self.write(obj, end='')
+                    self.write(obj, end="")
                 else:
-                    self.write(obj(deal), end='')
+                    self.write(obj(deal), end="")
             self.write()
 
     def average(self, expr, s=None):
@@ -103,5 +105,5 @@ class TerminalActionsWriter(BaseActionsWriter):
         width = max(max(len(cell) for cell in row) for row in rows)
         self.write(" ".join(c.rjust(width) for c in rows[0]))
         self.write("+".rjust(width) + "-" + "-".join("-" * width for _ in rows[0][1:]))
-        for row in rows[1:]:
-            self.write(" ".join(c.rjust(width) for c in row))
+        for r in rows[1:]:
+            self.write(" ".join(c.rjust(width) for c in r))

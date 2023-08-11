@@ -24,7 +24,6 @@ DQ D3 D4 D2
 SK S2 S4 SJ
 DJ DT DK D7
 *
-[Dealer "N"]
 [HomeTeam "J-germany"]
 [Room "Open"]
 [Round "1"]
@@ -33,9 +32,9 @@ DJ DT DK D7
 [Table "7"]
 [VisitTeam "J-austria"]
 
-[Event "#"]
-[Site "#"]
-[Date "#"]
+[Event "16th European Youth Team Championships"]
+[Site "Vienna, Austria AUT"]
+[Date "1998.07.16"]
 [Board "1"]
 [West "Kornek A"]
 [North "Lindermann A"]
@@ -57,11 +56,11 @@ C9 C3 C2 CA
 H3 H2 H6 HA
 H8 H4 D9 HK
 *
-[Dealer "N"]
-[HomeTeam "#"]
+[HomeTeam "J-germany"]
 [Room "Closed"]
-[Round "#"]
+[Round "1"]
 [Score "NS 420"]
-[Section "#"]
-[Table "#"]
-[VisitTeam "#"]
+[Section "Junior Teams"]
+[Table "7"]
+[VisitTeam "J-austria"]
+
