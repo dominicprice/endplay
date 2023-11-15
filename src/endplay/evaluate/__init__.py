@@ -200,7 +200,10 @@ def cccc(hand: Union[Hand, SuitHolding]) -> float:
     described on http://www.rpbridge.net/8j19.htm
     """
     if isinstance(hand, Hand):
-        return sum(cccc(hand[suit]) for suit in Denom.suits())
+        part = sum(cccc(hand[suit]) for suit in Denom.suits()) - 1
+        if shape(hand) == [4, 3, 3, 3]:
+            return part + 0.5
+        return part
     l = len(hand)
     score = 0.0
     # 1-5: Count point values A=4,K=3,Q=2,J=1,T=0.5
