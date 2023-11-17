@@ -12,6 +12,9 @@ CMakeSettings.json
 *.sln
 .env
 
+# Intellij local config files
+.idea/
+
 # Virtual environment
 venv/
 .python-version
