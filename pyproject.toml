@@ -1,9 +1,23 @@
-[project]
+[tool.poetry]
 name = "endplay"
+version = "0.5.1"
 description = "A suite of tools for generation and analysis of bridge deals"
-readme = {file = "README.md", content-type = "text/markdown"}
-requires-python = ">=3.7"
-license = {file = "LICENCE"}
+license = "MIT"
+authors = ["Dominic Price <dominicprice@outlook.com>"]
+readme = "README.md"
+packages = [{include = "endplay", from = "src"}]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Natural Language :: English",
+    "Topic :: Games/Entertainment",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent"
+]
 keywords = [
     "bridge",
     "cards",
@@ -15,54 +29,36 @@ keywords = [
     "deal",
     "dealer"
 ]
-authors = [
-    {name = "Dominic Price", email="dominicprice@outlook.com"}
-]
-classifiers = [
-    "Development Status :: 4 - Beta",
-    "Natural Language :: English",
-    "Topic :: Games/Entertainment",
-    "Programming Language :: Python :: 3.7",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "License :: OSI Approved :: MIT License",
-    "Operating System :: OS Independent"
-]
-dependencies = [
-    "pyparsing",
-    "tqdm",
-    "numpy>=1.16",
-    "matplotlib",
-    "more_itertools"
-]
-dynamic = ["version"]
 
-[project.urls]
+[tool.poetry.dependencies]
+python = "^3.8"
+pyparsing = ">=3.0"
+tqdm = ">=4.65"
+numpy = ">=1.22"
+matplotlib = ">=2.0"
+more-itertools = ">=9.0"
+
+
+[tool.poetry.urls]
 "Homepage" = "https://github.com/dominicprice/endplay"
 "Documentation" = "https://endplay.readthedocs.io"
 "Bug Tracker" = "https://github.com/dominicprice/endplay/issues"
 
-[project.scripts]
+[tool.poetry.scripts]
 endplay-interact = "endplay.interact.__main__:main"
 endplay-dealer = "endplay.dealer.__main__:main"
 
+[tool.poetry.build]
+script = "build.py"
+generate-setup-file = true
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.1.0"
+
 [build-system]
 requires = [
-  "setuptools>=42",
-  "wheel",
-  "cmake"
+    "poetry-core",
+    "setuptools>=42",
+    "cmake>=3.13"
 ]
-build-backend = 'setuptools.build_meta'
-
-[tool.yapf]
-based_on_style = "pep8"
-column_limit = 1000
-# split_all_comma_separated_values = 0
-# split_before_closing_bracket = 1
-
-
-[tool.flake8]
-ignore = "W191"
-exclude = [".git", "__pycache__", "build"]
+build-backend = "poetry.core.masonry.api"
