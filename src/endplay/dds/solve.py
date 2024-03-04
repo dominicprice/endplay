@@ -99,12 +99,10 @@ class SolvedBoardList(Sequence):
         return self._data.noOfBoards
 
     @overload
-    def __getitem__(self, i: int) -> SolvedBoard:
-        ...
+    def __getitem__(self, i: int) -> SolvedBoard: ...
 
     @overload
-    def __getitem__(self, i: slice) -> Sequence[SolvedBoard]:
-        ...
+    def __getitem__(self, i: slice) -> Sequence[SolvedBoard]: ...
 
     def __getitem__(
         self, i: Union[int, slice]

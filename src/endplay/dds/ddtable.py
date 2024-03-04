@@ -110,12 +110,10 @@ class DDTableList(abc.Sequence):
         return self._data.noOfBoards
 
     @overload
-    def __getitem__(self, i: int) -> DDTable:
-        ...
+    def __getitem__(self, i: int) -> DDTable: ...
 
     @overload
-    def __getitem__(self, i: slice) -> Sequence[DDTable]:
-        ...
+    def __getitem__(self, i: slice) -> Sequence[DDTable]: ...
 
     def __getitem__(self, i: Union[int, slice]) -> Union[DDTable, Sequence[DDTable]]:
         "Return the double dummy table at index `i`"

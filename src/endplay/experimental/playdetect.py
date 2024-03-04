@@ -62,8 +62,7 @@ class PlayTechniqueBase(abc.ABC):
         return self.matches
 
     @abc.abstractproperty
-    def name(self) -> str:
-        ...
+    def name(self) -> str: ...
 
     def match(self, deal: Deal, trick: list[Card]):
         try:
@@ -78,8 +77,7 @@ class PlayTechniqueBase(abc.ABC):
         return self.match
 
     @abc.abstractmethod
-    def _match(self, deal: Deal, trick: list[Card]):
-        ...
+    def _match(self, deal: Deal, trick: list[Card]): ...
 
 
 class Finesse(PlayTechniqueBase):

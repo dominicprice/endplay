@@ -2,14 +2,14 @@ export PYTHONPATH := ${PYTHONPATH}:${PWD}/src
 
 .PHONY: format
 format:
-	pipenv run isort --tc --profile black .
-	pipenv run black .
+	poetry run isort --tc --profile black .
+	poetry run black .
 
 .PHONY: test
 test:
-	pipenv run pytest tests
+	poetry run pytest tests
 
 .PHONY: lint
 lint:
-	pipenv run mypy --check-untyped-defs src/endplay
-	pipenv run mypy --check-untyped-defs tests
+	poetry run mypy --check-untyped-defs src/endplay
+	poetry run mypy --check-untyped-defs tests

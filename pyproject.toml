@@ -54,6 +54,9 @@ generate-setup-file = true
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.1.0"
+black = "^24.2.0"
+isort = "^5.13.2"
+mypy = "^1.8.0"
 
 [build-system]
 requires = [

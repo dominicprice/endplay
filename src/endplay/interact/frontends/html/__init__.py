@@ -3,7 +3,6 @@ An HTML interface to many of the features of endplay including
 dealing hands and performing double-dummy analysis.
 """
 
-
 import json
 import os
 import shlex

@@ -30,12 +30,10 @@ class SolvedPlay(Sequence):
         return self._data.number
 
     @overload
-    def __getitem__(self, i: int) -> int:
-        ...
+    def __getitem__(self, i: int) -> int: ...
 
     @overload
-    def __getitem__(self, i: slice) -> Sequence[int]:
-        ...
+    def __getitem__(self, i: slice) -> Sequence[int]: ...
 
     def __getitem__(self, i: Union[int, slice]) -> Union[int, Sequence[int]]:
         ":return: The number of tricks that declarer can make after the ith card is played"
@@ -64,12 +62,10 @@ class SolvedPlayList(Sequence):
         return self._data.noOfBoards
 
     @overload
-    def __getitem__(self, i: int) -> SolvedPlay:
-        ...
+    def __getitem__(self, i: int) -> SolvedPlay: ...
 
     @overload
-    def __getitem__(self, i: slice) -> Sequence[SolvedPlay]:
-        ...
+    def __getitem__(self, i: slice) -> Sequence[SolvedPlay]: ...
 
     def __getitem__(
         self, i: Union[int, slice]
