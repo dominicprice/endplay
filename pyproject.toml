@@ -30,6 +30,11 @@ keywords = [
     "dealer"
 ]
 
+[tool.poetry.urls]
+"Homepage" = "https://github.com/dominicprice/endplay"
+"Documentation" = "https://endplay.readthedocs.io"
+"Bug Tracker" = "https://github.com/dominicprice/endplay/issues"
+
 [tool.poetry.dependencies]
 python = "^3.8"
 pyparsing = ">=3.0"
@@ -38,11 +43,11 @@ numpy = ">=1.22"
 matplotlib = ">=2.0"
 more-itertools = ">=9.0"
 
-
-[tool.poetry.urls]
-"Homepage" = "https://github.com/dominicprice/endplay"
-"Documentation" = "https://endplay.readthedocs.io"
-"Bug Tracker" = "https://github.com/dominicprice/endplay/issues"
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.1.0"
+black = "^24.2.0"
+isort = "^5.13.2"
+mypy = "^1.8.0"
 
 [tool.poetry.scripts]
 endplay-interact = "endplay.interact.__main__:main"
@@ -51,12 +56,6 @@ endplay-dealer = "endplay.dealer.__main__:main"
 [tool.poetry.build]
 script = "build.py"
 generate-setup-file = true
-
-[tool.poetry.group.dev.dependencies]
-pytest = "^8.1.0"
-black = "^24.2.0"
-isort = "^5.13.2"
-mypy = "^1.8.0"
 
 [build-system]
 requires = [
