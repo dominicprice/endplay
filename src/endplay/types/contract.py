@@ -229,7 +229,7 @@ class Contract:
                 if is_vul:
                     score += 1500
                 else:
-                    score += 750
+                    score += 1000
             # Insult bonus
             if self.penalty == Penalty.doubled:
                 score += 50

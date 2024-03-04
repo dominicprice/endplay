@@ -46,13 +46,17 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
+      - uses: actions/setup-python@v3
+      - name: Install cibuildwheel
+        run: python3 -m pip install cibuildwheel==2.16.5
       - name: Build wheels
-        uses: pypa/cibuildwheel@v2.13.1
-      - uses: actions/upload-artifact@v3
+        run: python3 -m cibuildwheel --output-dir wheelhouse
+      - uses: actions/upload-artifact@v4
         with:
+          name: cibw-wheels-${{ matrix.os }}-${{ strategy.job-index }}
           path: ./wheelhouse/*.whl
 
   build_sdist:

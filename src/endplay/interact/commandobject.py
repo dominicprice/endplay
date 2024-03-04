@@ -10,7 +10,6 @@ can be undone and redone.
 
 __all__ = ["CommandError", "CommandObject"]
 
-import logging
 import textwrap
 from collections.abc import Callable
 from inspect import Parameter, signature
@@ -41,8 +40,6 @@ except ImportError:
     from typing_extensions import get_origin  # type: ignore[no-redef]
 
 T = TypeVar("T")
-
-logging.basicConfig(filename="/home/dominic/curses.txt")
 
 
 class CommandError(RuntimeError):
