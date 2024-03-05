@@ -83,5 +83,5 @@ string(REGEX MATCH "[0-9]+" DDS_MAXNOOFTABLES "${DDS_MAXNOOFTABLES}")
 set(DDS_LIBRARY_NAME "${CMAKE_SHARED_LIBRARY_PREFIX}dds${CMAKE_SHARED_LIBRARY_SUFFIX}")
 configure_file("${ENDPLAY_ROOT_DIR}/_dds/__init__.py.in" "_dds/__init__.py" @ONLY)
 
-# install(FILES "${CMAKE_CURRENT_BINARY_DIR}/_dds/__init__.py" DESTINATION "endplay/_dds/")
-# install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${DDS_LIBRARY_NAME}" DESTINATION "endplay/_dds/")
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/_dds/__init__.py" DESTINATION "endplay/_dds/")
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${DDS_LIBRARY_NAME}" DESTINATION "endplay/_dds/")
