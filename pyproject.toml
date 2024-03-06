@@ -48,6 +48,7 @@ pytest = "^8.1.0"
 black = "^24.2.0"
 isort = "^5.13.2"
 mypy = "^1.8.0"
+coverage = "^7.4.3"
 
 [tool.poetry.scripts]
 endplay-interact = "endplay.interact.__main__:main"

@@ -44,7 +44,7 @@ jobs:
       CIBW_TEST_COMMAND: "pytest {project}/tests"
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest, windows-latest, macos-10]
     steps:
       - uses: actions/checkout@v4
         with:
