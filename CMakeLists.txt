@@ -83,5 +83,13 @@ string(REGEX MATCH "[0-9]+" DDS_MAXNOOFTABLES "${DDS_MAXNOOFTABLES}")
 set(DDS_LIBRARY_NAME "${CMAKE_SHARED_LIBRARY_PREFIX}dds${CMAKE_SHARED_LIBRARY_SUFFIX}")
 configure_file("${ENDPLAY_ROOT_DIR}/_dds/__init__.py.in" "_dds/__init__.py" @ONLY)
 
+
+# Install both bits into the right places in the package
+if (CC_MSVC)
+	# .dll is a runtime component
+	install(TARGETS dds RUNTIME DESTINATION "endplay/_dds")
+else()
+	install(TARGETS dds DESTINATION "endplay/_dds")
+endif()
+
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/_dds/__init__.py" DESTINATION "endplay/_dds/")
-install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${DDS_LIBRARY_NAME}" DESTINATION "endplay/_dds/")
