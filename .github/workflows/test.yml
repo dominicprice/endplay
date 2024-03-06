@@ -24,9 +24,9 @@ jobs:
         with:
           name: wheel-${{ matrix.os }}-${{ matrix.python-version }}
       - name: Install endplay
-        run: pip install dist/*.whl
-      - name: Install pytest
-        run: pip install coverage
+        run: pip install endplay-*.whl
+      - name: Install pytest and coverage
+        run: pip install pytest coverage
       - name: Run tests
         run: coverage run -m pytest tests
       - name: Coverage report
