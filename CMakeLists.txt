@@ -10,6 +10,7 @@ if (NOT CMAKE_BUILD_TYPE)
 endif()
 set(CMAKE_CXX_STANDARD 17)
 
+set(TEMPLATE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/template")
 set(ENDPLAY_ROOT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src/endplay")
 execute_process(COMMAND poetry version -s OUTPUT_VARIABLE ENDPLAY_VERSION)
 string(REGEX REPLACE "\n$" "" ENDPLAY_VERSION "${ENDPLAY_VERSION}")
@@ -38,7 +39,7 @@ endif()
 
 # Configure config.py with version number
 # =======================================
-configure_file("${ENDPLAY_ROOT_DIR}/config.py.in" "config.py" @ONLY)
+configure_file("${TEMPLATE_DIR}/config.py.in" "config.py" @ONLY)
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/config.py" DESTINATION "endplay")
 
 
@@ -81,7 +82,7 @@ string(REGEX MATCH "[0-9]+" DDS_MAXNOOFBOARDS "${DDS_MAXNOOFBOARDS}")
 string(REGEX MATCH "#define MAXNOOFTABLES [0-9]+" DDS_MAXNOOFTABLES "${DDS_DLL_H}")
 string(REGEX MATCH "[0-9]+" DDS_MAXNOOFTABLES "${DDS_MAXNOOFTABLES}")
 set(DDS_LIBRARY_NAME "${CMAKE_SHARED_LIBRARY_PREFIX}dds${CMAKE_SHARED_LIBRARY_SUFFIX}")
-configure_file("${ENDPLAY_ROOT_DIR}/_dds/__init__.py.in" "_dds/__init__.py" @ONLY)
+configure_file("${TEMPLATE_DIR}/_dds/__init__.py.in" "_dds/__init__.py" @ONLY)
 
 
 # Install both bits into the right places in the package

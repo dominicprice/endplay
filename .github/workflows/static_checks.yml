@@ -1,0 +1,28 @@
+name: static_checks
+
+on: [workflow_call]
+
+jobs:
+  lint:
+    name: Lint Checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: pipx install mypy
+      - name: Check source dir
+        run: mypy --check-untyped-defs src/endplay
+      - name: Check tests dir
+        run: mypy --check-untyped-defs tests
+
+  format:
+    name: Check code formatting
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: pipx install black isort
+      - name: Check import sorting
+        run: isort --tc --profile black --check-only .
+      - name: Check black formatting
+        run: black --check .
