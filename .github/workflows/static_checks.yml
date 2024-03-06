@@ -8,12 +8,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Setup Python
+        uses: actions/setup-python@v4
       - name: Install dependencies
-        run: pipx install mypy
-      - name: Check source dir
-        run: mypy --check-untyped-defs src/endplay
-      - name: Check tests dir
-        run: mypy --check-untyped-defs tests
+        run: pipx install poetry
+      - name: Install endplay
+        run: poetry install
+      - name: Run MyPy
+        run: make lint
 
   format:
     name: Check code formatting
