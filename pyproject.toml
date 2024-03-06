@@ -55,7 +55,7 @@ endplay-interact = "endplay.interact.__main__:main"
 endplay-dealer = "endplay.dealer.__main__:main"
 
 [tool.poetry.build]
-script = "build.py"
+script = "build_ext.py"
 generate-setup-file = true
 
 [build-system]

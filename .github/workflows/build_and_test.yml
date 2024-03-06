@@ -11,6 +11,7 @@ jobs:
   build_wheels:
     name: Build wheels on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
+
     env:
       # Python on Linux requires libjpeg to install the Pillow library, but the container switches
       # between RHM and DEB so first try yum, then try apt-get.
@@ -36,15 +37,19 @@ jobs:
       # Ensure that installing numpy on mac uses the openblas library, see
       # the issue in https://github.com/numpy/numpy/issues/15947
       CIBW_BEFORE_ALL_MACOS: brew install openblas
-      CIBW_BEFORE_TEST_MACOS: OPENBLAS="$(brew --prefix openblas)" pip install numpy
+      CIBW_BEFORE_TEST_MACOS: >
+        OPENBLAS="$(brew --prefix openblas)" pip install numpy
+        wheel tags --platform-tag macosx_12_7_x86_64 ./wheelhouse/*.whl
 
       # cibw automatically sets up the testing environment in a venv so just need to tell it
       # to call pytest in the right directory
       CIBW_TEST_REQUIRES: pytest
       CIBW_TEST_COMMAND: "pytest {project}/tests"
+
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-11]
+        os: [ubuntu-latest, windows-latest, macos-12]
+
     steps:
       - uses: actions/checkout@v4
         with:
