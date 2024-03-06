@@ -30,7 +30,7 @@ jobs:
       # Do not build 32-bit wheels for Windows, as this breaks installation of contourpy (dependency of
       # matplotlib)
       # Do not build pypy on windows due to a bug in building pillow
-      CIBW_BUILD: "cp38-* cp39-* cp310-* cp311-* cp-312-* pp37-* pp38-* pp39-*"
+      CIBW_BUILD: "cp38-* cp39-* cp310-* cp311-* cp-312-* pp38-* pp39-* pp310-*"
       CIBW_SKIP: "*_i686 *-win32 pp*-win_amd64"
 
       CIBW_TEST_SKIP: "*-macosx*"
