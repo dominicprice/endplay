@@ -29,7 +29,9 @@ jobs:
       - name: Install endplay
         run: poetry install
       - name: Run coverage
-        run: coverage tests/ && coverage report
+        run: >
+          poetry run coverage run -m tests/ &&
+          poetry run coverage report
 
   format:
     name: Check code formatting
