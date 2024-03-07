@@ -1,0 +1,24 @@
+name: deploy
+
+on: [push, workflow_call]
+
+jobs:
+  build:
+    uses: ./.github/workflows/build_and_test.yml
+
+  deploy_test:
+    needs: [build]
+    environment: manual_deploy_test
+    permissions:
+      id-token: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: cibw-*
+          path: dist
+          merge-multiple: true
+
+      - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          repository-url: https://test.pypi.org/legacy
