@@ -7,16 +7,17 @@ __all__ = ["__version__", "__version_info__", "__author__", "use_unicode", "supp
 from contextlib import ContextDecorator
 
 # Packages metadata, used by setuptools etc
-__version__ = """@ENDPLAY_VERSION@""".strip()
+__version__ = "@ENDPLAY_VERSION@"
 """Version of the library as a string"""
 
-__version_info__ = tuple(int(i) if i.isdigit() else i for i in __version__.replace("-", ".").split("."))
+__version_info__ = (@ENDPLAY_VERSION_MAJOR@, @ENDPLAY_VERSION_MINOR@, @ENDPLAY_VERSION_PATCH@)
 """Version of the library as a tuple of integers"""
 
 __author__ = "Dominic Price"
 """Author of the library"""
 
-__buildtime__ = """@ENDPLAY_BUILD_TIME@""".strip()
+__buildtime__ = "@ENDPLAY_BUILD_TIME@"
+"""Time at which the package was built"""
 
 use_unicode = True
 """If set to False, the library will only print characters in the ASCII range"""

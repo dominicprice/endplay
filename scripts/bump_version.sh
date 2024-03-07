@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+
+usage() {
+	echo "usage: bump_version.sh [-h] -p|-m|-M"
+	exit 1
+}
+
+PATCH=""
+MINOR=""
+MAJOR=""
+
+while [ -n "$1" ]; do
+	case "$1" in
+	-h)
+		usage
+		exit 0
+		;;
+	-p) PATCH="yes" ;;
+	-m) MINOR="yes" ;;
+	-M) MAJOR="yes" ;;
+	*)
+		usage
+		exit 1
+		;;
+	esac
+	shift
+done
+
+ENDPLAY_VERSION="$(poetry version -s)"
+
+# display version
+if [ -z "$PATCH$MINOR$MAJOR" ]; then
+	echo "$ENDPLAY_VERSION"
+	exit 0
+fi
+
+if [ -n "$(git status --porcelain)" ]; then
+	echo "git worktree is not clean, commit all changes before updating version"
+	exit 1
+fi
+
+# bump version
+IFS='.' read -r -a PARTS <<<"$ENDPLAY_VERSION"
+if [ -n "$MAJOR" ]; then
+	PARTS[0]=$((PARTS[0] + 1))
+	PARTS[1]=0
+	PARTS[2]=0
+elif [ -n "$MINOR" ]; then
+	PARTS[1]=$((PARTS[1] + 1))
+	PARTS[2]=0
+elif [ -n "$PATCH" ]; then
+	PARTS[2]=$((PARTS[2] + 1))
+else
+	usage
+	exit 1
+fi
+VERSION="${PARTS[0]}.${PARTS[1]}.${PARTS[2]}"
+
+(poetry version "$VERSION")
+
+# commit version and create git tag
+git add pyproject.toml
+git commit -m "bump version to $VERSION"
+git tag -a "v$VERSION" -m "Version $VERSION"
