@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "endplay"
-version = "0.5.2"
+version = "0.5.3"
 description = "A suite of tools for generation and analysis of bridge deals"
 license = "MIT"
 authors = ["Dominic Price <dominicprice@outlook.com>"]
