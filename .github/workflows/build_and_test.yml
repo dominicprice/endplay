@@ -1,4 +1,4 @@
-name: build
+name: build_and_test
 
 on: [workflow_call]
 
@@ -7,30 +7,28 @@ jobs:
     uses: ./.github/workflows/static_checks.yml
 
   build_wheels:
-    name: Build wheels for ${{ matrix.os }}/Python ${{matrix.python-version}}
+    name: Build wheels for ${{ matrix.os }}
     needs: [static_checks]
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        # python-version: ["3.8", "3.9", "3.10", "3.11", "3.12", "pypy3.8", "pypy3.9", "pypy3.10"]
-        python-version: ["3.11"]
     steps:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
-      - name: Setup Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
-        with:
-          python-version: ${{ matrix.python-version }}
-      - name: Install dependencies
-        run: pipx install poetry
-      - name: Build wheel
-        run: poetry build -f wheel
+      - name: Build wheels
+        uses: pypa/cibuildwheel@v2.16.5
+        env:
+          # CIBW_BUILD: "cp38-* cp39-* cp310-* cp311-* cp-312-* pp38-* pp39-* pp310-*"
+          CIBW_BUILD: "cp310-*"
+          CIBW_ARCHS: auto64
+          CIBW_TEST_REQUIRES: pytest
+          CIBW_TEST_COMMAND: pytest {package}/tests
       - uses: actions/upload-artifact@v4
         with:
-          name: wheel-${{ matrix.os }}-${{ matrix.python-version }}
-          path: ./dist/*.whl
+          name: cibw-wheels-${{ matrix.os }}-${{ matrix.python-version }}
+          path: ./wheelhouse/*.whl
 
   build_sdist:
     name: Build source distribution
