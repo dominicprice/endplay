@@ -11,18 +11,6 @@ endif()
 set(CMAKE_CXX_STANDARD 17)
 
 set(TEMPLATE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/template")
-set(ENDPLAY_ROOT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src/endplay")
-
-# get version string
-execute_process(COMMAND poetry version -s OUTPUT_VARIABLE ENDPLAY_VERSION)
-string(REGEX REPLACE "\n$" "" ENDPLAY_VERSION "${ENDPLAY_VERSION}")
-
-# get version major/minor/patch
-string(REGEX MATCH "([0-9]+)\.([0-9]+)\.([0-9]+)" _ "${ENDPLAY_VERSION}")
-set(ENDPLAY_VERSION_MAJOR "${CMAKE_MATCH_1}")
-set(ENDPLAY_VERSION_MINOR "${CMAKE_MATCH_2}")
-set(ENDPLAY_VERSION_PATCH "${CMAKE_MATCH_3}")
-string(TIMESTAMP ENDPLAY_BUILD_TIME)
 
 # Detect compiler
 if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
@@ -44,12 +32,6 @@ if (COMPILE_32_BITS)
 	add_compile_options("-m32")
 	add_link_options("-m32")
 endif()
-
-# Configure config.py with version number
-# =======================================
-configure_file("${TEMPLATE_DIR}/config.py.in" "config.py" @ONLY)
-install(FILES "${CMAKE_CURRENT_BINARY_DIR}/config.py" DESTINATION "endplay")
-
 
 # _dds library
 # ============
