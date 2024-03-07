@@ -8,6 +8,7 @@ jobs:
 
   deploy_check:
     needs: [build]
+    runs-on: ubuntu-latest
     steps:
       - name: Deployment checks
         run: echo "Deployment checks run"
