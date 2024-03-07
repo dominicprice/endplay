@@ -1,14 +1,21 @@
-name: deploy
+name: deploy_test
 
-on: [push, workflow_call]
+on: [push, workflow_dispatch]
 
 jobs:
   build:
     uses: ./.github/workflows/build_and_test.yml
 
-  deploy_test:
+  deploy_check:
     needs: [build]
+    steps:
+      - name: Deployment checks
+        run: echo "Deployment checks run"
+
+  deploy_test:
+    needs: [deploy_check]
     environment: manual_deploy_test
+    if: ${{ contains(github.event.head_commit.message, '[deploy]') }}
     permissions:
       id-token: write
     runs-on: ubuntu-latest
@@ -22,3 +29,18 @@ jobs:
       - uses: pypa/gh-action-pypi-publish@release/v1
         with:
           repository-url: https://test.pypi.org/legacy/
+
+  deploy:
+    needs: [deploy_check]
+    environment: manual_deploy
+    if: startsWith(github.ref, 'refs/tags/v')
+    permissions:
+      id-token: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: cibw-*
+          path: dist
+          merge-multiple: true
+      - uses: pypa/gh-action-pypi-publish@release/v1

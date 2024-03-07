@@ -20,14 +20,13 @@ jobs:
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.16.5
         env:
-          # CIBW_BUILD: "cp38-* cp39-* cp310-* cp311-* cp-312-* pp38-* pp39-* pp310-*"
-          CIBW_BUILD: "cp310-*"
+          CIBW_BUILD: "cp38-* cp39-* cp310-* cp311-* cp-312-* pp38-* pp39-* pp310-*"
           CIBW_ARCHS: auto64
           CIBW_TEST_REQUIRES: pytest
           CIBW_TEST_COMMAND: pytest {package}/tests
       - uses: actions/upload-artifact@v4
         with:
-          name: cibw-wheels-${{ matrix.os }}-${{ matrix.python-version }}
+          name: cibw-wheels-${{ matrix.os }}-${{ strategy.job-index }}
           path: ./wheelhouse/*.whl
 
   build_sdist:
