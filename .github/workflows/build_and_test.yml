@@ -1,6 +1,6 @@
 name: build_and_test
 
-on: [workflow_call]
+on: [push, workflow_call]
 
 jobs:
   static_checks:
