@@ -60,10 +60,10 @@ VERSION="${PARTS[0]}.${PARTS[1]}.${PARTS[2]}"
 (poetry version "$VERSION")
 
 # update config.py
-sed -i "s/__version__ = .*/__version__ = \"${PARTS[0]}.${PARTS[1]}.${PARTS[2]}\"/g" 'src/endplay/config.py'
-sed -i "s/__version_info__ = .*/__version_info__ = (${PARTS[0]}, ${PARTS[1]}, ${PARTS[2]})/g" 'src/endplay/config.py'
+sed -i "s/^__version__ = .*/__version__ = \"${PARTS[0]}.${PARTS[1]}.${PARTS[2]}\"/g" 'src/endplay/config.py'
+sed -i "s/^__version_info__ = .*/__version_info__ = (${PARTS[0]}, ${PARTS[1]}, ${PARTS[2]})/g" 'src/endplay/config.py'
 
 # commit version and create git tag
 git add pyproject.toml
-git commit -m "bump version to $VERSION"
+git commit -m "bump version to $VERSION [skip ci]"
 git tag -a "v$VERSION" -m "Version $VERSION"
