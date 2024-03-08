@@ -1,5 +1,5 @@
 """
-A shell-like CLI interface to many of the features of endplay including
+An interactive interface to many of the features of endplay including
 dealing hands and performing double-dummy analysis.
 """
 
@@ -65,7 +65,7 @@ def main():
         "--frontend",
         default="cmd",
         choices=["cmd", "curses", "html"],
-        help="Which frontend engine to use, can be one of 'cmd', 'curses' or 'tk'. Defaults to 'cmd'.",
+        help="Which frontend engine to use, can be one of 'cmd', 'curses' or 'html'. Defaults to 'cmd'.",
     )
     parser.add_argument(
         "-v",

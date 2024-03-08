@@ -1,6 +1,5 @@
 # The root CMakeLists.txt which controls the build
 include CMakeLists.txt
-include VERSION
 
 # Files configured at build-time by CMake
 include template/*
