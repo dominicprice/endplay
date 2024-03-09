@@ -27,8 +27,7 @@ class BaseActions(ABC):
         self.interp = interp
 
     @abstractmethod
-    def open(self, fname: Optional[str], deals: List[Deal]) -> "BaseActionsWriter":
-        ...
+    def open(self, fname: Optional[str], deals: List[Deal]) -> "BaseActionsWriter": ...
 
 
 class BaseActionsWriter(ABC):
@@ -124,16 +123,13 @@ class BaseActionsWriter(ABC):
             raise ValueError(f"Unknown action {node.value}")
 
     @abstractmethod
-    def on_enter(self):
-        ...
+    def on_enter(self): ...
 
     @abstractmethod
-    def on_exit(self):
-        ...
+    def on_exit(self): ...
 
     @abstractmethod
-    def print(self, *players: Player):
-        ...
+    def print(self, *players: Player): ...
 
     def printew(self):
         self.print(Player.east, Player.west)
@@ -142,24 +138,19 @@ class BaseActionsWriter(ABC):
         self.print(*Player)
 
     @abstractmethod
-    def printpbn(self):
-        ...
+    def printpbn(self): ...
 
     @abstractmethod
-    def printcompact(self, expr: Optional[Expr] = None):
-        ...
+    def printcompact(self, expr: Optional[Expr] = None): ...
 
     @abstractmethod
-    def printoneline(self, expr: Optional[Expr] = None):
-        ...
+    def printoneline(self, expr: Optional[Expr] = None): ...
 
     @abstractmethod
-    def printes(self, *objs: Union[Expr, str]):
-        ...
+    def printes(self, *objs: Union[Expr, str]): ...
 
     @abstractmethod
-    def average(self, expr: Expr, s: Optional[str] = None):
-        ...
+    def average(self, expr: Expr, s: Optional[str] = None): ...
 
     @abstractmethod
     def frequency1d(
@@ -168,8 +159,7 @@ class BaseActionsWriter(ABC):
         lower_bound: float,
         upper_bound: float,
         s: Optional[str] = None,
-    ):
-        ...
+    ): ...
 
     @abstractmethod
     def frequency2d(
@@ -181,5 +171,4 @@ class BaseActionsWriter(ABC):
         lb2: float,
         hb2: float,
         s: Optional[str] = None,
-    ):
-        ...
+    ): ...

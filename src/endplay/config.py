@@ -2,21 +2,25 @@
 Configuration and versioning information
 """
 
-__all__ = ["__version__", "__version_info__", "__author__", "use_unicode", "suppress_unicode"]
+__all__ = [
+    "__version__",
+    "__version_info__",
+    "__author__",
+    "use_unicode",
+    "suppress_unicode",
+]
 
 from contextlib import ContextDecorator
 
 # Packages metadata, used by setuptools etc
-__version__ = """@ENDPLAY_VERSION@""".strip()
+__version__ = "0.5.8"
 """Version of the library as a string"""
 
-__version_info__ = tuple(int(i) if i.isdigit() else i for i in __version__.replace("-", ".").split("."))
+__version_info__ = (0, 5, 8)
 """Version of the library as a tuple of integers"""
 
 __author__ = "Dominic Price"
 """Author of the library"""
-
-__buildtime__ = """@ENDPLAY_BUILD_TIME@""".strip()
 
 use_unicode = True
 """If set to False, the library will only print characters in the ASCII range"""
@@ -24,17 +28,17 @@ use_unicode = True
 
 class suppress_unicode(ContextDecorator):
     """
-	Context manager to temporarily ensure that unicode output is turned off,
-	for example when writing to a file which expects suit symbols to be
-	SDHC.
+    Context manager to temporarily ensure that unicode output is turned off,
+    for example when writing to a file which expects suit symbols to be
+    SDHC.
 
-	Example usage::
+    Example usage::
 
-		print(Denom.hearts.abbr) # prints ♥ (assuming config.use_unicode=True)
-		with suppress_unicode():
-			print(Denom.hearts.abbr) # prints H
-		print(Denom.hearts.abbr) # prints ♥
-	"""
+            print(Denom.hearts.abbr) # prints ♥ (assuming config.use_unicode=True)
+            with suppress_unicode():
+                    print(Denom.hearts.abbr) # prints H
+            print(Denom.hearts.abbr) # prints ♥
+    """
 
     def __enter__(self):
         global use_unicode

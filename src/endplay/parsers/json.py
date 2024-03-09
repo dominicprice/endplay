@@ -156,9 +156,9 @@ class JSONEncoder(_json.JSONEncoder):
             return res
         elif isinstance(o, PenaltyBid):
             res = {
-                "penalty": "pass"
-                if o.penalty is Penalty.passed
-                else o.penalty.name[:-1],
+                "penalty": (
+                    "pass" if o.penalty is Penalty.passed else o.penalty.name[:-1]
+                ),
                 "alertable": o.alertable,
             }
             if o.announcement:

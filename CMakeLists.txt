@@ -10,10 +10,7 @@ if (NOT CMAKE_BUILD_TYPE)
 endif()
 set(CMAKE_CXX_STANDARD 17)
 
-set(ENDPLAY_ROOT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src/endplay")
-file(READ "${CMAKE_CURRENT_SOURCE_DIR}/VERSION" ENDPLAY_VERSION)
-string(REGEX REPLACE "\n$" "" ENDPLAY_VERSION "${ENDPLAY_VERSION}")
-string(TIMESTAMP ENDPLAY_BUILD_TIME)
+set(TEMPLATE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/template")
 
 # Detect compiler
 if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
@@ -35,12 +32,6 @@ if (COMPILE_32_BITS)
 	add_compile_options("-m32")
 	add_link_options("-m32")
 endif()
-
-# Configure config.py with version number
-# =======================================
-configure_file("${ENDPLAY_ROOT_DIR}/config.py.in" "config.py" @ONLY)
-install(FILES "${CMAKE_CURRENT_BINARY_DIR}/config.py" DESTINATION "endplay")
-
 
 # _dds library
 # ============
@@ -81,9 +72,10 @@ string(REGEX MATCH "[0-9]+" DDS_MAXNOOFBOARDS "${DDS_MAXNOOFBOARDS}")
 string(REGEX MATCH "#define MAXNOOFTABLES [0-9]+" DDS_MAXNOOFTABLES "${DDS_DLL_H}")
 string(REGEX MATCH "[0-9]+" DDS_MAXNOOFTABLES "${DDS_MAXNOOFTABLES}")
 set(DDS_LIBRARY_NAME "${CMAKE_SHARED_LIBRARY_PREFIX}dds${CMAKE_SHARED_LIBRARY_SUFFIX}")
-configure_file("${ENDPLAY_ROOT_DIR}/_dds/__init__.py.in" "_dds/__init__.py" @ONLY)
+configure_file("${TEMPLATE_DIR}/_dds/__init__.py.in" "_dds/__init__.py" @ONLY)
 
-# Install both bits into the right places in the package  
+
+# Install both bits into the right places in the package
 if (CC_MSVC)
 	# .dll is a runtime component
 	install(TARGETS dds RUNTIME DESTINATION "endplay/_dds")

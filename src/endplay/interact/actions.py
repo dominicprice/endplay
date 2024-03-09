@@ -14,16 +14,13 @@ if TYPE_CHECKING:
 
 class Action(ABC):
     @abstractproperty
-    def name(self) -> str:
-        ...
+    def name(self) -> str: ...
 
     @abstractmethod
-    def apply(self, cmdobj: "CommandObject") -> Any:
-        ...
+    def apply(self, cmdobj: "CommandObject") -> Any: ...
 
     @abstractmethod
-    def unapply(self, cmdobj: "CommandObject"):
-        ...
+    def unapply(self, cmdobj: "CommandObject"): ...
 
 
 class ActionNotAppliedError(RuntimeError):

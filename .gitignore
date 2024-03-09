@@ -15,6 +15,9 @@ CMakeSettings.json
 # Intellij local config files
 .idea/
 
+# pyright config file
+pyrightconfig.json
+
 # Virtual environment
 venv/
 .python-version
@@ -31,15 +34,12 @@ docs/source/pages/
 out/
 src/endplay/_dds/dds.dll
 src/endplay/_dds/libdds.so
+src/endplay/_dds/libdds.dylib
 src/endplay/_dds/__init__.py
-src/endplay/config.py
 
 # clangd files
 /.cache/
 /compile_commands.json
-
-# local config
-.pyrightconfig.json
 
 # Files generated during test
 TestResults/

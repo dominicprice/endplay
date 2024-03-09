@@ -51,7 +51,7 @@ The version of the library available on PyPI may be older than the current statu
 
 ### From source
 
-*endplay* uses `setuptools` to manage its build and can be installed with `pip`.
+To install from source to your system Python run
 
 ```bash
 # Clone repo and submodules
@@ -60,43 +60,45 @@ cd endplay
 python3 -m pip install .
 ```
 
-If you want to build the binary wheels for your system, you can use the `build` package. This will create an isolated environment when collecting packages so you do not need to perform this in a virtual environment.
-
-```bash
-# Only build is required to start the build, other packages
-# are automatically fetched
-python3 -m pip install build
-python3 -m build # generates dist/endplay-<VERSIONSUFFIX>.whl
-```
 
 ### For development
 
-If you are trying to develop for the library, then it is recommended to do all your testing in a virtual environment:
-
+*endplay* uses poetry to manage builds. Poetry can be install on your system using pip/pipx:
 ```bash
-python3 -m pip install virtualenv
-virtualenv venv
-source venv/bin/activate # on windows, `cmd venv\scripts\activate`
-python -m pip install . # installs into the created venv
+python3 -m pip install poetry
+# or
+pipx install poetry
 ```
 
-You can then modify some files, and when you want to debug simply rerun `python -m pip install .` and the old build will be overwritten. This also has the advantage of being able to reuse the cache from the previous install (including the CMake cache) which speeds up build time.
+pipx installs packages into an isolated environment and creates shims for all
+the package's executable scripts in your local `PATH`. If you have pipx on your
+system you should prefer it for managing your poetry distribution, see
+poetry/pipx's docs for more information.
 
-If you are not planning on modifying the underlying C library, its packaging logic or the config file, then you can avoid having to reinstall each time by making an in-source build and symlinking this into your site packages. The simplest way to do this is to run the following from the root directory:
+If you want to build the binary wheels for your system, you can use poetry's
+`build` command. This will create an isolated environment when collecting
+packages so you do not need to perform this in a virtual environment.
+
 ```bash
-mkdir build && cd build
-cmake -DCMAKE_INSTALL_PREFIX=../src ..
-cmake --build . --target install
-cd ../src
-pwd > "$(python -m site --user-site)/endplay.pth"
+cd /path/to/endplay
+poetry build -f wheel # generates dist/endplay-<VERSIONSUFFIX>.whl
 ```
-The last command will work on POSIX systems, on Windows you can get the site packages directory by running `python -m site --user-site` and creating a file `endplay.pth` there with a single line containing the absolute path to `<ENDPLAY_ROOT>/src`.
 
-The `.gitignore` is set up to ignore the files CMake installs so no extra care needs to be taken when staging and committing your changes to git.
+To develop *endplay*, you can use poetry's `install` command to install endplay
+and all the dependencies into a virtual environment:
+
+```bash
+cd /path/to/endplay
+poetry install
+```
+
+If you modify the C extension, you will need to rerun `poetry install` for the
+virtual environment to pick up the changes.
 
 ### Building the documentation
 
-The documentation is semi-auto generated with sphinx. To build it, ensure that *endplay* is installed and then `cd` into the root directory and then run
+The documentation is semi-auto generated with sphinx. To build it, ensure that
+*endplay* is installed and then `cd` into the root directory and then run
 
 ```bash
 cd docs

@@ -1,7 +1,7 @@
 import os
 import pathlib
 
-from setuptools import Extension, setup
+from setuptools import Extension
 from setuptools.command.build_ext import build_ext
 
 
@@ -29,6 +29,10 @@ class cmakeable_build_ext(build_ext):
             if isinstance(ext, CMakeExtension):
                 self.build_cmake(ext)
         super().run()
+
+    def copy_extensions_to_source(self):
+        # install is handled by cmake
+        pass
 
     def build_cmake(self, ext):
         cwd = pathlib.Path().absolute()
@@ -80,31 +84,10 @@ class cmakeable_build_ext(build_ext):
         os.chdir(str(cwd))
 
 
-packages = [
-    "endplay",
-    "endplay._dds",
-    "endplay.dds",
-    "endplay.dealer",
-    "endplay.dealer.actions",
-    "endplay.evaluate",
-    "endplay.experimental",
-    "endplay.interact",
-    "endplay.interact.frontends",
-    "endplay.interact.frontends.html",
-    "endplay.parsers",
-    "endplay.types",
-    "endplay.stats",
-    "endplay.utils",
-]
-
-with open("VERSION") as f:
-    version = f.read().strip()
-
-setup(
-    ext_modules=[CMakeExtension("endplay")],
-    cmdclass={"build_ext": cmakeable_build_ext},
-    package_dir={"": "src"},
-    packages=packages,
-    test_suite="tests",
-    version=version,
-)
+def build(setup_kwargs):
+    setup_kwargs.update(
+        {
+            "ext_modules": [CMakeExtension("endplay")],
+            "cmdclass": {"build_ext": cmakeable_build_ext},
+        }
+    )

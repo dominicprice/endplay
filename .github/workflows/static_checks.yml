@@ -1,0 +1,46 @@
+name: static_checks
+
+on: [workflow_call]
+
+jobs:
+  lint:
+    name: Lint Checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Install dependencies
+        run: pipx install poetry
+      - name: Install endplay
+        run: poetry install
+      - name: Run MyPy
+        run: make lint
+
+  coverage:
+    name: Test Coverage
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Install dependencies
+        run: pipx install poetry
+      - name: Install endplay
+        run: poetry install
+      - name: Run coverage
+        run: >
+          poetry run coverage run -m pytest tests/ &&
+          poetry run coverage report
+
+  format:
+    name: Check code formatting
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: pipx install black isort
+      - name: Check import sorting
+        run: isort --tc --profile black --check-only .
+      - name: Check black formatting
+        run: black --check .

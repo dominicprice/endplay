@@ -1,10 +1,8 @@
 # The root CMakeLists.txt which controls the build
 include CMakeLists.txt
-include VERSION
 
 # Files configured at build-time by CMake
-include src/endplay/config.py.in
-include src/endplay/_dds/__init__.py.in
+include template/*
 
 # Files required for compiling the dds library
 include libs/dds/include/*
