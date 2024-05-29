@@ -484,20 +484,20 @@ class PBNEncoder:
             self._create_tag("Deal", board.deal.to_pbn())
             self._create_tag("Scoring", scoring)
             if board.contract is None:
-                self._create_tag("Declarer", "?")
-            else:
-                self._create_tag("Declarer", board.contract.declarer.abbr)
-            if board.contract is None:
                 self._create_tag("Contract", "?")
                 self._create_tag("Result", "?")
+                self._create_tag("Declarer", "?")
             else:
                 c = board.contract
                 if c.is_passout():
                     cstr = "Pass"
                     res = ""
+                    decl = ""
                 else:
                     cstr = f"{c.level}{c.denom.abbr}{c.penalty.abbr}"
                     res = result_to_tricks(board.contract.result, board.contract.level)
+                    decl = board.contract.declarer.abbr
+                self._create_tag("Declarer", decl)
                 self._create_tag("Contract", cstr)
                 self._create_tag("Result", res)
 
@@ -521,6 +521,11 @@ class PBNEncoder:
                     raise ValueError("cannot generate Auction tag with no dealer")
                 self._create_tag("Auction", board.dealer.abbr, table)
 
+            # Print notes
+            for idx, note in notes.items():
+                self._create_tag("Note", f"{idx}:{note}")
+
+
             if board.play:
                 pad_value = Card(suit=Denom.nt, rank=Rank.R2)
                 if board.contract is None:
@@ -542,10 +547,6 @@ class PBNEncoder:
 
                 self._create_tag("Play", board.contract.declarer.lho.abbr, string_table)
 
-            # Print notes
-            for idx, note in notes.items():
-                self._create_tag("Note", f"{idx}:{note}")
-
             # Print supplementary tags
             for key, value in supplementary.items():
                 self._create_tag(key, value.value, value.data)
@@ -553,7 +554,7 @@ class PBNEncoder:
     def export_file(self, boards: list[Board], fp: IO[str]) -> None:
         "Export current data into a file object"
         fp.write(f"% PBN {self.pbn_version}\n")
-        fp.write("% EXPORT\n\n")
+        fp.write("% EXPORT\n")
         for board in boards:
             self.export_board(board)
             fp.writelines(self.tags)
