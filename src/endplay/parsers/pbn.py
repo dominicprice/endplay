@@ -525,7 +525,6 @@ class PBNEncoder:
             for idx, note in notes.items():
                 self._create_tag("Note", f"{idx}:{note}")
 
-
             if board.play:
                 pad_value = Card(suit=Denom.nt, rank=Rank.R2)
                 if board.contract is None:
