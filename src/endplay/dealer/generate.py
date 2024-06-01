@@ -10,11 +10,10 @@ import warnings
 from collections.abc import Iterator
 from typing import Optional, Union
 
-from numpy.random import RandomState  # guaranteed to be stable for numpy>=1.16
-from tqdm import trange  # type: ignore
-
 from endplay.dealer.constraint import ConstraintInterpreter, Expr
 from endplay.types import Card, Deal, Denom, Player, Rank
+from numpy.random import RandomState  # guaranteed to be stable for numpy>=1.16
+from tqdm import trange  # type: ignore
 
 
 class DealNotGeneratedError(RuntimeError):
@@ -200,7 +199,7 @@ def generate_deals(
                     raise DealNotGeneratedError(message)
                 else:
                     warnings.warn(message, DealNotGeneratedWarning)
-                    return generated
+                    return
             generated += 1
             rs.shuffle(cards)  # type: ignore
             deal = predeal.copy()
@@ -211,7 +210,7 @@ def generate_deals(
                     yield perm
                     produced = True
                     break
-    return generated
+    return
 
 
 def _generate_swaps(deal: Deal, swapping: int):
