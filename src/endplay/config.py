@@ -13,10 +13,10 @@ __all__ = [
 from contextlib import ContextDecorator
 
 # Packages metadata, used by setuptools etc
-__version__ = "0.5.8"
+__version__ = "0.5.9"
 """Version of the library as a string"""
 
-__version_info__ = (0, 5, 8)
+__version_info__ = (0, 5, 9)
 """Version of the library as a tuple of integers"""
 
 __author__ = "Dominic Price"
