@@ -1,6 +1,5 @@
 % PBN 2.1
 % EXPORT
-
 [Event "2021 Online Qual: Open R2"]
 [Site "RealBridge"]
 [Date "2021.08.23"]
@@ -13,7 +12,7 @@
 [Vulnerable "None"]
 [Deal "N:KT8.A96.A95.7542 Q5.KJ52.KQ874.T8 AJ92.874.JT6.AQ3 7643.QT3.32.KJ96"]
 [Scoring "IMP"]
-[Declarer "N"]
+[Declarer ""]
 [Contract "Pass"]
 [Result ""]
 [Auction "S"]
@@ -66,6 +65,8 @@ W  C  5
 [Auction "S"]
 1C =1= Pass 1NT =2= Pass
 Pass Pass
+[Note "1: 11-13,17-19 or clubs"]
+[Note "2: 9-11, no 4cM"]
 [Play "E"]
 D4 DJ D3 D5
 S5 S2 S3 SK
@@ -76,8 +77,6 @@ D8 D6 D2 DA
 C8 CQ CK C4
 -  -  H3 - 
 *
-[Note "1: 11-13,17-19 or clubs"]
-[Note "2: 9-11, no 4cM"]
 [Score "NS 120"]
 [Table "4"]
 [HomeTeam "ROMANIA"]
@@ -125,6 +124,7 @@ W  C  5
 [Result "7"]
 [Auction "S"]
 1NT =1= Pass Pass Pass
+[Note "1: 12-14"]
 [Play "W"]
 S7 ST SQ SA
 D3 D9 DQ D6
@@ -136,7 +136,6 @@ C6 DA D8 DT
 CK C2 H2 CQ
 H3 -  -  - 
 *
-[Note "1: 12-14"]
 [Score "NS 90"]
 [Table "13"]
 [HomeTeam "SWEDEN"]
@@ -185,6 +184,7 @@ W  C  5
 [Auction "S"]
 1C =1= Pass 1NT 2D
 Pass Pass Pass
+[Note "1: Alerted"]
 [Play "S"]
 D6 D2 DA D4
 SA S3 S8 SQ
@@ -195,7 +195,6 @@ DT D3 D5 DK
 DJ S7 D9 DQ
 C3 CK C2 CT
 *
-[Note "1: Alerted"]
 [Score "NS -90"]
 [Table "30"]
 [HomeTeam "LITHUANIA"]
@@ -244,6 +243,7 @@ W  C  5
 [Auction "S"]
 1D =1= Pass 1NT Pass
 Pass Pass
+[Note "1: 11-16, no 5 card major, can be 0 D"]
 [Play "E"]
 H5 H4 HQ H6
 H2 H7 HT H9
@@ -258,7 +258,6 @@ D4 S9 S6 S8
 D7 SJ S7 C7
 DK DT D3 D5
 D8 DJ CJ DA
-[Note "1: 11-16, no 5 card major, can be 0 D"]
 [Score "NS 90"]
 [Table "26"]
 [HomeTeam "ESTONIA"]
@@ -308,6 +307,7 @@ W  C  5
 1C =1= Pass 1D Pass
 1NT Pass 3NT Pass
 Pass Pass
+[Note "1: 2+"]
 [Play "W"]
 S4 ST SQ SA
 D3 D5 DQ DJ
@@ -322,7 +322,6 @@ D2 D9 DK D6
 H3 H9 HK H7
 HQ DA HJ H8
 CJ C7 D8 DT
-[Note "1: 2+"]
 [Score "NS -150"]
 [Table "7"]
 [HomeTeam "DENMARK"]
@@ -371,6 +370,8 @@ W  C  5
 [Auction "S"]
 1C =1= Pass 1NT =2= Pass
 Pass Pass
+[Note "1: 2+♣"]
+[Note "2: 10-12 bal"]
 [Play "E"]
 H2 H4 HQ H6
 H5 H7 HT H9
@@ -382,8 +383,6 @@ HK DT S6 C2
 CT CQ CK C5
 D8 D6 D2 DA
 *
-[Note "1: 2+♣"]
-[Note "2: 10-12 bal"]
 [Score "NS 90"]
 [Table "16"]
 [HomeTeam "NORWAY"]
@@ -432,6 +431,9 @@ W  C  5
 [Auction "S"]
 1C =1= Pass 1S =2= Pass
 1NT =3= Pass Pass Pass
+[Note "1: 2+♣, up to 5♦ if balanced"]
+[Note "2: tr to 1NT or clubs int. or diamonds GF"]
+[Note "3: 11-13 balanced"]
 [Play "W"]
 S6 S8 SQ SA
 S3 SK S5 S2
@@ -446,9 +448,6 @@ D2 D9 DK D6
 C6 C7 HJ C3
 C9 C5 CT CA
 CJ DA D8 DT
-[Note "1: 2+♣, up to 5♦ if balanced"]
-[Note "2: tr to 1NT or clubs int. or diamonds GF"]
-[Note "3: 11-13 balanced"]
 [Score "NS 90"]
 [Table "2"]
 [HomeTeam "SLOVENIA"]
@@ -496,6 +495,7 @@ W  C  5
 [Result "7"]
 [Auction "S"]
 1NT =1= Pass Pass Pass
+[Note "1: 10-12"]
 [Play "W"]
 S7 ST SQ SA
 D3 D5 DQ DJ
@@ -508,7 +508,6 @@ CK C2 C8 CQ
 H3 HA H2 H4
 C9 C4 CT CA
 *
-[Note "1: 10-12"]
 [Score "NS 90"]
 [Table "3"]
 [HomeTeam "LATVIA"]
@@ -557,6 +556,7 @@ W  C  5
 [Auction "S"]
 1C =1= Pass 2NT Pass
 Pass Pass
+[Note "1: 3+"]
 [Play "E"]
 D7 DT D2 D5
 SQ S9 S3 S8
@@ -565,7 +565,6 @@ C8 CQ CK C4
 HK H4 HQ H6
 DQ DJ C9 - 
 *
-[Note "1: 3+"]
 [Score "NS -50"]
 [Table "15"]
 [HomeTeam "GERMANY"]
@@ -676,6 +675,7 @@ W  C  5
 [Auction "S"]
 1D =1= Pass 2NT Pass
 Pass Pass
+[Note "1: 11-15 2+"]
 [Play "E"]
 DQ D6 D2 DA
 S5 S2 S7 S8
@@ -687,7 +687,6 @@ DK DJ C6 D9
 D8 H4 HT C4
 CT CQ CK C5
 *
-[Note "1: 11-15 2+"]
 [Score "NS 120"]
 [Table "21"]
 [HomeTeam "NETHERLANDS"]
@@ -736,6 +735,7 @@ W  C  5
 [Auction "S"]
 1D =1= Pass 1NT Pass
 Pass Pass
+[Note "1: 2+"]
 [Play "E"]
 D7 DJ D2 D5
 SQ S9 S6 S8
@@ -750,7 +750,6 @@ CT CA C9 C2
 D4 C3 CJ C5
 HK H7 H3 H9
 D8 H8 HQ C7
-[Note "1: 2+"]
 [Score "NS 90"]
 [Table "22"]
 [HomeTeam "IRELAND"]
@@ -799,6 +798,8 @@ W  C  5
 [Auction "S"]
 1C =1= Pass 1NT =2= Pass
 Pass Pass
+[Note "1: 2+ may have longer♦"]
+[Note "2: 10-11"]
 [Play "E"]
 DK D6 D2 DA
 SQ SA S3 ST
@@ -808,8 +809,6 @@ S5 S2 S4 SK
 C8 CQ CK C2
 -  -  HT - 
 *
-[Note "1: 2+ may have longer♦"]
-[Note "2: 10-11"]
 [Score "NS 120"]
 [Table "28"]
 [HomeTeam "PORTUGAL"]
@@ -858,6 +857,7 @@ W  C  5
 [Auction "S"]
 1D =1= Pass 1NT Pass
 Pass Pass
+[Note "1: 0+di 10-15pc"]
 [Play "E"]
 D7 D6 D3 D9
 SQ SA S4 ST
@@ -868,7 +868,6 @@ H2 S9 S6 S8
 H5 SJ S7 D5
 CT CA C6 C2
 *
-[Note "1: 0+di 10-15pc"]
 [Score "NS 120"]
 [Table "27"]
 [HomeTeam "BULGARIA"]
@@ -979,6 +978,8 @@ W  C  5
 [Auction "S"]
 1C =1= Pass 2S =2= Pass
 2NT Pass Pass Pass
+[Note "1: polish club"]
+[Note "2: No major 4, inv to 3NT"]
 [Play "W"]
 S7 ST SQ SA
 D3 D5 DQ DJ
@@ -993,8 +994,6 @@ C6 C5 D4 CA
 D2 D9 DK DT
 HT DA D7 D6
 CJ C7 D8 H8
-[Note "1: polish club"]
-[Note "2: No major 4, inv to 3NT"]
 [Score "NS -50"]
 [Table "20"]
 [HomeTeam "POLAND"]
@@ -1043,6 +1042,8 @@ W  C  5
 [Auction "S"]
 1C =1= Pass 1NT =2= Pass
 Pass Pass
+[Note "1: 2+ 5♦ poss"]
+[Note "2: inv to game"]
 [Play "E"]
 D7 DJ D3 D5
 SQ SJ S4 S8
@@ -1055,8 +1056,6 @@ D4 SA S6 SK
 D8 S9 S7 H6
 H5 CA C9 C5
 *
-[Note "1: 2+ 5♦ poss"]
-[Note "2: inv to game"]
 [Score "NS 90"]
 [Table "14"]
 [HomeTeam "ISRAEL"]
@@ -1107,6 +1106,9 @@ W  C  5
 1NT Pass 2C =2= Pass
 2D =3= Pass 2NT Pass
 Pass Pass
+[Note "1: 2+♣"]
+[Note "2:  * 2WAY [0:04]"]
+[Note "3: forced"]
 [Play "W"]
 S7 ST SQ SA
 S3 SK S5 S2
@@ -1121,9 +1123,6 @@ S6 C5 D7 SJ
 D3 D9 DQ D6
 C9 C7 HK C3
 CJ DA D8 DT
-[Note "1: 2+♣"]
-[Note "2:  * 2WAY [0:04]"]
-[Note "3: forced"]
 [Score "NS -50"]
 [Table "5"]
 [HomeTeam "CROATIA"]
@@ -1172,6 +1171,7 @@ W  C  5
 [Auction "S"]
 1NT =1= Pass 2NT Pass
 Pass Pass
+[Note "1: 12-14"]
 [Play "W"]
 S7 ST SQ SA
 D2 D5 DQ DJ
@@ -1186,7 +1186,6 @@ H3 C7 D7 S9
 HT HA HJ H4
 HQ H6 HK H7
 CJ H9 D8 H8
-[Note "1: 12-14"]
 [Score "NS -50"]
 [Table "25"]
 [HomeTeam "HUNGARY"]
@@ -1236,6 +1235,8 @@ W  C  5
 1C =1= Pass 1D Pass
 1NT =2= Pass 2NT Pass
 Pass Pass
+[Note "1: 2+"]
+[Note "2: can have M"]
 [Play "W"]
 S7 ST SQ SA
 D2 D5 DQ DJ
@@ -1250,8 +1251,6 @@ C9 C5 D4 C3
 CJ C7 D7 DT
 HQ D9 D8 H8
 D3 DA DK D6
-[Note "1: 2+"]
-[Note "2: can have M"]
 [Score "NS -50"]
 [Table "8"]
 [HomeTeam "GREECE"]
@@ -1301,6 +1300,8 @@ W  C  5
 1NT Pass Pass 2D =1=
 Pass 2H =2= Pass Pass
 Pass
+[Note "1: 5♦4M"]
+[Note "2: p/c"]
 [Play "N"]
 S8 S5 S2 S6
 SK SQ SA S3
@@ -1314,8 +1315,6 @@ D5 DK DJ D3
 H6 H5 H7 HQ
 H9 HK H8 H3
 *
-[Note "1: 5♦4M"]
-[Note "2: p/c"]
 [Score "NS -110"]
 [Table "31"]
 [HomeTeam "SCOTLAND"]
@@ -1365,6 +1364,8 @@ W  C  5
 1C Pass 1S =1= 2D
 Pass Pass X =2= Pass
 Pass Pass
+[Note "1: trf to 1nt"]
+[Note "2: t/o"]
 [Play "S"]
 CA C6 C4 C8
 DJ D2 D5 DK
@@ -1378,8 +1379,6 @@ DT S7 D9 DQ
 H4 HQ H6 H5
 -  H3 H9 - 
 *
-[Note "1: trf to 1nt"]
-[Note "2: t/o"]
 [Score "NS -180"]
 [Table "23"]
 [HomeTeam "RUSSIA"]
@@ -1428,6 +1427,7 @@ W  C  5
 [Auction "S"]
 1D =1= Pass 2NT Pass
 3NT Pass Pass Pass
+[Note "1: 2+♦ 10-14"]
 [Play "E"]
 D4 DJ D2 D5
 S5 S2 S3 SK
@@ -1442,7 +1442,6 @@ DK DT C6 DA
 CT CQ CK C2
 HJ -  HT C4
 *
-[Note "1: 2+♦ 10-14"]
 [Score "NS -100"]
 [Table "24"]
 [HomeTeam "ICELAND"]
@@ -1548,6 +1547,7 @@ W  C  5
 1C =1= Pass 1D Pass
 1NT Pass 2NT Pass
 Pass Pass
+[Note "1: 2+"]
 [Play "W"]
 S6 ST SQ SA
 D3 D5 DQ DT
@@ -1562,7 +1562,6 @@ C6 C5 D7 CA
 HQ C7 HK H7
 D2 -  D8 D6
 *
-[Note "1: 2+"]
 [Score "NS 120"]
 [Table "18"]
 [HomeTeam "ENGLAND"]
@@ -1612,6 +1611,8 @@ W  C  5
 1C Pass 1S =1= Pass =2=
 1NT Pass 2NT Pass
 Pass Pass
+[Note "1: no M"]
+[Note "2: Alerted"]
 [Play "W"]
 S6 ST SQ SA
 S3 SK S5 S2
@@ -1626,8 +1627,6 @@ CJ C7 H2 DT
 H3 HA HJ H4
 HT H9 HK H7
 HQ D9 DK H8
-[Note "1: no M"]
-[Note "2: Alerted"]
 [Score "NS -50"]
 [Table "12"]
 [HomeTeam "SWITZERLAND"]
@@ -1679,6 +1678,9 @@ W  C  5
 Pass 2C Pass 2D
 Pass 2H X Pass
 Pass Pass
+[Note "1: polish club"]
+[Note "2: 0-12"]
+[Note "3: 3+"]
 [Play "N"]
 H6 H2 H7 HT
 D9 DQ DT D2
@@ -1691,9 +1693,6 @@ SK S5 S2 S4
 S8 SQ SA S6
 -  -  C3 - 
 *
-[Note "1: polish club"]
-[Note "2: 0-12"]
-[Note "3: 3+"]
 [Score "NS -470"]
 [Table "29"]
 [HomeTeam "UKRAINE"]
@@ -1736,7 +1735,7 @@ W  C  5
 [Vulnerable "None"]
 [Deal "N:KT8.A96.A95.7542 Q5.KJ52.KQ874.T8 AJ92.874.JT6.AQ3 7643.QT3.32.KJ96"]
 [Scoring "IMP"]
-[Declarer "N"]
+[Declarer ""]
 [Contract "Pass"]
 [Result ""]
 [Table "1"]
@@ -1780,7 +1779,7 @@ W  C  5
 [Vulnerable "None"]
 [Deal "N:KT8.A96.A95.7542 Q5.KJ52.KQ874.T8 AJ92.874.JT6.AQ3 7643.QT3.32.KJ96"]
 [Scoring "IMP"]
-[Declarer "N"]
+[Declarer ""]
 [Contract "Pass"]
 [Result ""]
 [Table "17"]
@@ -2000,6 +1999,7 @@ W  C  7
 [Result "7"]
 [Auction "W"]
 3C =1= Pass Pass Pass
+[Note "1:  * can be 6 card [0:08]"]
 [Play "N"]
 HJ HQ HK H7
 SK SA SQ S5
@@ -2011,7 +2011,6 @@ DQ DK C7 D9
 H5 S7 S9 CJ
 C5 C2 CQ CK
 *
-[Note "1:  * can be 6 card [0:08]"]
 [Score "NS 100"]
 [Table "4"]
 [HomeTeam "ROMANIA"]
@@ -2120,6 +2119,7 @@ W  C  7
 Pass 1H Pass 3H =1=
 Pass 4H Pass Pass
 Pass
+[Note "1: limit raise or weaker"]
 [Play "E"]
 C9 CQ CK CA
 H2 H3 H7 HJ
@@ -2128,7 +2128,6 @@ C2 C3 CT C5
 HQ C7 CJ HT
 SA S3 S6 ST
 *
-[Note "1: limit raise or weaker"]
 [Score "NS -100"]
 [Table "3"]
 [HomeTeam "LATVIA"]
@@ -2178,6 +2177,7 @@ W  C  7
 Pass 1H Pass 2NT =1=
 Pass 4H Pass Pass
 Pass
+[Note "1: 4+h mixed or better"]
 [Play "E"]
 C9 CQ CK CA
 H2 H3 H7 H8
@@ -2186,7 +2186,6 @@ C2 C3 CT C5
 HQ C7 C8 HT
 D2 DJ D4 - 
 *
-[Note "1: 4+h mixed or better"]
 [Score "NS -100"]
 [Table "21"]
 [HomeTeam "NETHERLANDS"]
@@ -2409,6 +2408,8 @@ W  C  7
 Pass 1H Pass 2NT =1=
 Pass 3D =2= Pass 4H
 Pass Pass Pass
+[Note "1: inv+ 4+cards"]
+[Note "2: Natural GF"]
 [Play "E"]
 C9 CQ CK CA
 H2 H3 H7 HJ
@@ -2416,8 +2417,6 @@ HA H4 C4 H6
 C2 C3 C8 C5
 HQ C7 CJ HT
 *
-[Note "1: inv+ 4+cards"]
-[Note "2: Natural GF"]
 [Score "NS -100"]
 [Table "10"]
 [HomeTeam "SPAIN"]
@@ -2523,6 +2522,8 @@ Pass 1NT Pass 2C =1=
 X 2H =2= Pass 4H
 Pass Pass X Pass
 Pass Pass
+[Note "1: stayman"]
+[Note "2:  * ♣ stop + ♥ [0:17]"]
 [Play "E"]
 C9 C3 CT CA
 H2 H3 H7 H8
@@ -2530,8 +2531,6 @@ HA H4 S6 H5
 C2 C7 CJ C5
 HQ CQ CK HT
 *
-[Note "1: stayman"]
-[Note "2:  * ♣ stop + ♥ [0:17]"]
 [Score "NS -200"]
 [Table "5"]
 [HomeTeam "CROATIA"]
@@ -2809,6 +2808,7 @@ W  C  7
 Pass 1H Pass 3D =1=
 Pass 4H Pass Pass
 Pass
+[Note "1: limit raise 4+ hearts"]
 [Play "E"]
 H2 HK H7 H5
 S4 S3 S2 SK
@@ -2819,7 +2819,6 @@ D2 DJ D3 DA
 D5 H4 D4 DQ
 S7 SQ S6 C5
 *
-[Note "1: limit raise 4+ hearts"]
 [Score "NS 620"]
 [Table "8"]
 [HomeTeam "GREECE"]
@@ -2981,6 +2980,7 @@ W  C  7
 Pass 1H 2D 3S =1=
 4D 4H Pass Pass
 Pass
+[Note "1: 5+♠, 3+♥"]
 [Play "E"]
 D2 DJ D3 D6
 SA S3 S6 SK
@@ -2993,7 +2993,6 @@ C2 C3 CT H5
 HA HK C4 H6
 D7 -  -  - 
 *
-[Note "1: 5+♠, 3+♥"]
 [Score "NS 620"]
 [Table "25"]
 [HomeTeam "HUNGARY"]
@@ -3097,6 +3096,7 @@ W  C  7
 [Auction "W"]
 3C =1= 3H Pass 4H
 Pass Pass Pass
+[Note "1: natural can be very agressive"]
 [Play "E"]
 C9 C3 C4 CA
 H2 HK H7 HJ
@@ -3105,7 +3105,6 @@ D2 DJ D3 D6
 SA S3 S2 SK
 C2 CQ CK - 
 *
-[Note "1: natural can be very agressive"]
 [Score "NS -100"]
 [Table "14"]
 [HomeTeam "ISRAEL"]
@@ -3213,6 +3212,7 @@ W  C  7
 Pass 1H 2D 3C =1=
 Pass 4H Pass Pass
 Pass
+[Note "1: fit invit"]
 [Play "E"]
 C9 CQ CK C5
 C2 C3 CJ CA
@@ -3222,7 +3222,6 @@ H2 H9 D4 H5
 HQ HK C4 H6
 -  SQ S6 ST
 *
-[Note "1: fit invit"]
 [Score "NS 620"]
 [Table "23"]
 [HomeTeam "RUSSIA"]
@@ -3272,6 +3271,7 @@ W  C  7
 Pass 1H Pass 2NT =1=
 Pass 4H Pass Pass
 Pass
+[Note "1:  * fit heart [0:17]"]
 [Play "E"]
 C9 CQ CK CA
 H2 H3 H7 H8
@@ -3279,7 +3279,6 @@ HA H4 C8 H5
 C2 C3 CJ C5
 HQ C7 CT HJ
 *
-[Note "1:  * fit heart [0:17]"]
 [Score "NS -100"]
 [Table "12"]
 [HomeTeam "SWITZERLAND"]
@@ -3329,6 +3328,7 @@ W  C  7
 Pass 1H Pass 3H =1=
 Pass 4H Pass Pass
 Pass
+[Note "1: INV"]
 [Play "E"]
 C9 C3 CT CA
 HA H3 H7 HJ
@@ -3336,7 +3336,6 @@ C2 C7 CJ C5
 HQ CQ C6 H8
 SA S3 S6 SK
 *
-[Note "1: INV"]
 [Score "NS -100"]
 [Table "18"]
 [HomeTeam "ENGLAND"]
@@ -3437,7 +3436,7 @@ W  C  7
 [Vulnerable "NS"]
 [Deal "N:KT.JT865.AQT6.A5 A74.AQ2.K8752.92 QJ983.K943.J.Q73 652.7.943.KJT864"]
 [Scoring "IMP"]
-[Declarer "N"]
+[Declarer ""]
 [Contract "Pass"]
 [Result ""]
 [Table "1"]
@@ -3481,7 +3480,7 @@ W  C  7
 [Vulnerable "NS"]
 [Deal "N:KT.JT865.AQT6.A5 A74.AQ2.K8752.92 QJ983.K943.J.Q73 652.7.943.KJT864"]
 [Scoring "IMP"]
-[Declarer "N"]
+[Declarer ""]
 [Contract "Pass"]
 [Result ""]
 [Table "17"]
@@ -3532,6 +3531,9 @@ W  C  7
 1C =1= Pass 1D =2= Pass
 1H =3= Pass 1NT Pass
 Pass Pass
+[Note "1: 2+, can have 5♦ if bal"]
+[Note "2: ♥"]
+[Note "3: 1-3♥ 11-16HCP"]
 [Play "W"]
 CT CJ CK C3
 SQ S2 S3 SJ
@@ -3541,9 +3543,6 @@ DJ DK D2 D3
 DA D9 D5 D6
 H6 H2 HQ HK
 *
-[Note "1: 2+, can have 5♦ if bal"]
-[Note "2: ♥"]
-[Note "3: 1-3♥ 11-16HCP"]
 [Score "NS 150"]
 [Table "4"]
 [HomeTeam "ROMANIA"]
@@ -3593,6 +3592,7 @@ W  C  5
 1C 1S X 2S
 Pass Pass X =1= Pass
 3D Pass Pass Pass
+[Note "1: to"]
 [Play "E"]
 S6 S5 ST S4
 SK SA S7 S2
@@ -3606,7 +3606,6 @@ HQ HK H9 H2
 CK C5 C9 C6
 S9 -  -  - 
 *
-[Note "1: to"]
 [Score "NS 130"]
 [Table "11"]
 [HomeTeam "AUSTRIA"]
@@ -3655,6 +3654,7 @@ W  C  5
 [Auction "N"]
 1C =1= Pass 1H Pass
 1NT Pass Pass Pass
+[Note "1: Alerted"]
 [Play "E"]
 S6 SJ SQ S2
 C4 C3 CT CA
@@ -3667,7 +3667,6 @@ S9 D7 C9 D9
 H4 H5 H9 HA
 H8 HK H6 H2
 *
-[Note "1: Alerted"]
 [Score "NS 90"]
 [Table "30"]
 [HomeTeam "LITHUANIA"]
@@ -3717,6 +3716,7 @@ W  C  5
 1C =1= 1S X 2S
 Pass Pass 2NT Pass
 Pass Pass
+[Note "1: 2+"]
 [Play "W"]
 S7 S2 SK SA
 H3 HA H4 H5
@@ -3729,7 +3729,6 @@ C7 D9 S8 D7
 H6 HT HQ HK
 H9 H2 H8 HJ
 *
-[Note "1: 2+"]
 [Score "NS 180"]
 [Table "13"]
 [HomeTeam "SWEDEN"]
@@ -3780,6 +3779,9 @@ W  C  5
 1NT Pass 2C =2= Pass
 2D =3= Pass 2NT Pass
 Pass Pass
+[Note "1: 2+, 11-15"]
+[Note "2: any inv or to play in 2D"]
+[Note "3: forced"]
 [Play "E"]
 S3 SJ SQ S4
 SK S5 ST S2
@@ -3792,9 +3794,6 @@ H4 DQ H6 D9
 H8 HK H3 H2
 HQ H5 H9 HT
 *
-[Note "1: 2+, 11-15"]
-[Note "2: any inv or to play in 2D"]
-[Note "3: forced"]
 [Score "NS -200"]
 [Table "21"]
 [HomeTeam "NETHERLANDS"]
@@ -3843,6 +3842,8 @@ W  C  5
 [Auction "N"]
 1D =1= Pass 1H Pass
 1NT =2= Pass Pass Pass
+[Note "1: Alerted"]
+[Note "2: Alerted"]
 [Play "E"]
 S3 SJ SQ S2
 SK S5 ST S4
@@ -3855,8 +3856,6 @@ S8 D7 H3 DT
 H4 H5 H6 HA
 H8 HK H9 H2
 *
-[Note "1: Alerted"]
-[Note "2: Alerted"]
 [Score "NS 90"]
 [Table "3"]
 [HomeTeam "LATVIA"]
@@ -3907,6 +3906,10 @@ W  C  5
 1NT Pass 2C =2= X
 2D =3= Pass 3D =4= Pass
 Pass Pass
+[Note "1: ♠ * no alert [0:14]"]
+[Note "2: Puppet to 2 D"]
+[Note "3: forced"]
+[Note "4: inv.with D"]
 [Play "E"]
 CK C3 C2 C6
 C4 C5 CQ CA
@@ -3916,10 +3919,6 @@ D5 D7 DA D4
 D8 DQ C9 CJ
 HQ H5 H3 HT
 *
-[Note "1: ♠ * no alert [0:14]"]
-[Note "2: Puppet to 2 D"]
-[Note "3: forced"]
-[Note "4: inv.with D"]
 [Score "NS 110"]
 [Table "15"]
 [HomeTeam "GERMANY"]
@@ -3969,6 +3968,8 @@ W  C  5
 1D =1= Pass 1H Pass
 1NT Pass 2NT =2= Pass
 Pass Pass
+[Note "1: 11+ 15 no 5M "]
+[Note "2: 11-12"]
 [Play "E"]
 S3 S5 ST S4
 S6 SJ SQ S2
@@ -3981,8 +3982,6 @@ H4 DQ H6 D4
 H8 HK H3 H2
 HQ H5 H9 HT
 *
-[Note "1: 11+ 15 no 5M "]
-[Note "2: 11-12"]
 [Score "NS -200"]
 [Table "26"]
 [HomeTeam "ESTONIA"]
@@ -4032,6 +4031,9 @@ W  C  5
 1C =1= Pass 1D =2= Pass
 1H =3= Pass 1NT Pass
 Pass Pass
+[Note "1: 2+"]
+[Note "2: 4+♥"]
+[Note "3: 3+♥"]
 [Play "W"]
 ST S2 S6 SJ
 H6 HT HQ H5
@@ -4044,9 +4046,6 @@ H9 H2 H8 HK
 C2 C8 D5 HJ
 DJ -  -  D6
 *
-[Note "1: 2+"]
-[Note "2: 4+♥"]
-[Note "3: 3+♥"]
 [Score "NS 150"]
 [Table "16"]
 [HomeTeam "NORWAY"]
@@ -4095,6 +4094,8 @@ W  C  5
 [Auction "N"]
 1D =1= Pass 1H Pass
 1NT =2= Pass Pass Pass
+[Note "1: 10-14, 2+♦"]
+[Note "2: 11-13"]
 [Play "E"]
 S3 SJ SQ S2
 CK C3 C9 CJ
@@ -4105,8 +4106,6 @@ D5 DQ DA D4
 D2 D3 CQ C6
 -  -  DJ - 
 *
-[Note "1: 10-14, 2+♦"]
-[Note "2: 11-13"]
 [Score "NS 120"]
 [Table "24"]
 [HomeTeam "ICELAND"]
@@ -4156,6 +4155,9 @@ W  C  5
 1C =1= Pass 1D =2= Pass
 1H =3= Pass 1NT Pass
 Pass Pass
+[Note "1: min2, ca hold 5 diamonds"]
+[Note "2: 4+♥ 0+hcp"]
+[Note "3: 2 or 3 ♥, 0+points"]
 [Play "W"]
 C2 C6 CK C3
 S7 S2 S3 S5
@@ -4170,9 +4172,6 @@ H9 HA H8 H5
 CQ HT HQ H7
 ST S4 S9 SA
 SQ C8 SK HJ
-[Note "1: min2, ca hold 5 diamonds"]
-[Note "2: 4+♥ 0+hcp"]
-[Note "3: 2 or 3 ♥, 0+points"]
 [Score "NS 150"]
 [Table "2"]
 [HomeTeam "SLOVENIA"]
@@ -4222,6 +4221,7 @@ W  C  5
 1C =1= 1S X 2S
 Pass Pass 2NT Pass
 Pass Pass
+[Note "1: Polish"]
 [Play "W"]
 S7 S2 SK SA
 H3 HA H8 H5
@@ -4236,7 +4236,6 @@ ST D4 S6 DQ
 CQ C8 CK C5
 SQ C6 S9 S5
 C9 CJ S8 SJ
-[Note "1: Polish"]
 [Score "NS 180"]
 [Table "20"]
 [HomeTeam "POLAND"]
@@ -4286,6 +4285,8 @@ W  C  5
 1D Pass 1H Pass
 2H Pass 2NT =1= Pass
 3D =2= Pass Pass Pass
+[Note "1: asking"]
+[Note "2: 3h * and natural [0:10]"]
 [Play "E"]
 CK C3 C2 C6
 C4 C5 CQ CA
@@ -4295,8 +4296,6 @@ D2 D7 DA D4
 D8 DQ C9 CJ
 HQ H5 H3 HT
 *
-[Note "1: asking"]
-[Note "2: 3h * and natural [0:10]"]
 [Score "NS 110"]
 [Table "7"]
 [HomeTeam "DENMARK"]
@@ -4346,6 +4345,8 @@ W  C  5
 1D 1S X 1NT =1=
 X =2= 2S 3D Pass
 Pass Pass
+[Note "1: A/K/Q in Sp and support"]
+[Note "2: Alerted"]
 [Play "E"]
 D2 D3 DA D4
 CK C3 C9 CJ
@@ -4356,8 +4357,6 @@ H8 HJ H3 H2
 HQ HK H9 HT
 -  H7 S7 - 
 *
-[Note "1: A/K/Q in Sp and support"]
-[Note "2: Alerted"]
 [Score "NS 130"]
 [Table "5"]
 [HomeTeam "CROATIA"]
@@ -4591,6 +4590,7 @@ W  C  5
 [Auction "N"]
 1D =1= Pass 1H Pass
 1NT Pass Pass Pass
+[Note "1: precision"]
 [Play "E"]
 S6 SJ SQ S2
 C4 C3 C9 CA
@@ -4603,7 +4603,6 @@ S8 D7 C7 D9
 H4 H5 H6 HA
 H8 HK H3 HT
 *
-[Note "1: precision"]
 [Score "NS 90"]
 [Table "27"]
 [HomeTeam "BULGARIA"]
@@ -4653,6 +4652,8 @@ W  C  5
 1C =1= 1S X 2H =2=
 Pass 2S Pass Pass
 Pass
+[Note "1: 2+"]
+[Note "2: 3 card fit 8+"]
 [Play "S"]
 C5 C9 CA C4
 HJ H3 H2 H8
@@ -4667,8 +4668,6 @@ DQ ST D9 D8
 SA SQ S4 S6
 H7 -  -  - 
 *
-[Note "1: 2+"]
-[Note "2: 3 card fit 8+"]
 [Score "NS 200"]
 [Table "14"]
 [HomeTeam "ISRAEL"]
@@ -4718,6 +4717,8 @@ W  C  5
 1NT Pass 2C =1= X
 2D =2= Pass 2NT Pass
 Pass Pass
+[Note "1: Alerted"]
+[Note "2: No 4 ♥♠ * and shows a club stop [0:35]"]
 [Play "E"]
 CK C3 C2 CA
 H4 H5 H6 HA
@@ -4732,8 +4733,6 @@ H8 HJ H9 H2
 S3 H7 ST S4
 S8 D7 SQ D9
 S9 SJ C9 C8
-[Note "1: Alerted"]
-[Note "2: No 4 ♥♠ * and shows a club stop [0:35]"]
 [Score "NS 180"]
 [Table "31"]
 [HomeTeam "SCOTLAND"]
@@ -4783,6 +4782,8 @@ W  C  5
 1NT =1= Pass 2C =2= Pass
 2D Pass 2NT Pass
 3NT Pass Pass Pass
+[Note "1: 12-14"]
+[Note "2: stayman"]
 [Play "E"]
 S6 SJ SQ S4
 SK S5 ST S2
@@ -4797,8 +4798,6 @@ S8 D7 H9 D4
 HQ HK C7 HT
 S9 H7 C9 C8
 CK C5 CQ CJ
-[Note "1: 12-14"]
-[Note "2: stayman"]
 [Score "NS 600"]
 [Table "25"]
 [HomeTeam "HUNGARY"]
@@ -4909,6 +4908,9 @@ W  C  5
 1C =1= Pass 1D =2= Pass
 1H =3= Pass 1NT Pass
 Pass Pass
+[Note "1: 3+"]
+[Note "2: hearts"]
+[Note "3: 3-4 He 11-17"]
 [Play "W"]
 S7 S2 SK S5
 SQ S4 S9 SJ
@@ -4923,9 +4925,6 @@ DJ DT D2 HJ
 DA DK D5 D6
 CT CJ C4 D7
 CQ C8 D8 DQ
-[Note "1: 3+"]
-[Note "2: hearts"]
-[Note "3: 3-4 He 11-17"]
 [Score "NS -100"]
 [Table "23"]
 [HomeTeam "RUSSIA"]
@@ -4976,6 +4975,8 @@ W  C  5
 Pass Pass 2NT Pass
 3C Pass 3D Pass
 Pass Pass
+[Note "1: 2+d♦"]
+[Note "2:  * we have better raise [0:19]"]
 [Play "E"]
 S6 S5 ST S4
 S3 SA SQ S2
@@ -4990,8 +4991,6 @@ D5 D7 DA DT
 D8 H7 H6 HA
 S8 DQ C9 C8
 S9 HJ CT D9
-[Note "1: 2+d♦"]
-[Note "2:  * we have better raise [0:19]"]
 [Score "NS -100"]
 [Table "22"]
 [HomeTeam "IRELAND"]
@@ -5041,6 +5040,7 @@ W  C  5
 1D Pass 1H Pass
 1NT Pass 2C =1= Pass
 2D Pass Pass Pass
+[Note "1: invite any or d weak"]
 [Play "E"]
 D2 D3 DJ DK
 D5 D6 DA D9
@@ -5054,7 +5054,6 @@ S6 HK C2 S4
 C4 C5 CQ CA
 S8 D7 C9 C8
 *
-[Note "1: invite any or d weak"]
 [Score "NS 130"]
 [Table "12"]
 [HomeTeam "SWITZERLAND"]
@@ -5105,6 +5104,10 @@ W  C  5
 1H =3= 1S X =4= 2S
 Pass Pass 2NT Pass
 Pass Pass
+[Note "1: 2+c maybe more ♦ if bal"]
+[Note "2: 4+♥"]
+[Note "3: 2\\3 usualy up to 15"]
+[Note "4:  * t/o [0:07]"]
 [Play "W"]
 S7 S2 SK SA
 DJ DK D2 D3
@@ -5115,10 +5118,6 @@ ST S4 S3 S5
 SQ D4 S6 SJ
 H6 -  -  - 
 *
-[Note "1: 2+c maybe more ♦ if bal"]
-[Note "2: 4+♥"]
-[Note "3: 2\\3 usualy up to 15"]
-[Note "4:  * t/o [0:07]"]
 [Score "NS 120"]
 [Table "28"]
 [HomeTeam "PORTUGAL"]
@@ -5167,6 +5166,7 @@ W  C  5
 [Auction "N"]
 1C =1= Pass 1H Pass
 1NT Pass Pass Pass
+[Note "1: Alerted"]
 [Play "E"]
 S6 SJ SQ S2
 C4 C3 CT CA
@@ -5181,7 +5181,6 @@ SK HJ C2 C6
 D5 D3 DJ DK
 D8 D6 C9 DT
 S3 D7 CQ CJ
-[Note "1: Alerted"]
 [Score "NS 120"]
 [Table "29"]
 [HomeTeam "UKRAINE"]
@@ -5224,7 +5223,7 @@ W  C  5
 [Vulnerable "All"]
 [Deal "N:42.AT2.KT94.AJ86 K9863.Q84.852.K4 AJ5.KJ75.Q763.53 QT7.963.AJ.QT972"]
 [Scoring "IMP"]
-[Declarer "N"]
+[Declarer ""]
 [Contract "Pass"]
 [Result ""]
 [Table "1"]
@@ -5268,7 +5267,7 @@ W  C  5
 [Vulnerable "All"]
 [Deal "N:42.AT2.KT94.AJ86 K9863.Q84.852.K4 AJ5.KJ75.Q763.53 QT7.963.AJ.QT972"]
 [Scoring "IMP"]
-[Declarer "N"]
+[Declarer ""]
 [Contract "Pass"]
 [Result ""]
 [Table "17"]
@@ -5382,6 +5381,9 @@ W  C  5
 Pass Pass 1D =1= X
 1H =2= Pass 2S =3= 4H
 Pass Pass Pass
+[Note "1: 2+"]
+[Note "2: 4+♠"]
+[Note "3: 4s min"]
 [Play "E"]
 D7 D3 D4 DT
 H5 H2 HQ HA
@@ -5396,9 +5398,6 @@ S8 S5 DQ H4
 CQ C9 C6 CT
 SA SJ SQ H7
 C2 SK CA CK
-[Note "1: 2+"]
-[Note "2: 4+♠"]
-[Note "3: 4s min"]
 [Score "NS 420"]
 [Table "11"]
 [HomeTeam "AUSTRIA"]
@@ -5447,6 +5446,7 @@ W  C  5
 [Auction "E"]
 Pass Pass 1C =1= 4H
 Pass Pass Pass
+[Note "1:  * 3+ [0:05]"]
 [Play "E"]
 H6 H2 HQ HA
 H3 H8 D4 H4
@@ -5459,7 +5459,6 @@ S7 D3 C6 H7
 D7 D6 D5 DA
 D9 DJ D8 DK
 *
-[Note "1:  * 3+ [0:05]"]
 [Score "NS 420"]
 [Table "4"]
 [HomeTeam "ROMANIA"]
@@ -5508,6 +5507,7 @@ W  C  5
 [Auction "E"]
 Pass Pass 1D =1= 4H
 Pass Pass Pass
+[Note "1: 11-15 4+♦ unbalanced *3rd hand"]
 [Play "E"]
 D7 D3 D4 DT
 H3 H2 HQ HA
@@ -5521,7 +5521,6 @@ C2 C9 CJ DK
 C4 S4 CA H4
 CQ S5 S9 CK
 *
-[Note "1: 11-15 4+♦ unbalanced *3rd hand"]
 [Score "NS 510"]
 [Table "15"]
 [HomeTeam "GERMANY"]
@@ -5690,6 +5689,7 @@ Pass Pass 1D X
 1H =1= Pass 1S 4H
 Pass Pass 4S X
 Pass Pass Pass
+[Note "1: spades"]
 [Play "N"]
 HA H3 H2 HQ
 HK H5 H8 S2
@@ -5703,7 +5703,6 @@ DK D9 DJ D8
 C8 C4 S3 CJ
 H4 -  S4 ST
 *
-[Note "1: spades"]
 [Score "NS 1100"]
 [Table "13"]
 [HomeTeam "SWEDEN"]
@@ -5752,6 +5751,7 @@ W  C  5
 [Auction "E"]
 Pass Pass 1C =1= 4H
 Pass Pass Pass
+[Note "1: nat 11+ or balanced 15+, f1"]
 [Play "E"]
 C2 C9 CA C8
 C4 C3 C5 CK
@@ -5766,7 +5766,6 @@ D7 DJ D5 DA
 D9 S5 DQ DK
 CQ SJ S9 DT
 SA SK SQ CT
-[Note "1: nat 11+ or balanced 15+, f1"]
 [Score "NS 480"]
 [Table "3"]
 [HomeTeam "LATVIA"]
@@ -5871,6 +5870,7 @@ W  C  5
 Pass Pass 1D =1= X
 Pass 1S Pass 4H
 Pass Pass Pass
+[Note "1: 2+,11-16"]
 [Play "E"]
 D2 D3 DQ DA
 H3 H2 HQ HA
@@ -5881,7 +5881,6 @@ H6 S3 D5 HK
 D7 DJ S2 DT
 -  C3 CA - 
 *
-[Note "1: 2+,11-16"]
 [Score "NS 450"]
 [Table "7"]
 [HomeTeam "DENMARK"]
@@ -5931,6 +5930,7 @@ W  C  5
 Pass Pass 1D =1= X
 Pass 1S Pass 4H
 Pass Pass Pass
+[Note "1: 33 * 3+D [0:14]"]
 [Play "E"]
 D2 D3 DQ DA
 H5 H2 HQ HA
@@ -5941,7 +5941,6 @@ D9 DJ D8 DT
 C4 C7 CA C8
 -  -  C6 - 
 *
-[Note "1: 33 * 3+D [0:14]"]
 [Score "NS 450"]
 [Table "5"]
 [HomeTeam "CROATIA"]
@@ -5992,6 +5991,10 @@ Pass Pass Pass 1C =1=
 Pass 1D =2= Pass 1H =3=
 Pass 1S =4= Pass 4H
 Pass Pass Pass
+[Note "1: 15+"]
+[Note "2: 0-8"]
+[Note "3: 18+ any"]
+[Note "4: waiting"]
 [Play "E"]
 H6 H2 HQ HA
 C4 C3 CJ C8
@@ -6001,10 +6004,6 @@ S6 SK S2 CT
 S7 S4 ST HJ
 H3 D3 C5 HK
 *
-[Note "1: 15+"]
-[Note "2: 0-8"]
-[Note "3: 18+ any"]
-[Note "4: waiting"]
 [Score "NS 420"]
 [Table "24"]
 [HomeTeam "ICELAND"]
@@ -6113,6 +6112,8 @@ W  C  5
 Pass 2D =1= Pass 3D =2=
 Pass 3H Pass 4H
 Pass Pass Pass
+[Note "1: 5M 3-8hcp"]
+[Note "2: inv+ in ♥ (I have ♥)"]
 [Play "W"]
 ST C8 SA S3
 HQ HA H3 H8
@@ -6126,8 +6127,6 @@ D4 H4 S7 C3
 C5 CT CQ C7
 -  -  C4 - 
 *
-[Note "1: 5M 3-8hcp"]
-[Note "2: inv+ in ♥ (I have ♥)"]
 [Score "NS -50"]
 [Table "16"]
 [HomeTeam "NORWAY"]
@@ -6177,6 +6176,8 @@ W  C  5
 Pass Pass 1NT =1= X
 Pass Pass XX =2= 4H
 Pass Pass Pass
+[Note "1: 10-14"]
+[Note "2: 2 suit"]
 [Play "E"]
 D9 D3 D4 DT
 H6 H2 HQ HA
@@ -6188,8 +6189,6 @@ C2 C9 CA CK
 S6 S4 S9 H4
 C4 D6 ST C8
 *
-[Note "1: 10-14"]
-[Note "2: 2 suit"]
 [Score "NS 450"]
 [Table "20"]
 [HomeTeam "POLAND"]
@@ -6239,6 +6238,8 @@ W  C  5
 Pass Pass 1S =1= X
 2S =2= Pass Pass 4H
 Pass Pass Pass
+[Note "1: can be 4 cards"]
+[Note "2: <8 HCP 3♠ (maybe 4 if super bal)"]
 [Play "E"]
 C2 C3 CA CT
 C4 C7 C5 CK
@@ -6247,8 +6248,6 @@ H3 H8 S9 H4
 D2 DJ D4 DT
 -  SK S2 - 
 *
-[Note "1: can be 4 cards"]
-[Note "2: <8 HCP 3♠ (maybe 4 if super bal)"]
 [Score "NS 450"]
 [Table "14"]
 [HomeTeam "ISRAEL"]
@@ -6361,6 +6360,7 @@ Pass 1S Pass 2H
 Pass 3H Pass 4D
 Pass 4H Pass Pass
 Pass
+[Note "1: 2+ 11-16"]
 [Play "E"]
 D2 D3 D4 DT
 H3 H2 HQ HK
@@ -6375,7 +6375,6 @@ C2 C9 CJ C8
 SA S5 SQ H4
 C4 SJ CA CK
 CQ SK C6 CT
-[Note "1: 2+ 11-16"]
 [Score "NS 420"]
 [Table "8"]
 [HomeTeam "GREECE"]
@@ -6425,6 +6424,8 @@ W  C  5
 Pass Pass 1C X
 Pass 1S =1= Pass 2H =2=
 Pass Pass Pass
+[Note "1: up to 7hcp"]
+[Note "2: strong"]
 [Play "E"]
 C2 C3 CA C8
 C4 C7 C5 CK
@@ -6436,8 +6437,6 @@ H5 H8 C6 H4
 S6 SK S2 DT
 S7 S4 ST H9
 *
-[Note "1: up to 7hcp"]
-[Note "2: strong"]
 [Score "NS 200"]
 [Table "2"]
 [HomeTeam "SLOVENIA"]
@@ -6487,6 +6486,7 @@ W  C  5
 Pass Pass 1D =1= X
 Pass 1S Pass 4H
 Pass Pass Pass
+[Note "1: ♦"]
 [Play "E"]
 D2 DJ DQ DA
 H3 H2 HQ HA
@@ -6501,7 +6501,6 @@ SA S4 ST H4
 C2 S5 CA CK
 C4 SJ CJ C8
 S8 SK SQ H7
-[Note "1: ♦"]
 [Score "NS 420"]
 [Table "10"]
 [HomeTeam "SPAIN"]
@@ -6551,6 +6550,7 @@ W  C  5
 Pass Pass Pass 1H
 Pass Pass X =1= 4H
 Pass Pass Pass
+[Note "1: t/o"]
 [Play "E"]
 C2 C3 CA CT
 C4 C7 C5 CK
@@ -6559,7 +6559,6 @@ H5 H8 C6 H4
 D2 D3 D5 DT
 H6 S3 CJ HK
 *
-[Note "1: t/o"]
 [Score "NS 450"]
 [Table "23"]
 [HomeTeam "RUSSIA"]
@@ -6663,6 +6662,7 @@ W  C  5
 [Auction "E"]
 Pass Pass 1NT =1= 4H
 Pass Pass Pass
+[Note "1: 10-14 unbal or bal"]
 [Play "E"]
 C2 C3 CA C8
 C4 C7 C5 CK
@@ -6677,7 +6677,6 @@ D2 DJ D4 DA
 CQ S5 SQ CT
 SA SJ D8 DT
 D7 SK DQ DK
-[Note "1: 10-14 unbal or bal"]
 [Score "NS 420"]
 [Table "25"]
 [HomeTeam "HUNGARY"]
@@ -6728,6 +6727,8 @@ Pass Pass 1D =1= X
 1H =2= 1S Pass 3H
 Pass 4H Pass Pass
 Pass
+[Note "1: 4+♦ unbal (4♦5♣ ok) or 5♦ weak NT"]
+[Note "2: No 5cM"]
 [Play "E"]
 D2 DJ DQ DA
 H3 H2 HQ HA
@@ -6740,8 +6741,6 @@ S7 S4 S2 H9
 C2 C9 CJ C8
 C4 C7 C5 CK
 *
-[Note "1: 4+♦ unbal (4♦5♣ ok) or 5♦ weak NT"]
-[Note "2: No 5cM"]
 [Score "NS 450"]
 [Table "31"]
 [HomeTeam "SCOTLAND"]
@@ -6791,6 +6790,7 @@ W  C  5
 Pass Pass 1S X
 3S =1= Pass Pass 4H
 Pass Pass Pass
+[Note "1:  * weak [0:11]"]
 [Play "E"]
 SA S3 S2 H4
 H3 H2 HQ HT
@@ -6803,7 +6803,6 @@ S7 S4 ST H9
 H6 D3 D4 HA
 S6 S5 SQ HK
 *
-[Note "1:  * weak [0:11]"]
 [Score "NS 420"]
 [Table "22"]
 [HomeTeam "IRELAND"]
@@ -6846,7 +6845,7 @@ W  C  5
 [Vulnerable "None"]
 [Deal "N:.AKJT974.AKT.KT8 A876.653.972.Q42 KJ543.82.J63.973 QT92.Q.Q854.AJ65"]
 [Scoring "IMP"]
-[Declarer "N"]
+[Declarer ""]
 [Contract "Pass"]
 [Result ""]
 [Table "1"]
@@ -6890,7 +6889,7 @@ W  C  5
 [Vulnerable "None"]
 [Deal "N:.AKJT974.AKT.KT8 A876.653.972.Q42 KJ543.82.J63.973 QT92.Q.Q854.AJ65"]
 [Scoring "IMP"]
-[Declarer "N"]
+[Declarer ""]
 [Contract "Pass"]
 [Result ""]
 [Table "17"]
@@ -6941,6 +6940,7 @@ W  C  5
 Pass Pass 1C =1= X
 Pass 1S Pass 4H
 Pass Pass Pass
+[Note "1: 2 * with 3343 we open 1♦ [0:18] * with strong NT can have 5♦ [0:35]"]
 [Play "E"]
 C4 C3 CA C8
 CQ C7 C5 CK
@@ -6949,7 +6949,6 @@ H5 H8 S2 H4
 D7 D3 D4 DT
 H3 -  -  HK
 *
-[Note "1: 2 * with 3343 we open 1♦ [0:18] * with strong NT can have 5♦ [0:35]"]
 [Score "NS 450"]
 [Table "28"]
 [HomeTeam "PORTUGAL"]
@@ -7119,6 +7118,8 @@ Pass 2D =2= Pass 2H
 Pass 2S Pass 3H
 Pass 4H Pass Pass
 Pass
+[Note "1: FG"]
+[Note "2: ART, FG"]
 [Play "E"]
 H3 H2 HQ HA
 H6 H8 S2 H4
@@ -7128,8 +7129,6 @@ S8 S4 C5 HJ
 S6 C3 CJ HT
 C2 C7 CA CK
 *
-[Note "1: FG"]
-[Note "2: ART, FG"]
 [Score "NS 450"]
 [Table "18"]
 [HomeTeam "ENGLAND"]
@@ -7242,6 +7241,8 @@ W  C  4
 Pass Pass 1C =1= Pass
 1H Pass 1NT =2= Pass
 Pass Pass
+[Note "1: 2+"]
+[Note "2:  * 12-14, can have 4♠ [0:09]"]
 [Play "E"]
 SQ SK S2 S7
 H2 H3 H4 HJ
@@ -7256,8 +7257,6 @@ C9 HQ C8 C3
 CA C2 S5 CK
 S8 C4 ST S9
 CT C7 S6 CJ
-[Note "1: 2+"]
-[Note "2:  * 12-14, can have 4♠ [0:09]"]
 [Score "NS 150"]
 [Table "13"]
 [HomeTeam "SWEDEN"]
@@ -7306,6 +7305,7 @@ W  C  4
 [Auction "S"]
 Pass Pass 1D =1= Pass
 1H Pass Pass Pass
+[Note "1: 2+, 11-15"]
 [Play "W"]
 S2 S7 SJ SK
 C8 CJ CA C2
@@ -7316,7 +7316,6 @@ H9 HA H5 H7
 HK HJ H6 HQ
 S4 SA S8 S3
 *
-[Note "1: 2+, 11-15"]
 [Score "NS 140"]
 [Table "21"]
 [HomeTeam "NETHERLANDS"]
@@ -7366,6 +7365,7 @@ W  C  4
 Pass Pass 1C =1= Pass
 1H Pass 1NT Pass
 Pass Pass
+[Note "1: 2"]
 [Play "E"]
 SQ S3 S2 S7
 S8 SK S6 S9
@@ -7376,7 +7376,6 @@ H6 H8 HK HA
 D6 D8 DK D2
 -  -  CQ - 
 *
-[Note "1: 2"]
 [Score "NS 180"]
 [Table "7"]
 [HomeTeam "DENMARK"]
@@ -7552,6 +7551,7 @@ W  C  4
 Pass Pass 1C =1= Pass
 1H Pass 1NT Pass
 Pass Pass
+[Note "1: Alerted"]
 [Play "E"]
 SQ S3 S6 SA
 DQ DA D5 DT
@@ -7564,7 +7564,6 @@ H6 H7 H9 HJ
 CT H8 HK HA
 S8 C2 -  S9
 *
-[Note "1: Alerted"]
 [Score "NS 120"]
 [Table "30"]
 [HomeTeam "LITHUANIA"]
@@ -7615,6 +7614,11 @@ Pass Pass 1C =1= Pass
 1D =2= Pass 1H =3= Pass
 1S =4= Pass 1NT =5= Pass
 Pass Pass
+[Note "1: 2+, can have 5♦ if bal"]
+[Note "2: ♥"]
+[Note "3: 1-3♥ 11-16HCP"]
+[Note "4: denies 4♠"]
+[Note "5: 11 13 bal"]
 [Play "E"]
 SQ S3 S5 S7
 S8 SK S4 S9
@@ -7629,11 +7633,6 @@ H6 H8 HK HT
 C9 C4 S6 C6
 CT C7 S2 CJ
 CA HQ CQ CK
-[Note "1: 2+, can have 5♦ if bal"]
-[Note "2: ♥"]
-[Note "3: 1-3♥ 11-16HCP"]
-[Note "4: denies 4♠"]
-[Note "5: 11 13 bal"]
 [Score "NS 90"]
 [Table "4"]
 [HomeTeam "ROMANIA"]
@@ -7683,6 +7682,8 @@ W  C  4
 Pass Pass 1D =1= Pass
 1H Pass 1NT =2= Pass
 Pass Pass
+[Note "1: 10-14, 2+♦"]
+[Note "2: 11-13"]
 [Play "E"]
 H6 H3 H9 HJ
 D6 D7 DK DT
@@ -7697,8 +7698,6 @@ C9 HQ CQ S9
 CA C2 S4 CJ
 SQ C4 S6 C6
 CT C7 ST CK
-[Note "1: 10-14, 2+♦"]
-[Note "2: 11-13"]
 [Score "NS 150"]
 [Table "24"]
 [HomeTeam "ICELAND"]
@@ -7748,6 +7747,9 @@ W  C  4
 Pass Pass 1C =1= Pass
 1D =2= Pass 1H =3= Pass
 1NT Pass Pass Pass
+[Note "1: 2+"]
+[Note "2: 4+♥"]
+[Note "3: 3+♥"]
 [Play "W"]
 S4 S7 SJ SK
 H9 HT H2 H7
@@ -7759,9 +7761,6 @@ H4 HJ H5 H3
 HK HA H6 H8
 S5 SA S8 C2
 *
-[Note "1: 2+"]
-[Note "2: 4+♥"]
-[Note "3: 3+♥"]
 [Score "NS 180"]
 [Table "16"]
 [HomeTeam "NORWAY"]
@@ -7811,6 +7810,7 @@ W  C  4
 Pass Pass 1C =1= Pass
 1H Pass 1NT Pass
 Pass Pass
+[Note "1:  * 2+ [0:03]"]
 [Play "E"]
 C5 C2 CQ CK
 DQ DA D5 DT
@@ -7823,7 +7823,6 @@ S8 SK S5 S7
 H5 H7 H4 HA
 H2 HQ H9 HT
 *
-[Note "1:  * 2+ [0:03]"]
 [Score "NS 150"]
 [Table "5"]
 [HomeTeam "CROATIA"]
@@ -7873,6 +7872,7 @@ W  C  4
 Pass Pass 1D =1= Pass
 1H Pass 1NT Pass
 Pass Pass
+[Note "1: Alerted"]
 [Play "E"]
 SQ S3 S2 S7
 SJ SK S4 S9
@@ -7887,7 +7887,6 @@ H2 H7 H9 HT
 H5 H8 HK HA
 C9 C7 S6 SA
 CT HQ ST C6
-[Note "1: Alerted"]
 [Score "NS 150"]
 [Table "26"]
 [HomeTeam "ESTONIA"]
@@ -7937,6 +7936,8 @@ W  C  4
 Pass Pass 1D =1= Pass
 1H Pass 1NT =2= Pass
 Pass Pass
+[Note "1: Alerted"]
+[Note "2: Alerted"]
 [Play "E"]
 SQ S3 S2 S7
 S8 SK S4 S9
@@ -7951,8 +7952,6 @@ C5 C4 ST C3
 C9 C7 S6 C6
 CA D8 C8 CJ
 CT HQ CQ CK
-[Note "1: Alerted"]
-[Note "2: Alerted"]
 [Score "NS 120"]
 [Table "3"]
 [HomeTeam "LATVIA"]
@@ -8002,6 +8001,9 @@ W  C  4
 Pass Pass 1C =1= Pass
 1D =2= Pass 1H =3= Pass
 1NT Pass Pass Pass
+[Note "1: 2+"]
+[Note "2: hearts"]
+[Note "3: 3h usu bal up 12-14"]
 [Play "W"]
 S4 S7 SJ SK
 H4 HT H2 H3
@@ -8016,9 +8018,6 @@ S6 C3 C5 D8
 ST C6 C9 H8
 C8 CJ CA C2
 CQ CK CT C7
-[Note "1: 2+"]
-[Note "2: hearts"]
-[Note "3: 3h usu bal up 12-14"]
 [Score "NS 180"]
 [Table "14"]
 [HomeTeam "ISRAEL"]
@@ -8061,7 +8060,7 @@ W  C  4
 [Vulnerable "NS"]
 [Deal "N:A97.AJT.T92.KJ63 QJ8.652.Q64.AT95 K3.Q873.AJ87.742 T6542.K94.K53.Q8"]
 [Scoring "IMP"]
-[Declarer "N"]
+[Declarer ""]
 [Contract "Pass"]
 [Result ""]
 [Table "1"]
@@ -8112,6 +8111,7 @@ W  C  4
 Pass Pass 1C =1= Pass
 1H Pass 1NT Pass
 Pass Pass
+[Note "1: Polish"]
 [Play "E"]
 H6 H7 H9 HJ
 D4 D7 DK D9
@@ -8126,7 +8126,6 @@ CA C2 C8 CJ
 SQ S3 S5 SA
 CT C4 CQ CK
 SJ C7 ST C6
-[Note "1: Polish"]
 [Score "NS 210"]
 [Table "20"]
 [HomeTeam "POLAND"]
@@ -8169,7 +8168,7 @@ W  C  4
 [Vulnerable "NS"]
 [Deal "N:A97.AJT.T92.KJ63 QJ8.652.Q64.AT95 K3.Q873.AJ87.742 T6542.K94.K53.Q8"]
 [Scoring "IMP"]
-[Declarer "N"]
+[Declarer ""]
 [Contract "Pass"]
 [Result ""]
 [Table "17"]
@@ -8220,6 +8219,9 @@ W  C  4
 Pass Pass 1C =1= Pass
 1D =2= Pass 1H =3= Pass
 1NT Pass Pass Pass
+[Note "1: 3+"]
+[Note "2: hearts"]
+[Note "3: 3-4 He 11-17"]
 [Play "W"]
 S2 SA S8 S3
 DK DT D4 D7
@@ -8234,9 +8236,6 @@ S6 S9 C5 HQ
 C8 CJ CA C2
 ST C6 SQ C4
 CQ CK CT C7
-[Note "1: 3+"]
-[Note "2: hearts"]
-[Note "3: 3-4 He 11-17"]
 [Score "NS 180"]
 [Table "23"]
 [HomeTeam "RUSSIA"]
@@ -8286,6 +8285,7 @@ W  C  4
 Pass Pass 1D =1= Pass
 1H Pass 1NT Pass
 Pass Pass
+[Note "1: prec"]
 [Play "E"]
 SJ S3 S2 SA
 DQ DA D3 DT
@@ -8300,7 +8300,6 @@ CT C4 S5 HT
 C5 H8 HK C6
 C9 C7 S4 CJ
 CA HQ CQ CK
-[Note "1: prec"]
 [Score "NS 90"]
 [Table "27"]
 [HomeTeam "BULGARIA"]
@@ -8350,6 +8349,9 @@ W  C  4
 Pass Pass 1C =1= Pass
 1D =2= Pass 1H =3= Pass
 1NT Pass Pass Pass
+[Note "1: min2, ca hold 5 diamonds"]
+[Note "2: 4+♥"]
+[Note "3: 2 or 3 ♥, 11-13 bal"]
 [Play "W"]
 S6 S7 SJ S3
 S4 S9 SQ SK
@@ -8364,9 +8366,6 @@ H9 HT H5 H7
 HK HA H6 H8
 CQ CK C9 C7
 ST C6 CT HQ
-[Note "1: min2, ca hold 5 diamonds"]
-[Note "2: 4+♥"]
-[Note "3: 2 or 3 ♥, 11-13 bal"]
 [Score "NS 150"]
 [Table "2"]
 [HomeTeam "SLOVENIA"]
@@ -8598,6 +8597,7 @@ Pass Pass 1C Pass
 1H Pass Pass X =1=
 1NT 2S Pass Pass
 Pass
+[Note "1:  * to [0:13]"]
 [Play "N"]
 DT D4 D7 DK
 S7 SJ SK S2
@@ -8612,7 +8612,6 @@ C3 C5 C7 S6
 CK CA C2 CQ
 CJ C9 C4 C8
 C6 CT HQ S5
-[Note "1:  * to [0:13]"]
 [Score "NS 150"]
 [Table "25"]
 [HomeTeam "HUNGARY"]
@@ -8725,6 +8724,10 @@ W  C  4
 Pass Pass 1C =1= Pass
 1D =2= Pass 1H =3= Pass
 1NT =4= Pass Pass Pass
+[Note "1: 2+ maybe + d"]
+[Note "2:  * 4+♥ [0:05]"]
+[Note "3:  * 2\3 h [0:07]"]
+[Note "4:  * nat 7-10 no 4s [0:07]"]
 [Play "W"]
 S4 S7 SJ SK
 H4 HT H6 H7
@@ -8737,10 +8740,6 @@ S5 C3 C5 DJ
 H9 HJ H2 H3
 HK HA H5 H8
 *
-[Note "1: 2+ maybe + d"]
-[Note "2:  * 4+♥ [0:05]"]
-[Note "3:  * 2\3 h [0:07]"]
-[Note "4:  * nat 7-10 no 4s [0:07]"]
 [Score "NS 120"]
 [Table "28"]
 [HomeTeam "PORTUGAL"]
@@ -8790,6 +8789,8 @@ W  C  4
 Pass Pass 1D =1= Pass
 1H 1S X =2= 2S
 Pass Pass Pass
+[Note "1: 2+d"]
+[Note "2: 3H"]
 [Play "N"]
 DT D4 D8 DK
 S7 SQ SK S4
@@ -8804,8 +8805,6 @@ C3 CA C2 C8
 CK C5 C4 CQ
 CJ -  -  - 
 *
-[Note "1: 2+d"]
-[Note "2: 3H"]
 [Score "NS 150"]
 [Table "22"]
 [HomeTeam "IRELAND"]
@@ -8854,6 +8853,7 @@ W  C  4
 [Auction "S"]
 Pass Pass 1C =1= Pass
 1H Pass Pass Pass
+[Note "1: Alerted"]
 [Play "W"]
 S6 SA S8 S3
 DK D9 D6 D7
@@ -8868,7 +8868,6 @@ C8 CK CA C2
 CQ C6 C5 C4
 ST -  -  - 
 *
-[Note "1: Alerted"]
 [Score "NS 170"]
 [Table "29"]
 [HomeTeam "UKRAINE"]
@@ -8918,6 +8917,7 @@ W  C  4
 Pass Pass 1C =1= Pass
 1H Pass 1NT Pass
 Pass Pass
+[Note "1: 2+"]
 [Play "E"]
 C5 C2 CQ CK
 D4 D7 DK D9
@@ -8929,7 +8929,6 @@ DQ DA D3 D2
 H5 D8 S4 S7
 H6 H7 H9 HT
 *
-[Note "1: 2+"]
 [Score "NS 180"]
 [Table "18"]
 [HomeTeam "ENGLAND"]
@@ -8979,6 +8978,8 @@ W  C  4
 Pass Pass 1C Pass
 1D =1= Pass 1H =2= Pass
 1NT Pass Pass Pass
+[Note "1: ♥"]
+[Note "2: 3H"]
 [Play "W"]
 S6 S7 SJ S3
 S5 S9 SQ SK
@@ -8992,8 +8993,6 @@ ST C3 DQ C4
 S2 C6 C5 C7
 C8 CJ CA - 
 *
-[Note "1: ♥"]
-[Note "2: 3H"]
 [Score "NS 90"]
 [Table "12"]
 [HomeTeam "SWITZERLAND"]
@@ -9044,14 +9043,14 @@ Pass 1S Pass 2S =1=
 Pass Pass X Pass
 2NT =2= 3S Pass Pass
 Pass
+[Note "1:  * limited to bad 9 [0:18]"]
+[Note "2: chose a minor"]
 [Play "E"]
 HK H5 H9 H3
 HQ H6 H4 HA
 S9 SA S7 S3
 D3 S2 SJ SK
 *
-[Note "1:  * limited to bad 9 [0:18]"]
-[Note "2: chose a minor"]
 [Score "NS 140"]
 [Table "21"]
 [HomeTeam "NETHERLANDS"]
@@ -9094,7 +9093,7 @@ W  C  7
 [Vulnerable "EW"]
 [Deal "N:K86543.A832.A.Q7 9.KQJ7.K9632.932 AT2.T65.874.KJ64 QJ7.94.QJT5.AT85"]
 [Scoring "IMP"]
-[Declarer "N"]
+[Declarer ""]
 [Contract "Pass"]
 [Result ""]
 [Table "1"]
@@ -9196,7 +9195,7 @@ W  C  7
 [Vulnerable "EW"]
 [Deal "N:K86543.A832.A.Q7 9.KQJ7.K9632.932 AT2.T65.874.KJ64 QJ7.94.QJT5.AT85"]
 [Scoring "IMP"]
-[Declarer "N"]
+[Declarer ""]
 [Contract "Pass"]
 [Result ""]
 [Table "17"]
@@ -9306,6 +9305,8 @@ W  C  7
 Pass 1S 1NT =1= 2S
 3C =2= 3H Pass 3S
 Pass Pass Pass
+[Note "1: 4H & 5+m"]
+[Note "2: Alerted"]
 [Play "E"]
 HQ H5 H9 HA
 S9 SA S7 S3
@@ -9317,8 +9318,6 @@ D3 D4 DQ DA
 HJ H6 H4 H3
 DK -  -  - 
 *
-[Note "1: 4H & 5+m"]
-[Note "2: Alerted"]
 [Score "NS 140"]
 [Table "13"]
 [HomeTeam "SWEDEN"]
@@ -9493,6 +9492,8 @@ Pass 1S X 2H =1=
 Pass 2S Pass Pass
 2NT =2= 3S Pass Pass
 Pass
+[Note "1: good 2♠"]
+[Note "2:  * ms TO [0:08]"]
 [Play "E"]
 HK H5 H9 HA
 S9 SA S7 S3
@@ -9503,8 +9504,6 @@ D3 ST SQ S4
 D2 D4 DQ DA
 HJ H6 H4 H3
 *
-[Note "1: good 2♠"]
-[Note "2:  * ms TO [0:08]"]
 [Score "NS 140"]
 [Table "16"]
 [HomeTeam "NORWAY"]
@@ -9617,6 +9616,7 @@ W  C  7
 Pass 1S Pass 2H =1=
 Pass 4S Pass Pass
 Pass
+[Note "1: 3♠,8+"]
 [Play "E"]
 HK H5 H9 H2
 HQ H6 H4 HA
@@ -9626,7 +9626,6 @@ C2 C4 C5 CQ
 C9 CK CA C7
 -  -  SQ - 
 *
-[Note "1: 3♠,8+"]
 [Score "NS -50"]
 [Table "4"]
 [HomeTeam "ROMANIA"]
@@ -9677,6 +9676,8 @@ Pass 1S Pass 2S
 Pass 2NT =1= Pass 3C =2=
 Pass 4S Pass Pass
 Pass
+[Note "1:  * asking for val. [0:08]"]
+[Note "2: values ♣"]
 [Play "E"]
 HK H5 H4 H2
 HJ H6 H9 HA
@@ -9689,8 +9690,6 @@ C2 CK CA C7
 C3 ST SQ S4
 -  -  D5 - 
 *
-[Note "1:  * asking for val. [0:08]"]
-[Note "2: values ♣"]
 [Score "NS -50"]
 [Table "5"]
 [HomeTeam "CROATIA"]
@@ -9740,6 +9739,7 @@ W  C  7
 Pass 1S Pass 2S =1=
 Pass 3H Pass 3S
 Pass Pass Pass
+[Note "1: usually less than 9p"]
 [Play "E"]
 HK H5 H4 H2
 D2 D4 DT DA
@@ -9750,7 +9750,6 @@ H7 H6 H9 HA
 D3 SA SJ S3
 C2 CJ C8 H3
 *
-[Note "1: usually less than 9p"]
 [Score "NS 140"]
 [Table "24"]
 [HomeTeam "ICELAND"]
@@ -9800,13 +9799,13 @@ W  C  7
 Pass 1S Pass 2S =1=
 Pass 3H Pass 3S
 Pass Pass Pass
+[Note "1:  * 8-10(11) supp ♠ [0:15]"]
 [Play "E"]
 HK H5 H9 HA
 S9 S2 SJ SK
 D3 SA S7 S3
 C3 C4 CA C7
 *
-[Note "1:  * 8-10(11) supp ♠ [0:15]"]
 [Score "NS 140"]
 [Table "20"]
 [HomeTeam "POLAND"]
@@ -9855,6 +9854,7 @@ W  C  7
 [Auction "W"]
 Pass 2S =1= Pass Pass
 Pass
+[Note "1: 6(7) ♠, 10-13"]
 [Play "E"]
 HK H5 H9 HA
 HQ H6 H4 H2
@@ -9865,7 +9865,6 @@ S9 SA S7 S3
 D3 S2 SQ SK
 D6 D7 C8 S8
 *
-[Note "1: 6(7) ♠, 10-13"]
 [Score "NS 140"]
 [Table "2"]
 [HomeTeam "SLOVENIA"]
@@ -9978,6 +9977,7 @@ W  C  7
 Pass 1S Pass 2S
 Pass 3C =1= Pass 4S
 Pass Pass Pass
+[Note "1: Alerted"]
 [Play "E"]
 HK H5 H4 H2
 HQ H6 H9 HA
@@ -9992,7 +9992,6 @@ DK D7 DJ S8
 C9 C6 C8 S6
 D9 D8 DT S5
 H7 CJ CT H8
-[Note "1: Alerted"]
 [Score "NS -50"]
 [Table "3"]
 [HomeTeam "LATVIA"]
@@ -10042,6 +10041,7 @@ W  C  7
 Pass 1S X 2H =1=
 Pass 4S Pass Pass
 Pass
+[Note "1: 8+ 3 card raise"]
 [Play "E"]
 HK H5 H9 H3
 HQ H6 H4 HA
@@ -10052,7 +10052,6 @@ C3 CJ CA C7
 D6 D4 DQ DA
 HJ -  -  H2
 *
-[Note "1: 8+ 3 card raise"]
 [Score "NS -50"]
 [Table "14"]
 [HomeTeam "ISRAEL"]
@@ -10102,6 +10101,7 @@ W  C  7
 Pass 1S Pass 1NT =1=
 Pass 2H Pass 2S
 Pass Pass Pass
+[Note "1: F1"]
 [Play "E"]
 D3 D4 DT DA
 C2 CJ CA C7
@@ -10111,7 +10111,6 @@ C3 C4 C5 CQ
 C9 SA SJ S4
 -  CK C8 H2
 *
-[Note "1: F1"]
 [Score "NS 140"]
 [Table "27"]
 [HomeTeam "BULGARIA"]
@@ -10338,6 +10337,8 @@ W  C  7
 Pass 1S X =1= 2H =2=
 2NT Pass 3D Pass
 3NT Pass Pass Pass
+[Note "1: to"]
+[Note "2: 7-9, 3♠"]
 [Play "N"]
 S3 S9 SA S7
 SK C2 ST SJ
@@ -10349,8 +10350,6 @@ S4 C9 D4 C8
 HA HQ H6 H9
 C7 -  -  - 
 *
-[Note "1: to"]
-[Note "2: 7-9, 3♠"]
 [Score "NS 300"]
 [Table "25"]
 [HomeTeam "HUNGARY"]
@@ -10401,14 +10400,14 @@ Pass 1S Pass 2S
 Pass 2NT =1= Pass 3C =2=
 Pass 3S Pass Pass
 Pass
+[Note "1: any game try"]
+[Note "2:  * not min, denies 4+♥ [0:15]"]
 [Play "E"]
 HK H5 H4 H2
 HQ H6 H9 HA
 S9 S2 S7 SK
 D6 SA SJ S3
 *
-[Note "1: any game try"]
-[Note "2:  * not min, denies 4+♥ [0:15]"]
 [Score "NS 140"]
 [Table "19"]
 [HomeTeam "FRANCE"]
@@ -10458,6 +10457,7 @@ W  C  7
 Pass 1S Pass 2S
 Pass 3H =1= Pass 3S
 Pass Pass Pass
+[Note "1: invitative"]
 [Play "E"]
 HK H5 H4 H3
 HQ H6 H9 HA
@@ -10468,7 +10468,6 @@ D3 D4 DQ DA
 D6 SA SJ S3
 C3 CK C8 H2
 *
-[Note "1: invitative"]
 [Score "NS 140"]
 [Table "10"]
 [HomeTeam "SPAIN"]
@@ -10576,6 +10575,8 @@ W  C  7
 1D =1= 1S 2C =2= 2S
 Pass 3S Pass Pass
 Pass
+[Note "1: 0+♦ 10-15"]
+[Note "2: 4he unbalanced 7+ points"]
 [Play "E"]
 HK H5 H4 H3
 HQ H6 H9 HA
@@ -10583,8 +10584,6 @@ S9 SA S7 S3
 C9 S2 SJ SK
 HJ HT -  H2
 *
-[Note "1: 0+♦ 10-15"]
-[Note "2: 4he unbalanced 7+ points"]
 [Score "NS 140"]
 [Table "22"]
 [HomeTeam "IRELAND"]
@@ -10635,6 +10634,7 @@ Pass 1S Pass 2S
 Pass 2NT =1= Pass 3C
 Pass 3H Pass 4S
 Pass Pass Pass
+[Note "1: random game try"]
 [Play "E"]
 HK H5 H9 H3
 HQ H6 H4 HA
@@ -10643,7 +10643,6 @@ D2 SA SJ S4
 C2 C4 C5 CQ
 C3 CJ CA C7
 *
-[Note "1: random game try"]
 [Score "NS -50"]
 [Table "18"]
 [HomeTeam "ENGLAND"]
@@ -10693,6 +10692,7 @@ W  C  7
 Pass 1S Pass 2S =1=
 Pass 4S Pass Pass
 Pass
+[Note "1: - * 8-11 [0:05] * usually 3s only [0:20]"]
 [Play "E"]
 HK H5 H4 HA
 S9 S2 SJ SK
@@ -10702,7 +10702,6 @@ HJ H6 H9 H2
 HQ HT D5 H3
 H7 D4 SQ H8
 *
-[Note "1: - * 8-11 [0:05] * usually 3s only [0:20]"]
 [Score "NS -50"]
 [Table "28"]
 [HomeTeam "PORTUGAL"]
@@ -10799,7 +10798,7 @@ W  C  7
 [Vulnerable "None"]
 [Deal "N:AT9.2.J432.A9863 76432.4.KQ.QJT72 Q.KJ976.AT8765.5 KJ85.AQT853.9.K4"]
 [Scoring "IMP"]
-[Declarer "N"]
+[Declarer ""]
 [Contract "Pass"]
 [Result ""]
 [Table "1"]
@@ -10843,7 +10842,7 @@ W  C  7
 [Vulnerable "None"]
 [Deal "N:AT9.2.J432.A9863 76432.4.KQ.QJT72 Q.KJ976.AT8765.5 KJ85.AQT853.9.K4"]
 [Scoring "IMP"]
-[Declarer "N"]
+[Declarer ""]
 [Contract "Pass"]
 [Result ""]
 [Table "17"]
@@ -10895,6 +10894,7 @@ Pass Pass 1H Pass
 1NT Pass 2D Pass
 2S =1= Pass 3D Pass
 Pass Pass
+[Note "1: good raise"]
 [Play "W"]
 D9 D2 DQ DA
 C4 CA C2 C5
@@ -10906,7 +10906,6 @@ SK SA S2 SQ
 SJ S9 S3 H7
 S5 -  -  - 
 *
-[Note "1: good raise"]
 [Score "NS 130"]
 [Table "21"]
 [HomeTeam "NETHERLANDS"]
@@ -10955,6 +10954,7 @@ W  C  7
 [Auction "N"]
 Pass 2S =1= Pass 4S
 Pass Pass Pass
+[Note "1: 5-5+ S+minor 5-10"]
 [Play "S"]
 DA D9 D2 DK
 C5 C4 CA C7
@@ -10962,7 +10962,6 @@ SQ CK C8 C2
 H9 HA H2 H4
 H6 SJ SA S2
 *
-[Note "1: 5-5+ S+minor 5-10"]
 [Score "NS 100"]
 [Table "4"]
 [HomeTeam "ROMANIA"]
@@ -11077,6 +11076,8 @@ Pass Pass 1H Pass
 1NT 2H =1= 3D 4S
 5D Pass Pass 5S =2=
 X Pass Pass Pass
+[Note "1: Spades & minor"]
+[Note "2: ♠"]
 [Play "N"]
 H2 H4 HK HA
 D2 DQ DA D9
@@ -11087,8 +11088,6 @@ C8 CJ D5 H3
 SA S2 D6 SK
 ST S3 D7 SJ
 *
-[Note "1: Spades & minor"]
-[Note "2: ♠"]
 [Score "NS 500"]
 [Table "13"]
 [HomeTeam "SWEDEN"]
@@ -11252,6 +11251,7 @@ W  C  7
 Pass Pass 1D 1H
 2D =1= X 5D X
 Pass Pass Pass
+[Note "1: strongest raise"]
 [Play "W"]
 S5 SA S7 SQ
 D9 D2 DQ DA
@@ -11266,7 +11266,6 @@ HQ DJ S2 H6
 SJ ST S3 DT
 H3 C8 CT HJ
 H5 C9 CQ D7
-[Note "1: strongest raise"]
 [Score "NS 550"]
 [Table "11"]
 [HomeTeam "AUSTRIA"]
@@ -11315,6 +11314,8 @@ W  C  7
 [Auction "N"]
 Pass 2S =1= 4D =2= 4S
 5D Pass Pass Pass
+[Note "1: 4+S 5+m 5-10"]
+[Note "2: 5+♦ 5+♥"]
 [Play "W"]
 CK CA C2 C5
 HQ H2 H4 HJ
@@ -11326,8 +11327,6 @@ H8 D4 S4 H6
 S8 C8 CJ D7
 HT -  -  H7
 *
-[Note "1: 4+S 5+m 5-10"]
-[Note "2: 5+♦ 5+♥"]
 [Score "NS 400"]
 [Table "20"]
 [HomeTeam "POLAND"]
@@ -11379,6 +11378,9 @@ Pass Pass 1H Pass
 3D 3H =3= Pass 4S
 X Pass 5D X
 Pass Pass Pass
+[Note "1: clubs+spades"]
+[Note "2: Alerted"]
+[Note "3: no big agreement"]
 [Play "W"]
 D9 D2 DQ DA
 C4 CA C7 C5
@@ -11393,9 +11395,6 @@ SK SA S3 SQ
 SJ ST S6 HK
 HA C9 S7 D8
 S8 S9 CQ DT
-[Note "1: clubs+spades"]
-[Note "2: Alerted"]
-[Note "3: no big agreement"]
 [Score "NS -100"]
 [Table "26"]
 [HomeTeam "ESTONIA"]
@@ -11445,6 +11444,8 @@ W  C  7
 Pass Pass 1H Pass
 1S =1= Pass 1NT =2= Pass
 Pass Pass
+[Note "1: 0 - 4 spades"]
+[Note "2: denies 4♠"]
 [Play "W"]
 S5 S9 S2 SQ
 D9 D2 DQ DA
@@ -11453,8 +11454,6 @@ HQ H2 H4 HJ
 SJ SA S3 H6
 H5 DJ C2 D5
 *
-[Note "1: 0 - 4 spades"]
-[Note "2: denies 4♠"]
 [Score "NS 120"]
 [Table "2"]
 [HomeTeam "SLOVENIA"]
@@ -11505,6 +11504,7 @@ Pass Pass 1H Pass
 1NT 2C 2D X =1=
 XX 2S 3D 4S
 X Pass Pass Pass
+[Note "1: T/O"]
 [Play "S"]
 H7 HA H2 H4
 DA D9 D2 DK
@@ -11514,7 +11514,6 @@ D5 H3 DJ DQ
 D6 SK SA S2
 -  -  ST - 
 *
-[Note "1: T/O"]
 [Score "NS 300"]
 [Table "7"]
 [HomeTeam "DENMARK"]
@@ -11564,6 +11563,7 @@ W  C  7
 Pass Pass 1H Pass
 1NT 2H =1= Pass Pass
 Pass
+[Note "1: ♠+m"]
 [Play "S"]
 DA D9 DJ DK
 DT CK D4 DQ
@@ -11578,7 +11578,6 @@ D7 HT C3 S7
 HJ H3 H2 C7
 D8 HQ C8 CT
 HK HA C9 CJ
-[Note "1: ♠+m"]
 [Score "NS 50"]
 [Table "16"]
 [HomeTeam "NORWAY"]
@@ -11627,6 +11626,7 @@ W  C  7
 [Auction "N"]
 Pass 2S =1= Pass 4S
 Pass Pass Pass
+[Note "1: ♠+m 4+/4+ weak"]
 [Play "S"]
 C5 CK CA C2
 SQ C4 C9 CQ
@@ -11634,7 +11634,6 @@ DA D9 D4 DQ
 D5 H3 DJ DK
 -  -  -  S2
 *
-[Note "1: ♠+m 4+/4+ weak"]
 [Score "NS 100"]
 [Table "14"]
 [HomeTeam "ISRAEL"]
@@ -11685,6 +11684,8 @@ Pass Pass 1D =1= 1H
 2H =2= 2S Pass 4S
 5D X Pass Pass
 Pass
+[Note "1: 4+♦"]
+[Note "2:  * ♦ invit+ [0:08]"]
 [Play "W"]
 S8 SA S2 SQ
 HQ H2 H4 HJ
@@ -11694,8 +11695,6 @@ SJ ST S4 D8
 D9 D3 DQ DA
 HT D4 C2 H9
 *
-[Note "1: 4+♦"]
-[Note "2:  * ♦ invit+ [0:08]"]
 [Score "NS 550"]
 [Table "5"]
 [HomeTeam "CROATIA"]
@@ -11744,6 +11743,7 @@ W  C  7
 [Auction "N"]
 Pass 2S =1= Pass 4S
 Pass Pass Pass
+[Note "1: 7-10, 5♠+5m"]
 [Play "S"]
 DA D9 D2 DQ
 H6 HA H2 H4
@@ -11752,7 +11752,6 @@ SQ C4 C8 CQ
 HK H3 D3 S2
 D5 SK -  S3
 *
-[Note "1: 7-10, 5♠+5m"]
 [Score "NS 100"]
 [Table "8"]
 [HomeTeam "GREECE"]
@@ -11803,6 +11802,10 @@ Pass Pass 2H =1= Pass
 2S =2= Pass 3D X =3=
 Pass 3H =4= Pass Pass
 Pass
+[Note "1: Alerted"]
+[Note "2: Alerted"]
+[Note "3:  * to [0:15]"]
+[Note "4: Alerted"]
 [Play "S"]
 DA D9 D4 DQ
 D7 S5 DJ DK
@@ -11815,10 +11818,6 @@ H7 SK ST S4
 D8 HT S9 S7
 -  SJ H2 S6
 *
-[Note "1: Alerted"]
-[Note "2: Alerted"]
-[Note "3:  * to [0:15]"]
-[Note "4: Alerted"]
 [Score "NS 100"]
 [Table "30"]
 [HomeTeam "LITHUANIA"]
@@ -11868,6 +11867,7 @@ W  C  7
 Pass Pass 1H Pass
 1NT 2H =1= 3D 4S
 X Pass Pass Pass
+[Note "1: S+m"]
 [Play "N"]
 H2 H4 HK HA
 S9 S2 SQ S5
@@ -11876,7 +11876,6 @@ CA C2 C5 C4
 C9 C7 D5 CK
 SA S3 D6 SK
 *
-[Note "1: S+m"]
 [Score "NS 100"]
 [Table "27"]
 [HomeTeam "BULGARIA"]
@@ -11926,6 +11925,7 @@ W  C  7
 Pass 2S =1= 3D 4S
 5D Pass Pass 5S
 X Pass Pass Pass
+[Note "1: ♠ + m, weak"]
 [Play "S"]
 H9 HA H2 H4
 C5 CK CA C2
@@ -11935,7 +11935,6 @@ SQ SK SA S6
 D5 H5 DJ DQ
 D6 SJ S9 S3
 *
-[Note "1: ♠ + m, weak"]
 [Score "NS 300"]
 [Table "3"]
 [HomeTeam "LATVIA"]
@@ -11986,6 +11985,7 @@ Pass Pass 1H Pass
 1NT Pass 2D =1= X
 Pass 2S Pass Pass
 Pass
+[Note "1: 3+"]
 [Play "S"]
 C5 CK CA C2
 DA D9 D4 DK
@@ -11996,7 +11996,6 @@ D8 S8 ST S3
 H6 S5 SA S4
 -  -  D2 - 
 *
-[Note "1: 3+"]
 [Score "NS -140"]
 [Table "25"]
 [HomeTeam "HUNGARY"]
@@ -12047,6 +12046,7 @@ Pass Pass 1H Pass
 1NT Pass 2D 2S
 3D 3H =1= 5D X
 Pass Pass Pass
+[Note "1: Alerted"]
 [Play "W"]
 D9 D2 DQ DA
 HA H2 H4 HK
@@ -12057,7 +12057,6 @@ H3 D3 S3 H6
 SJ S9 S4 H7
 H5 -  -  - 
 *
-[Note "1: Alerted"]
 [Score "NS -100"]
 [Table "6"]
 [HomeTeam "TURKEY"]
@@ -12169,6 +12168,8 @@ W  C  7
 Pass 2S =1= 3H X =2=
 Pass Pass 4D Pass
 Pass Pass
+[Note "1: 5♠4m"]
+[Note "2: penalty"]
 [Play "W"]
 S5 SA S7 SQ
 HT H2 H4 H9
@@ -12176,8 +12177,6 @@ D9 D2 DQ DA
 HA D3 DK HK
 -  -  S4 - 
 *
-[Note "1: 5♠4m"]
-[Note "2: penalty"]
 [Score "NS 150"]
 [Table "29"]
 [HomeTeam "UKRAINE"]
@@ -12228,6 +12227,8 @@ Pass Pass 1H Pass
 1NT =1= 2H =2= Pass 3H
 Pass 3S Pass 4S
 X Pass Pass Pass
+[Note "1: semiforcing"]
+[Note "2:  * spades and clubs [0:12]"]
 [Play "S"]
 C5 CK CA C2
 SQ C4 C6 CQ
@@ -12238,8 +12239,6 @@ D6 SK ST S3
 H6 HA H2 H4
 H7 H5 D3 S4
 *
-[Note "1: semiforcing"]
-[Note "2:  * spades and clubs [0:12]"]
 [Score "NS 300"]
 [Table "10"]
 [HomeTeam "SPAIN"]
@@ -12289,6 +12288,8 @@ W  C  7
 Pass Pass 2H =1= Pass
 3C =2= Pass 3D Pass
 Pass Pass
+[Note "1: 5H/4+m PRE"]
+[Note "2: P/C"]
 [Play "W"]
 D9 D2 DQ DA
 C4 CA C2 C5
@@ -12303,8 +12304,6 @@ S8 C9 CQ D5
 SJ S9 S2 D7
 SK SA S3 SQ
 HA ST S4 HK
-[Note "1: 5H/4+m PRE"]
-[Note "2: P/C"]
 [Score "NS 150"]
 [Table "18"]
 [HomeTeam "ENGLAND"]
@@ -12354,6 +12353,8 @@ W  C  7
 Pass 2S =1= 4D =2= 4S
 4NT Pass 5D X
 Pass Pass Pass
+[Note "1: 5sp and 4+m"]
+[Note "2:  * ♥+♦ [0:07]"]
 [Play "W"]
 S5 SA S3 SQ
 HT H2 H4 H9
@@ -12362,8 +12363,6 @@ HA D2 DK HK
 S8 ST S6 D6
 D9 D3 DQ DA
 *
-[Note "1: 5sp and 4+m"]
-[Note "2:  * ♥+♦ [0:07]"]
 [Score "NS 550"]
 [Table "19"]
 [HomeTeam "FRANCE"]
@@ -12412,6 +12411,7 @@ W  C  7
 [Auction "N"]
 Pass 2S =1= Pass 4S
 Pass Pass Pass
+[Note "1: 5♠ 4+minor weak"]
 [Play "S"]
 C5 CK CA C7
 H6 H8 H2 H4
@@ -12421,7 +12421,6 @@ DT H3 D3 DK
 D6 SJ SA S2
 -  -  ST - 
 *
-[Note "1: 5♠ 4+minor weak"]
 [Score "NS 100"]
 [Table "28"]
 [HomeTeam "PORTUGAL"]
@@ -12471,6 +12470,10 @@ W  C  7
 Pass 2S =1= 4D =2= 4S
 4NT =3= Pass 5C =4= Pass
 5D Pass Pass Pass
+[Note "1: 5sp  5minor weak"]
+[Note "2: h+d"]
+[Note "3: KC"]
+[Note "4:  * 1   not sure what 4nt is [0:22]"]
 [Play "W"]
 S5 SA S7 SQ
 HQ H2 H4 HJ
@@ -12484,10 +12487,6 @@ HT D4 S3 H9
 D9 C6 C7 D8
 HA -  -  - 
 *
-[Note "1: 5sp  5minor weak"]
-[Note "2: h+d"]
-[Note "3: KC"]
-[Note "4:  * 1   not sure what 4nt is [0:22]"]
 [Score "NS -100"]
 [Table "22"]
 [HomeTeam "IRELAND"]
@@ -12588,7 +12587,7 @@ W  C  7
 [Vulnerable "NS"]
 [Deal "N:Q.AK94.542.87543 T753.763.AT73.AQ 98642.Q82.J96.J2 AKJ.JT5.KQ8.KT96"]
 [Scoring "IMP"]
-[Declarer "N"]
+[Declarer ""]
 [Contract "Pass"]
 [Result ""]
 [Table "1"]
@@ -12632,7 +12631,7 @@ W  C  8
 [Vulnerable "NS"]
 [Deal "N:Q.AK94.542.87543 T753.763.AT73.AQ 98642.Q82.J96.J2 AKJ.JT5.KQ8.KT96"]
 [Scoring "IMP"]
-[Declarer "N"]
+[Declarer ""]
 [Contract "Pass"]
 [Result ""]
 [Table "17"]
@@ -12684,6 +12683,8 @@ Pass Pass 1NT Pass
 3C =1= Pass 3D Pass
 3H =2= Pass 3NT Pass
 Pass Pass
+[Note "1: pup stay"]
+[Note "2: 4 sp"]
 [Play "N"]
 C7 CA C2 C6
 SQ S3 S6 SA
@@ -12698,8 +12699,6 @@ D4 D7 D6 DQ
 H9 DA DJ D8
 HK DT HQ HT
 HA H7 S8 HJ
-[Note "1: pup stay"]
-[Note "2: 4 sp"]
 [Score "NS -490"]
 [Table "21"]
 [HomeTeam "NETHERLANDS"]
@@ -12748,6 +12747,7 @@ W  C  8
 [Auction "E"]
 Pass Pass 1NT =1= Pass
 3NT Pass Pass Pass
+[Note "1:  * 14.5-17 can be semi bal or A/K single [0:40]"]
 [Play "N"]
 C4 CQ C2 C6
 HK H3 H2 HJ
@@ -12762,7 +12762,6 @@ D4 D7 D9 DQ
 H9 DA DJ D8
 C8 ST H8 H5
 HA DT HQ HT
-[Note "1:  * 14.5-17 can be semi bal or A/K single [0:40]"]
 [Score "NS -490"]
 [Table "4"]
 [HomeTeam "ROMANIA"]
@@ -12874,6 +12873,7 @@ W  C  8
 Pass Pass 1NT Pass
 2C =1= Pass 2D Pass
 3NT Pass Pass Pass
+[Note "1: Alerted"]
 [Play "N"]
 HA H3 H2 HT
 HK H6 HQ H5
@@ -12884,7 +12884,6 @@ C3 S3 S8 CT
 C7 S5 S2 C9
 SQ -  -  SA
 *
-[Note "1: Alerted"]
 [Score "NS -460"]
 [Table "24"]
 [HomeTeam "ICELAND"]
@@ -12934,6 +12933,8 @@ W  C  8
 Pass Pass 1NT Pass
 2C =1= Pass 2NT =2= Pass
 3NT Pass Pass Pass
+[Note "1: puppet"]
+[Note "2: no 5 or 4c M"]
 [Play "N"]
 C7 CA C2 C6
 C5 CQ CJ C9
@@ -12948,8 +12949,6 @@ H9 DA DJ D8
 C8 ST H2 H5
 HK DT H8 HT
 HA H7 HQ HJ
-[Note "1: puppet"]
-[Note "2: no 5 or 4c M"]
 [Score "NS -490"]
 [Table "23"]
 [HomeTeam "RUSSIA"]
@@ -13000,6 +12999,10 @@ Pass Pass 1C =1= Pass
 1S =2= Pass 1NT =3= Pass
 2S =4= Pass 3NT Pass
 Pass Pass
+[Note "1: 16+"]
+[Note "2:  * 8+ balanced [0:09]"]
+[Note "3: Relay"]
+[Note "4: 4s 8-10"]
 [Play "N"]
 C4 CQ C2 C9
 SQ S3 S6 SJ
@@ -13012,10 +13015,6 @@ D2 D3 D6 DK
 D4 D7 D9 DQ
 D5 DA DJ D8
 *
-[Note "1: 16+"]
-[Note "2:  * 8+ balanced [0:09]"]
-[Note "3: Relay"]
-[Note "4: 4s 8-10"]
 [Score "NS -460"]
 [Table "15"]
 [HomeTeam "GERMANY"]
@@ -13065,15 +13064,15 @@ W  C  8
 Pass Pass 1NT =1= Pass
 2C =2= Pass 2D =3= Pass
 3NT Pass Pass Pass
+[Note "1: 15-17"]
+[Note "2: Alerted"]
+[Note "3: Alerted"]
 [Play "N"]
 HA H3 H2 H5
 HK H6 H8 HT
 H9 H7 HQ HJ
 SQ S3 S6 SA
 *
-[Note "1: 15-17"]
-[Note "2: Alerted"]
-[Note "3: Alerted"]
 [Score "NS -430"]
 [Table "11"]
 [HomeTeam "AUSTRIA"]
@@ -13124,6 +13123,9 @@ Pass Pass 1NT Pass
 3C =1= Pass 3D =2= Pass
 3H =3= Pass 3NT Pass
 Pass Pass
+[Note "1: ask 5c M"]
+[Note "2: no 5cM"]
+[Note "3: 4♠"]
 [Play "N"]
 SQ S3 S2 SA
 C8 S5 S4 SK
@@ -13138,9 +13140,6 @@ C7 H6 H2 CT
 H9 DA DJ D8
 HK DT H8 HT
 HA H7 HQ HJ
-[Note "1: ask 5c M"]
-[Note "2: no 5cM"]
-[Note "3: 4♠"]
 [Score "NS -490"]
 [Table "2"]
 [HomeTeam "SLOVENIA"]
@@ -13189,6 +13188,7 @@ W  C  8
 [Auction "E"]
 1NT =1= Pass 3NT Pass
 Pass Pass
+[Note "1: 9-11 bal/semibal"]
 [Play "S"]
 S4 SA SQ S5
 S9 SK D4 S7
@@ -13203,7 +13203,6 @@ S8 CT H4 H7
 DJ D8 H9 DA
 H8 HT HK DT
 HQ HJ HA H6
-[Note "1: 9-11 bal/semibal"]
 [Score "NS -490"]
 [Table "26"]
 [HomeTeam "ESTONIA"]
@@ -13254,6 +13253,9 @@ Pass Pass 1C =1= Pass
 2C =2= Pass 2NT Pass
 3C Pass 3H =3= Pass
 3NT Pass Pass Pass
+[Note "1: strong"]
+[Note "2: 4 cont (2 Aces or 1Ace and 2K)"]
+[Note "3: no slam, ♥s or no major"]
 [Play "N"]
 HA H3 H8 H5
 C8 CA CJ C6
@@ -13264,9 +13266,6 @@ D2 D3 D9 DK
 D4 D7 DJ DQ
 SQ S3 S2 SA
 *
-[Note "1: strong"]
-[Note "2: 4 cont (2 Aces or 1Ace and 2K)"]
-[Note "3: no slam, ♥s or no major"]
 [Score "NS -490"]
 [Table "7"]
 [HomeTeam "DENMARK"]
@@ -13315,6 +13314,7 @@ W  C  8
 [Auction "E"]
 1NT =1= Pass 3NT Pass
 Pass Pass
+[Note "1: 11-13"]
 [Play "S"]
 S6 SA SQ S3
 C2 C6 C7 CQ
@@ -13324,7 +13324,6 @@ S2 SJ D2 S7
 D6 DK D4 D3
 D9 DQ D5 D7
 *
-[Note "1: 11-13"]
 [Score "NS -490"]
 [Table "16"]
 [HomeTeam "NORWAY"]
@@ -13375,6 +13374,9 @@ Pass Pass 1C =1= Pass
 1H =2= Pass 1NT Pass
 2S =3= Pass 3NT Pass
 Pass Pass
+[Note "1: 16+"]
+[Note "2: 4+S 8+"]
+[Note "3: balanced"]
 [Play "N"]
 C7 CQ C2 C6
 C3 CA CJ C9
@@ -13387,9 +13389,6 @@ H9 S7 S8 SJ
 D2 D7 D9 DQ
 D5 DA DJ D8
 *
-[Note "1: 16+"]
-[Note "2: 4+S 8+"]
-[Note "3: balanced"]
 [Score "NS -490"]
 [Table "20"]
 [HomeTeam "POLAND"]
@@ -13438,6 +13437,7 @@ W  C  8
 [Auction "E"]
 1NT =1= Pass 3NT Pass
 Pass Pass
+[Note "1: 9-12 bal"]
 [Play "S"]
 S8 SA SQ S3
 S6 SK C8 S5
@@ -13448,7 +13448,6 @@ CJ CK C4 CQ
 D9 C9 C3 H3
 -  CT D4 H7
 *
-[Note "1: 9-12 bal"]
 [Score "NS -490"]
 [Table "30"]
 [HomeTeam "LITHUANIA"]
@@ -13497,6 +13496,7 @@ W  C  8
 [Auction "E"]
 1NT =1= Pass 3NT Pass
 Pass Pass
+[Note "1: 10-13, can have 6m, 5M"]
 [Play "S"]
 S4 SA SQ S3
 S9 SK C8 S5
@@ -13511,7 +13511,6 @@ D9 DQ H4 D7
 DJ D8 H9 DA
 H8 HT HK DT
 HQ HJ HA H7
-[Note "1: 10-13, can have 6m, 5M"]
 [Score "NS -490"]
 [Table "14"]
 [HomeTeam "ISRAEL"]
@@ -13617,6 +13616,7 @@ W  C  8
 [Auction "E"]
 1NT =1= Pass 3NT Pass
 Pass Pass
+[Note "1: 1014 can be unb and incl singl"]
 [Play "S"]
 H2 HT HK H3
 HQ H5 H9 H6
@@ -13624,7 +13624,6 @@ H8 HJ HA H7
 S6 SJ H4 S3
 S2 SK SQ S5
 *
-[Note "1: 1014 can be unb and incl singl"]
 [Score "NS -400"]
 [Table "25"]
 [HomeTeam "HUNGARY"]
@@ -13674,6 +13673,8 @@ W  C  8
 Pass Pass 1C =1= Pass
 1S Pass 1NT =2= Pass
 3NT Pass Pass Pass
+[Note "1: nat 11+ or Nt 15+, f1"]
+[Note "2: 15-17"]
 [Play "N"]
 C3 CA C2 C6
 D5 D3 D6 DK
@@ -13685,8 +13686,6 @@ C5 H3 S8 CK
 C7 H6 S9 CT
 H4 -  -  DQ
 *
-[Note "1: nat 11+ or Nt 15+, f1"]
-[Note "2: 15-17"]
 [Score "NS -490"]
 [Table "3"]
 [HomeTeam "LATVIA"]
@@ -13736,6 +13735,8 @@ W  C  8
 Pass Pass 1NT =1= Pass
 2C =2= Pass 2D Pass
 3NT Pass Pass Pass
+[Note "1: 14+ to 17"]
+[Note "2: Alerted"]
 [Play "N"]
 HA H3 H8 H5
 C8 CQ C2 C6
@@ -13745,8 +13746,6 @@ SQ S3 S2 SA
 C4 H6 D9 CK
 D4 D7 DJ DK
 *
-[Note "1: 14+ to 17"]
-[Note "2: Alerted"]
 [Score "NS -490"]
 [Table "6"]
 [HomeTeam "TURKEY"]
@@ -13797,6 +13796,9 @@ Pass Pass 1NT Pass
 2NT =1= Pass 3C =2= Pass
 3H =3= Pass 3NT Pass
 Pass Pass
+[Note "1: 5-card Stayman"]
+[Note "2: no 5cM"]
+[Note "3: 4♠"]
 [Play "N"]
 C7 CA C2 C6
 D2 D3 D6 DK
@@ -13809,9 +13811,6 @@ H4 S5 S6 SK
 H9 S7 S8 SJ
 D5 DA DJ D8
 *
-[Note "1: 5-card Stayman"]
-[Note "2: no 5cM"]
-[Note "3: 4♠"]
 [Score "NS -490"]
 [Table "31"]
 [HomeTeam "SCOTLAND"]
@@ -13861,6 +13860,8 @@ W  C  8
 Pass Pass 1C =1= 1H
 X =2= Pass 1NT Pass
 3NT Pass Pass Pass
+[Note "1: 16+ any shape"]
+[Note "2: balanced, inv or more"]
 [Play "N"]
 C8 CA CJ C6
 C4 CQ C2 CK
@@ -13873,8 +13874,6 @@ D4 D3 D6 DK
 D2 D7 D9 DQ
 H9 -  -  D8
 *
-[Note "1: 16+ any shape"]
-[Note "2: balanced, inv or more"]
 [Score "NS -490"]
 [Table "8"]
 [HomeTeam "GREECE"]
@@ -13924,6 +13923,7 @@ W  C  8
 Pass Pass 1NT Pass
 2C =1= Pass 2D Pass
 3NT Pass Pass Pass
+[Note "1: dont promise 4 M"]
 [Play "N"]
 HA H3 H2 H5
 HK H6 HQ HT
@@ -13936,7 +13936,6 @@ C3 S5 S2 CT
 D2 D7 D9 DQ
 D5 DA DJ D8
 *
-[Note "1: dont promise 4 M"]
 [Score "NS -460"]
 [Table "29"]
 [HomeTeam "UKRAINE"]
@@ -13987,6 +13986,9 @@ Pass Pass 1C =1= Pass
 1S Pass 2C =2= Pass
 2D =3= Pass 2NT Pass
 3NT Pass Pass Pass
+[Note "1: 11-13 bal or any 17+"]
+[Note "2: 17+ art"]
+[Note "3: relay , denies some extreme hand shapes"]
 [Play "N"]
 C4 CQ C2 C6
 SQ S3 S2 SK
@@ -13999,9 +14001,6 @@ H4 H3 S9 CK
 H9 H6 D6 C9
 D2 D7 DJ DQ
 *
-[Note "1: 11-13 bal or any 17+"]
-[Note "2: 17+ art"]
-[Note "3: relay , denies some extreme hand shapes"]
 [Score "NS -490"]
 [Table "27"]
 [HomeTeam "BULGARIA"]
@@ -14050,6 +14049,7 @@ W  C  8
 [Auction "E"]
 1NT =1= Pass 3NT Pass
 Pass Pass
+[Note "1: 10-12"]
 [Play "S"]
 S9 SA SQ S3
 S6 SK D2 S5
@@ -14059,7 +14059,6 @@ C2 C9 C8 CQ
 D6 DK D4 D3
 -  DQ D5 - 
 *
-[Note "1: 10-12"]
 [Score "NS -490"]
 [Table "28"]
 [HomeTeam "PORTUGAL"]
@@ -14172,6 +14171,7 @@ W  C  8
 Pass Pass 1NT Pass
 2C =1= Pass 2D Pass
 3NT Pass Pass Pass
+[Note "1: stay"]
 [Play "N"]
 C7 CQ CJ C6
 C8 CA C2 C9
@@ -14183,7 +14183,6 @@ D2 S7 S9 SJ
 D4 D3 D6 DQ
 D5 D7 D9 DK
 *
-[Note "1: stay"]
 [Score "NS -490"]
 [Table "19"]
 [HomeTeam "FRANCE"]
@@ -14295,6 +14294,7 @@ W  C  8
 1D =1= Pass 2C Pass
 2D Pass 3D Pass
 3NT Pass Pass Pass
+[Note "1: 10 15 no 5Major"]
 [Play "S"]
 S4 SA SQ S5
 S9 SK D5 S3
@@ -14309,7 +14309,6 @@ DJ D8 H4 DA
 H2 HJ H9 ST
 H8 H5 HK DT
 HQ HT HA H3
-[Note "1: 10 15 no 5Major"]
 [Score "NS -490"]
 [Table "22"]
 [HomeTeam "IRELAND"]
@@ -14359,6 +14358,8 @@ W  C  8
 Pass Pass 1NT Pass
 2NT =1= Pass 3C =2= Pass
 3NT Pass Pass Pass
+[Note "1: ask 5 cart M"]
+[Note "2: no 5 kard maj"]
 [Play "N"]
 HA H3 H8 H5
 H4 H6 HQ HT
@@ -14367,8 +14368,6 @@ H9 S3 S2 SJ
 C7 CA C2 C6
 -  CQ CJ - 
 *
-[Note "1: ask 5 cart M"]
-[Note "2: no 5 kard maj"]
 [Score "NS -400"]
 [Table "12"]
 [HomeTeam "SWITZERLAND"]
@@ -14411,7 +14410,7 @@ W  C  8
 [Vulnerable "EW"]
 [Deal "N:K83.K9864.QJ8.Q9 J97542.A2.K6.653 Q6.QJ7.AT94.AK72 AT.T53.7532.JT84"]
 [Scoring "IMP"]
-[Declarer "N"]
+[Declarer ""]
 [Contract "Pass"]
 [Result ""]
 [Table "1"]
@@ -14455,7 +14454,7 @@ W  C  3
 [Vulnerable "EW"]
 [Deal "N:K83.K9864.QJ8.Q9 J97542.A2.K6.653 Q6.QJ7.AT94.AK72 AT.T53.7532.JT84"]
 [Scoring "IMP"]
-[Declarer "N"]
+[Declarer ""]
 [Contract "Pass"]
 [Result ""]
 [Table "17"]
@@ -14507,6 +14506,9 @@ W  C  3
 2H Pass 3NT Pass
 4C =3= Pass 4H Pass
 Pass Pass
+[Note "1: 14-16"]
+[Note "2: ♥"]
+[Note "3:  * q, max, fit [0:13]"]
 [Play "W"]
 CJ CQ C6 C2
 H3 H4 HA H7
@@ -14515,9 +14517,6 @@ H5 H6 H2 HQ
 HT H8 S2 HJ
 SA S3 S5 S6
 *
-[Note "1: 14-16"]
-[Note "2: ♥"]
-[Note "3:  * q, max, fit [0:13]"]
 [Score "NS 450"]
 [Table "4"]
 [HomeTeam "ROMANIA"]
@@ -14566,6 +14565,7 @@ W  C  3
 [Auction "S"]
 1NT Pass 2D =1= Pass
 4H Pass Pass Pass
+[Note "1: Transf"]
 [Play "W"]
 CJ CQ C5 C2
 H5 H4 HA H7
@@ -14577,7 +14577,6 @@ D5 DQ S4 DT
 SA S3 S5 SQ
 ST SK SJ - 
 *
-[Note "1: Transf"]
 [Score "NS 450"]
 [Table "24"]
 [HomeTeam "ICELAND"]
@@ -14627,6 +14626,7 @@ W  C  3
 1NT Pass 2D =1= Pass
 2H Pass 3NT Pass
 4H Pass Pass Pass
+[Note "1: H"]
 [Play "W"]
 SA S3 S5 S6
 ST S8 S4 SQ
@@ -14636,7 +14636,6 @@ H5 H8 H2 H7
 HT HK S7 C2
 -  DQ DK - 
 *
-[Note "1: H"]
 [Score "NS 450"]
 [Table "23"]
 [HomeTeam "RUSSIA"]
@@ -14686,6 +14685,8 @@ W  C  3
 1NT Pass 2D =1= Pass
 2H =2= Pass 3NT Pass
 4H Pass Pass Pass
+[Note "1: TRF"]
+[Note "2: Alerted"]
 [Play "W"]
 CJ CQ C6 C2
 H5 H4 HA H7
@@ -14694,8 +14695,6 @@ H3 H6 H2 HQ
 HT H8 S7 HJ
 SA -  -  S6
 *
-[Note "1: TRF"]
-[Note "2: Alerted"]
 [Score "NS 450"]
 [Table "11"]
 [HomeTeam "AUSTRIA"]
@@ -14745,6 +14744,7 @@ W  C  3
 1NT Pass 2D =1= Pass
 2H Pass 3NT Pass
 4H Pass Pass Pass
+[Note "1: ♥"]
 [Play "W"]
 SA S3 S2 S6
 ST S8 S9 SQ
@@ -14753,7 +14753,6 @@ H3 SK S7 D4
 D5 DQ DK DA
 HT H6 H2 HQ
 *
-[Note "1: ♥"]
 [Score "NS 420"]
 [Table "15"]
 [HomeTeam "GERMANY"]
@@ -14803,6 +14802,8 @@ W  C  3
 1C =1= Pass 1H 1S
 X =2= Pass 3H Pass
 4H Pass Pass Pass
+[Note "1: 2+"]
+[Note "2: 3♥ (if bal, 13-16)"]
 [Play "E"]
 S4 S6 SA S8
 S9 SQ ST S3
@@ -14812,8 +14813,6 @@ H2 H7 H5 H9
 S2 D4 HT HK
 DK -  -  DQ
 *
-[Note "1: 2+"]
-[Note "2: 3♥ (if bal, 13-16)"]
 [Score "NS 450"]
 [Table "13"]
 [HomeTeam "SWEDEN"]
@@ -14865,13 +14864,6 @@ W  C  3
 3D =5= Pass 3H =6= Pass
 4D =7= Pass 4H Pass
 Pass Pass
-[Play "E"]
-S7 S6 SA S3
-S5 SQ ST S8
-HA HJ H3 H4
-S4 D4 H5 SK
-DK DA D5 DQ
-*
 [Note "1: 15+"]
 [Note "2: 4+♥, GF"]
 [Note "3: ask"]
@@ -14879,6 +14871,13 @@ DK DA D5 DQ
 [Note "5: ask"]
 [Note "6: 0-2 controls"]
 [Note "7: art sign off"]
+[Play "E"]
+S7 S6 SA S3
+S5 SQ ST S8
+HA HJ H3 H4
+S4 D4 H5 SK
+DK DA D5 DQ
+*
 [Score "NS 420"]
 [Table "21"]
 [HomeTeam "NETHERLANDS"]
@@ -14984,6 +14983,7 @@ W  C  3
 1NT Pass 2D Pass
 2H =1= Pass 3NT Pass
 4H Pass Pass Pass
+[Note "1: Alerted"]
 [Play "W"]
 SA S3 S7 S6
 ST S8 S5 SQ
@@ -14992,7 +14992,6 @@ H3 SK S9 D4
 D7 D8 D6 DT
 HT H6 H2 HQ
 *
-[Note "1: Alerted"]
 [Score "NS 420"]
 [Table "26"]
 [HomeTeam "ESTONIA"]
@@ -15043,6 +15042,11 @@ W  C  3
 2D =3= Pass 3H =4= Pass
 4C =5= Pass 4H Pass
 Pass Pass
+[Note "1: 14-16, can hold any singleton"]
+[Note "2: puppet to 2♦"]
+[Note "3: forced bid"]
+[Note "4: 5 ♥ balanced, GF"]
+[Note "5: 3+♥, cue"]
 [Play "E"]
 S5 S6 SA S3
 S7 SQ ST S8
@@ -15052,11 +15056,6 @@ DK DA D5 DQ
 H2 HJ HT H6
 S2 H7 D2 HK
 *
-[Note "1: 14-16, can hold any singleton"]
-[Note "2: puppet to 2♦"]
-[Note "3: forced bid"]
-[Note "4: 5 ♥ balanced, GF"]
-[Note "5: 3+♥, cue"]
 [Score "NS 420"]
 [Table "2"]
 [HomeTeam "SLOVENIA"]
@@ -15106,6 +15105,8 @@ W  C  3
 1NT =1= Pass 2D =2= Pass
 2H Pass 3NT Pass
 4H Pass Pass Pass
+[Note "1: 15-17"]
+[Note "2: Alerted"]
 [Play "W"]
 CJ CQ C6 C2
 H3 H4 HA H7
@@ -15114,8 +15115,6 @@ H5 H6 H2 HJ
 HT H8 S4 HQ
 SA -  -  S6
 *
-[Note "1: 15-17"]
-[Note "2: Alerted"]
 [Score "NS 450"]
 [Table "14"]
 [HomeTeam "ISRAEL"]
@@ -15165,6 +15164,7 @@ W  C  3
 1NT Pass 2D =1= Pass
 2H Pass 3NT Pass
 4H Pass Pass Pass
+[Note "1: transfer"]
 [Play "W"]
 CJ CQ C6 C7
 H5 H4 HA H7
@@ -15174,7 +15174,6 @@ HT H8 D6 HQ
 SA S3 S5 S6
 ST -  -  - 
 *
-[Note "1: transfer"]
 [Score "NS 450"]
 [Table "30"]
 [HomeTeam "LITHUANIA"]
@@ -15224,6 +15223,7 @@ W  C  3
 1NT Pass 2D =1= Pass
 2H Pass 3NT Pass
 4H Pass Pass Pass
+[Note "1: Alerted"]
 [Play "W"]
 CJ CQ C5 C2
 H5 H4 HA H7
@@ -15232,7 +15232,6 @@ H3 H6 H2 HQ
 HT H8 S5 HJ
 SA S3 S2 S6
 *
-[Note "1: Alerted"]
 [Score "NS 450"]
 [Table "5"]
 [HomeTeam "CROATIA"]
@@ -15283,6 +15282,12 @@ W  C  3
 X =3= Pass 2C =4= Pass
 2D =5= Pass 3NT =6= Pass
 Pass Pass
+[Note "1: 2+"]
+[Note "2: ♥"]
+[Note "3: 3♥"]
+[Note "4: puppet to 2♦"]
+[Note "5: art"]
+[Note "6: 5♥, choose game"]
 [Play "E"]
 S5 SQ SA S3
 SJ S6 ST S8
@@ -15296,12 +15301,6 @@ C5 CA C4 C9
 S7 CK C8 H6
 -  HJ H5 H8
 *
-[Note "1: 2+"]
-[Note "2: ♥"]
-[Note "3: 3♥"]
-[Note "4: puppet to 2♦"]
-[Note "5: art"]
-[Note "6: 5♥, choose game"]
 [Score "NS -50"]
 [Table "16"]
 [HomeTeam "NORWAY"]
@@ -15406,6 +15405,7 @@ W  C  3
 1D Pass 1H 1S
 X =1= 2S 4H Pass
 Pass Pass
+[Note "1: support"]
 [Play "E"]
 S4 S6 SA S8
 S7 SQ ST S3
@@ -15420,7 +15420,6 @@ C6 CK CT DJ
 S9 C7 CJ H6
 DK -  -  DQ
 *
-[Note "1: support"]
 [Score "NS 420"]
 [Table "25"]
 [HomeTeam "HUNGARY"]
@@ -15471,6 +15470,9 @@ W  C  3
 3D =2= Pass 3S =3= X
 Pass Pass 4H Pass
 Pass Pass
+[Note "1: puppet"]
+[Note "2: not 5M"]
+[Note "3: 4h"]
 [Play "E"]
 S4 S6 SA S8
 S2 SQ ST S3
@@ -15484,9 +15486,6 @@ S7 CK CT H8
 S9 D4 HT HK
 D6 D9 D3 DJ
 *
-[Note "1: puppet"]
-[Note "2: not 5M"]
-[Note "3: 4h"]
 [Score "NS 450"]
 [Table "7"]
 [HomeTeam "DENMARK"]
@@ -15536,6 +15535,8 @@ W  C  3
 1NT =1= Pass 2D =2= Pass
 2H Pass 3NT Pass
 4H Pass Pass Pass
+[Note "1: 14-16"]
+[Note "2: 5+H or 14+Bal"]
 [Play "W"]
 CJ CQ C6 C2
 H5 H4 HA H7
@@ -15547,8 +15548,6 @@ D2 H8 S4 SQ
 D3 DQ D6 D4
 C4 C9 C5 CA
 *
-[Note "1: 14-16"]
-[Note "2: 5+H or 14+Bal"]
 [Score "NS 450"]
 [Table "29"]
 [HomeTeam "UKRAINE"]
@@ -15598,6 +15597,9 @@ W  C  3
 1NT =1= Pass 2D =2= Pass
 2H Pass 3NT =3= Pass
 4H Pass Pass Pass
+[Note "1: 14-16"]
+[Note "2: 4+ ♥"]
+[Note "3: 5he now"]
 [Play "W"]
 CT CQ C3 C2
 H5 H4 HA H7
@@ -15606,9 +15608,6 @@ H3 H6 H2 HQ
 HT H8 S7 HJ
 ST SK S4 S6
 *
-[Note "1: 14-16"]
-[Note "2: 4+ ♥"]
-[Note "3: 5he now"]
 [Score "NS 480"]
 [Table "27"]
 [HomeTeam "BULGARIA"]
@@ -15658,6 +15657,8 @@ W  C  3
 1NT =1= Pass 2D =2= Pass
 2H Pass 3NT Pass
 4H Pass Pass Pass
+[Note "1:  * 15/17 [0:06]"]
+[Note "2:  * xfer [0:06]"]
 [Play "W"]
 SA S3 S9 S6
 ST S8 S7 SQ
@@ -15670,8 +15671,6 @@ CT H9 C6 C7
 HT HK S2 D4
 D3 DQ D6 DT
 *
-[Note "1:  * 15/17 [0:06]"]
-[Note "2:  * xfer [0:06]"]
 [Score "NS 450"]
 [Table "28"]
 [HomeTeam "PORTUGAL"]
@@ -15722,6 +15721,10 @@ W  C  3
 X =2= XX =3= 2S =4= Pass
 3H Pass 4H Pass
 Pass Pass
+[Note "1: usually4"]
+[Note "2: strong nt no ♠ stop"]
+[Note "3: ♠ A/K * usually doubleton [0:17]"]
+[Note "4:  * forcing [0:20]"]
 [Play "E"]
 S7 S6 SA S3
 S2 SQ ST S8
@@ -15734,10 +15737,6 @@ SJ D4 HT D8
 S4 C7 CT H6
 D6 D9 D2 DJ
 *
-[Note "1: usually4"]
-[Note "2: strong nt no ♠ stop"]
-[Note "3: ♠ A/K * usually doubleton [0:17]"]
-[Note "4:  * forcing [0:20]"]
 [Score "NS 420"]
 [Table "31"]
 [HomeTeam "SCOTLAND"]
@@ -15789,6 +15788,14 @@ W  C  3
 3C =5= Pass 3D =6= Pass
 4D =7= Pass 4H =8= Pass
 Pass Pass
+[Note "1: 16+, any"]
+[Note "2: 8+ bal, any 5332"]
+[Note "3: relay"]
+[Note "4: 8-11 5 any M"]
+[Note "5: relay"]
+[Note "6: 5♥ and minor dubleton"]
+[Note "7: game stopper"]
+[Note "8: Alerted"]
 [Play "E"]
 S4 SQ SA S3
 HA H7 H3 H4
@@ -15800,14 +15807,6 @@ C5 CA C8 C9
 C6 CK CT S8
 D6 D4 D3 DJ
 *
-[Note "1: 16+, any"]
-[Note "2: 8+ bal, any 5332"]
-[Note "3: relay"]
-[Note "4: 8-11 5 any M"]
-[Note "5: relay"]
-[Note "6: 5♥ and minor dubleton"]
-[Note "7: game stopper"]
-[Note "8: Alerted"]
 [Score "NS 450"]
 [Table "3"]
 [HomeTeam "LATVIA"]
@@ -15913,6 +15912,7 @@ W  C  3
 [Auction "S"]
 1NT =1= Pass 3NT Pass
 Pass Pass
+[Note "1: 15-17"]
 [Play "W"]
 C4 C9 C3 C7
 H3 H4 H2 HQ
@@ -15920,7 +15920,6 @@ H5 H6 HA HJ
 C8 CQ C5 C2
 D2 DQ DK DA
 *
-[Note "1: 15-17"]
 [Score "NS 490"]
 [Table "18"]
 [HomeTeam "ENGLAND"]
@@ -15970,6 +15969,7 @@ W  C  3
 1NT Pass 2D =1= Pass
 2H Pass 3NT Pass
 4H Pass Pass Pass
+[Note "1:  * transfer [0:07]"]
 [Play "W"]
 CJ CQ C5 C7
 H3 H4 HA H7
@@ -15979,7 +15979,6 @@ HT H8 S2 HJ
 D3 DJ D6 D4
 SA S3 S4 SQ
 *
-[Note "1:  * transfer [0:07]"]
 [Score "NS 450"]
 [Table "10"]
 [HomeTeam "SPAIN"]
@@ -16029,6 +16028,7 @@ W  C  3
 1NT Pass 2D =1= Pass
 2H Pass 3NT Pass
 4H Pass Pass Pass
+[Note "1:  * transfert [0:08]"]
 [Play "W"]
 H3 H4 HA H7
 D7 DJ DK DA
@@ -16040,7 +16040,6 @@ D5 DQ D6 D4
 D2 D8 C5 DT
 C4 S3 S7 D9
 *
-[Note "1:  * transfert [0:08]"]
 [Score "NS 480"]
 [Table "19"]
 [HomeTeam "FRANCE"]
@@ -16090,12 +16089,12 @@ W  C  3
 1NT Pass 2D =1= Pass
 2H Pass 3NT Pass
 4H Pass Pass Pass
+[Note "1:  * H or STR  [0:21]"]
 [Play "W"]
 CJ CQ C3 C2
 H3 H4 HA H7
 -  -  DK - 
 *
-[Note "1:  * H or STR  [0:21]"]
 [Score "NS 450"]
 [Table "12"]
 [HomeTeam "SWITZERLAND"]
@@ -16145,6 +16144,8 @@ W  C  3
 1NT =1= Pass 2D =2= Pass
 2H Pass 2NT Pass
 4H Pass Pass Pass
+[Note "1: 14-16"]
+[Note "2: H"]
 [Play "W"]
 CJ C9 C5 CK
 H5 H4 HA HJ
@@ -16154,8 +16155,6 @@ HT HK S2 H7
 SA S3 S4 SQ
 C4 -  -  - 
 *
-[Note "1: 14-16"]
-[Note "2: H"]
 [Score "NS 450"]
 [Table "22"]
 [HomeTeam "IRELAND"]
@@ -16198,7 +16197,7 @@ W  C  3
 [Vulnerable "All"]
 [Deal "N:983.T73.KQ832.93 AJ42.J.96.JT7654 KQ5.AQ654.AT.AK8 T76.K982.J754.Q2"]
 [Scoring "IMP"]
-[Declarer "N"]
+[Declarer ""]
 [Contract "Pass"]
 [Result ""]
 [Table "1"]
@@ -16242,7 +16241,7 @@ W  C  6
 [Vulnerable "All"]
 [Deal "N:983.T73.KQ832.93 AJ42.J.96.JT7654 KQ5.AQ654.AT.AK8 T76.K982.J754.Q2"]
 [Scoring "IMP"]
-[Declarer "N"]
+[Declarer ""]
 [Contract "Pass"]
 [Result ""]
 [Table "17"]
@@ -16294,15 +16293,15 @@ Pass Pass Pass 1C =1=
 Pass 1D =2= Pass 2NT =3=
 Pass 3NT Pass Pass
 Pass
+[Note "1: 15+"]
+[Note "2: 0-8"]
+[Note "3: 21-22"]
 [Play "W"]
 H2 H3 HJ HQ
 HK H7 C7 H4
 S6 S8 SA S5
 -  -  S2 - 
 *
-[Note "1: 15+"]
-[Note "2: 0-8"]
-[Note "3: 21-22"]
 [Score "NS 660"]
 [Table "24"]
 [HomeTeam "ICELAND"]
@@ -16415,6 +16414,11 @@ Pass 2D =2= Pass 2NT =3=
 Pass 3C =4= Pass 3H =5=
 Pass 4H Pass Pass
 Pass
+[Note "1: fg or weak ♦"]
+[Note "2: waiting"]
+[Note "3:  22-23 bal"]
+[Note "4: puppet"]
+[Note "5: 5♥"]
 [Play "W"]
 D5 D2 D9 DT
 H2 HT HJ H4
@@ -16425,11 +16429,6 @@ C2 C3 C4 CA
 CQ C9 C5 CK
 H9 -  -  C8
 *
-[Note "1: fg or weak ♦"]
-[Note "2: waiting"]
-[Note "3:  22-23 bal"]
-[Note "4: puppet"]
-[Note "5: 5♥"]
 [Score "NS -100"]
 [Table "23"]
 [HomeTeam "RUSSIA"]
@@ -16480,6 +16479,11 @@ Pass Pass Pass 2NT =1=
 Pass 3C =2= Pass 3NT =3=
 Pass 4D =4= Pass 4H =5=
 Pass Pass Pass
+[Note "1: 22-23"]
+[Note "2: modified Puppet Stayman"]
+[Note "3: 5 hearts"]
+[Note "4: Transfer to ♥"]
+[Note "5: have to say 4 h"]
 [Play "W"]
 S7 S3 SA S5
 C2 C3 CJ CA
@@ -16488,11 +16492,6 @@ H8 HT C6 H4
 CQ C9 C7 CK
 H9 -  -  C8
 *
-[Note "1: 22-23"]
-[Note "2: modified Puppet Stayman"]
-[Note "3: 5 hearts"]
-[Note "4: Transfer to ♥"]
-[Note "5: have to say 4 h"]
 [Score "NS 620"]
 [Table "15"]
 [HomeTeam "GERMANY"]
@@ -16544,6 +16543,11 @@ Pass 2D Pass 2NT =2=
 Pass 3C =3= Pass 3NT =4=
 Pass 4D =5= Pass 4H
 Pass Pass Pass
+[Note "1: strong"]
+[Note "2: 22-23"]
+[Note "3:  * ask majors [0:20]"]
+[Note "4: 5♥"]
+[Note "5: trf to 4♥"]
 [Play "W"]
 D5 D2 D9 DA
 H2 H3 HJ HA
@@ -16555,11 +16559,6 @@ HK H7 S2 H4
 D4 DK D6 DT
 D7 DQ C5 S5
 *
-[Note "1: strong"]
-[Note "2: 22-23"]
-[Note "3:  * ask majors [0:20]"]
-[Note "4: 5♥"]
-[Note "5: trf to 4♥"]
 [Score "NS 620"]
 [Table "13"]
 [HomeTeam "SWEDEN"]
@@ -16610,6 +16609,8 @@ Pass Pass Pass 2D =1=
 Pass 2H =2= Pass 2NT
 Pass 3NT Pass Pass
 Pass
+[Note "1: any onesuiter SF or bal 2223"]
+[Note "2: 0-7"]
 [Play "W"]
 H2 H3 HJ HQ
 HK H7 C7 H6
@@ -16617,8 +16618,6 @@ S7 S3 SA S5
 S6 S8 S2 SK
 H8 HT C4 H4
 *
-[Note "1: any onesuiter SF or bal 2223"]
-[Note "2: 0-7"]
 [Score "NS 660"]
 [Table "11"]
 [HomeTeam "AUSTRIA"]
@@ -16668,6 +16667,8 @@ W  C  6
 Pass Pass 2S =1= X
 3C =2= Pass Pass 3NT
 Pass Pass Pass
+[Note "1: 4+S 6+m 5-10"]
+[Note "2: Alerted"]
 [Play "W"]
 CQ C3 C4 C8
 C2 C9 CT CK
@@ -16682,8 +16683,6 @@ D5 D3 D6 DA
 D7 DK D9 DT
 DJ DQ C7 H6
 HK D8 CJ HQ
-[Note "1: 4+S 6+m 5-10"]
-[Note "2: Alerted"]
 [Score "NS 630"]
 [Table "20"]
 [HomeTeam "POLAND"]
@@ -16734,6 +16733,9 @@ Pass Pass Pass 1C =1=
 Pass 1D =2= Pass 2NT =3=
 Pass 3NT Pass Pass
 Pass
+[Note "1: 16+"]
+[Note "2: 0-7"]
+[Note "3: 22-23"]
 [Play "W"]
 S7 S8 SA S5
 CQ C3 C4 C8
@@ -16745,9 +16747,6 @@ HK H7 HJ HQ
 DJ D3 C6 H5
 ST -  -  - 
 *
-[Note "1: 16+"]
-[Note "2: 0-7"]
-[Note "3: 22-23"]
 [Score "NS 600"]
 [Table "26"]
 [HomeTeam "ESTONIA"]
@@ -16862,14 +16861,14 @@ Pass Pass Pass 2C
 Pass 2D =1= Pass 2NT =2=
 Pass 3NT Pass Pass
 Pass
+[Note "1: no ace, max 1 king"]
+[Note "2: 23-24"]
 [Play "W"]
 H2 H3 HJ HQ
 HK H7 C7 H4
 S6 S9 SA S5
 -  -  S2 - 
 *
-[Note "1: no ace, max 1 king"]
-[Note "2: 23-24"]
 [Score "NS 660"]
 [Table "25"]
 [HomeTeam "HUNGARY"]
@@ -16921,6 +16920,8 @@ Pass 2D =1= Pass 2NT
 Pass 3C =2= Pass 3H
 Pass 4H Pass Pass
 Pass
+[Note "1:  * relay [0:09]"]
+[Note "2:  * puppet ask 5 M [0:14]"]
 [Play "W"]
 D4 D2 D9 DA
 H2 H3 HJ HA
@@ -16932,8 +16933,6 @@ D5 DK D6 DT
 D7 DQ S2 S5
 -  S3 SA - 
 *
-[Note "1:  * relay [0:09]"]
-[Note "2:  * puppet ask 5 M [0:14]"]
 [Score "NS 620"]
 [Table "6"]
 [HomeTeam "TURKEY"]
@@ -16983,6 +16982,8 @@ W  C  6
 Pass Pass 3C =1= X =2=
 Pass 3D Pass 3NT
 Pass Pass Pass
+[Note "1: variable strength in 3rd"]
+[Note "2: bal T.O"]
 [Play "W"]
 CQ C3 C4 C8
 C2 C9 CT CK
@@ -16996,8 +16997,6 @@ H8 S3 C7 H5
 DJ D3 CJ H6
 S6 S8 SA - 
 *
-[Note "1: variable strength in 3rd"]
-[Note "2: bal T.O"]
 [Score "NS -100"]
 [Table "14"]
 [HomeTeam "ISRAEL"]
@@ -17051,6 +17050,15 @@ Pass 3C =5= Pass 3H =6=
 Pass 3S =7= Pass 4C =8=
 Pass 4D =9= Pass 4H
 Pass Pass Pass
+[Note "1: strong or W2♦"]
+[Note "2: forces 2s; ♥ or balanced"]
+[Note "3: must bid"]
+[Note "4: 22-23 balanced"]
+[Note "5: asking for M"]
+[Note "6: 4-5 ♥"]
+[Note "7: how many?"]
+[Note "8: 5♥ cue"]
+[Note "9: control"]
 [Play "W"]
 D5 D2 D9 DA
 H2 H3 HJ HA
@@ -17065,15 +17073,6 @@ H8 D3 CT H5
 S7 S8 SJ SQ
 H9 D8 C4 HQ
 ST S9 S4 H6
-[Note "1: strong or W2♦"]
-[Note "2: forces 2s; ♥ or balanced"]
-[Note "3: must bid"]
-[Note "4: 22-23 balanced"]
-[Note "5: asking for M"]
-[Note "6: 4-5 ♥"]
-[Note "7: how many?"]
-[Note "8: 5♥ cue"]
-[Note "9: control"]
 [Score "NS 620"]
 [Table "2"]
 [HomeTeam "SLOVENIA"]
@@ -17125,6 +17124,10 @@ Pass 1D =2= Pass 1H =3=
 Pass 1S =4= 2C X
 Pass 3D Pass 3NT
 Pass Pass Pass
+[Note "1: 15+"]
+[Note "2: 0-8"]
+[Note "3: art 18+"]
+[Note "4: 0-5"]
 [Play "W"]
 CQ C3 C5 C8
 C2 C9 CT CA
@@ -17139,10 +17142,6 @@ ST S8 SA S5
 S7 D3 C6 CK
 DJ S9 SJ SQ
 HK D8 C7 HQ
-[Note "1: 15+"]
-[Note "2: 0-8"]
-[Note "3: art 18+"]
-[Note "4: 0-5"]
 [Score "NS 600"]
 [Table "21"]
 [HomeTeam "NETHERLANDS"]
@@ -17192,6 +17191,8 @@ W  C  6
 Pass Pass 1S X
 2S =1= 2NT =2= Pass 3NT
 Pass Pass Pass
+[Note "1:  * weak  [0:09]"]
+[Note "2: lebenshol"]
 [Play "E"]
 S2 SK S6 S8
 HJ HA H2 H7
@@ -17202,8 +17203,6 @@ C4 H5 D7 DQ
 SA S5 S7 S3
 S4 -  -  - 
 *
-[Note "1:  * weak  [0:09]"]
-[Note "2: lebenshol"]
 [Score "NS 600"]
 [Table "16"]
 [HomeTeam "NORWAY"]
@@ -17254,6 +17253,7 @@ Pass Pass Pass 2C
 Pass 2D =1= Pass 2NT
 Pass 3NT Pass Pass
 Pass
+[Note "1: wait"]
 [Play "W"]
 S6 S9 SA S5
 S7 S3 S2 SK
@@ -17268,7 +17268,6 @@ C2 C3 CT CK
 CQ C9 C7 CA
 -  -  -  H6
 *
-[Note "1: wait"]
 [Score "NS 600"]
 [Table "7"]
 [HomeTeam "DENMARK"]
@@ -17320,6 +17319,12 @@ Pass 2D =2= Pass 2NT =3=
 Pass 3C =4= Pass 3NT =5=
 Pass 4D =6= Pass 4H
 Pass Pass Pass
+[Note "1: gf or 22-23 bal"]
+[Note "2:  * waiting [0:06]"]
+[Note "3: 22-23 bal"]
+[Note "4:  * mupet [0:07]"]
+[Note "5: 5♥"]
+[Note "6:  * trasf ♥ [0:09]"]
 [Play "W"]
 S6 S3 S2 SK
 H2 H3 HJ HA
@@ -17330,12 +17335,6 @@ H9 D2 CT C8
 HK H7 C5 H5
 S7 S8 SA S5
 *
-[Note "1: gf or 22-23 bal"]
-[Note "2:  * waiting [0:06]"]
-[Note "3: 22-23 bal"]
-[Note "4:  * mupet [0:07]"]
-[Note "5: 5♥"]
-[Note "6:  * trasf ♥ [0:09]"]
 [Score "NS 620"]
 [Table "5"]
 [HomeTeam "CROATIA"]
@@ -17387,6 +17386,9 @@ Pass 2D =1= Pass 2NT
 Pass 3C =2= Pass 3H =3=
 Pass 4H Pass Pass
 Pass
+[Note "1: 5+ or an ace"]
+[Note "2: 5 card stayman"]
+[Note "3:  * 5 [0:10]"]
 [Play "W"]
 S6 S9 SA S5
 C2 C3 C7 CA
@@ -17395,9 +17397,6 @@ H8 HT C4 H4
 CQ C9 CT CK
 -  -  -  C8
 *
-[Note "1: 5+ or an ace"]
-[Note "2: 5 card stayman"]
-[Note "3:  * 5 [0:10]"]
 [Score "NS 620"]
 [Table "31"]
 [HomeTeam "SCOTLAND"]
@@ -17448,6 +17447,11 @@ Pass Pass Pass 2NT =1=
 Pass 3C =2= Pass 3NT =3=
 Pass 4D =4= Pass 4NT =5=
 Pass Pass Pass
+[Note "1: 22-23"]
+[Note "2: puppet stayman"]
+[Note "3: 5♥"]
+[Note "4: puppet to 4he"]
+[Note "5: I do not like diamonds"]
 [Play "W"]
 S6 S9 SA S5
 S7 S3 S2 SK
@@ -17458,11 +17462,6 @@ HK H3 HJ HQ
 ST S8 S4 SQ
 H8 HT C4 H4
 *
-[Note "1: 22-23"]
-[Note "2: puppet stayman"]
-[Note "3: 5♥"]
-[Note "4: puppet to 4he"]
-[Note "5: I do not like diamonds"]
 [Score "NS -100"]
 [Table "27"]
 [HomeTeam "BULGARIA"]
@@ -17515,6 +17514,13 @@ Pass 2H =4= Pass 2NT =5=
 Pass 3C =6= Pass 3H =7=
 Pass 4H Pass Pass
 Pass
+[Note "1: Alerted"]
+[Note "2: Alerted"]
+[Note "3: gf"]
+[Note "4: 0-1 control"]
+[Note "5: NF * 22-23 [0:18]"]
+[Note "6: puppet"]
+[Note "7: 5h"]
 [Play "E"]
 CJ CA C2 C3
 HJ H4 H2 HT
@@ -17528,13 +17534,6 @@ S4 S5 DJ DQ
 C6 SQ H9 D8
 -  -  HK - 
 *
-[Note "1: Alerted"]
-[Note "2: Alerted"]
-[Note "3: gf"]
-[Note "4: 0-1 control"]
-[Note "5: NF * 22-23 [0:18]"]
-[Note "6: puppet"]
-[Note "7: 5h"]
 [Score "NS 620"]
 [Table "29"]
 [HomeTeam "UKRAINE"]
@@ -17585,15 +17584,15 @@ Pass Pass Pass 2D =1=
 Pass 2H =2= Pass 2NT =3=
 Pass 3NT Pass Pass
 Pass
+[Note "1: good weak 2M or 22+-24NT"]
+[Note "2: P/C"]
+[Note "3: 22+-24NT"]
 [Play "W"]
 H2 H3 HJ HQ
 HK H7 C7 H4
 S7 S8 SA S5
 -  -  S2 - 
 *
-[Note "1: good weak 2M or 22+-24NT"]
-[Note "2: P/C"]
-[Note "3: 22+-24NT"]
 [Score "NS 660"]
 [Table "18"]
 [HomeTeam "ENGLAND"]
@@ -17644,6 +17643,8 @@ Pass Pass Pass 2D =1=
 Pass 2H =2= Pass 2NT
 Pass 3NT Pass Pass
 Pass
+[Note "1: strong with one suit or 22-23 bal"]
+[Note "2:  * relay [0:16]"]
 [Play "W"]
 S7 S9 SA S5
 C2 C3 CJ CK
@@ -17658,8 +17659,6 @@ ST S8 S4 SQ
 H2 H7 C7 HA
 H9 D3 SJ H6
 DJ D8 CT H5
-[Note "1: strong with one suit or 22-23 bal"]
-[Note "2:  * relay [0:16]"]
 [Score "NS 600"]
 [Table "8"]
 [HomeTeam "GREECE"]
@@ -17710,6 +17709,8 @@ Pass Pass Pass 2NT =1=
 Pass 3C =2= X 3H
 Pass 4H Pass Pass
 Pass
+[Note "1: 21-22"]
+[Note "2: Puppet stayman"]
 [Play "W"]
 CQ C3 C7 CA
 H2 H3 HJ HA
@@ -17723,8 +17724,6 @@ D4 DK D6 DT
 D7 DQ CT S5
 S7 S9 S4 SQ
 *
-[Note "1: 21-22"]
-[Note "2: Puppet stayman"]
 [Score "NS 620"]
 [Table "3"]
 [HomeTeam "LATVIA"]
@@ -17774,6 +17773,7 @@ W  C  6
 Pass Pass 1S X
 2S =1= Pass Pass 3NT
 Pass Pass Pass
+[Note "1:  * weak [0:09]"]
 [Play "W"]
 S7 S8 SA S5
 C2 C3 CJ CA
@@ -17783,7 +17783,6 @@ D4 D2 D9 DA
 D5 DK C4 DT
 D7 DQ S2 C8
 *
-[Note "1:  * weak [0:09]"]
 [Score "NS 600"]
 [Table "22"]
 [HomeTeam "IRELAND"]
@@ -17835,6 +17834,12 @@ Pass 2H =2= Pass 2NT =3=
 Pass 3C =4= Pass 3NT =5=
 Pass 4D =6= Pass 4H
 Pass Pass Pass
+[Note "1:  * 22-23 bal or GF [0:06]"]
+[Note "2: 0-6"]
+[Note "3:  * 22-23 bal [0:06]"]
+[Note "4: muppet st"]
+[Note "5:  * 5♥ [0:04]"]
+[Note "6: retransf"]
 [Play "E"]
 C4 CA C2 C3
 HJ HA H2 H3
@@ -17849,12 +17854,6 @@ D6 DA D4 D3
 D9 DT D5 DK
 C6 S5 D7 DQ
 SA SQ DJ D8
-[Note "1:  * 22-23 bal or GF [0:06]"]
-[Note "2: 0-6"]
-[Note "3:  * 22-23 bal [0:06]"]
-[Note "4: muppet st"]
-[Note "5:  * 5♥ [0:04]"]
-[Note "6: retransf"]
 [Score "NS 620"]
 [Table "28"]
 [HomeTeam "PORTUGAL"]
@@ -17905,15 +17904,15 @@ Pass Pass Pass 2D =1=
 Pass 2H =2= Pass 2NT =3=
 Pass 3NT Pass Pass
 Pass
+[Note "1:  * art strong, close to GF [0:10]"]
+[Note "2: waiting"]
+[Note "3:  * 22-23 nt [0:11]"]
 [Play "W"]
 H2 H7 HJ HQ
 HK H3 D9 H5
 H8 HT D6 H4
 -  S3 SA - 
 *
-[Note "1:  * art strong, close to GF [0:10]"]
-[Note "2: waiting"]
-[Note "3:  * 22-23 nt [0:11]"]
 [Score "NS 660"]
 [Table "19"]
 [HomeTeam "FRANCE"]
@@ -17965,6 +17964,11 @@ Pass 2D =2= Pass 2NT =3=
 Pass 3C =4= Pass 3H =5=
 Pass 4H Pass Pass
 Pass
+[Note "1: many strongs"]
+[Note "2: relay"]
+[Note "3: bal 22-24"]
+[Note "4: puppet stayman"]
+[Note "5: 5"]
 [Play "W"]
 S7 S3 S2 SK
 H2 H3 HJ HA
@@ -17977,11 +17981,6 @@ H9 S8 C5 H6
 HK S9 C6 H5
 ST D3 SA S5
 *
-[Note "1: many strongs"]
-[Note "2: relay"]
-[Note "3: bal 22-24"]
-[Note "4: puppet stayman"]
-[Note "5: 5"]
 [Score "NS 620"]
 [Table "10"]
 [HomeTeam "SPAIN"]
