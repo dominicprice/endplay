@@ -10,10 +10,11 @@ import warnings
 from collections.abc import Iterator
 from typing import Optional, Union
 
-from endplay.dealer.constraint import ConstraintInterpreter, Expr
-from endplay.types import Card, Deal, Denom, Player, Rank
 from numpy.random import RandomState  # guaranteed to be stable for numpy>=1.16
 from tqdm import trange  # type: ignore
+
+from endplay.dealer.constraint import ConstraintInterpreter, Expr
+from endplay.types import Card, Deal, Denom, Player, Rank
 
 
 class DealNotGeneratedError(RuntimeError):
