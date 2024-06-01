@@ -44,7 +44,7 @@ Binary Python wheels are built and distributed on [PyPI](https://pypi.org/projec
 | ------------- | -------- | -------- | -------- |
 | x86 (CPython) | N/A      | N/A      | N/A      |
 | x64 (CPython) | 3.9-3.12 | 3.9-3.12 | 3.9-3.12 |
-| x64 (PyPy)    | N/A      | 3.8-3.10 | N/A      |
+| x64 (PyPy)    | N/A      | 3.9-3.10 | N/A      |
 
 On these systems `python3 -m pip install endplay` will install these pre-built wheels, otherwise it will attempt to install from the source distribution which requires a C++ compiler on your system. Note that *endplay* requires Python 3.7+.
 
