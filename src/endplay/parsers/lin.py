@@ -24,6 +24,7 @@ from endplay.utils.escape import escape_suits, unescape_suits
 from endplay.utils.play import result_to_tricks, total_tricks, tricks_to_result
 import re
 
+
 class LINDecoder:
     """
     Class providing functionality for reading the LIN file format
@@ -52,25 +53,25 @@ class LINDecoder:
             elif key == "rh":
                 # reset heading
                 continue
-            elif  key == "qx":
+            elif key == "qx":
                 # create label
                 continue
-            elif  key == "va":
+            elif key == "va":
                 # vertical adjust
                 continue
-            elif  key == "sa":
+            elif key == "sa":
                 # size auction
                 continue
-            elif  key == "mn":
+            elif key == "mn":
                 # Main name
                 continue
-            elif  key == "bt":
+            elif key == "bt":
                 # Main name
                 continue
-            elif  key == "tu":
+            elif key == "tu":
                 # Main name
                 continue
-            elif  key == "nt":
+            elif key == "nt":
                 # Marks an alert for the previous bid
                 auction[-1].announcement = unescape_suits(value)
             elif key == "pn":
@@ -138,7 +139,7 @@ class LINDecoder:
     def parse_string(self, lin: str) -> list[Board]:
         boards = []
         # Use regex to split on 'pn|' but keep 'pn|' in the result
-        split_content = re.split(r'(pn\|)', lin)
+        split_content = re.split(r"(pn\|)", lin)
         final_split_content = []
         for i in range(1, len(split_content), 2):
             final_split_content.append(split_content[i] + split_content[i + 1])
@@ -151,7 +152,7 @@ class LINDecoder:
         # Read the file content
         content = f.read()
         # Remove CRLF characters
-        cleaned_content = content.replace('\r\n', '').replace('\n', '')
+        cleaned_content = content.replace("\r\n", "").replace("\n", "")
 
         boards = self.parse_string(cleaned_content)
         return boards

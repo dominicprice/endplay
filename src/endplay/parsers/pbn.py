@@ -137,7 +137,7 @@ class PBNDecoder:
                 dealer = Player.find(value) if value else None
             elif key == "contract":
                 if value == "?":
-                    board.contract = "Pass"
+                    board.contract = None
                 else:
                     board.contract = Contract(value or "Pass")
             elif key == "result":
