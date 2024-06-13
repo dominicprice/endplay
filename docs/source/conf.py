@@ -7,8 +7,8 @@
 # -- Path setup --------------------------------------------------------------
 
 import sys
-from distutils.dir_util import copy_tree
 from pathlib import Path
+from shutil import copytree
 
 sourcedir = Path(__file__).parent.resolve()
 docsdir = sourcedir.parent
@@ -90,7 +90,7 @@ index_sections = [
 ]
 
 # copy everything from 'static_pages' into 'pages'
-copy_tree("static_pages", "pages", update=True)
+copytree("static_pages", "pages")
 
 # -- Options for HTML output -------------------------------------------------
 
