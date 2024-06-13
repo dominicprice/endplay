@@ -12,8 +12,6 @@ from io import StringIO
 from itertools import chain
 from typing import IO, Any, Optional, Union
 
-from more_itertools import chunked
-
 from endplay.config import suppress_unicode
 from endplay.types import (
     Bid,
@@ -34,6 +32,7 @@ from endplay.utils.play import (
     tabularise_play,
     tricks_to_result,
 )
+from more_itertools import chunked
 
 
 class PBNDecodeError(ValueError):

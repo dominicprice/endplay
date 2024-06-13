@@ -7,7 +7,6 @@ __all__ = ["DealerParser", "ParseException"]
 from typing import Optional, TextIO
 
 import pyparsing as pp
-
 from endplay.types import Contract, Deal, Denom, Hand, Player, Vul
 
 pp.ParserElement.enable_packrat()
