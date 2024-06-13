@@ -129,13 +129,22 @@ class PBNDecoder:
             elif key == "deal":
                 board.deal = Deal(value)
             elif key == "declarer":
-                declarer = Player.find(value) if value else None
+                if value == "?":
+                    declarer = None
+                else:
+                    declarer = Player.find(value) if value else None
             elif key == "dealer":
                 dealer = Player.find(value) if value else None
             elif key == "contract":
-                board.contract = Contract(value or "Pass")
+                if value == "?":
+                    board.contract = "Pass"
+                else:
+                    board.contract = Contract(value or "Pass")
             elif key == "result":
-                tricks = int(value or "0")
+                if value == "?":
+                    tricks = 0
+                else:
+                    tricks = int(value or "0")
             elif key == "auction":
                 # Requires converting; iterate over the bids and check for
                 # special values and deal with them appropriately, otherise
