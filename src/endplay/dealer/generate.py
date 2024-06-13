@@ -200,7 +200,7 @@ def generate_deals(
                     raise DealNotGeneratedError(message)
                 else:
                     warnings.warn(message, DealNotGeneratedWarning)
-                    return generated
+                    return
             generated += 1
             rs.shuffle(cards)  # type: ignore
             deal = predeal.copy()
@@ -211,7 +211,7 @@ def generate_deals(
                     yield perm
                     produced = True
                     break
-    return generated
+    return
 
 
 def _generate_swaps(deal: Deal, swapping: int):
