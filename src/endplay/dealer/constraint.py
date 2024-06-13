@@ -187,6 +187,8 @@ class ConstraintInterpreter:
             return self._fn_hascard(node, deal)
         elif node.value == "imp" or node.value == "imps":
             return self._fn_imps(node, deal)
+        elif node.value == "if":
+            return self._fn_if(node, deal)
         else:
             raise ValueError(f"Unknown function {node.value}")
 
