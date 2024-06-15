@@ -7,6 +7,8 @@ __all__ = ["LINEncodeError", "dump", "dumps", "load", "loads"]
 import re
 from typing import IO
 
+from more_itertools import chunked
+
 from endplay.config import suppress_unicode
 from endplay.types import (
     Bid,
@@ -21,7 +23,6 @@ from endplay.types import (
 )
 from endplay.utils.escape import escape_suits, unescape_suits
 from endplay.utils.play import result_to_tricks, total_tricks, tricks_to_result
-from more_itertools import chunked
 
 
 class LINDecoder:
@@ -34,8 +35,8 @@ class LINDecoder:
 
     def parse_line(self, line: str) -> Board:
         deal = None
-        auction = []
-        play = []
+        auction: list[Bid] = []
+        play: list[Card] = []
         board_num = None
         dealer = None
         vul = None
