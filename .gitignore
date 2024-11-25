@@ -36,6 +36,7 @@ src/endplay/_dds/dds.dll
 src/endplay/_dds/libdds.so
 src/endplay/_dds/libdds.dylib
 src/endplay/_dds/__init__.py
+/setup.py
 
 # clangd files
 /.cache/
@@ -47,7 +48,3 @@ TestResults/
 startup.py
 runfile
 src/dump.txt
-
-# No longer generated after switching form scikit-build
-MANIFEST
-_skbuild/*

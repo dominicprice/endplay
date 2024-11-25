@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "endplay"
-version = "0.5.10"
+version = "0.5.11"
 description = "A suite of tools for generation and analysis of bridge deals"
 license = "MIT"
 authors = ["Dominic Price <dominicprice@outlook.com>"]
@@ -10,11 +10,11 @@ classifiers = [
     "Development Status :: 4 - Beta",
     "Natural Language :: English",
     "Topic :: Games/Entertainment",
-    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent"
 ]
@@ -40,7 +40,7 @@ python = "^3.9"
 pyparsing = ">=3.0"
 tqdm = ">=4.65"
 numpy = ">=1.26"
-matplotlib = ">=2.0"
+matplotlib = ">=3.0"
 more-itertools = ">=9.0"
 
 [tool.poetry.group.dev.dependencies]
@@ -61,7 +61,7 @@ generate-setup-file = true
 [build-system]
 requires = [
     "poetry-core",
-    "setuptools>=42",
+    "setuptools==70.3.0",
     "cmake>=3.13"
 ]
 build-backend = "poetry.core.masonry.api"
