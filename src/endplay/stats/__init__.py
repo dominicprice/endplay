@@ -23,7 +23,7 @@ def frequency(
     deals: Iterable[Deal],
     func: Expr,
     lb: int,
-    ub: int,
+    hb: int,
 ) -> list[int]:
     """
     Calculate the value of a function over a range of deals, and bin the results into
@@ -32,11 +32,10 @@ def frequency(
     :param deals: The input sequence of deals
     :param func: The function to evaluate over `deals`
     :param lb: Value below which values are ignored
-    :param ub: Value above which values are ignored
+    :param hb: Value above which values are ignored
     :return: An array of bins, and a tuple containing the left and right boundaries
     """
-    lb, ub = floor(lb), ceil(ub)
-    bins = list(range(lb, ub + 1))
+    bins = list(range(lb, hb + 1))
     hist = [0] * len(bins)
     for deal in deals:
         val = round(func(deal))

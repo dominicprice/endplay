@@ -1,6 +1,5 @@
 import io
 import os
-import re
 import unittest
 import warnings
 from unittest.mock import patch
@@ -9,7 +8,6 @@ from endplay import config
 from endplay.dealer import *
 from endplay.dealer.constraint import ConstraintInterpreter
 from endplay.evaluate import *
-from endplay.parsers.dealer import DealerParser
 from endplay.types import *
 
 config.use_unicode = False
@@ -143,11 +141,7 @@ class TestDealerMain(unittest.TestCase):
                 f.write(script_output)
         with open(out_fname, encoding="utf-8") as f:
             expected_output = f.read()
-        if script_output != expected_output:
-            warnings.warn(
-                "Output did not match expected output; results of hand generation may differ on this machine from the standard implementation"
-            )
-        # self.assertEqual(script_output, expected_output)
+        self.assertEqual(script_output, expected_output)
 
     def test_print_actions(self):
         self.assertScriptOutputs("test_print_actions", "plain")
@@ -155,19 +149,15 @@ class TestDealerMain(unittest.TestCase):
         self.assertScriptOutputs("test_print_actions", "html")
 
     def test_stat_actions(self):
-        # Checking the actual output of the plots is very unstable, and as we are not actually testing whether
-        # matplotlib produces consistently produces the same output we mock the Figure class
-        with patch("matplotlib.pyplot.figure"):
-            self.assertScriptOutputs("test_stat_actions", "plain")
-            self.assertScriptOutputs("test_stat_actions", "latex")
-            self.assertScriptOutputs("test_stat_actions", "html")
+        self.assertScriptOutputs("test_stat_actions", "plain")
+        self.assertScriptOutputs("test_stat_actions", "latex")
+        self.assertScriptOutputs("test_stat_actions", "html")
 
 
 class TestGenerator(unittest.TestCase):
     def test_01(self):
-        deal1 = generate_deal()
-        deal2 = generate_deal("hcp(north) == 10")
-        self.assertEqual(hcp(deal2[Player.north]), 10)
+        deal1 = generate_deal("hcp(north) == 10")
+        self.assertEqual(hcp(deal1[Player.north]), 10)
 
 
 if __name__ == "__main__":

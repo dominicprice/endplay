@@ -4,10 +4,6 @@ Actions class for producing LaTeX output.
 
 __all__ = ["LaTeXActions"]
 
-from io import StringIO
-
-import matplotlib.pyplot as plt  # type: ignore
-
 import endplay.stats as stats
 from endplay.dealer.actions.base import BaseActions, BaseActionsWriter
 from endplay.types import Denom, Player
@@ -39,7 +35,7 @@ class LaTeXActionsWriter(BaseActionsWriter):
 
     def printcompact(self, expr=None):
         if expr is None:
-            expr = lambda deal: ""
+            expr = lambda _: ""
         for deal in self.deals:
             self.write(r"\begin{tabular}{l | l | l | l | l | l}")
             self.write(
@@ -94,56 +90,38 @@ class LaTeXActionsWriter(BaseActionsWriter):
             self.write(s, end="")
         self.write(stats.average(self.deals, expr))
 
-    @staticmethod
-    def mpl_init_pgf():
-        import matplotlib
+    def frequency1d(self, expr, lb, hb, s=None):
+        if s:
+            self.write(r"\subsection*{" + s + "}")
+        hist = stats.frequency(self.deals, expr, lb, hb)
+        cols = " | ".join("c" for _ in range(lb, hb + 1))
+        self.write(r"\begin{center}")
+        self.write(r"\begin{tabular}{| " + cols + "|}")
+        self.write(r"\hline")
+        self.write(" & ".join(str(i) for i in range(lb, hb + 1)) + r" \\ \hline")
+        self.write(" & ".join(str(v) for v in hist) + r" \\ \hline")
+        self.write(r"\end{tabular}")
+        self.write(r"\end{center}")
 
-        matplotlib.use("pgf")
-        matplotlib.rcParams.update(
-            {
-                "pgf.texsystem": "pdflatex",
-                "font.family": "serif",
-                "text.usetex": True,
-                "pgf.rcfonts": False,
-            }
+    def frequency2d(self, ex1, lb1, hb1, ex2, lb2, hb2, s=None):
+        if s:
+            self.write(r"\subsection*{" + s + "}")
+        hist = stats.cofrequency(self.deals, ex1, ex2, lb1, hb1, lb2, hb2)
+        cols = " | ".join("c" for _ in range(lb2, hb2 + 1))
+        self.write(r"\begin{center}")
+        self.write(r"\begin{tabular}{| c | " + cols + " |}")
+        self.write(r"\hline")
+        self.write(
+            " & " + " & ".join(str(i) for i in range(lb2, hb2 + 1)) + r" \\ \hline"
         )
-
-    def frequency1d(self, expr, lb, ub, s=None):
-        LaTeXActionsWriter.mpl_init_pgf()
-        hist = stats.frequency(self.deals, expr, lb, ub)
-        fig, ax = plt.subplots()
-        ax.bar(list(range(lb, ub + 1)), hist)
-        if s:
-            ax.set_title(s)
-        f = StringIO()
-        fig.savefig(f, format="pgf")
-        self.write(f.getvalue())
-
-    def frequency2d(self, ex1, lb1, ub1, ex2, lb2, ub2, s=None):
-        LaTeXActionsWriter.mpl_init_pgf()
-        hist = stats.cofrequency(self.deals, ex1, ex2, lb1, ub1, lb2, ub2)
-        fig, ax = plt.subplots()
-        m = ax.matshow(hist)
-        fig.colorbar(m)
-        ax.set_xticks(list(range(1 + ub2 - lb2)))
-        ax.set_xticklabels([str(i) for i in range(lb2, ub2 + 1)])
-        ax.set_yticks(list(range(1 + ub1 - lb1)))
-        ax.set_yticklabels([str(i) for i in range(lb1, ub1 + 1)])
-        if s:
-            ax.set_title(s)
-        f = StringIO()
-        fig.delaxes(
-            fig.get_axes()[1]
-        )  # fixme: currently don't support colorbar in latex
-        fig.savefig(f, format="pgf")
-        self.write(f.getvalue())
+        for i, row in enumerate(hist, lb1):
+            self.write(f"{i} & " + " & ".join(str(v) for v in row) + r" \\ \hline")
+        self.write(r"\end{tabular}")
+        self.write(r"\end{center}")
 
 
 preamble = r"""
-\documentclass[12pt]{article}
-\usepackage[left=20mm,right=20mm,top=20mm,bottom=20mm]{geometry}
-\usepackage{graphicx}
-\usepackage{pgfplots}
+\documentclass{article}
 \begin{document}
 """
 

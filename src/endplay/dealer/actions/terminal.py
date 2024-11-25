@@ -8,7 +8,6 @@ from io import StringIO
 
 import endplay.stats as stats
 from endplay.dealer.actions.base import BaseActions, BaseActionsWriter
-from endplay.dealer.constraint import Expr
 from endplay.types import Player
 
 
@@ -84,8 +83,8 @@ class TerminalActionsWriter(BaseActionsWriter):
             self.write(s, end="")
         self.write(stats.average(self.deals, expr))
 
-    def frequency1d(self, expr, lb, ub, s=None):
-        hist = stats.frequency(self.deals, expr, lb, ub)
+    def frequency1d(self, expr, lb, hb, s=None):
+        hist = stats.frequency(self.deals, expr, lb, hb)
         if s:
             self.write(s)
             self.write("=" * len(s))
@@ -94,12 +93,12 @@ class TerminalActionsWriter(BaseActionsWriter):
         for row in rows:
             self.write(row[0].rjust(lhs_size), row[1])
 
-    def frequency2d(self, ex1, lb1, ub1, ex2, lb2, ub2, s=None):
-        hist = stats.cofrequency(self.deals, ex1, ex2, lb1, ub1, lb2, ub2)
+    def frequency2d(self, ex1, lb1, hb1, ex2, lb2, hb2, s=None):
+        hist = stats.cofrequency(self.deals, ex1, ex2, lb1, hb1, lb2, hb2)
         if s:
             self.write(s)
             self.write("=" * len(s))
-        rows = [[""] + [str(i) for i in range(lb2, ub2 + 1)]]
+        rows = [[""] + [str(i) for i in range(lb2, hb2 + 1)]]
         for j, row in enumerate(hist, lb1):
             rows += [[str(j) + " |"] + [str(r) for r in row]]
         width = max(max(len(cell) for cell in row) for row in rows)

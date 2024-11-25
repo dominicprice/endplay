@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -233,6 +234,7 @@
 </head>
 <body>
     <div class="content">
+
 <div>
 <div class="deal" style="margin: 20px">
 <div></div> <div class="hand north"><div class="spades">K843</div><div class="hearts">95</div><div class="diamonds">T743</div><div class="clubs">K52</div></div> <div></div> <div class="hand west"><div class="spades">AQJ</div><div class="hearts">AKQ32</div><div class="diamonds">985</div><div class="clubs">QT</div></div> <div class="compass"><div class="north">N</div><div class="west">W</div><div class="east">E</div><div class="south">S</div></div> <div class="hand east"><div class="spades">T7</div><div class="hearts">J64</div><div class="diamonds">KQ62</div><div class="clubs">AJ83</div></div> <div></div> <div class="hand south"><div class="spades">9652</div><div class="hearts">T87</div><div class="diamonds">AJ</div><div class="clubs">9764</div></div> <div></div>
@@ -1612,6 +1614,8 @@ Number of hearts: 2<br></div></td>
 Number of hearts: 4<br></div></td>
 </tr>
 </table>
+
 </div>
 </body>
 </html>
+

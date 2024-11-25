@@ -156,8 +156,8 @@ class BaseActionsWriter(ABC):
     def frequency1d(
         self,
         expr: Expr,
-        lower_bound: float,
-        upper_bound: float,
+        lb: int,
+        hb: int,
         s: Optional[str] = None,
     ): ...
 
@@ -165,10 +165,10 @@ class BaseActionsWriter(ABC):
     def frequency2d(
         self,
         ex1: Expr,
-        lb1: float,
-        hb1: float,
+        lb1: int,
+        hb1: int,
         ex2: Expr,
-        lb2: float,
-        hb2: float,
+        lb2: int,
+        hb2: int,
         s: Optional[str] = None,
     ): ...

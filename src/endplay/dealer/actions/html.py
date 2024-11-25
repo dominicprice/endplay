@@ -4,10 +4,7 @@ Actions class for producing HTML output
 
 __all__ = ["HTMLActions"]
 
-from io import StringIO
-
-import matplotlib.pyplot as plt  # type: ignore
-
+import html
 import endplay.stats as stats
 from endplay.dealer.actions.base import BaseActions, BaseActionsWriter
 from endplay.types import Denom, Player, Vul
@@ -155,30 +152,38 @@ class HTMLActionsWriter(BaseActionsWriter):
             '<div class="valuebox">', s, stats.average(self.deals, expr), "</div>"
         )
 
-    def frequency1d(self, expr, lb, ub, s=None):
-        hist = stats.frequency(self.deals, expr, lb, ub)
-        fig, ax = plt.subplots()
-        ax.bar(list(range(lb, ub + 1)), hist)
+    def frequency1d(self, expr, lb, hb, s=None):
+        hist = stats.frequency(self.deals, expr, lb, hb)
         if s:
-            ax.set_title(s)
-        f = StringIO()
-        fig.savefig(f, format="svg")
-        self.write('<div class="valuebox">', f.getvalue(), "</div>")
+            self.write("<h3>" + html.escape(s) + "</h3>")
+        self.write("<table>")
+        self.write("<tr>")
+        for i in range(lb, hb + 1):
+            self.write(f"<th>{i}</th>")
+        self.write("</tr>")
+        self.write("<tr>")
+        for v in hist:
+            self.write(f"<td>{v}</td>")
+        self.write("</tr>")
+        self.write("</table>")
 
-    def frequency2d(self, ex1, lb1, ub1, ex2, lb2, ub2, s=None):
-        hist = stats.cofrequency(self.deals, ex1, ex2, lb1, ub1, lb2, ub2)
-        fig, ax = plt.subplots()
-        m = ax.matshow(hist)
-        fig.colorbar(m)
-        ax.set_xticks(list(range(1 + ub2 - lb2)))
-        ax.set_xticklabels([str(i) for i in range(lb2, ub2 + 1)])
-        ax.set_yticks(list(range(1 + ub1 - lb1)))
-        ax.set_yticklabels([str(i) for i in range(lb1, ub1 + 1)])
+    def frequency2d(self, ex1, lb1, hb1, ex2, lb2, hb2, s=None):
+        hist = stats.cofrequency(self.deals, ex1, ex2, lb1, hb1, lb2, hb2)
         if s:
-            ax.set_title(s)
-        f = StringIO()
-        fig.savefig(f, format="svg")
-        self.write('<div class="valuebox">', f.getvalue(), "</div>")
+            self.write("<h3>" + html.escape(s) + "</h3>")
+        self.write("<table>")
+        self.write("<tr>")
+        self.write("<td></td>")
+        for i in range(lb2, hb2 + 1):
+            self.write(f"<th>{i}</th>")
+        self.write("</tr>")
+        for i, row in enumerate(hist, lb1):
+            self.write("<tr>")
+            self.write(f"<th>{i}</th>")
+            for v in row:
+                self.write(f"<td>{v}</td>")
+            self.write("</tr>")
+        self.write("</table>")
 
 
 preamble = r"""
