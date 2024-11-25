@@ -3,9 +3,9 @@ name: build_and_test
 on:
   push:
     tags-ignore:
-	  - '**'
-	branches:
-	  - '**'
+      - '**'
+    branches:
+      - '**'
   workflow_call:
   workflow_dispatch:
 
