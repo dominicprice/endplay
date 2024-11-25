@@ -5,6 +5,7 @@ Actions class for producing HTML output
 __all__ = ["HTMLActions"]
 
 import html
+
 import endplay.stats as stats
 from endplay.dealer.actions.base import BaseActions, BaseActionsWriter
 from endplay.types import Denom, Player, Vul
