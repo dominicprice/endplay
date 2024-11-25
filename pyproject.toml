@@ -36,7 +36,7 @@ keywords = [
 "Bug Tracker" = "https://github.com/dominicprice/endplay/issues"
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.9"
 pyparsing = ">=3.0"
 tqdm = ">=4.65"
 numpy = ">=1.26"
