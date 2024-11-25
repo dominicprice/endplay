@@ -31,21 +31,9 @@ jobs:
         run: python -m cibuildwheel --output-dir wheelhouse
         env:
           CIBW_BUILD: "cp39-* cp310-* cp311-* cp312-* cp313-* pp39-* pp310-*"
-          CIBW_SKIP: "pp*-win* pp*-macos*"
           CIBW_ARCHS: auto64
           CIBW_TEST_REQUIRES: pytest
           CIBW_TEST_COMMAND: pytest {package}/tests
-          CIBW_BEFORE_TEST_LINUX: >
-            if command -v yum; then
-              yum install -y libjpeg-devel;
-            elif command -v apt-get; then
-              apt-get install -y libjpeg-dev;
-            elif command -v apk; then
-              apk add jpeg-dev;
-            else
-              echo "No package manager found for system $(uname -a)";
-              exit 1;
-            fi
       - uses: actions/upload-artifact@v4
         with:
           name: cibw-wheels-${{ matrix.os }}-${{ strategy.job-index }}

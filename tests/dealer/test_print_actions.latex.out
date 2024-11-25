@@ -1,8 +1,7 @@
-\documentclass[12pt]{article}
-\usepackage[left=20mm,right=20mm,top=20mm,bottom=20mm]{geometry}
-\usepackage{graphicx}
-\usepackage{pgfplots}
+
+\documentclass{article}
 \begin{document}
+
 \noindent 
 \resizebox{0.33\textwidth}{!}{\begin{tabular}{c c c} & \begin{tabular}{l}$\spadesuit$ \makebox[.8em]{K}\makebox[.8em]{8}\makebox[.8em]{4}\makebox[.8em]{3}\\$\heartsuit$ \makebox[.8em]{9}\makebox[.8em]{5}\\$\diamondsuit$ \makebox[.8em]{1\kern-.16em0}\makebox[.8em]{7}\makebox[.8em]{4}\makebox[.8em]{3}\\$\clubsuit$ \makebox[.8em]{K}\makebox[.8em]{5}\makebox[.8em]{2}\\\end{tabular} & \\\begin{tabular}{l}$\spadesuit$ \makebox[.8em]{A}\makebox[.8em]{Q}\makebox[.8em]{J}\\$\heartsuit$ \makebox[.8em]{A}\makebox[.8em]{K}\makebox[.8em]{Q}\makebox[.8em]{3}\makebox[.8em]{2}\\$\diamondsuit$ \makebox[.8em]{9}\makebox[.8em]{8}\makebox[.8em]{5}\\$\clubsuit$ \makebox[.8em]{Q}\makebox[.8em]{1\kern-.16em0}\\\end{tabular} & \fbox{\begin{tabular}{c c c}&N&\\W&&E\\&S&\end{tabular}} & \begin{tabular}{l}$\spadesuit$ \makebox[.8em]{1\kern-.16em0}\makebox[.8em]{7}\\$\heartsuit$ \makebox[.8em]{J}\makebox[.8em]{6}\makebox[.8em]{4}\\$\diamondsuit$ \makebox[.8em]{K}\makebox[.8em]{Q}\makebox[.8em]{6}\makebox[.8em]{2}\\$\clubsuit$ \makebox[.8em]{A}\makebox[.8em]{J}\makebox[.8em]{8}\makebox[.8em]{3}\\\end{tabular}\\ & \begin{tabular}{l}$\spadesuit$ \makebox[.8em]{9}\makebox[.8em]{6}\makebox[.8em]{5}\makebox[.8em]{2}\\$\heartsuit$ \makebox[.8em]{1\kern-.16em0}\makebox[.8em]{8}\makebox[.8em]{7}\\$\diamondsuit$ \makebox[.8em]{A}\makebox[.8em]{J}\\$\clubsuit$ \makebox[.8em]{9}\makebox[.8em]{7}\makebox[.8em]{6}\makebox[.8em]{4}\\\end{tabular} & \end{tabular}}
 \resizebox{0.33\textwidth}{!}{\begin{tabular}{c c c} & \begin{tabular}{l}$\spadesuit$ \makebox[.8em]{A}\makebox[.8em]{J}\makebox[.8em]{5}\\$\heartsuit$ \makebox[.8em]{A}\makebox[.8em]{9}\makebox[.8em]{8}\makebox[.8em]{3}\\$\diamondsuit$ \makebox[.8em]{A}\makebox[.8em]{K}\makebox[.8em]{J}\makebox[.8em]{8}\makebox[.8em]{6}\makebox[.8em]{5}\\$\clubsuit$ ---\\\end{tabular} & \\\begin{tabular}{l}$\spadesuit$ \makebox[.8em]{Q}\\$\heartsuit$ \makebox[.8em]{K}\makebox[.8em]{1\kern-.16em0}\makebox[.8em]{6}\makebox[.8em]{4}\makebox[.8em]{2}\\$\diamondsuit$ \makebox[.8em]{4}\\$\clubsuit$ \makebox[.8em]{A}\makebox[.8em]{1\kern-.16em0}\makebox[.8em]{8}\makebox[.8em]{7}\makebox[.8em]{5}\makebox[.8em]{3}\\\end{tabular} & \fbox{\begin{tabular}{c c c}&N&\\W&&E\\&S&\end{tabular}} & \begin{tabular}{l}$\spadesuit$ \makebox[.8em]{K}\makebox[.8em]{8}\makebox[.8em]{7}\makebox[.8em]{6}\makebox[.8em]{4}\makebox[.8em]{2}\\$\heartsuit$ \makebox[.8em]{Q}\\$\diamondsuit$ \makebox[.8em]{1\kern-.16em0}\makebox[.8em]{9}\makebox[.8em]{3}\makebox[.8em]{2}\\$\clubsuit$ \makebox[.8em]{J}\makebox[.8em]{4}\\\end{tabular}\\ & \begin{tabular}{l}$\spadesuit$ \makebox[.8em]{1\kern-.16em0}\makebox[.8em]{9}\makebox[.8em]{3}\\$\heartsuit$ \makebox[.8em]{J}\makebox[.8em]{7}\makebox[.8em]{5}\\$\diamondsuit$ \makebox[.8em]{Q}\makebox[.8em]{7}\\$\clubsuit$ \makebox[.8em]{K}\makebox[.8em]{Q}\makebox[.8em]{9}\makebox[.8em]{6}\makebox[.8em]{2}\\\end{tabular} & \end{tabular}}
@@ -266,5 +265,6 @@ Number of hearts: 2
 Number of hearts: 3
 Number of hearts: 2
 Number of hearts: 4
+
 \end{document}
 

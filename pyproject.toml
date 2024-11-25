@@ -40,7 +40,6 @@ python = "^3.9"
 pyparsing = ">=3.0"
 tqdm = ">=4.65"
 numpy = ">=1.26"
-matplotlib = ">=3.0"
 more-itertools = ">=9.0"
 
 [tool.poetry.group.dev.dependencies]
