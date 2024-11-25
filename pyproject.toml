@@ -10,6 +10,7 @@ classifiers = [
     "Development Status :: 4 - Beta",
     "Natural Language :: English",
     "Topic :: Games/Entertainment",
+    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
