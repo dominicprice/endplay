@@ -10,11 +10,10 @@ classifiers = [
     "Development Status :: 4 - Beta",
     "Natural Language :: English",
     "Topic :: Games/Entertainment",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent"
 ]
@@ -36,11 +35,11 @@ keywords = [
 "Bug Tracker" = "https://github.com/dominicprice/endplay/issues"
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.10"
 pyparsing = ">=3.0"
 tqdm = ">=4.65"
 numpy = ">=1.26"
-matplotlib = ">=2.0"
+matplotlib = ">=3.0"
 more-itertools = ">=9.0"
 
 [tool.poetry.group.dev.dependencies]
@@ -61,7 +60,7 @@ generate-setup-file = true
 [build-system]
 requires = [
     "poetry-core",
-    "setuptools>=42",
+    "setuptools>=67",
     "cmake>=3.13"
 ]
 build-backend = "poetry.core.masonry.api"
