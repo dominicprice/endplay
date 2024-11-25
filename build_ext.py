@@ -39,9 +39,11 @@ class cmakeable_build_ext(build_ext):
 
         # Create directory structure
         build_temp = pathlib.Path(self.build_temp)
-        build_temp.mkdir(parents=True, exist_ok=True)
+        if not build_temp.exists():
+            build_temp.mkdir(parents=True, exist_ok=True)
         extdir = pathlib.Path(self.get_ext_fullpath(ext.name))
-        extdir.mkdir(parents=True, exist_ok=True)
+        if not extdir.exists():
+            extdir.mkdir(parents=True, exist_ok=True)
 
         # Check which architecture we should be building for
         import struct

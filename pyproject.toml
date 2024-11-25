@@ -61,7 +61,7 @@ generate-setup-file = true
 [build-system]
 requires = [
     "poetry-core",
-    "setuptools>=67",
+    "setuptools==70.3.0",
     "cmake>=3.13"
 ]
 build-backend = "poetry.core.masonry.api"
