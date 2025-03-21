@@ -292,7 +292,12 @@ def cccc(hand: Union[Hand, SuitHolding]) -> float:
 
 
 def quality(hand: SuitHolding) -> float:
-    "Uses the quality algorithm (from the October 1982 issue of Bridge World magazine)"
+    """
+    Uses the quality algorithm (from the October 1982 issue of Bridge World magazine).
+    I can't find an implementation of this algorithm on the internet, and haven't yet
+    looked at buying a copy of the magazine, but this is an algorithm supported by the
+    original dealer so it is stubbed out here for a possible future implementation.
+    """
     raise NotImplementedError
 
 
