@@ -48,3 +48,6 @@ TestResults/
 startup.py
 runfile
 src/dump.txt
+
+# macos file
+.DS_STORE
