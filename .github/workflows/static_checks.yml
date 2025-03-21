@@ -39,8 +39,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Install dependencies
-        run: pipx install black isort
-      - name: Check import sorting
-        run: isort --tc --profile black --check-only .
+        run: pipx install poetry
+      - name: Install endplay
+        run: poetry install
+      - name: Check formatting
+        run: make format
       - name: Check black formatting
-        run: black --check .
+        run: poetry run black --check .
