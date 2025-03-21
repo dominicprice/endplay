@@ -29,6 +29,9 @@ keywords = [
     "deal",
     "dealer"
 ]
+include = [
+  { path = "libs", format = "sdist" }
+]
 
 [tool.poetry.urls]
 "Homepage" = "https://github.com/dominicprice/endplay"
